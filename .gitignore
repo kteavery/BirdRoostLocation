@@ -1,0 +1,15 @@
+!MLData/README.md
+!MLData/ml_labels_example.csv
+.control/
+.idea/*
+.nfs/*
+*.gz
+*.netcdf
+*.pyc
+BirdRoostDetection.egg-info/*
+venv/
+build/*
+dist/*
+MLData/
+QuickCode
+.DS_Store
