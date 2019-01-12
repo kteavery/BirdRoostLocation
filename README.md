@@ -1,7 +1,7 @@
-# BirdRoostDetection
-Carmen Chilson and Katherine Avery
+# BirdRoostLocation
+Katherine Avery
 
-Paper link: https://zslpublications.onlinelibrary.wiley.com/doi/10.1002/rse2.92
+This project is an extension of kteavery/BirdRoostDetection and the paper [Automated detection of bird roosts using NEXRAD radar data and Convolutional Neural Networks](https://zslpublications.onlinelibrary.wiley.com/doi/10.1002/rse2.92) by Carmen Chilson and Katherine Avery.
 
 This code was developed for the Oklahoma Biological Survey for a research project. We use machine learning to automate the detection of pre-migratory purple martin roosts, their location, and the radius of the roost in NEXRAD radar data.
 
@@ -17,8 +17,8 @@ This code was developed for the Oklahoma Biological Survey for a research projec
 - See instructions here: https://aws.amazon.com/developers/getting-started/python/
 
 ## Installing and software
-- git clone git@github.com:carmenchilson/BirdRoostDetection.git
-- cd BirdRoostDetection
+- git clone git@github.com:kteavery/BirdRoostLocation.git
+- cd BirdRoostLocation
 - python setup.py install
 
 ## Using the software
