@@ -86,7 +86,7 @@ class Batch_Generator():
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]['AWS_file'])
 
-        for key in ml_sets.keys():
+        for key in list(ml_sets.keys()):
             ml_sets_V06[key] = []
             for item in ml_sets[key]:
                 if int(item[-1]) >= 6:
@@ -157,7 +157,7 @@ class Small_Image_Batch_Generator(Batch_Generator):
             ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
                 Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
             #for ml_sets in [roost_sets, no_roost_sets]:
-            print len(roost_sets[ml_set])
+            print(len(roost_sets[ml_set]))
 
             # indices = range(len(roost_sets[ml_set]))
             indices = np.random.randint(low=0,

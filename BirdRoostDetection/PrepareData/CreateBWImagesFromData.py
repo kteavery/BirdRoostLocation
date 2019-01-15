@@ -11,7 +11,7 @@ from BirdRoostDetection.PrepareData import VisualizeNexradData
 def plot_radar_files(file_names):
     for file_name in file_names:
         try:
-            print file_name
+            print(file_name)
             file_path = os.path.join(utils.RADAR_FILE_DIR,
                                      NexradUtils.getBasePath(file_name),
                                      file_name)
@@ -20,7 +20,7 @@ def plot_radar_files(file_names):
                                          '{0}/') + '_{0}.png'
             VisualizeNexradData.visualizeBWRadarData(file_path, img_path, True)
         except Exception as e:
-            print '{}, {}'.format(file_name, str(e))
+            print('{}, {}'.format(file_name, str(e)))
 
 
 def main(results):

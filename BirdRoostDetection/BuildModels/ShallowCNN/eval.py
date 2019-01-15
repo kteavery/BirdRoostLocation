@@ -48,7 +48,7 @@ def eval(log_path, radar_product):
     model.load_weights(log_path)
 
     loss, acc = model.evaluate(x, y)
-    print loss, acc
+    print(loss, acc)
 
 
 def main(results):
@@ -62,7 +62,7 @@ def main(results):
     else:
         log_path = results.log_path
 
-    print log_path
+    print(log_path)
     eval(log_path=log_path,
          radar_product=radar_product)
 

@@ -18,7 +18,7 @@ def getRadarNames(minLat, maxLat, minLon, maxLon):
         List of radar names.
     """
     radars = []
-    for key in nexrad.NEXRAD_LOCATIONS.keys():
+    for key in list(nexrad.NEXRAD_LOCATIONS.keys()):
         if (key[0] == 'K'):
             lat = float(nexrad.NEXRAD_LOCATIONS[key]['lat'])
             lon = float(nexrad.NEXRAD_LOCATIONS[key]['lon'])
@@ -54,7 +54,7 @@ def getRadarsInRadius(lat, lon, radius_km=300.0):
         A list of 4 character radar name strings.
     """
     radars = []
-    for key in nexrad.NEXRAD_LOCATIONS.keys():
+    for key in list(nexrad.NEXRAD_LOCATIONS.keys()):
         distance_km = getDistanceFromRadar(lat, lon, key)
         if distance_km < radius_km:
             radars.append(key)
@@ -90,8 +90,8 @@ def getClosestRadar(lat, lon):
         float, the distance in kilometers.
     """
     radar = None
-    min_distance = sys.maxint
-    for key in nexrad.NEXRAD_LOCATIONS.keys():
+    min_distance = sys.maxsize
+    for key in list(nexrad.NEXRAD_LOCATIONS.keys()):
         distance = getDistanceFromRadar(lat, lon, key)
         if (min_distance > distance):
             radar = key

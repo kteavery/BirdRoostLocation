@@ -99,12 +99,12 @@ def train(log_path, radar_product, eval_increment=5,
                 num_temporal_data=num_temporal_data)
 
             train_logs = model.train_on_batch(x, y)
-            print progress_string.format(utils.ML_Set.training.fullname,
+            print(progress_string.format(utils.ML_Set.training.fullname,
                                          batch_no,
-                                         train_logs[0], train_logs[1])
+                                         train_logs[0], train_logs[1]))
             ml_utils.write_log(callback, train_names, train_logs, batch_no)
         except Exception as e:
-            print e.message
+            print(e.message)
         if (batch_no % eval_increment == 0):
             model.save_weights(log_path + save_file.format(''))
             try:
@@ -116,11 +116,11 @@ def train(log_path, radar_product, eval_increment=5,
 
                 val_logs = model.test_on_batch(x_, y_)
                 ml_utils.write_log(callback, val_names, val_logs, batch_no)
-                print progress_string.format(utils.ML_Set.validation.fullname,
+                print(progress_string.format(utils.ML_Set.validation.fullname,
                                              batch_no,
-                                             val_logs[0], val_logs[1])
+                                             val_logs[0], val_logs[1]))
             except Exception as e:
-                print e.message
+                print(e.message)
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
@@ -148,7 +148,7 @@ def main(results):
     else:
         log_path = results.log_path
 
-    print log_path
+    print(log_path)
     train(log_path=log_path,
           radar_product=radar_product,
           eval_increment=results.eval_increment,

@@ -147,13 +147,13 @@ def main():
     fileName = fileNames[0]  # Select file from list
     file = downloadDataFromBucket(bucket, fileName)
     radar = pyart.io.read_nexrad_archive(file.name)
-    print radar
+    print(radar)
 
     # Use this format if you already know the exact name of the desired file
     fileName = '2015/07/04/KMOB/KMOB20150704_111944_V06.gz'
     file = downloadDataFromBucket(bucket, fileName)
     radar = pyart.io.read_nexrad_archive(file.name)
-    print radar
+    print(radar)
 
     conn.close()
 

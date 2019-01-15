@@ -22,6 +22,6 @@ LABEL_CSV = str(data["label_csv"])
 ML_SPLITS_DATA = str(data["ml_splits_csv"])
 
 if(bool(data["schooner"])):
-    print 'schooner'
+    print('schooner')
     import matplotlib
     matplotlib.use('agg')  # Required for running on schooner

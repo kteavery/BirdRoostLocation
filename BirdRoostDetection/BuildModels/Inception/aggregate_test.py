@@ -12,7 +12,7 @@ def test(model, bottleneck_list, radar_fields):
         category='training',
         radar_fields=radar_fields)
     result = model.evaluate(x, y, 32)
-    print result
+    print(result)
 
 
 def main():

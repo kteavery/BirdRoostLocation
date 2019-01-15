@@ -28,4 +28,5 @@ def main():
         cv2.imwrite(newfile, flipped)
         
 if __name__ == "__main__":
-  main()
+  print("")
+  #main()

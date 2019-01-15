@@ -4,23 +4,23 @@ from setuptools import setup
 
 if __name__ == '__main__':
     setup(
-        name='BirdRoostDetection',
+        name='BirdRoostLocation',
         version='1.0',
         description='Machine Learning to locate pre migratory  bird roosts in '
                     'NEXRAD radar data',
-        author='Carmen Chilson',
-        author_email='carmenchilson@ou.edu',
+        author='Kate Avery',
+        author_email='katherine.avery@ou.edu',
         license='MIT',
-        url='https://github.com/carmenchilson/BirdRoostDetection',
+        url='https://github.com/kteavery/BirdRoostLocation',
         packages=[
-            'BirdRoostDetection',
-            'BirdRoostDetection.BuildModels',
-            'BirdRoostDetection.BuildModels.ShallowCNN',
-            'BirdRoostDetection.BuildModels.Inception',
-            'BirdRoostDetection.BuildModels.Part_Of_Image',
-            'BirdRoostDetection.PrepareData',
-            'BirdRoostDetection.ReadData',
-            'BirdRoostDetection.Analysis'
+            'BirdRoostLocation',
+            'BirdRoostLocation.BuildModels',
+            'BirdRoostLocation.BuildModels.ShallowCNN',
+            'BirdRoostLocation.BuildModels.Inception',
+            'BirdRoostLocation.BuildModels.Part_Of_Image',
+            'BirdRoostLocation.PrepareData',
+            'BirdRoostLocation.ReadData',
+            'BirdRoostLocation.Analysis'
         ],
         package_data={'BirdRoostDetection': ['settings.json']},
         keywords=[

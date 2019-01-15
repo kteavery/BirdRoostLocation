@@ -61,7 +61,7 @@ def create_heatmaps(log_path, radar_product, epoch=''):
     titles = ['No Roost', 'Roost']
     checkpoint_path = log_path + ml_utils.CHECKPOINT_DIR
     model = ml_model.build_model(inputDimensions=(240, 240, 3))
-    print os.path.join(checkpoint_path, save_file.format(epoch))
+    print(os.path.join(checkpoint_path, save_file.format(epoch)))
     model.load_weights(os.path.join(checkpoint_path, save_file.format(epoch)))
     batch_generator.get_batch(utils.ML_Set.testing,
                               radar_product)
@@ -73,9 +73,9 @@ def create_heatmaps(log_path, radar_product, epoch=''):
         label = y[i:i + 1]
         filename = filenames[i]
         loss, acc = model.evaluate(img, label)
-        print loss, acc, label, filename
+        print(loss, acc, label, filename)
         prediction = model.predict(img)[0][0]
-        print prediction
+        print(prediction)
         heat_maps = []
 
         heat_maps.append(
@@ -102,7 +102,7 @@ def create_heatmaps(log_path, radar_product, epoch=''):
         fig.suptitle(
             '{0}: {1}, {2}'.format(titles[label[0][0]], prediction, filename))
         save_file = filename + '.png'
-        print save_file
+        print(save_file)
         plt.savefig(save_file)
         # plt.show()
 

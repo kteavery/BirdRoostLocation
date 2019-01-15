@@ -63,13 +63,13 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
                     if f[0:17] in filename:
                         file = AWSNexradData.downloadDataFromBucket(bucket,
                                                                     filename)
-                print 'downloaded: ', f
+                print('downloaded: ', f)
                 shutil.copy(file.name, radardir + f)
             except Exception as e:
                 errors.append('{}, {}'.format(fileName, str(e)))
 
         else:
-            print 'skipping, file already exists: {}{}'.format(radardir, f)
+            print('skipping, file already exists: {}{}'.format(radardir, f))
         conn.close()
 
     if len(errors) > 0:

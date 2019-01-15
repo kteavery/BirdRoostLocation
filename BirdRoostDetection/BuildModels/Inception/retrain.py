@@ -83,9 +83,9 @@ tensorflow_model_server --port=9000 --model_name=inception \
     --model_base_path=saved_models/
 ```
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
+
+
 
 import BirdRoostDetection.LoadSettings as settings
 from BirdRoostDetection.ReadData import BatchGenerator
@@ -396,7 +396,7 @@ def cache_bottlenecks(sess, image_lists, image_dir,
       Nothing.
     """
     how_many_bottlenecks = 0
-    for label_name, label_lists in image_lists.items():
+    for label_name, label_lists in list(image_lists.items()):
         for category in ['training', 'testing', 'validation']:
             category_list = label_lists[category]
             for index, unused_base_name in enumerate(category_list):
@@ -439,7 +439,7 @@ def get_random_cached_bottlenecks(sess, image_lists, how_many, category,
       List of bottleneck arrays, their corresponding ground truths, and the
       relevant filenames.
     """
-    class_count = len(image_lists.keys())
+    class_count = len(list(image_lists.keys()))
     bottlenecks = []
     ground_truths = []
     filenames = []
@@ -500,7 +500,7 @@ def get_random_distorted_bottlenecks(
     Returns:
       List of bottleneck arrays and their corresponding ground truths.
     """
-    class_count = len(image_lists.keys())
+    class_count = len(list(image_lists.keys()))
     bottlenecks = []
     ground_truths = []
     for unused_i in range(how_many):
@@ -1046,7 +1046,7 @@ def main(_):
     FLAGS.saved_model_dir = FLAGS.saved_model_dir.format(radar_product.fullname)
     global CHECKPOINT_NAME
     CHECKPOINT_NAME = CHECKPOINT_NAME.format(radar_product.fullname)
-    class_count = len(image_lists.keys())
+    class_count = len(list(image_lists.keys()))
     if class_count == 0:
         tf.logging.error(
             'No valid folders of images found at ' + FLAGS.image_dir)
@@ -1204,7 +1204,7 @@ def main(_):
         # constants.
         save_graph_to_file(graph, FLAGS.output_graph, model_info, class_count)
         with gfile.FastGFile(FLAGS.output_labels, 'w') as f:
-            f.write('\n'.join(image_lists.keys()) + '\n')
+            f.write('\n'.join(list(image_lists.keys())) + '\n')
 
         export_model(model_info, class_count,
                      FLAGS.saved_model_dir)

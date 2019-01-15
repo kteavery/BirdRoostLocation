@@ -65,7 +65,7 @@ def visualizeRadardata(radar, save, dualPolarization=False,
         display.set_limits((-radius, radius), (-radius, radius), ax=ax)
         display.set_aspect_ratio('equal', ax=ax)
         if (displayCircles):
-            display.plot_range_rings(range(100, 350, 100), lw=0.5, col='black',
+            display.plot_range_rings(list(range(100, 350, 100)), lw=0.5, col='black',
                                      ax=ax)
     if save:
         plt.savefig(save)

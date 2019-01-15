@@ -42,7 +42,7 @@ def get_heat_map_images(sess, model, i, j, height, stride, images,
     model = aggregate_train.create_model(8192, save)
 
     prediction = model.predict(bottleneck)[0][0]
-    print prediction
+    print(prediction)
 
     heat_map = np.full((x.shape[1:3]), float('nan'))
     heat_map[width_start:width_start + height,
@@ -68,7 +68,7 @@ def prediction_heat_map_on_bottleneck(sess, model, images, height, stride,
     return heat_map
 
 def create_heatmap_for_filename(image_path):
-    print os.path.basename(image_path) + '.png'
+    print(os.path.basename(image_path) + '.png')
 
     # Gather information about the model architecture we'll be using.
     model_dir = 'tf_files/models/'
@@ -129,7 +129,7 @@ def create_heatmap_for_filename(image_path):
                      aspect=60)
 
         save_file = os.path.basename(image_path) + '.png'
-        print save_file
+        print(save_file)
         plt.savefig(save_file)
 
 def main():
@@ -153,7 +153,7 @@ def main():
         year = filename[4:8]
         month = filename[8:10]
         day = filename[10:12]
-        print radar, year, month, day
+        print(radar, year, month, day)
         image_path = 'radarimages/{0}_Color/{1}/{2}/{3}/{4}' \
                      '/{5}_{0}.png'.format('{0}', radar, year, month, day, filename)
         create_heatmap_for_filename(image_path)

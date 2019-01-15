@@ -40,7 +40,7 @@ def createLabelForFiles(fileNames, saveDir):
             imgPath = os.path.join(
                 imgDir.replace(saveDir, os.path.join(saveDir, 'All_Color/')),
                 name + '.png')
-            print imgPath
+            print(imgPath)
 
             if not os.path.isfile(imgPath):
                 file = open(os.path.join(root, name), 'r')
@@ -97,7 +97,7 @@ def createLabelForFiles(fileNames, saveDir):
 
                     # print root + '/' + name
         except Exception as e:
-            print '{}, {}'.format(imgPath, str(e))
+            print('{}, {}'.format(imgPath, str(e)))
 
 
 def main(results):

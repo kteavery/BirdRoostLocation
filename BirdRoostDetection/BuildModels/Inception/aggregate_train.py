@@ -74,8 +74,8 @@ def create_image_lists(radar_product):
 
 
 def get_bottleneck_list(image_lists, radar_field):
-    for label in image_lists.keys():
-        for ml_set in image_lists[label].keys():
+    for label in list(image_lists.keys()):
+        for ml_set in list(image_lists[label].keys()):
             for i in range(len(image_lists[label][ml_set])):
                 image_path = image_lists[label][ml_set][
                                  i] + '_' + 'inception_v3' + '.txt'
@@ -106,7 +106,7 @@ def get_bottleneck(image_lists, label_name, index, category, radar_field):
 
 def get_random_cached_bottlenecks(image_lists, how_many, category,
                                   radar_fields):
-    class_count = len(image_lists.keys())
+    class_count = len(list(image_lists.keys()))
     bottlenecks = []
     ground_truths = []
     filenames = []
@@ -165,13 +165,13 @@ def train(model, bottleneck_list, num_iterations, save_file, radar_fields,
                                                     category='training',
                                                     radar_fields=radar_fields)
             train_logs = model.train_on_batch(x, y)
-            print progress_string.format(utils.ML_Set.training.fullname,
+            print(progress_string.format(utils.ML_Set.training.fullname,
                                          batch_no,
-                                         train_logs[0], train_logs[1])
+                                         train_logs[0], train_logs[1]))
             ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         except Exception as e:
-            print e.message
+            print(e.message)
         if (batch_no % 1 == 0):
             model.save_weights(save_file)
             try:
@@ -182,11 +182,11 @@ def train(model, bottleneck_list, num_iterations, save_file, radar_fields,
 
                 val_logs = model.test_on_batch(x_, y_)
                 ml_utils.write_log(callback, val_names, val_logs, batch_no)
-                print progress_string.format(utils.ML_Set.validation.fullname,
+                print(progress_string.format(utils.ML_Set.validation.fullname,
                                              batch_no,
-                                             val_logs[0], val_logs[1])
+                                             val_logs[0], val_logs[1]))
             except Exception as e:
-                print e.message
+                print(e.message)
     model.save_weights(save_file)
 
 

@@ -32,7 +32,7 @@ def main(results):
     radar_product = utils.Radar_Products(results.radar_product)
     log_path = 'model/small_images/Reflectivity.h5'
 
-    print log_path
+    print(log_path)
     eval(log_path=log_path,
          radar_product=radar_product)
 
