@@ -40,7 +40,7 @@ def prediction_heat_map_helper(i, j, width, height, stride, img, model,
     x[:, width_start:width_start + width,
     height_start:height_start + height, :].fill(fill_color)
     prediction = model.predict(x=x)[0][0]
-    # print prediction
+    
     if (show):
         plt.imshow(x[0])
         plt.show()

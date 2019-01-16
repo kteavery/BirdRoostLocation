@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
+
 r"""Simple transfer learning with Inception v3 or Mobilenet models.
 With support for TensorBoard.
 This example shows how to take a Inception v3 or Mobilenet model trained on
@@ -83,8 +84,6 @@ tensorflow_model_server --port=9000 --model_name=inception \
     --model_base_path=saved_models/
 ```
 """
-
-
 
 
 import BirdRoostLocation.LoadSettings as settings

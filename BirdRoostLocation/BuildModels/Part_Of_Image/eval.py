@@ -16,8 +16,6 @@ def eval(log_path, radar_product):
                     ml_set=utils.ML_Set.testing,
                     dualPol=False,
                     radar_product=radar_product)
-    #for i in range(len(y)):
-
 
     model = ml_model.smaller_build_model(inputDimensions=(80, 80, 1))
     model.load_weights(log_path)

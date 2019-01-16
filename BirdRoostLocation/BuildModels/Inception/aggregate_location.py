@@ -159,8 +159,5 @@ def main():
         create_heatmap_for_filename(image_path)
 
 
-
-
-
 if __name__ == '__main__':
     main()
