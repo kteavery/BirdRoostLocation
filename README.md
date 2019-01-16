@@ -17,7 +17,7 @@ This code was developed for the Oklahoma Biological Survey for a research projec
 - See instructions here: https://aws.amazon.com/developers/getting-started/python/
 
 ## Installing and software
-- git clone git@github.com:kteavery/BirdRoostLocation.git
+- git clone git<span></span>@github.com:kteavery/BirdRoostLocation.git
 - cd BirdRoostLocation
 - python setup.py install
 
