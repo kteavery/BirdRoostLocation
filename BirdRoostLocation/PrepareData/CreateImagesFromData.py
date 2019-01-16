@@ -7,10 +7,10 @@ from each radar separately. For our research we had 81 radars and ran this file
 Example command:
 python CreateImagesFromData.py KLIX
 """
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.PrepareData import VisualizeNexradData
-from BirdRoostDetection.PrepareData import NexradUtils
-from BirdRoostDetection import utils
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.PrepareData import VisualizeNexradData
+from BirdRoostLocation.PrepareData import NexradUtils
+from BirdRoostLocation import utils
 import os
 import argparse
 import pyart.io

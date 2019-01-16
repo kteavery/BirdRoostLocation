@@ -10,13 +10,13 @@ Example command:
 python DownloadData.py KLIX
 """
 
-import BirdRoostDetection.LoadSettings as settings
+import BirdRoostLocation.LoadSettings as settings
 import os
 import shutil
 import argparse
 import pandas
-from BirdRoostDetection.PrepareData import AWSNexradData
-from BirdRoostDetection.PrepareData import NexradUtils
+from BirdRoostLocation.PrepareData import AWSNexradData
+from BirdRoostLocation.PrepareData import NexradUtils
 
 
 def downloadRadarsFromList(fileNames, saveDir, error_file_name):

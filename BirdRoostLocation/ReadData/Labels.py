@@ -2,7 +2,7 @@ import os
 import datetime
 import numpy as np
 from PIL import Image
-from BirdRoostDetection import utils
+from BirdRoostLocation import utils
 import ast
 
 

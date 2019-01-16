@@ -1,15 +1,15 @@
 import os.path
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.BuildModels.Inception import aggregate_train
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.BuildModels.Inception import aggregate_train
 import os
-from BirdRoostDetection import utils
+from BirdRoostLocation import utils
 import numpy as np
 import tensorflow as tf
 from tensorflow.python.platform import gfile
-from BirdRoostDetection.BuildModels.Inception import retrain
+from BirdRoostLocation.BuildModels.Inception import retrain
 import math
 import matplotlib.pyplot as plt
-from BirdRoostDetection.ReadData import BatchGenerator
+from BirdRoostLocation.ReadData import BatchGenerator
 
 WIDTH = 60
 HEIGHT = 60

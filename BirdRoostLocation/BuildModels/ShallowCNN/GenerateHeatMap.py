@@ -4,11 +4,11 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-import BirdRoostDetection.BuildModels.ShallowCNN.model as ml_model
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection import utils
-from BirdRoostDetection.BuildModels import ml_utils
-from BirdRoostDetection.ReadData import BatchGenerator
+import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation import utils
+from BirdRoostLocation.BuildModels import ml_utils
+from BirdRoostLocation.ReadData import BatchGenerator
 
 fill_color = 255
 nan = float('nan')

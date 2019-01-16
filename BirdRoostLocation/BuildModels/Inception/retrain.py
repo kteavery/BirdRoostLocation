@@ -87,9 +87,9 @@ tensorflow_model_server --port=9000 --model_name=inception \
 
 
 
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.ReadData import BatchGenerator
-from BirdRoostDetection import utils
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.ReadData import BatchGenerator
+from BirdRoostLocation import utils
 
 import argparse
 from datetime import datetime

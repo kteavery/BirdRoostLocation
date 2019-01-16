@@ -1,10 +1,10 @@
 import argparse
 import os
-import BirdRoostDetection.BuildModels.ShallowCNN.model as ml_model
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection import utils
-from BirdRoostDetection.ReadData import BatchGenerator
-from BirdRoostDetection.Analysis import skill_scores
+import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation import utils
+from BirdRoostLocation.ReadData import BatchGenerator
+from BirdRoostLocation.Analysis import skill_scores
 
 def eval(log_path, radar_product):
     batch_generator = BatchGenerator.Small_Image_Batch_Generator(

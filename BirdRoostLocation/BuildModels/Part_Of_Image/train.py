@@ -1,11 +1,11 @@
 import argparse
 import os
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.BuildModels.ShallowCNN import model as keras_model
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.BuildModels.ShallowCNN import model as keras_model
 from keras.callbacks import TensorBoard
-from BirdRoostDetection import utils
-from BirdRoostDetection.BuildModels import ml_utils
-from BirdRoostDetection.ReadData import BatchGenerator
+from BirdRoostLocation import utils
+from BirdRoostLocation.BuildModels import ml_utils
+from BirdRoostLocation.ReadData import BatchGenerator
 import numpy as np
 
 

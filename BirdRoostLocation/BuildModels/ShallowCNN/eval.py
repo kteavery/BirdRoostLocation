@@ -18,11 +18,11 @@ python eval.py \
 import argparse
 import os
 
-import BirdRoostDetection.BuildModels.ShallowCNN.model as ml_model
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection import utils
-from BirdRoostDetection.BuildModels import ml_utils
-from BirdRoostDetection.ReadData import BatchGenerator
+import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation import utils
+from BirdRoostLocation.BuildModels import ml_utils
+from BirdRoostLocation.ReadData import BatchGenerator
 
 
 def eval(log_path, radar_product):

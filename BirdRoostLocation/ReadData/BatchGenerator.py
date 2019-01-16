@@ -1,9 +1,9 @@
 import os
 import pandas
-from BirdRoostDetection.ReadData import Labels
+from BirdRoostLocation.ReadData import Labels
 import numpy as np
-from BirdRoostDetection import utils
-from BirdRoostDetection.PrepareData import NexradUtils
+from BirdRoostLocation import utils
+from BirdRoostLocation.PrepareData import NexradUtils
 
 
 class Batch_Generator():

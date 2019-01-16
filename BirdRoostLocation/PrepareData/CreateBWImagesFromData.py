@@ -2,10 +2,10 @@ import argparse
 import os
 import pandas
 
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.PrepareData import NexradUtils
-from BirdRoostDetection import utils
-from BirdRoostDetection.PrepareData import VisualizeNexradData
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.PrepareData import NexradUtils
+from BirdRoostLocation import utils
+from BirdRoostLocation.PrepareData import VisualizeNexradData
 
 
 def plot_radar_files(file_names):

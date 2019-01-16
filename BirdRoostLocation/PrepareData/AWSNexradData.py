@@ -1,5 +1,5 @@
 """ Get NEXRAD radar data from Amazon Web Services."""
-import BirdRoostDetection.LoadSettings as settings
+import BirdRoostLocation.LoadSettings as settings
 import tempfile
 import boto
 import pyart.graph

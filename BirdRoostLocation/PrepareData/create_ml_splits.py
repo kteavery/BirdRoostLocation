@@ -1,5 +1,5 @@
 """Read in csv and create train, test, and validation splits for ML."""
-import BirdRoostDetection.LoadSettings as settings
+import BirdRoostLocation.LoadSettings as settings
 import os
 import pandas
 

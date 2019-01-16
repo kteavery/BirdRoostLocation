@@ -1,7 +1,7 @@
 import os.path
-from BirdRoostDetection import utils
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.BuildModels.Inception import aggregate_train
+from BirdRoostLocation import utils
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.BuildModels.Inception import aggregate_train
 import os
 
 

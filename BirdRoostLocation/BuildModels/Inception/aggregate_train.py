@@ -5,10 +5,10 @@ from os import walk
 from os.path import join
 from os.path import splitext
 
-from BirdRoostDetection import utils
-from BirdRoostDetection.BuildModels import ml_utils
-import BirdRoostDetection.LoadSettings as settings
-from BirdRoostDetection.ReadData import BatchGenerator
+from BirdRoostLocation import utils
+from BirdRoostLocation.BuildModels import ml_utils
+import BirdRoostLocation.LoadSettings as settings
+from BirdRoostLocation.ReadData import BatchGenerator
 
 from keras.callbacks import TensorBoard
 from keras.models import Sequential
