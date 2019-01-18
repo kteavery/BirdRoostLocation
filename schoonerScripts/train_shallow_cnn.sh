@@ -4,11 +4,11 @@
 #SBATCH --ntasks=1
 #SBATCH -o log.out
 #SBATCH -e log.err
-#SBATCH --mail-user=carmenchilson@ou.edu
+#SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p swat_plus
 #SBATCH -t 47:00:00
-#SBATCH -D /home/cchilson/schoonerJobs/train
+#SBATCH -D /condo/swatwork/keavery/masters_thesis/schoonerJobs/train
 #SBATCH --array=0-3
 #SBATCH --mem 32G
 
@@ -25,8 +25,8 @@ DUAL_POL=${DUAL_POLS[$SLURM_ARRAY_TASK_ID]}
 
 echo $SLURM_ARRAY_TASK_ID
 
-python /home/cchilson/gitRepositories/BirdRoostDetection/BirdRoostDetection/\
-BuildModels/ShallowCNN/train.py \
+python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
+BirdRoostLocation/BuildModels/ShallowCNN/train.py \
 --radar_product=$RADARS_PRODUCT \
 --log_path=model/Reflectivity/ \
 --eval_increment=5 \
@@ -37,15 +37,4 @@ BuildModels/ShallowCNN/train.py \
 --high_memory_mode=True \
 --num_temporal_data=$TIME \
 --dual_pol=$DUAL_POL
-
-
-
-
-
-
-
-
-
-
-
 

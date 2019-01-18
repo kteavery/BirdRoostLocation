@@ -1,17 +1,16 @@
-
 import numpy as np
 from sklearn.metrics import roc_curve, auc
 
 def get_skill_scores(predictions, truths):
     """Compute skill score and accuracy metrics for the machine learning
     results.
-
+    
     Args:
         predictions: A numpy array of probabilities produced by the machine
             learning results.
         truths: A numpy array of ground truth to compare the predicted values
             against. Roost = 1 and NoRoost = 0
-
+    
     Returns:
         ACC: Accuracy
         TPR: True positive rate
