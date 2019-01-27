@@ -22,7 +22,7 @@ if __name__ == '__main__':
             'BirdRoostLocation.ReadData',
             'BirdRoostLocation.Analysis'
         ],
-        package_data={'BirdRoostDetection': ['settings.json']},
+        package_data={'BirdRoostLocation': ['settings.json']},
         keywords=[
             'Machine Learning',
             'Biology',
@@ -38,6 +38,6 @@ if __name__ == '__main__':
         classifiers=[
             'Intended Audience :: Biology Research using Computer Science',
             'License :: OSI Approved :: MIT License',
-            'Programming Language :: Python :: 2.7'
+            'Programming Language :: Python :: 3.6'
         ]
     )

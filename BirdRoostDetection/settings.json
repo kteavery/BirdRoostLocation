@@ -1,5 +1,0 @@
-{
-  "cwd": "/home/username/BirdRoostDetection/MLData/",
-  "label_csv": "ml_labels.csv",
-  "ml_splits_csv": "ml_splits.csv"
-}
