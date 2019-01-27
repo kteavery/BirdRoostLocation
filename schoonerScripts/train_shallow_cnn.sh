@@ -1,14 +1,13 @@
 #!/usr/bin/bash
-
+#
 #SBATCH --job-name=train_cnn
 #SBATCH --ntasks=1
-#SBATCH -o log.out
-#SBATCH -e log.err
+#SBATCH -o train_shallow_%J.out
+#SBATCH -e train_shallow_%J.err
 #SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p swat_plus
 #SBATCH -t 47:00:00
-#SBATCH -D /condo/swatwork/keavery/masters_thesis/schoonerJobs/train
 #SBATCH --array=0-3
 #SBATCH --mem 32G
 
@@ -37,4 +36,3 @@ BirdRoostLocation/BuildModels/ShallowCNN/train.py \
 --high_memory_mode=True \
 --num_temporal_data=$TIME \
 --dual_pol=$DUAL_POL
-
