@@ -105,10 +105,10 @@ class Temporal_ML_Label(ML_Label):
     def __init__(self, file_name, pd_row, root_dir, high_memory_mode,
                  label_dict):
         if not (file_name in label_dict):
-            # print pd_row
             ML_Label.__init__(self, file_name, pd_row, root_dir,
                               high_memory_mode)
-            self.fileNames = ast.literal_eval(pd_row['AWS_files'])
+
+            self.fileNames = pd_row['AWS_file'] #ast.literal_eval(pd_row['AWS_file'])
             label_dict[file_name] = self
             for name in self.fileNames:
                 Temporal_ML_Label(name, pd_row, root_dir, high_memory_mode,

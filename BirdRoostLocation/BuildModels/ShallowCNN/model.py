@@ -1,7 +1,7 @@
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.layers import Activation, Flatten, Dense
-from coord import CoordinateChannel2D
+from BirdRoostLocation.BuildModels.ShallowCNN.coord import CoordinateChannel2D
 import keras
 
 
