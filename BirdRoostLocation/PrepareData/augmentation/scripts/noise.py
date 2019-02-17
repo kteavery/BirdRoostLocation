@@ -37,17 +37,17 @@ def salt_pepper(image):
 
 def main():
   for data_dir in data_directories:
-    for file in os.listdir(directory+"/flattenedimages/"+data_dir):
+    for file in os.listdir(directory+"/clean_data/"+data_dir):
       if file.endswith(".png"):
-        image_ary = cv2.imread(directory+"/flattenedimages/"+ \
+        image_ary = cv2.imread(directory+"/clean_data/"+ \
         data_dir+"/"+file)
         
         noisy = salt_pepper(image_ary)
 
         filename = os.path.basename(file)
-        os.makedirs(directory + "/flattenedimages/Noise_" + data_dir, \
+        os.makedirs(directory + "/clean_data/Noise_" + data_dir, \
                     exist_ok=True)
-        newfile = directory + "/flattenedimages/Noise_" + data_dir + "/" \
+        newfile = directory + "/clean_data/Noise_" + data_dir + "/" \
                   + filename[:-4] + "_noise.png"
         cv2.imwrite(newfile, noisy)
 

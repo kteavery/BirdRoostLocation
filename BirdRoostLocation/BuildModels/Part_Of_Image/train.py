@@ -69,7 +69,7 @@ def train(log_path, radar_product, eval_increment=5,
                                          train_logs[0], train_logs[1]))
             ml_utils.write_log(callback, train_names, train_logs, batch_no)
         except Exception as e:
-            print(e.message)
+            print(e)
         if (batch_no % eval_increment == 0):
             model.save_weights(log_path + save_file.format(''))
             try:
@@ -85,7 +85,7 @@ def train(log_path, radar_product, eval_increment=5,
                                              batch_no,
                                              val_logs[0], val_logs[1]))
             except Exception as e:
-                print(e.message)
+                print(e)
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
