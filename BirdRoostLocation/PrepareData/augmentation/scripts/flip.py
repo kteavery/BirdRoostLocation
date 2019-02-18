@@ -13,16 +13,16 @@ data_directories = ["Roost_Reflectivity", "Roost_Velocity",
 
 def main():
   for data_dir in data_directories:
-    for file in os.listdir(directory+"/flattenedimages/"+data_dir):
-      if file.endswith(".png"):
-        image_ary = cv2.imread(directory+"/flattenedimages/"+ \
+    for file in os.listdir(directory+"/clean_data/"+data_dir):
+      if file.endswith(".jpg"):
+        image_ary = cv2.imread(directory+"/clean_data/"+ \
         data_dir+"/"+file)
 
         flipped = np.fliplr(image_ary)
         filename = os.path.basename(file)
-        os.makedirs(directory + "/flattenedimages/Flip_" + data_dir, \
+        os.makedirs(directory + "/clean_data/Flip_" + data_dir, \
                     exist_ok=True)
-        newfile = directory + "/flattenedimages/Flip_" + data_dir + "/" \
+        newfile = directory + "/clean_data/Flip_" + data_dir + "/" \
                   + filename[:-4] + "_flip.png"
         
         cv2.imwrite(newfile, flipped)

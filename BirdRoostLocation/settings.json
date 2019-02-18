@@ -1,5 +1,6 @@
 {
-  "cwd": "/home/username/BirdRoostLocation/MLData/",
+  "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
   "label_csv": "ml_labels.csv",
-  "ml_splits_csv": "ml_splits.csv"
+  "ml_splits_csv": "ml_splits.csv",
+  "schooner": false
 }

@@ -16,9 +16,9 @@ data_directories.extend(flip_directories)
 
 def main():
   for data_dir in data_directories:
-    for file in os.listdir(directory+"/flattenedimages/"+data_dir):
-      if file.endswith(".png"):
-        image_ary = cv2.imread(directory+"/flattenedimages/"+ \
+    for file in os.listdir(directory+"/clean_data/"+data_dir):
+      if file.endswith(".png") or file.endswith(".jpg"):
+        image_ary = cv2.imread(directory+"/clean_data/"+ \
         data_dir+"/"+file)
 
         for angle in np.arange(45, 360, 45):
@@ -26,9 +26,9 @@ def main():
                                            reshape=False)
 
             filename = os.path.basename(file)
-            os.makedirs(directory + "/flattenedimages/Rotate_" + data_dir, \
+            os.makedirs(directory + "/clean_data/Rotate_" + data_dir, \
                     exist_ok=True)
-            newfile = directory + "/flattenedimages/Rotate_" + data_dir + \
+            newfile = directory + "/clean_data/Rotate_" + data_dir + \
                       "/" + filename[:-4] + "_" + str(angle) + ".png"
             cv2.imwrite(newfile, rotated)
 

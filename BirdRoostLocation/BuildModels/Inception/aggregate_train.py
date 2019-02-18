@@ -171,7 +171,7 @@ def train(model, bottleneck_list, num_iterations, save_file, radar_fields,
             ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         except Exception as e:
-            print(e.message)
+            print(e)
         if (batch_no % 1 == 0):
             model.save_weights(save_file)
             try:
@@ -186,7 +186,7 @@ def train(model, bottleneck_list, num_iterations, save_file, radar_fields,
                                              batch_no,
                                              val_logs[0], val_logs[1]))
             except Exception as e:
-                print(e.message)
+                print(e)
     model.save_weights(save_file)
 
 

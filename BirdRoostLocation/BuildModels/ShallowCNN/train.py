@@ -67,20 +67,20 @@ def train(log_path, radar_product, eval_increment=5,
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr)
+        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr, coordConv=True)
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr)
+        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr, coordConv=True)
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=False)
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 2 + 1), lr=lr)
+            inputDimensions=(240, 240, num_temporal_data * 2 + 1), lr=lr, coordConv=True)
 
     # Setup callbacks
     callback = TensorBoard(log_path)
@@ -104,7 +104,7 @@ def train(log_path, radar_product, eval_increment=5,
                                          train_logs[0], train_logs[1]))
             ml_utils.write_log(callback, train_names, train_logs, batch_no)
         except Exception as e:
-            print(e.message)
+            print(e)
         if (batch_no % eval_increment == 0):
             model.save_weights(log_path + save_file.format(''))
             try:
@@ -120,13 +120,15 @@ def train(log_path, radar_product, eval_increment=5,
                                              batch_no,
                                              val_logs[0], val_logs[1]))
             except Exception as e:
-                print(e.message)
+                print(e)
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
             model.save_weights(
                 os.path.join(checkpoint_path, save_file.format(batch_no)))
 
+    print("SAVE FILE")
+    print(save_file)
     model.save_weights(save_file)
 
 

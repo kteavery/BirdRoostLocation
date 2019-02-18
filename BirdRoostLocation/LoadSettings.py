@@ -20,6 +20,7 @@ data = json.load(open(setting_path))
 WORKING_DIRECTORY = str(data["cwd"])
 LABEL_CSV = str(data["label_csv"])
 ML_SPLITS_DATA = str(data["ml_splits_csv"])
+DEFAULT_BATCH_SIZE = 32
 
 if(bool(data["schooner"])):
     print('schooner')
