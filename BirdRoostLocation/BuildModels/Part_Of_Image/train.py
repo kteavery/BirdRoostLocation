@@ -92,6 +92,8 @@ def train(log_path, radar_product, eval_increment=5,
             model.save_weights(
                 os.path.join(checkpoint_path, save_file.format(batch_no)))
 
+    print("SAVE FILE")
+    print(save_file)
     model.save_weights(save_file)
 
 
@@ -168,7 +170,6 @@ if __name__ == "__main__":
             """
     )
 
-
     parser.add_argument(
         '-d',
         '--dual_pol',
@@ -193,6 +194,7 @@ if __name__ == "__main__":
             IO and at least 8 GB of memory available.
             """
     )
+    
     parser.add_argument(
         '-td',
         '--num_temporal_data',

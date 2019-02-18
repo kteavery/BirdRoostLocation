@@ -1,6 +1,7 @@
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.layers import Activation, Flatten, Dense
+import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN.coord import CoordinateChannel2D
 import keras
 
@@ -21,7 +22,10 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
     model = Sequential()
 
     if coordConv == True:
-        model.add(CoordinateChannel2D())
+        print((settings.DEFAULT_BATCH_SIZE,)+inputDimensions)
+        print(type((settings.DEFAULT_BATCH_SIZE,)+inputDimensions))
+        model.add(CoordinateChannel2D(batch_input_shape=\
+                                      (settings.DEFAULT_BATCH_SIZE,)+inputDimensions))
     model.add(Conv2D(32, kernel_size=(5, 5),
                      input_shape=inputDimensions))
     model.add(BatchNormalization())

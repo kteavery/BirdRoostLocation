@@ -67,20 +67,20 @@ def train(log_path, radar_product, eval_increment=5,
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr)
+        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr, coordConv=True)
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr)
+        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr, coordConv=True)
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=False)
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 2 + 1), lr=lr)
+            inputDimensions=(240, 240, num_temporal_data * 2 + 1), lr=lr, coordConv=True)
 
     # Setup callbacks
     callback = TensorBoard(log_path)
@@ -127,6 +127,8 @@ def train(log_path, radar_product, eval_increment=5,
             model.save_weights(
                 os.path.join(checkpoint_path, save_file.format(batch_no)))
 
+    print("SAVE FILE")
+    print(save_file)
     model.save_weights(save_file)
 
 

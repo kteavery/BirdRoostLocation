@@ -6,6 +6,7 @@ https://github.com/titu1994/keras-coordconv/blob/master/coord.py
 from keras.engine import Layer, InputSpec
 from keras import backend as K
 from keras.utils.generic_utils import get_custom_objects
+import numpy as np
 
 class _CoordinateChannel(Layer):
     """ Adds Coordinate Channels to the input tensor.
@@ -103,6 +104,7 @@ class _CoordinateChannel(Layer):
             xx_range = K.tile(K.expand_dims(K.arange(0, dim1), axis=0),
                               K.stack([batch_shape, 1]))
             xx_range = K.expand_dims(xx_range, axis=1)
+
             xx_channels = K.batch_dot(xx_ones, xx_range, axes=[2, 1])
             xx_channels = K.expand_dims(xx_channels, axis=-1)
             xx_channels = K.permute_dimensions(xx_channels, [0, 2, 1, 3])
