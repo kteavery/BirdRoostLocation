@@ -69,9 +69,9 @@ class Batch_Generator():
                 ml_split_pd.drop(index, inplace=True)
 
         # Sort into train, test, and validation sets
-        print("LENGTHS OF NO ROOST/ROOST:")
-        print(len(ml_split_pd[ml_split_pd.Roost != True]))
-        print(len(ml_split_pd[ml_split_pd.Roost]))
+        # print("LENGTHS OF NO ROOST/ROOST:")
+        # print(len(ml_split_pd[ml_split_pd.Roost != True]))
+        # print(len(ml_split_pd[ml_split_pd.Roost]))
 
         self.__set_ml_sets_helper(self.no_roost_sets, self.no_roost_sets_V06,
                                   ml_split_pd[ml_split_pd.Roost != True],
@@ -101,7 +101,7 @@ class Batch_Generator():
 
     def get_batch_indices(self, ml_sets, ml_set,
                           num_temporal_data=0):
-        print(ml_sets)
+        # print(ml_sets)
         print(len(ml_sets[ml_set]))
         print(ml_set)
         print(self.batch_size / 2)
@@ -379,6 +379,7 @@ class Temporal_Batch_Generator(Batch_Generator):
                   num_temporal_data=0):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
             Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
             for index in indices:
@@ -391,19 +392,26 @@ class Temporal_Batch_Generator(Batch_Generator):
                 channel_files = self.label_dict[filename].fileNames[:]  # TODO
                 for image_name in channel_files.splitlines(True):
                     image = self.label_dict[image_name].get_image(
-                        radar_product)
-                    print()
-                    print(self.label_dict[image_name])
-                    if image is not None:
-                        images.append(image)
+                        radar_product)  # original image + augmented images
+                    print(self.label_dict[image_name].fileName)
+                    print(image)
 
+                    if isinstance(image, (list,)):
+                        for i in image:
+                            if i is not None:
+                                images.append(i)
+                    else:
+                        if image is not None:
+                            images.append(image)
+
+                # print(images)
                 # print(channel_files)
-                # print(str((num_temporal_data * 2) + 1))
+                #print(str((num_temporal_data * 2) + 1))
                 # print(len(images))
                 if len(images) == (num_temporal_data * 2) + 1:
                     ground_truths.append([is_roost, 1 - is_roost])
                     train_data.append(images)
-
+        # print(train_data)
         train_data = np.rollaxis(np.array(train_data), 1, 4)
 
         return train_data, np.array(ground_truths), np.array(filenames)

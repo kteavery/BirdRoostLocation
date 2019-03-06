@@ -48,10 +48,13 @@ class ML_Label():
                                                        '%Y-%m-%d %H:%M:%S')
         self.images = {}
         for radar_product in utils.Radar_Products:
-            image_path = self.__get_radar_product_path(
+            image_path = self.__get_augmented_product_paths(
                 root_dir, radar_product.fullname, self.is_roost)
             if self.high_memory_mode:
-                self.images[radar_product] = self.load_image(image_path)
+                paths = []
+                for path in image_path:
+                    paths.append(self.load_image(path))
+                self.images[radar_product] = paths
             else:
                 self.images[radar_product] = image_path
 
@@ -70,7 +73,13 @@ class ML_Label():
     def get_image(self, radar_product):
         if self.high_memory_mode:
             return self.images[radar_product]
-        return self.load_image(self.images[radar_product])
+        if isinstance(self.images[radar_product], (list,)):
+            images = []
+            for image in self.images[radar_product]:
+                images.append(self.load_image(image))
+            return images
+        else:
+            return self.load_image(self.images[radar_product])
 
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
         if is_roost:
@@ -83,22 +92,22 @@ class ML_Label():
     def __get_augmented_product_paths(self, root_dir, radar_product, is_roost):
         paths = []
         for roost in ["Roost_", "NoRoost_"]:
-            paths.extend([(root_dir+'data/'+roost +
-                           '{1}/'+'{0}_{1}.png').format(self.fileName, radar_product),
-                          (root_dir+'data/Flip_'+roost +
-                           '{1}/'+'{0}_{1}_flip.png').format(self.fileName, radar_product),
-                          (root_dir+'data/Noise_Flip_'+roost+'{1}/' +
-                           '{0}_{1}_flip_noise.png').format(self.fileName, radar_product),
-                          (root_dir, 'data/Noise_'+roost+'{1}/',
-                           '{0}_{1}_noise.png').format(self.fileName, radar_product)])
+            paths.extend([os.path.join(root_dir+'data/'+roost +
+                                       '{1}/'+'{0}_{1}.png').format(self.fileName, radar_product),
+                          os.path.join(root_dir+'data/Flip_'+roost +
+                                       '{1}/'+'{0}_{1}_flip.png').format(self.fileName, radar_product),
+                          os.path.join(root_dir+'data/Noise_Flip_'+roost+'{1}/' +
+                                       '{0}_{1}_flip_noise.png').format(self.fileName, radar_product),
+                          os.path.join(root_dir, 'data/Noise_'+roost+'{1}/',
+                                       '{0}_{1}_noise.png').format(self.fileName, radar_product)])
 
             for angle in ['45', '90', '135', '180', '225', '270', '315']:
-                paths.extend([(root_dir, 'data/Noise_Rotate_'+roost+'{1}/',
-                               '{0}_{1}_'+angle+'_noise.png').format(self.fileName, radar_product),
-                              (root_dir, 'data/Rotate_'+roost+'{1}/',
-                               '{0}_{1}_'+angle+'.png').format(self.fileName, radar_product),
-                              (root_dir, 'data/Rotate_Flip_'+roost+'{1}/',
-                               '{0}_{1}_flip_'+angle+'.png').format(self.fileName, radar_product)])
+                paths.extend([os.path.join(root_dir, 'data/Noise_Rotate_'+roost+'{1}/',
+                                           '{0}_{1}_'+angle+'_noise.png').format(self.fileName, radar_product),
+                              os.path.join(root_dir, 'data/Rotate_'+roost+'{1}/',
+                                           '{0}_{1}_'+angle+'.png').format(self.fileName, radar_product),
+                              os.path.join(root_dir, 'data/Rotate_Flip_'+roost+'{1}/',
+                                           '{0}_{1}_flip_'+angle+'.png').format(self.fileName, radar_product)])
         return paths
 
     def load_image(self, filename):
@@ -111,12 +120,13 @@ class ML_Label():
             Image as numpy array.
         """
         dim = 120
+        print(filename)
         if not os.path.exists(filename):
             return None
         img = np.array(Image.open(filename))
         shape = img.shape
-        w_mid = shape[0] / 2
-        h_mid = shape[1] / 2
+        w_mid = int(shape[0] / 2)
+        h_mid = int(shape[1] / 2)
         img = img[w_mid - dim:w_mid + dim, h_mid - dim:h_mid + dim]
         return img
 
@@ -142,10 +152,10 @@ class Temporal_ML_Label(ML_Label):
 class Color_ML_Label(ML_Label):
     def __init__(self, file_name, pd_row, root_dir, high_memory_mode):
         ML_Label.__init__(self, file_name, pd_row, root_dir, high_memory_mode)
-        for radar_prodcut in utils.Radar_Products:
+        for radar_product in utils.Radar_Products:
             image_path = self.__get_radar_product_path(
-                root_dir, radar_prodcut.fullname, self.is_roost)
-            self.images[radar_prodcut] = image_path
+                root_dir, radar_product.fullname, self.is_roost)
+            self.images[radar_product] = image_path
 
     def __get_radar_product_path(self, root_dir, radar_product):
         return os.path.join(root_dir, '{1}_Color/',

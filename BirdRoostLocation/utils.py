@@ -41,8 +41,8 @@ class Radar_Products(Enum):
     """Radar Product enum, includes reflectivity, velocity, rho_hv, and zdr."""
     reflectivity = 0, 'Reflectivity'
     velocity = 1, 'Velocity'
-    cc = 2, 'Correlation_Coefficient'
-    diff_reflectivity = 3, 'Differential_Reflectivity'
+    cc = 2, 'Rho_HV'
+    diff_reflectivity = 3, 'Zdr'
 
     def __new__(cls, value, name):
         member = object.__new__(cls)
