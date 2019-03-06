@@ -2,7 +2,8 @@ from enum import Enum
 import os
 
 RADAR_FILE_DIR = 'radarfiles/'
-RADAR_IMAGE_DIR = 'radarimages/'
+# TODO change when running on schooner
+RADAR_IMAGE_DIR = '/Users/Kate/workspace/BirdRoostLocation/MLData/'
 
 
 class ML_Set(Enum):

@@ -16,3 +16,5 @@ QuickCode
 *.bak
 *.png
 *.jpg
+*.code-workspace
+*.vscode

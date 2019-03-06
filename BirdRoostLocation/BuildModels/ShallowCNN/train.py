@@ -67,13 +67,15 @@ def train(log_path, radar_product, eval_increment=5,
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr, coordConv=True)
+        model = keras_model.build_model(
+            inputDimensions=(240, 240, 1), lr=lr, coordConv=False)
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr, coordConv=True)
+        model = keras_model.build_model(
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=False)
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -91,20 +93,20 @@ def train(log_path, radar_product, eval_increment=5,
     progress_string = '{} Epoch: {} Loss: {} Accuracy {}'
 
     for batch_no in range(num_iterations):
-        try:
-            x, y, _ = batch_generator.get_batch(
-                ml_set=utils.ML_Set.training,
-                dualPol=dual_pol,
-                radar_product=radar_product,
-                num_temporal_data=num_temporal_data)
+        # try:
+        x, y, _ = batch_generator.get_batch(
+            ml_set=utils.ML_Set.training,
+            dualPol=dual_pol,
+            radar_product=radar_product,
+            num_temporal_data=num_temporal_data)
 
-            train_logs = model.train_on_batch(x, y)
-            print(progress_string.format(utils.ML_Set.training.fullname,
-                                         batch_no,
-                                         train_logs[0], train_logs[1]))
-            ml_utils.write_log(callback, train_names, train_logs, batch_no)
-        except Exception as e:
-            print(e)
+        train_logs = model.train_on_batch(x, y)
+        print(progress_string.format(utils.ML_Set.training.fullname,
+                                     batch_no,
+                                     train_logs[0], train_logs[1]))
+        ml_utils.write_log(callback, train_names, train_logs, batch_no)
+        # except Exception as e:
+        #    print(e)
         if (batch_no % eval_increment == 0):
             model.save_weights(log_path + save_file.format(''))
             try:
