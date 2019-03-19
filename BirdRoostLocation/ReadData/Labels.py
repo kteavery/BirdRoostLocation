@@ -84,30 +84,30 @@ class ML_Label():
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
         if is_roost:
             return os.path.join(root_dir, 'data/Roost_'+'{1}/',
-                                '{0}_{1}'+'.png').format(self.fileName, radar_product)
+                                '{3}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[-2:])
         else:
             return os.path.join(root_dir, 'data/NoRoost_'+'{1}/',
-                                '{0}_{1}'+'.png').format(self.fileName, radar_product)
+                                '{3}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[-2:])
 
     def __get_augmented_product_paths(self, root_dir, radar_product, is_roost):
         paths = []
         for roost in ["Roost_", "NoRoost_"]:
             paths.extend([os.path.join(root_dir+'data/'+roost +
-                                       '{1}/'+'{0}_{1}.png').format(self.fileName, radar_product),
+                                       '{1}/'+'{2}{0}_{1}.png').format(self.fileName, radar_product, self.fileName[10:12]),
                           os.path.join(root_dir+'data/Flip_'+roost +
-                                       '{1}/'+'{0}_{1}_flip.png').format(self.fileName, radar_product),
+                                       '{1}/'+'{2}{0}_{1}_flip.png').format(self.fileName, radar_product, self.fileName[10:12]),
                           os.path.join(root_dir+'data/Noise_Flip_'+roost+'{1}/' +
-                                       '{0}_{1}_flip_noise.png').format(self.fileName, radar_product),
+                                       '{2}{0}_{1}_flip_noise.png').format(self.fileName, radar_product, self.fileName[10:12]),
                           os.path.join(root_dir, 'data/Noise_'+roost+'{1}/',
-                                       '{0}_{1}_noise.png').format(self.fileName, radar_product)])
+                                       '{2}{0}_{1}_noise.png').format(self.fileName, radar_product, self.fileName[10:12])])
 
             for angle in ['45', '90', '135', '180', '225', '270', '315']:
                 paths.extend([os.path.join(root_dir, 'data/Noise_Rotate_'+roost+'{1}/',
-                                           '{0}_{1}_'+angle+'_noise.png').format(self.fileName, radar_product),
+                                           '{2}{0}_{1}_'+angle+'_noise.png').format(self.fileName, radar_product, self.fileName[10:12]),
                               os.path.join(root_dir, 'data/Rotate_'+roost+'{1}/',
-                                           '{0}_{1}_'+angle+'.png').format(self.fileName, radar_product),
+                                           '{2}{0}_{1}_'+angle+'.png').format(self.fileName, radar_product, self.fileName[10:12]),
                               os.path.join(root_dir, 'data/Rotate_Flip_'+roost+'{1}/',
-                                           '{0}_{1}_flip_'+angle+'.png').format(self.fileName, radar_product)])
+                                           '{2}{0}_{1}_flip_'+angle+'.png').format(self.fileName, radar_product, self.fileName[10:12])])
         return paths
 
     def load_image(self, filename):

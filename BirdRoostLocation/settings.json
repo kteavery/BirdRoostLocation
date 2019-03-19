@@ -2,5 +2,7 @@
   "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
   "label_csv": "ml_labels.csv",
   "ml_splits_csv": "ml_splits.csv",
+  "subset_files_csv": "subset_files.csv",
+  "subset_label_csv": "subset_labels.csv",
   "schooner": false
 }

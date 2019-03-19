@@ -20,6 +20,8 @@ data = json.load(open(setting_path))
 
 WORKING_DIRECTORY = str(data["cwd"])
 LABEL_CSV = str(data["label_csv"])
+SUBSET_CSV = str(data["subset_files_csv"])
+SUBSET_LABEL_CSV = str(data["subset_label_csv"])
 ML_SPLITS_DATA = str(data["ml_splits_csv"])
 DEFAULT_BATCH_SIZE = 32  # TODO normally 32
 

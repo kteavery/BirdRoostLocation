@@ -391,8 +391,11 @@ class Temporal_Batch_Generator(Batch_Generator):
                 #    3 - num_temporal_data: 4 + num_temporal_data]
                 channel_files = self.label_dict[filename].fileNames[:]  # TODO
                 for image_name in channel_files.splitlines(True):
+                    print("IMAGE NAME")
+                    print(image_name)
                     image = self.label_dict[image_name].get_image(
                         radar_product)  # original image + augmented images
+                    print("self.label_dict[image_name].fileName")
                     print(self.label_dict[image_name].fileName)
                     print(image)
 
@@ -404,14 +407,14 @@ class Temporal_Batch_Generator(Batch_Generator):
                         if image is not None:
                             images.append(image)
 
-                # print(images)
-                # print(channel_files)
-                #print(str((num_temporal_data * 2) + 1))
-                # print(len(images))
+                print(images)
+                print(channel_files)
+                print(str((num_temporal_data * 2) + 1))
+                print(len(images))
                 if len(images) == (num_temporal_data * 2) + 1:
                     ground_truths.append([is_roost, 1 - is_roost])
                     train_data.append(images)
-        # print(train_data)
+        print(train_data)
         train_data = np.rollaxis(np.array(train_data), 1, 4)
 
         return train_data, np.array(ground_truths), np.array(filenames)
