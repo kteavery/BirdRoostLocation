@@ -76,7 +76,8 @@ class ML_Label():
         if isinstance(self.images[radar_product], (list,)):
             images = []
             for image in self.images[radar_product]:
-                images.append(self.load_image(image))
+                if self.load_image(image) is not None:
+                    images.append(self.load_image(image))
             return images
         else:
             return self.load_image(self.images[radar_product])
@@ -84,10 +85,10 @@ class ML_Label():
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
         if is_roost:
             return os.path.join(root_dir, 'data/Roost_'+'{1}/',
-                                '{3}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[-2:])
+                                '{2}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[10:12])
         else:
             return os.path.join(root_dir, 'data/NoRoost_'+'{1}/',
-                                '{3}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[-2:])
+                                '{2}{0}_{1}'+'.png').format(self.fileName, radar_product, self.fileName[10:12])
 
     def __get_augmented_product_paths(self, root_dir, radar_product, is_roost):
         paths = []
@@ -120,15 +121,16 @@ class ML_Label():
             Image as numpy array.
         """
         dim = 120
-        print(filename)
         if not os.path.exists(filename):
+            # print(filename)
             return None
-        img = np.array(Image.open(filename))
-        shape = img.shape
+        img = Image.open(filename)
+        img_rgb = np.array(img.convert('RGB'))
+        shape = img_rgb.shape
         w_mid = int(shape[0] / 2)
         h_mid = int(shape[1] / 2)
-        img = img[w_mid - dim:w_mid + dim, h_mid - dim:h_mid + dim]
-        return img
+        img_rgb = img_rgb[w_mid - dim:w_mid + dim, h_mid - dim:h_mid + dim]
+        return img_rgb
 
 
 class Temporal_ML_Label(ML_Label):

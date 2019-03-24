@@ -78,7 +78,7 @@ def get_bottleneck_list(image_lists, radar_field):
         for ml_set in list(image_lists[label].keys()):
             for i in range(len(image_lists[label][ml_set])):
                 image_path = image_lists[label][ml_set][
-                                 i] + '_' + 'inception_v3' + '.txt'
+                    i] + '_' + 'inception_v3' + '.txt'
                 image_path = image_path.replace('radarimages', 'bottleneck')
                 temp = image_path.replace(radar_field.fullname, '{0}')
                 image_lists[label][ml_set][i] = temp
@@ -223,7 +223,6 @@ def main():
         save = 'legacy.h5'
         model = create_model(4096, save)
         callback_dir = 'model_log/legacy/'
-
 
     image_lists = create_image_lists(radar_field)
     bottleneck_list = get_bottleneck_list(image_lists, radar_field)

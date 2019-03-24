@@ -31,7 +31,7 @@ def get_heat_map_images(sess, model, i, j, height, stride, images,
     for img in images:
         x = np.copy(img)
         x[:, width_start:width_start + height,
-        height_start:height_start + HEIGHT, :].fill(FILL_COLOR)
+          height_start:height_start + HEIGHT, :].fill(FILL_COLOR)
         bottleneck_values = sess.run(bottleneck_tensor,
                                      {resized_image_tensor: x})
         bottleneck.append(bottleneck_values)
@@ -46,7 +46,7 @@ def get_heat_map_images(sess, model, i, j, height, stride, images,
 
     heat_map = np.full((x.shape[1:3]), float('nan'))
     heat_map[width_start:width_start + height,
-    height_start:height_start + height].fill(prediction)
+             height_start:height_start + height].fill(prediction)
     return heat_map
 
 
@@ -57,7 +57,7 @@ def prediction_heat_map_on_bottleneck(sess, model, images, height, stride,
     increment = int(math.ceil((img_height % height) / float(stride)))
 
     height_width_range = ((img_height / height) * (height / stride)) - (
-            height / stride) + 1 + increment
+        height / stride) + 1 + increment
 
     for i in range(height_width_range):
         for j in range(height_width_range):
@@ -66,6 +66,7 @@ def prediction_heat_map_on_bottleneck(sess, model, images, height, stride,
                                     bottleneck_tensor, resized_image_tensor))
     heat_map = np.array(heat_map)
     return heat_map
+
 
 def create_heatmap_for_filename(image_path):
     print(os.path.basename(image_path) + '.png')
@@ -132,6 +133,7 @@ def create_heatmap_for_filename(image_path):
         print(save_file)
         plt.savefig(save_file)
 
+
 def main():
     os.chdir(settings.WORKING_DIRECTORY)
     dual_pol = True
@@ -148,14 +150,15 @@ def main():
                                                 dualPol=dual_pol,
                                                 radar_product=radar_product)
 
-    for filename in filenames :
+    for filename in filenames:
         radar = filename[0:4]
         year = filename[4:8]
         month = filename[8:10]
         day = filename[10:12]
         print(radar, year, month, day)
         image_path = 'radarimages/{0}_Color/{1}/{2}/{3}/{4}' \
-                     '/{5}_{0}.png'.format('{0}', radar, year, month, day, filename)
+                     '/{5}_{0}.png'.format('{0}', radar,
+                                           year, month, day, filename)
         create_heatmap_for_filename(image_path)
 
 
