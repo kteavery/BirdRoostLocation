@@ -62,25 +62,34 @@ def train(log_path, radar_product, eval_increment=5,
     checkpoint_path = log_path + ml_utils.CHECKPOINT_DIR
     if not os.path.exists(checkpoint_path):
         os.makedirs(os.path.dirname(checkpoint_path))
+
+    print("MODEL NAME")
+    print(model_name)
     if model_name == utils.ML_Model.Shallow_CNN:
         batch_generator = BatchGenerator.Single_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 1), lr=lr, coordConv=True)
+        model = keras_model.build_model(
+            inputDimensions=(240, 240, 3), lr=lr, coordConv=False)
+
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode)
-        model = keras_model.build_model(inputDimensions=(240, 240, 4), lr=lr, coordConv=True)
+        model = keras_model.build_model(
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=False)
+    
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=False)
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 2 + 1), lr=lr, coordConv=True)
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+            lr=lr,
+            coordConv=True)
 
     # Setup callbacks
     callback = TensorBoard(log_path)
@@ -91,20 +100,21 @@ def train(log_path, radar_product, eval_increment=5,
     progress_string = '{} Epoch: {} Loss: {} Accuracy {}'
 
     for batch_no in range(num_iterations):
-        try:
-            x, y, _ = batch_generator.get_batch(
-                ml_set=utils.ML_Set.training,
-                dualPol=dual_pol,
-                radar_product=radar_product,
-                num_temporal_data=num_temporal_data)
+        x, y, _ = batch_generator.get_batch(
+            ml_set=utils.ML_Set.training,
+            dualPol=dual_pol,
+            radar_product=radar_product,
+            num_temporal_data=num_temporal_data)
 
-            train_logs = model.train_on_batch(x, y)
-            print(progress_string.format(utils.ML_Set.training.fullname,
-                                         batch_no,
-                                         train_logs[0], train_logs[1]))
-            ml_utils.write_log(callback, train_names, train_logs, batch_no)
-        except Exception as e:
-            print(e)
+        # print("X AND Y: ")
+        # print(x.shape)
+        # print(y.shape)
+        train_logs = model.train_on_batch(x, y)
+        print(progress_string.format(utils.ML_Set.training.fullname,
+                                     batch_no,
+                                     train_logs[0], train_logs[1]))
+        ml_utils.write_log(callback, train_names, train_logs, batch_no)
+
         if (batch_no % eval_increment == 0):
             model.save_weights(log_path + save_file.format(''))
             try:
@@ -150,6 +160,7 @@ def main(results):
     else:
         log_path = results.log_path
 
+    print("Log path: ")
     print(log_path)
     train(log_path=log_path,
           radar_product=radar_product,
@@ -233,7 +244,7 @@ if __name__ == "__main__":
         '-m',
         '--model',
         type=int,
-        default=2,
+        default=0,
         help="""
             Use an integer to select a model from the following list:
                 0 : Shallow CNN

@@ -48,26 +48,34 @@ class Batch_Generator():
         these contains a list of filenames that correspond with the set.
 
         Args:
-            ml_split_csv: A path to a csv file, where the csv has two columns,
-            'AWS_file' and 'split_index'.
+            ml_split_csv: A path to a csv file, where the csv has three columns,
+            'AWS_file', 'Roost', and 'split_index'.
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
+        print("Ks: ")
+        print(validate_k_index)
+        print(test_k_index)
+
         ml_split_pd = pandas.read_csv(ml_split_csv)
+
         # Remove files that weren't found
         all_files = utils.getListOfFilesInDirectory(
-            self.root_dir + '/All_Color',
-            '.png')
+            self.root_dir, '.png')
+
         all_files_dict = {}
         for i in range(len(all_files)):
             all_files_dict[
-                os.path.basename(all_files[i]).replace('.png', '')] = True
+                os.path.basename(all_files[i])[2:25]] = True
 
         for index, row in ml_split_pd.iterrows():
             if all_files_dict.get(row['AWS_file']) is None:
                 ml_split_pd.drop(index, inplace=True)
 
         # Sort into train, test, and validation sets
+        # print("LENGTHS OF NO ROOST/ROOST:")
+        # print(len(ml_split_pd[ml_split_pd.Roost != True]))
+        # print(len(ml_split_pd[ml_split_pd.Roost]))
 
         self.__set_ml_sets_helper(self.no_roost_sets, self.no_roost_sets_V06,
                                   ml_split_pd[ml_split_pd.Roost != True],
@@ -97,9 +105,14 @@ class Batch_Generator():
 
     def get_batch_indices(self, ml_sets, ml_set,
                           num_temporal_data=0):
+        # print(ml_sets)
+        # print(len(ml_sets[ml_set]))
+        # print(ml_set)
+        # print(self.batch_size / 2)
         indices = np.random.randint(low=0,
                                     high=len(ml_sets[ml_set]),
-                                    size=self.batch_size / 2)
+                                    size=int(self.batch_size / 2))
+        # print(indices)
         return indices
 
     def get_batch(self, ml_set, dualPol, radar_product=None):
@@ -111,6 +124,7 @@ class Batch_Generator():
         if dualPol:
             roost_sets = self.roost_sets_V06
             no_roost_sets = self.no_roost_sets_V06
+
         return ground_truths, train_data, filenames, roost_sets, no_roost_sets
 
 
@@ -120,7 +134,7 @@ class Small_Image_Batch_Generator(Batch_Generator):
                  ml_split_csv,
                  validate_k_index=3,
                  test_k_index=4,
-                 default_batch_size=32,
+                 default_batch_size=16,
                  root_dir=utils.RADAR_IMAGE_DIR,
                  high_memory_mode=False):
         Batch_Generator.__init__(self, ml_split_csv, validate_k_index,
@@ -152,51 +166,16 @@ class Small_Image_Batch_Generator(Batch_Generator):
                 ground truth values.
         """
         # len(ml_sets[ml_set])
-        if ml_set is utils.ML_Set.testing :
+        if ml_set is utils.ML_Set.testing:
 
-            ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
-                Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
-            #for ml_sets in [roost_sets, no_roost_sets]:
-            print(len(roost_sets[ml_set]))
-
-            # indices = range(len(roost_sets[ml_set]))
-            indices = np.random.randint(low=0,
-                                    high=len(roost_sets[ml_set]),
-                                    size=750)
-            for index in indices:
-                filename = roost_sets[ml_set][index]
-                label = self.label_dict[filename]
-                image = self.label_dict[filename].get_image(radar_product)
-                radar_loc = NexradUtils.getRadarLocation(filename[0:4])
-                y = (radar_loc[0] - label.latitude) * 89 + 120
-                x = (radar_loc[1] - label.longitude) * 72.8 + 120
-                for i in range(5) :
-                    for j in range(5) :
-                        is_small_roost = 0
-                        x_start = i * 40
-                        x_end = i * 40 + 80
-                        y_start = j * 40
-                        y_end = j * 40 + 80
-
-                        if x >= x_start and x <= x_end \
-                            and y >= y_start and y <= y_end :
-                            is_small_roost += 1
-
-                        small_image = image[x_start:x_end, y_start:y_end]
-                        ground_truths.append([is_small_roost, 1 - is_small_roost])
-                        filenames.append(filename)
-                        train_data.append(small_image)
-            train_data_np = np.array(train_data)
-            shape = train_data_np.shape
-            train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2],
-                                                  1)
-            return train_data_np, np.array(ground_truths), np.array(filenames)
-        else :
             ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
                 Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
             # for ml_sets in [roost_sets, no_roost_sets]:
-            indices = Batch_Generator.get_batch_indices(self, roost_sets,
-                                                        ml_set)
+
+            # indices = range(len(roost_sets[ml_set]))
+            indices = np.random.randint(low=0,
+                                        high=len(roost_sets[ml_set]),
+                                        size=750)
             for index in indices:
                 filename = roost_sets[ml_set][index]
                 label = self.label_dict[filename]
@@ -226,6 +205,42 @@ class Small_Image_Batch_Generator(Batch_Generator):
             train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2],
                                                   1)
             return train_data_np, np.array(ground_truths), np.array(filenames)
+        else:
+            ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
+                Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
+
+            indices = Batch_Generator.get_batch_indices(self, roost_sets,
+                                                        ml_set)
+            for index in indices:
+                filename = roost_sets[ml_set][index]
+                label = self.label_dict[filename]
+                image = self.label_dict[filename].get_image(radar_product)
+                radar_loc = NexradUtils.getRadarLocation(filename[0:4])
+                y = (radar_loc[0] - label.latitude) * 89 + 120
+                x = (radar_loc[1] - label.longitude) * 72.8 + 120
+                for i in range(5):
+                    for j in range(5):
+                        is_small_roost = 0
+                        x_start = i * 40
+                        x_end = i * 40 + 80
+                        y_start = j * 40
+                        y_end = j * 40 + 80
+
+                        if x >= x_start and x <= x_end \
+                                and y >= y_start and y <= y_end:
+                            is_small_roost += 1
+
+                        small_image = image[x_start:x_end, y_start:y_end]
+                        ground_truths.append(
+                            [is_small_roost, 1 - is_small_roost])
+                        filenames.append(filename)
+                        train_data.append(small_image)
+            train_data_np = np.array(train_data)
+            shape = train_data_np.shape
+            train_data_np = train_data_np.reshape(shape[0], shape[1],
+                                                  shape[2], 1)
+            return train_data_np, np.array(ground_truths), np.array(filenames)
+
 
 class Single_Product_Batch_Generator(Batch_Generator):
     def __init__(self,
@@ -233,7 +248,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                  ml_split_csv,
                  validate_k_index=3,
                  test_k_index=4,
-                 default_batch_size=32,
+                 default_batch_size=16,
                  root_dir=utils.RADAR_IMAGE_DIR,
                  high_memory_mode=False):
         Batch_Generator.__init__(self, ml_split_csv, validate_k_index,
@@ -247,8 +262,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
     def get_batch(self, ml_set, dualPol, radar_product=None,
                   num_temporal_data=0):
-        """Get a batch of data for machine learning. As a default a batch
-        contains data from for a single radar product.
+        """Get a batch of data for machine learning. As a default, a batch
+        contains data from a single radar product.
 
         Args:
             ml_set: ML_Set enum value, train, test, or validation.
@@ -266,19 +281,34 @@ class Single_Product_Batch_Generator(Batch_Generator):
         """
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
             Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+
             for index in indices:
                 filename = ml_sets[ml_set][index]
-                filenames.append(filename)
+                # print(filename)
                 is_roost = int(self.label_dict[filename].is_roost)
                 image = self.label_dict[filename].get_image(radar_product)
-                ground_truths.append([is_roost, 1 - is_roost])
-                train_data.append(image)
+                if image != []:
+                    filenames.append(filename)
+                    train_data.append(image)
+                    ground_truths.append(
+                        [[is_roost, 1 - is_roost]]*np.array(image).shape[0])
+                    # print(np.array(train_data).shape)
+
+        truth_shape = np.array(ground_truths).shape
+        # print(truth_shape)
+
+        ground_truths = np.array(ground_truths).reshape(
+            truth_shape[0]*truth_shape[1], truth_shape[2])
+
+        # print(np.array(ground_truths).shape)
         train_data_np = np.array(train_data)
         shape = train_data_np.shape
-        train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2],
-                                              1)
+        # print(shape)
+        train_data_np = train_data_np.reshape(shape[0]*shape[1], shape[2],
+                                              shape[3], shape[4])
         return train_data_np, np.array(ground_truths), np.array(filenames)
 
 
@@ -288,7 +318,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                  ml_split_csv,
                  validate_k_index=3,
                  test_k_index=4,
-                 default_batch_size=32,
+                 default_batch_size=16,
                  root_dir=utils.RADAR_IMAGE_DIR,
                  high_memory_mode=False):
         Batch_Generator.__init__(self, ml_split_csv, validate_k_index,
@@ -300,6 +330,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                                                                self.root_dir,
                                                                high_memory_mode)
 
+    # TODO update this so to use 3D convolutions
+    # channels will be RGB values, first dimension will be radar products
     def get_batch(self, ml_set, dualPol, radar_product=None,
                   num_temporal_data=0):
         """Get a batch of data for machine learning. This batch contains data
@@ -351,7 +383,7 @@ class Temporal_Batch_Generator(Batch_Generator):
                  ml_split_csv,
                  validate_k_index=3,
                  test_k_index=4,
-                 default_batch_size=32,
+                 default_batch_size=16,
                  root_dir=utils.RADAR_IMAGE_DIR,
                  high_memory_mode=False):
         Batch_Generator.__init__(self, ml_split_csv, validate_k_index,
@@ -369,25 +401,45 @@ class Temporal_Batch_Generator(Batch_Generator):
                   num_temporal_data=0):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
             Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+
             for index in indices:
                 filename = ml_sets[ml_set][index]
                 filenames.append(filename)
                 is_roost = int(self.label_dict[filename].is_roost)
                 images = []
-                channel_files = self.label_dict[filename].fileNames[
-                                3 - num_temporal_data: 4 + num_temporal_data]
-                for image_name in channel_files:
-                    image = self.label_dict[image_name].get_image(radar_product)
-                    if image is not None:
-                        images.append(image)
-                if len(images) == (num_temporal_data * 2) + 1:
+                channel_files = self.label_dict[filename].fileNames[:]
+                for image_name in channel_files.splitlines(True):
+                    image = self.label_dict[image_name].get_image(
+                        radar_product)  # original image + augmented images
+                    # print("self.label_dict[image_name].fileName")
+                    # print(self.label_dict[image_name].fileName)
+
+                    if isinstance(image, (list,)):
+                        for i in image:
+                            if i is not None:
+                                images.append(i)
+                    else:
+                        if image is not None:
+                            images.append(image)
+
+                # print(images)
+                # print(channel_files)
+                # print(str((num_temporal_data * 24) + 1))
+                # print(np.array(images).shape)
+
+                if len(images) == (num_temporal_data * 24) + 1:  # 24 or 3?
                     ground_truths.append([is_roost, 1 - is_roost])
                     train_data.append(images)
+        # print("TRAIN DATA")
+        # print(np.array(train_data).shape)
         train_data = np.rollaxis(np.array(train_data), 1, 4)
-        return train_data, np.array(ground_truths), np.array(
-            filenames)
+
+        # print(train_data.shape)
+
+        return train_data, np.array(ground_truths), np.array(filenames)
 
 
 class Color_Image_Batch_Generator(Batch_Generator):
@@ -396,7 +448,7 @@ class Color_Image_Batch_Generator(Batch_Generator):
                  ml_split_csv,
                  validate_k_index=3,
                  test_k_index=4,
-                 default_batch_size=32,
+                 default_batch_size=16,
                  root_dir=utils.RADAR_IMAGE_DIR,
                  high_memory_mode=False):
         Batch_Generator.__init__(self, ml_split_csv, validate_k_index,

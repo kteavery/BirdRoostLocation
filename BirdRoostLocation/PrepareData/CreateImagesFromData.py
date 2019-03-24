@@ -59,9 +59,9 @@ def createLabelForFiles(fileNames, saveDir):
                                                           'Velocity_Color/'))
                 if dualPol:
                     d3 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                              'Differential_Reflectivity_Color/'))
+                                                              'Rho_HV_Color/'))
                     d4 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                              'Differential_Reflectivity_Color/'))
+                                                              'Zdr_Color/'))
 
                 if not os.path.exists(d1):
                     os.makedirs(d1)
