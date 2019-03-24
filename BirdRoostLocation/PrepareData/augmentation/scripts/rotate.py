@@ -34,7 +34,7 @@ def main():
                     newfile = directory + "/MLData/data/Rotate_" + data_dir + \
                         "/" + filename[:-4] + "_" + str(angle) + ".png"
                     cv2.imwrite(newfile, rotated)
-
+                    
 
 if __name__ == "__main__":
     main()

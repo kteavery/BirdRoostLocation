@@ -142,6 +142,7 @@ class Temporal_ML_Label(ML_Label):
 
             # ast.literal_eval(pd_row['AWS_file'])
             self.fileNames = pd_row['AWS_file']
+
             label_dict[file_name] = self
             for name in self.fileNames:
                 Temporal_ML_Label(name, pd_row, root_dir, high_memory_mode,

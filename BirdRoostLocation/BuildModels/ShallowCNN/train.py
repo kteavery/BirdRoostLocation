@@ -72,6 +72,7 @@ def train(log_path, radar_product, eval_increment=5,
             high_memory_mode=high_memory_mode)
         model = keras_model.build_model(
             inputDimensions=(240, 240, 3), lr=lr, coordConv=False)
+
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -79,6 +80,7 @@ def train(log_path, radar_product, eval_increment=5,
             high_memory_mode=high_memory_mode)
         model = keras_model.build_model(
             inputDimensions=(240, 240, 4), lr=lr, coordConv=False)
+    
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,

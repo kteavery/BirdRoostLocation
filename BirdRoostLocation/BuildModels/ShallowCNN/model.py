@@ -28,6 +28,7 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
         print(type((settings.DEFAULT_BATCH_SIZE,)+inputDimensions))
         model.add(CoordinateChannel2D(batch_input_shape=(
             settings.DEFAULT_BATCH_SIZE,)+inputDimensions))
+
     model.add(Conv2D(32, kernel_size=(5, 5),
                      input_shape=inputDimensions))
     model.add(BatchNormalization())
