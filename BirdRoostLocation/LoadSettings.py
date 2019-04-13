@@ -25,7 +25,7 @@ SUBSET_CSV = str(data["subset_files_csv"])
 ML_SPLITS_DATA = str(data["subset_ml_splits_csv"])
 # str(data["ml_splits_csv"])
 #SUBSET_ML_SPLITS_DATA = str(data["subset_ml_splits_csv"])
-DEFAULT_BATCH_SIZE = 32
+DEFAULT_BATCH_SIZE = 8
 
 if(bool(data["schooner"])):
     print('schooner')

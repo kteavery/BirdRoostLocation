@@ -9,7 +9,7 @@
 #SBATCH -p swat_plus
 #SBATCH -t 47:00:00
 #SBATCH --array=0-3
-#SBATCH --mem 32G
+#SBATCH --mem 120G
 
 # cd to directory where job was submitted from
 cd $SLURM_SUBMIT_DIR

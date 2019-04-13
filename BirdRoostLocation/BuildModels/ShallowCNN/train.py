@@ -35,7 +35,7 @@ def train(log_path, radar_product, eval_increment=5,
           num_iterations=2500, checkpoint_frequency=100, lr=.0001,
           model_name=utils.ML_Model.Shallow_CNN, dual_pol=True,
           high_memory_mode=False, num_temporal_data=0):
-    """"Train the shallow CNN model on a single radar product.
+    """Train the shallow CNN model on a single radar product.
 
     Args:
         log_path: The location of the save directory. The model checkpoints,
@@ -80,7 +80,7 @@ def train(log_path, radar_product, eval_increment=5,
             high_memory_mode=high_memory_mode)
         model = keras_model.build_model(
             inputDimensions=(240, 240, 4), lr=lr, coordConv=False)
-    
+
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -89,7 +89,7 @@ def train(log_path, radar_product, eval_increment=5,
         model = keras_model.build_model(
             inputDimensions=(240, 240, num_temporal_data * 3 + 1),
             lr=lr,
-            coordConv=True)
+            coordConv=False)
 
     # Setup callbacks
     callback = TensorBoard(log_path)
@@ -105,10 +105,11 @@ def train(log_path, radar_product, eval_increment=5,
             dualPol=dual_pol,
             radar_product=radar_product,
             num_temporal_data=num_temporal_data)
+        print(len(y))
 
-        # print("X AND Y: ")
-        # print(x.shape)
-        # print(y.shape)
+        print("X AND Y: ")
+        print(x.shape)
+        print(y.shape)
         train_logs = model.train_on_batch(x, y)
         print(progress_string.format(utils.ML_Set.training.fullname,
                                      batch_no,
@@ -129,6 +130,8 @@ def train(log_path, radar_product, eval_increment=5,
                 print(progress_string.format(utils.ML_Set.validation.fullname,
                                              batch_no,
                                              val_logs[0], val_logs[1]))
+                x_, y_, _, x, y = None
+
             except Exception as e:
                 print(e)
 
