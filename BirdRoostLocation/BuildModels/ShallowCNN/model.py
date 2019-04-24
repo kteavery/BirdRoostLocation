@@ -53,4 +53,5 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
                   optimizer=keras.optimizers.adam(lr),
                   metrics=['accuracy'])
 
+    model.summary()
     return model
