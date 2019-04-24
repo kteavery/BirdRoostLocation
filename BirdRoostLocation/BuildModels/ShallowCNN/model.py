@@ -29,7 +29,7 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
         model.add(CoordinateChannel2D(batch_input_shape=(
             settings.DEFAULT_BATCH_SIZE,)+inputDimensions))
 
-    model.add(Conv2D(32, kernel_size=(5, 5),
+    model.add(Conv2D(8, kernel_size=(5, 5),
                      input_shape=inputDimensions))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
@@ -37,6 +37,16 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
 
     if coordConv == True:
         model.add(CoordinateChannel2D(use_radius=True))
+    model.add(Conv2D(16, (5, 5)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Conv2D(32, (5, 5)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
     model.add(Conv2D(64, (5, 5)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
@@ -52,5 +62,7 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.adam(lr),
                   metrics=['accuracy'])
+
+    model.summary()
 
     return model
