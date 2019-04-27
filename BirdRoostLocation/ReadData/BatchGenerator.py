@@ -283,16 +283,29 @@ class Single_Product_Batch_Generator(Batch_Generator):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = \
             Batch_Generator.get_batch(self, ml_set, dualPol, radar_product)
 
+        print("Get batch: ")
+        print(str(len(roost_sets)))
+        print(str(len(no_roost_sets)))
+        for key in roost_sets:
+            print(len(roost_sets[key]))
+        for key in no_roost_sets:
+            print(len(no_roost_sets[key]))
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
 
             for index in indices:
                 filename = ml_sets[ml_set][index]
-                # print(filename)
+                print("Filename: ")
+                print(filename)
                 is_roost = int(self.label_dict[filename].is_roost)
                 image = self.label_dict[filename].get_image(radar_product)
+                print("Image: ")
+                # print(image)
                 if image != []:
                     filenames.append(filename)
+                    print("Image size: ")
+                    print(np.array(image).shape)
                     train_data.append(image)
                     ground_truths.append(
                         [[is_roost, 1 - is_roost]]*np.array(image).shape[0])
