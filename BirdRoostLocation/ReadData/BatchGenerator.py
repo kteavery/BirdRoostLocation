@@ -300,30 +300,45 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 print(filename)
                 is_roost = int(self.label_dict[filename].is_roost)
                 image = self.label_dict[filename].get_image(radar_product)
+                print("Label:")
+                # print(self.label_dict[filename])
                 print("Image: ")
                 # print(image)
                 if image != []:
                     filenames.append(filename)
                     print("Image size: ")
                     print(np.array(image).shape)
-                    train_data.append(image)
-                    ground_truths.append(
-                        [[is_roost, 1 - is_roost]]*np.array(image).shape[0])
+                    if np.array(train_data).size == 0:
+                        train_data = image
+                        train_data = np.array(train_data)
+                    else:
+                        print(np.array(image).shape)
+                        print(train_data.shape)
+                        train_data = np.concatenate(
+                            (train_data, np.array(image)), axis=0)
+                    if np.array(ground_truths).size == 0:
+                        ground_truths = [
+                            [is_roost, 1 - is_roost]]*np.array(image).shape[0]
+                    else:
+                        ground_truths = np.concatenate(
+                            (ground_truths, [[is_roost, 1 - is_roost]]*np.array(image).shape[0]), 
+                            axis=0)
+
                     print("Train data shape: ")
-                    print(np.array(train_data).shape)
+                    print(train_data.shape)
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
 
         ground_truths = np.array(ground_truths).reshape(
-            truth_shape[0]*truth_shape[1], truth_shape[2])
+            truth_shape[0], truth_shape[1])
 
         # print(np.array(ground_truths).shape)
         train_data_np = np.array(train_data)
         shape = train_data_np.shape
         # print(shape)
-        train_data_np = train_data_np.reshape(shape[0]*shape[1], shape[2],
-                                              shape[3], shape[4])
+        train_data_np = train_data_np.reshape(shape[0], shape[1],
+                                              shape[2], shape[3])
         return train_data_np, np.array(ground_truths), np.array(filenames)
 
 

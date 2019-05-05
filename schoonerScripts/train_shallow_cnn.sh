@@ -33,6 +33,6 @@ BirdRoostLocation/BuildModels/ShallowCNN/train.py \
 --checkpoint_frequency=100 \
 --learning_rate=.0001 \
 --model=2 \
---high_memory_mode=True \
+--high_memory_mode=False \
 --num_temporal_data=$TIME \
 --dual_pol=$DUAL_POL

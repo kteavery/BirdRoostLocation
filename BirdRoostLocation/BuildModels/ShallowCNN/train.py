@@ -29,6 +29,7 @@ from keras.callbacks import TensorBoard
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
+import datetime
 
 
 def train(log_path, radar_product, eval_increment=5,
@@ -117,7 +118,9 @@ def train(log_path, radar_product, eval_increment=5,
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         if (batch_no % eval_increment == 0):
-            model.save_weights(log_path + save_file.format(''))
+            currentDT = datetime.datetime.now()
+            model.save_weights(log_path + str(currentDT) +
+                               save_file.format(''))
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
