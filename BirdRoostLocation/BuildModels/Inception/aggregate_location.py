@@ -141,7 +141,7 @@ def main():
     batch_generator = BatchGenerator.Single_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
-        default_batch_size=64,
+        default_batch_size=8,
         high_memory_mode=False,
     )
 

@@ -37,6 +37,11 @@ def build_model(inputDimensions, lr=.0001, coordConv=False):
 
     if coordConv == True:
         model.add(CoordinateChannel2D(use_radius=True))
+    model.add(Conv2D(8, (5, 5)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
     model.add(Conv2D(16, (5, 5)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))

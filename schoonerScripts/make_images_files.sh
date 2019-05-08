@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH -o log.out
 #SBATCH -e log.err
-#SBATCH --mail-user=carmenchilson@ou.edu
+#SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p swat_plus
 #SBATCH -t 6:00:00
@@ -24,7 +24,7 @@ python /home/cchilson/gitRepositories/BirdRoostDetection/BirdRoostDetection\
 /PrepareData/CreateBWImagesFromData.py \
 $RADAR \
 ml_labels.csv \
-/condo/swatwork/cchilson/OBS_research
+/condo/swatwork/keavery/masters_thesis
 
 
 

@@ -29,13 +29,14 @@ from keras.callbacks import TensorBoard
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
+import datetime
 
 
 def train(log_path, radar_product, eval_increment=5,
           num_iterations=2500, checkpoint_frequency=100, lr=.0001,
           model_name=utils.ML_Model.Shallow_CNN, dual_pol=True,
           high_memory_mode=False, num_temporal_data=0):
-    """"Train the shallow CNN model on a single radar product.
+    """Train the shallow CNN model on a single radar product.
 
     Args:
         log_path: The location of the save directory. The model checkpoints,
@@ -80,7 +81,7 @@ def train(log_path, radar_product, eval_increment=5,
             high_memory_mode=high_memory_mode)
         model = keras_model.build_model(
             inputDimensions=(240, 240, 4), lr=lr, coordConv=False)
-    
+
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -89,7 +90,7 @@ def train(log_path, radar_product, eval_increment=5,
         model = keras_model.build_model(
             inputDimensions=(240, 240, num_temporal_data * 3 + 1),
             lr=lr,
-            coordConv=True)
+            coordConv=False)
 
     # Setup callbacks
     callback = TensorBoard(log_path)
@@ -105,10 +106,11 @@ def train(log_path, radar_product, eval_increment=5,
             dualPol=dual_pol,
             radar_product=radar_product,
             num_temporal_data=num_temporal_data)
+        #print(len(y))
 
-        # print("X AND Y: ")
-        # print(x.shape)
-        # print(y.shape)
+        #print("X AND Y: ")
+        #print(x.shape)
+        #print(y.shape)
         train_logs = model.train_on_batch(x, y)
         print(progress_string.format(utils.ML_Set.training.fullname,
                                      batch_no,
@@ -116,7 +118,8 @@ def train(log_path, radar_product, eval_increment=5,
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         if (batch_no % eval_increment == 0):
-            model.save_weights(log_path + save_file.format(''))
+            currentDT = datetime.datetime.now()
+            model.save_weights(log_path + str(currentDT) + save_file.format(''))
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
@@ -129,13 +132,16 @@ def train(log_path, radar_product, eval_increment=5,
                 print(progress_string.format(utils.ML_Set.validation.fullname,
                                              batch_no,
                                              val_logs[0], val_logs[1]))
+                x_, y_, _, x, y = None
+
             except Exception as e:
                 print(e)
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
+            currentDT = datetime.datetime.now()
             model.save_weights(
-                os.path.join(checkpoint_path, save_file.format(batch_no)))
+                os.path.join(checkpoint_path, str(currentDT)+save_file.format(batch_no)))
 
     print("SAVE FILE")
     print(save_file)
