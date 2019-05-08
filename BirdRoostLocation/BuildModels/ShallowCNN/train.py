@@ -140,8 +140,9 @@ def train(log_path, radar_product, eval_increment=5,
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
+            currentDT = datetime.datetime.now()
             model.save_weights(
-                os.path.join(checkpoint_path, save_file.format(batch_no)))
+                os.path.join(checkpoint_path, str(currentDT)+save_file.format(batch_no)))
 
     print("SAVE FILE")
     print(save_file)
