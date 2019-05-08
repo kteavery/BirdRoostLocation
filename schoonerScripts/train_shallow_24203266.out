@@ -1,0 +1,141 @@
+2
+schooner
+
+## You are using the Python ARM Radar Toolkit (Py-ART), an open source
+## library for working with weather radar data. Py-ART is partly
+## supported by the U.S. Department of Energy as part of the Atmospheric
+## Radiation Measurement (ARM) Climate Research Facility, an Office of
+## Science user facility.
+##
+## If you use this software to prepare a publication, please cite:
+##
+##     JJ Helmus and SM Collis, JORS 2016, doi: 10.5334/jors.119
+
+Log path: 
+model/Velocity/
+MODEL NAME
+ML_Model.Shallow_CNN
+Ks: 
+3
+4
+Input dimensions:
+(240, 240, 3)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 236, 236, 8)       608       
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 236, 236, 8)       32        
+_________________________________________________________________
+activation_1 (Activation)    (None, 236, 236, 8)       0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 118, 118, 8)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 114, 114, 8)       1608      
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 114, 114, 8)       32        
+_________________________________________________________________
+activation_2 (Activation)    (None, 114, 114, 8)       0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 57, 57, 8)         0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 53, 53, 16)        3216      
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 53, 53, 16)        64        
+_________________________________________________________________
+activation_3 (Activation)    (None, 53, 53, 16)        0         
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 26, 26, 16)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 22, 22, 32)        12832     
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 22, 22, 32)        128       
+_________________________________________________________________
+activation_4 (Activation)    (None, 22, 22, 32)        0         
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 11, 11, 32)        0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 7, 7, 64)          51264     
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 7, 7, 64)          256       
+_________________________________________________________________
+activation_5 (Activation)    (None, 7, 7, 64)          0         
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 3, 3, 64)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 576)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 500)               288500    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 500)               2000      
+_________________________________________________________________
+activation_6 (Activation)    (None, 500)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 2)                 1002      
+=================================================================
+Total params: 361,542
+Trainable params: 360,286
+Non-trainable params: 1,256
+_________________________________________________________________
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20170902_111806_V06
+Label: 
+Image: 
+Filename: 
+KLSX20130810_111608_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20120909_105551_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20150830_112201_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170831_115820_V06
+Label: 
+Image: 
+Filename: 
+KGRK20170713_093111_V06
+Label: 
+Image: 
+Filename: 
+KJKL20160814_090507_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KRLX20140721_115946_V06
+Label: 
+Image: 
+(4,)

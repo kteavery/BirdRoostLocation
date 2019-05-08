@@ -29,6 +29,7 @@ from keras.callbacks import TensorBoard
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
+import datetime
 
 
 def train(log_path, radar_product, eval_increment=5,
@@ -105,11 +106,11 @@ def train(log_path, radar_product, eval_increment=5,
             dualPol=dual_pol,
             radar_product=radar_product,
             num_temporal_data=num_temporal_data)
-        print(len(y))
+        #print(len(y))
 
-        print("X AND Y: ")
-        print(x.shape)
-        print(y.shape)
+        #print("X AND Y: ")
+        #print(x.shape)
+        #print(y.shape)
         train_logs = model.train_on_batch(x, y)
         print(progress_string.format(utils.ML_Set.training.fullname,
                                      batch_no,
@@ -117,7 +118,8 @@ def train(log_path, radar_product, eval_increment=5,
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         if (batch_no % eval_increment == 0):
-            model.save_weights(log_path + save_file.format(''))
+            currentDT = datetime.datetime.now()
+            model.save_weights(log_path + str(currentDT) + save_file.format(''))
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
@@ -137,8 +139,9 @@ def train(log_path, radar_product, eval_increment=5,
 
         if batch_no % checkpoint_frequency == 0 \
                 or batch_no == num_iterations - 1:
+            currentDT = datetime.datetime.now()
             model.save_weights(
-                os.path.join(checkpoint_path, save_file.format(batch_no)))
+                os.path.join(checkpoint_path, str(currentDT)+save_file.format(batch_no)))
 
     print("SAVE FILE")
     print(save_file)

@@ -1,0 +1,408 @@
+3
+schooner
+
+## You are using the Python ARM Radar Toolkit (Py-ART), an open source
+## library for working with weather radar data. Py-ART is partly
+## supported by the U.S. Department of Energy as part of the Atmospheric
+## Radiation Measurement (ARM) Climate Research Facility, an Office of
+## Science user facility.
+##
+## If you use this software to prepare a publication, please cite:
+##
+##     JJ Helmus and SM Collis, JORS 2016, doi: 10.5334/jors.119
+
+Log path: 
+model/Velocity/
+MODEL NAME
+ML_Model.Shallow_CNN
+Ks: 
+3
+4
+Input dimensions:
+(240, 240, 3)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 236, 236, 8)       608       
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 236, 236, 8)       32        
+_________________________________________________________________
+activation_1 (Activation)    (None, 236, 236, 8)       0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 118, 118, 8)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 114, 114, 8)       1608      
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 114, 114, 8)       32        
+_________________________________________________________________
+activation_2 (Activation)    (None, 114, 114, 8)       0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 57, 57, 8)         0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 53, 53, 16)        3216      
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 53, 53, 16)        64        
+_________________________________________________________________
+activation_3 (Activation)    (None, 53, 53, 16)        0         
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 26, 26, 16)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 22, 22, 32)        12832     
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 22, 22, 32)        128       
+_________________________________________________________________
+activation_4 (Activation)    (None, 22, 22, 32)        0         
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 11, 11, 32)        0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 7, 7, 64)          51264     
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 7, 7, 64)          256       
+_________________________________________________________________
+activation_5 (Activation)    (None, 7, 7, 64)          0         
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 3, 3, 64)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 576)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 500)               288500    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 500)               2000      
+_________________________________________________________________
+activation_6 (Activation)    (None, 500)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 2)                 1002      
+=================================================================
+Total params: 361,542
+Trainable params: 360,286
+Non-trainable params: 1,256
+_________________________________________________________________
+36
+X AND Y: 
+(36, 240, 240, 3)
+(36, 2)
+Training Epoch: 0 Loss: 1.1620396375656128 Accuracy 0.4166666567325592
+Validation Epoch: 0 Loss: 1.4885313510894775 Accuracy 0.46000000834465027
+'NoneType' object is not iterable
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 1 Loss: 1.0592244863510132 Accuracy 0.3720930218696594
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 2 Loss: 0.8792521357536316 Accuracy 0.5116279125213623
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 3 Loss: 0.565237820148468 Accuracy 0.6615384817123413
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 4 Loss: 0.22067341208457947 Accuracy 0.9482758641242981
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 5 Loss: 0.40835389494895935 Accuracy 0.7931034564971924
+Validation Epoch: 5 Loss: 0.7283099889755249 Accuracy 0.6511628031730652
+'NoneType' object is not iterable
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 6 Loss: 0.6816335320472717 Accuracy 0.6438356041908264
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 7 Loss: 0.49945151805877686 Accuracy 0.7230769395828247
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 8 Loss: 2.0431926250457764 Accuracy 0.25
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 9 Loss: 0.49779683351516724 Accuracy 0.7123287916183472
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 10 Loss: 0.9200780391693115 Accuracy 0.5116279125213623
+Validation Epoch: 10 Loss: 1.714883804321289 Accuracy 0.39534884691238403
+'NoneType' object is not iterable
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 11 Loss: 0.6736100316047668 Accuracy 0.7260273694992065
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 12 Loss: 0.24629707634449005 Accuracy 0.9767441749572754
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 13 Loss: 1.8993749618530273 Accuracy 0.2142857164144516
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 14 Loss: 1.8680171966552734 Accuracy 0.3571428656578064
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 15 Loss: 0.1337597817182541 Accuracy 1.0
+Validation Epoch: 15 Loss: 1.0255558490753174 Accuracy 0.6379310488700867
+'NoneType' object is not iterable
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 16 Loss: 0.7678167819976807 Accuracy 0.604651153087616
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 17 Loss: 0.5173430442810059 Accuracy 0.7241379022598267
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 18 Loss: 1.8494799137115479 Accuracy 0.25
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 19 Loss: 0.5681041479110718 Accuracy 0.7209302186965942
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 20 Loss: 1.639569878578186 Accuracy 0.1785714328289032
+Validation Epoch: 20 Loss: 0.595416247844696 Accuracy 0.6976743936538696
+'NoneType' object is not iterable
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 21 Loss: 0.7264504432678223 Accuracy 0.5813953280448914
+72
+X AND Y: 
+(72, 240, 240, 3)
+(72, 2)
+Training Epoch: 22 Loss: 0.7561782002449036 Accuracy 0.5972222089767456
+50
+X AND Y: 
+(50, 240, 240, 3)
+(50, 2)
+Training Epoch: 23 Loss: 0.5216549634933472 Accuracy 0.7799999713897705
+88
+X AND Y: 
+(88, 240, 240, 3)
+(88, 2)
+Training Epoch: 24 Loss: 0.6401229500770569 Accuracy 0.6931818127632141
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 25 Loss: 0.41698575019836426 Accuracy 0.8372092843055725
+Validation Epoch: 25 Loss: 0.6177566647529602 Accuracy 0.7906976938247681
+'NoneType' object is not iterable
+35
+X AND Y: 
+(35, 240, 240, 3)
+(35, 2)
+Training Epoch: 26 Loss: 1.6043821573257446 Accuracy 0.2571428716182709
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 27 Loss: 0.4613657295703888 Accuracy 0.7674418687820435
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 28 Loss: 0.6750463843345642 Accuracy 0.5348837375640869
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 29 Loss: 0.5709938406944275 Accuracy 0.6164383292198181
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 30 Loss: 0.6194847226142883 Accuracy 0.6551724076271057
+Validation Epoch: 30 Loss: 0.6609402894973755 Accuracy 0.698630154132843
+'NoneType' object is not iterable
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 31 Loss: 0.4800224006175995 Accuracy 0.7241379022598267
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 32 Loss: 0.6780522465705872 Accuracy 0.604651153087616
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 33 Loss: 1.44291090965271 Accuracy 0.3214285671710968
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 34 Loss: 0.599975049495697 Accuracy 0.6301369667053223
+35
+X AND Y: 
+(35, 240, 240, 3)
+(35, 2)
+Training Epoch: 35 Loss: 0.7379950284957886 Accuracy 0.5428571701049805
+Validation Epoch: 35 Loss: 0.6528992056846619 Accuracy 0.6976743936538696
+'NoneType' object is not iterable
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 36 Loss: 0.6620844602584839 Accuracy 0.6000000238418579
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 37 Loss: 0.5620365738868713 Accuracy 0.6575342416763306
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 38 Loss: 0.44269317388534546 Accuracy 0.7441860437393188
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 39 Loss: 0.7079963684082031 Accuracy 0.604651153087616
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 40 Loss: 0.5558503270149231 Accuracy 0.6849315166473389
+Validation Epoch: 40 Loss: 0.5112378597259521 Accuracy 0.7758620977401733
+'NoneType' object is not iterable
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 41 Loss: 0.4485182762145996 Accuracy 0.7441860437393188
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 42 Loss: 0.46713826060295105 Accuracy 0.7413793206214905
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 43 Loss: 1.2871845960617065 Accuracy 0.3928571343421936
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 44 Loss: 0.4538479745388031 Accuracy 0.7758620977401733
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 45 Loss: 0.5171549916267395 Accuracy 0.6438356041908264
+Validation Epoch: 45 Loss: 0.5042604207992554 Accuracy 0.7441860437393188
+'NoneType' object is not iterable
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 46 Loss: 0.4627171754837036 Accuracy 0.7068965435028076
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 47 Loss: 0.5596228837966919 Accuracy 0.6551724076271057
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 48 Loss: 0.4830867052078247 Accuracy 0.7413793206214905
+50
+X AND Y: 
+(50, 240, 240, 3)
+(50, 2)
+Training Epoch: 49 Loss: 0.6191036105155945 Accuracy 0.6800000071525574
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 50 Loss: 0.5372576117515564 Accuracy 0.7586206793785095
+Validation Epoch: 50 Loss: 0.7362924814224243 Accuracy 0.5813953280448914
+'NoneType' object is not iterable
+50
+X AND Y: 
+(50, 240, 240, 3)
+(50, 2)
+Training Epoch: 51 Loss: 0.6693057417869568 Accuracy 0.5600000023841858
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 52 Loss: 0.44489026069641113 Accuracy 0.7906976938247681
+72
+X AND Y: 
+(72, 240, 240, 3)
+(72, 2)
+Training Epoch: 53 Loss: 0.4506659507751465 Accuracy 0.7083333134651184
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 54 Loss: 0.44829416275024414 Accuracy 0.7906976938247681
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 55 Loss: 1.3135528564453125 Accuracy 0.3571428656578064
+Validation Epoch: 55 Loss: 0.5894067883491516 Accuracy 0.7142857313156128
+'NoneType' object is not iterable
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 56 Loss: 0.6141042113304138 Accuracy 0.6379310488700867
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 57 Loss: 0.6127339005470276 Accuracy 0.6744186282157898
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 58 Loss: 0.4637991487979889 Accuracy 0.7260273694992065
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 59 Loss: 0.5274481773376465 Accuracy 0.7441860437393188
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 60 Loss: 0.5776958465576172 Accuracy 0.6575342416763306

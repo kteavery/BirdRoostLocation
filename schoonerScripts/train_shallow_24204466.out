@@ -1,0 +1,8198 @@
+2
+schooner
+
+## You are using the Python ARM Radar Toolkit (Py-ART), an open source
+## library for working with weather radar data. Py-ART is partly
+## supported by the U.S. Department of Energy as part of the Atmospheric
+## Radiation Measurement (ARM) Climate Research Facility, an Office of
+## Science user facility.
+##
+## If you use this software to prepare a publication, please cite:
+##
+##     JJ Helmus and SM Collis, JORS 2016, doi: 10.5334/jors.119
+
+Log path: 
+model/Velocity/
+MODEL NAME
+ML_Model.Shallow_CNN
+Ks: 
+3
+4
+Input dimensions:
+(240, 240, 3)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 236, 236, 8)       608       
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 236, 236, 8)       32        
+_________________________________________________________________
+activation_1 (Activation)    (None, 236, 236, 8)       0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 118, 118, 8)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 114, 114, 8)       1608      
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 114, 114, 8)       32        
+_________________________________________________________________
+activation_2 (Activation)    (None, 114, 114, 8)       0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 57, 57, 8)         0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 53, 53, 16)        3216      
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 53, 53, 16)        64        
+_________________________________________________________________
+activation_3 (Activation)    (None, 53, 53, 16)        0         
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 26, 26, 16)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 22, 22, 32)        12832     
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 22, 22, 32)        128       
+_________________________________________________________________
+activation_4 (Activation)    (None, 22, 22, 32)        0         
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 11, 11, 32)        0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 7, 7, 64)          51264     
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 7, 7, 64)          256       
+_________________________________________________________________
+activation_5 (Activation)    (None, 7, 7, 64)          0         
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 3, 3, 64)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 576)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 500)               288500    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 500)               2000      
+_________________________________________________________________
+activation_6 (Activation)    (None, 500)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 2)                 1002      
+=================================================================
+Total params: 361,542
+Trainable params: 360,286
+Non-trainable params: 1,256
+_________________________________________________________________
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KSHV20130722_115253_V06
+Label: 
+Image: 
+Image size: 
+(22, 240, 240, 3)
+Train data shape: 
+(22, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20160816_103838_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(29, 240, 240, 3)
+Train data: 
+Filename: 
+KTWX20150725_112454_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20130712_105920_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KGRR20131010_115537_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20141010_115621_V06
+Label: 
+Image: 
+Filename: 
+KDOX20130720_115133_V07
+Label: 
+Image: 
+Filename: 
+KPBZ20160816_090115_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 0 Loss: 0.587529718875885 Accuracy 0.7068965435028076
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KOHX20170803_105722_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KRLX20130814_102711_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20160720_101231_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140810_114358_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KCLX20170710_090132_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20150520_101216_V06
+Label: 
+Image: 
+Filename: 
+KMOB20130627_115951_V06
+Label: 
+Image: 
+Filename: 
+KMPX20120819_115711_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 0 Loss: 0.5655551552772522 Accuracy 0.7441860437393188
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMHX20160627_095525_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20140808_110517_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140818_115640_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20170623_105254_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20140715_115617_V06
+Label: 
+Image: 
+Filename: 
+KMRX20140520_105643_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20160620_115522_V06
+Label: 
+Image: 
+Filename: 
+KILX20140814_115333_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 1 Loss: 0.6939564347267151 Accuracy 0.5581395626068115
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20150711_114619_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20120723_112357_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20150629_104756_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KGWX20150810_110225_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20120728_115317_V06
+Label: 
+Image: 
+Filename: 
+KJGX20150805_090912_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150818_115606_V06
+Label: 
+Image: 
+Filename: 
+KLCH20141010_115841_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 2 Loss: 0.7259024977684021 Accuracy 0.604651153087616
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KTBW20130703_105559_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140910_122249_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20160717_101203_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20150723_095350_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20120815_115537_V06
+Label: 
+Image: 
+Filename: 
+KAKQ20140830_090013_V06
+Label: 
+Image: 
+Filename: 
+KHGX20140824_095331_V06
+Label: 
+Image: 
+Filename: 
+KLZK20150803_091519_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 3 Loss: 0.6817147135734558 Accuracy 0.5813953280448914
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMXX20130813_105709_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170718_103902_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140822_120100_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KGRB20160826_110834_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20130720_115819_V06
+Label: 
+Image: 
+Filename: 
+KRLX20170709_115653_V06
+Label: 
+Image: 
+Filename: 
+KHGX20140714_092807_V06
+Label: 
+Image: 
+Filename: 
+KJAX20170629_090324_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 4 Loss: 0.9942274689674377 Accuracy 0.4883720874786377
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMRX20170708_104250_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLVX20130729_103838_V06
+Label: 
+Image: 
+Filename: 
+KJAX20140801_105207_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KGWX20150706_105724_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20161010_115225_V06
+Label: 
+Image: 
+Filename: 
+KSGF20160723_115555_V06
+Label: 
+Image: 
+Filename: 
+KMRX20150729_090444_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20120720_115033_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(51, 240, 240, 3)
+Train data: 
+(51, 2)
+51
+X AND Y: 
+(51, 240, 240, 3)
+(51, 2)
+Training Epoch: 5 Loss: 0.5174030661582947 Accuracy 0.7058823704719543
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KBRO20140823_121308_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20140711_110840_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20120825_114613_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20130830_105531_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KNQA20170823_115521_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMKX20120903_115249_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150622_091842_V06
+Label: 
+Image: 
+Filename: 
+KCRP20150520_114215_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+(73, 2)
+Validation Epoch: 5 Loss: 0.3879542648792267 Accuracy 0.8082191944122314
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHPX20150721_110108_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTWX20120811_110352_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140807_114102_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140706_104604_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140818_115640_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KTYX20160520_095935_V06
+Label: 
+Image: 
+Filename: 
+KEAX20130810_092726_V06
+Label: 
+Image: 
+Filename: 
+KTLH20140723_090355_V06
+Label: 
+Image: 
+(35, 2)
+35
+X AND Y: 
+(35, 240, 240, 3)
+(35, 2)
+Training Epoch: 6 Loss: 1.0611135959625244 Accuracy 0.4000000059604645
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KRAX20170730_102756_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20130724_120328_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20150820_111620_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20150805_112107_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140707_092507_V06
+Label: 
+Image: 
+Filename: 
+KHGX20150711_115853_V06
+Label: 
+Image: 
+Filename: 
+KHGX20140714_092807_V06
+Label: 
+Image: 
+Filename: 
+KAKQ20160818_090017_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 7 Loss: 1.0694032907485962 Accuracy 0.3928571343421936
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDGX20160620_105742_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20150805_113055_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20130719_110809_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20150717_112220_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150911_115725_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20170730_091404_V06
+Label: 
+Image: 
+Filename: 
+KCLX20141010_115532_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20130813_115732_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+(65, 2)
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 8 Loss: 0.610014796257019 Accuracy 0.6153846383094788
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KSGF20150808_113219_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20160715_112455_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPOE20130712_113210_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20150815_105501_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20130816_115155_V06
+Label: 
+Image: 
+Filename: 
+KDGX20140730_115855_V06
+Label: 
+Image: 
+Filename: 
+KSGF20160726_091341_V06
+Label: 
+Image: 
+Filename: 
+KTBW20141010_115349_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 9 Loss: 0.5038750171661377 Accuracy 0.7209302186965942
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDIX20160730_100311_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140803_120540_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130708_115655_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KGRR20120808_104552_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20160816_092006_V06
+Label: 
+Image: 
+Filename: 
+KCLE20120727_090340_V06
+Label: 
+Image: 
+Filename: 
+KNQA20120520_104844_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KSHV20140723_092141_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 10 Loss: 0.5928892493247986 Accuracy 0.6379310488700867
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KVWX20140731_105351_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20130624_093912_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20150730_103735_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20150730_101447_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20150630_090431_V06
+Label: 
+Image: 
+Filename: 
+KHGX20150520_115254_V06
+Label: 
+Image: 
+Filename: 
+KGRB20150731_090115_V06
+Label: 
+Image: 
+Filename: 
+KBMX20121010_115710_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+Validation Epoch: 10 Loss: 0.4733251631259918 Accuracy 0.8372092843055725
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMRX20150805_110034_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20120628_104240_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20160715_103732_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130811_115458_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KICT20111010_115400_V06
+Label: 
+Image: 
+Image size: 
+(14, 240, 240, 3)
+Train data shape: 
+(42, 240, 240, 3)
+Train data: 
+Filename: 
+KBGM20120808_115450_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(57, 240, 240, 3)
+Train data: 
+Filename: 
+KINX20131010_115853_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(72, 240, 240, 3)
+Train data: 
+Filename: 
+KSJT20160520_115404_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(87, 240, 240, 3)
+Train data: 
+(87, 2)
+87
+X AND Y: 
+(87, 240, 240, 3)
+(87, 2)
+Training Epoch: 11 Loss: 0.4508771002292633 Accuracy 0.7816091775894165
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KSHV20170619_110355_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20170616_102004_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20140704_105250_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLWX20170809_102119_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBMX20140520_104634_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KINX20131010_115853_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KLWX20130810_115935_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20150619_090131_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 12 Loss: 0.47185489535331726 Accuracy 0.7260273694992065
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLZK20140715_110803_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KENX20120730_095046_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KABR20120818_113647_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130719_115247_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20170708_090009_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20140520_105238_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KSJT20120520_114419_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KAKQ20130810_090537_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 13 Loss: 0.5718808174133301 Accuracy 0.7260273694992065
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEVX20160718_110150_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140719_113406_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20130821_104417_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20150805_113621_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20140520_105001_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KFCX20131010_115536_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KENX20141010_110047_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20130729_090846_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 14 Loss: 0.5784941911697388 Accuracy 0.6849315166473389
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KBRO20130826_124750_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20120809_102902_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBMX20170620_110354_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KRLX20170709_101914_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPOE20170809_093031_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20140724_115936_V06
+Label: 
+Image: 
+Image size: 
+(14, 240, 240, 3)
+Train data shape: 
+(57, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20140801_115803_V06
+Label: 
+Image: 
+Filename: 
+KENX20141010_112957_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(72, 240, 240, 3)
+Train data: 
+(72, 2)
+72
+X AND Y: 
+(72, 240, 240, 3)
+(72, 2)
+Training Epoch: 15 Loss: 0.5978596210479736 Accuracy 0.6666666865348816
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KFSD20150817_112721_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20160803_103027_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140711_113517_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20170716_102047_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KTLX20140711_115926_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20170805_115507_V06
+Label: 
+Image: 
+Filename: 
+KJKL20140812_115908_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20150520_102613_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+(73, 2)
+Validation Epoch: 15 Loss: 0.622420608997345 Accuracy 0.6849315166473389
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDOX20170730_094911_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20150718_112314_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140714_115052_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20140730_112018_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20131010_115552_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20150721_115238_V06
+Label: 
+Image: 
+Filename: 
+KAKQ20120804_115224_V06
+Label: 
+Image: 
+Filename: 
+KVWX20170816_115657_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 16 Loss: 0.5060586929321289 Accuracy 0.6279069781303406
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KVWX20170730_104200_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20140729_110717_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170831_110937_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KFWS20170731_110818_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20140825_115815_V06
+Label: 
+Image: 
+Filename: 
+KBGM20130823_115937_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KFWS20170731_094331_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20160910_090345_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 17 Loss: 0.7019951343536377 Accuracy 0.6206896305084229
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KIWX20150808_104210_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20140801_105758_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20140627_105857_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140911_123045_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KOKX20130807_090410_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20140818_115455_V07
+Label: 
+Image: 
+Filename: 
+KDYX20140520_115041_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20140803_115514_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 18 Loss: 0.5202109813690186 Accuracy 0.7808219194412231
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KCAE20130719_104142_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20170629_105841_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20140728_111023_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KENX20120730_101935_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEWX20160726_094633_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20140714_090129_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20170615_115520_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20130903_115830_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 19 Loss: 0.6101691126823425 Accuracy 0.7123287916183472
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KOAX20150821_112504_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140719_113633_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20170714_105430_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20140804_112440_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLVX20140520_105522_V06
+Label: 
+Image: 
+Filename: 
+KEAX20150812_092334_V06
+Label: 
+Image: 
+Filename: 
+KGRK20150813_095249_V06
+Label: 
+Image: 
+Filename: 
+KMOB20170901_115723_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 20 Loss: 1.088297963142395 Accuracy 0.3571428656578064
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20130624_110232_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KFCX20130820_110911_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20140809_111035_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20120710_094059_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20140806_115048_V06
+Label: 
+Image: 
+Filename: 
+KSGF20120722_115232_V06
+Label: 
+Image: 
+Filename: 
+KHTX20121010_115934_V06
+Label: 
+Image: 
+Filename: 
+KVWX20140812_090436_V06
+Label: 
+Image: 
+(28, 2)
+Validation Epoch: 20 Loss: 0.3116280436515808 Accuracy 0.9285714030265808
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KCAE20160730_110338_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20120904_114151_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20150812_112349_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20140728_104654_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDIX20141010_110226_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KBOX20160520_091813_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KICT20130720_092503_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20120715_090333_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 21 Loss: 0.5655942559242249 Accuracy 0.6438356041908264
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHPX20150809_110600_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KFWS20150623_112639_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130719_112922_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20160715_110506_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20120804_115246_V06
+Label: 
+Image: 
+Filename: 
+KOHX20140730_090623_V06
+Label: 
+Image: 
+Filename: 
+KHTX20160520_110519_V06
+Label: 
+Image: 
+Filename: 
+KGRB20140520_104702_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 22 Loss: 0.9605078101158142 Accuracy 0.4285714328289032
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDOX20170928_104153_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20140723_104841_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20150801_110527_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20170625_103601_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20111010_112620_V06
+Label: 
+Image: 
+Filename: 
+KHPX20130827_115546_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20170612_090346_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20170725_091546_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 23 Loss: 0.5467521548271179 Accuracy 0.6896551847457886
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLSX20120815_112701_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBGM20140807_100212_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140708_105134_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20160824_114418_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20131010_115844_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20150702_115732_V06
+Label: 
+Image: 
+Filename: 
+KEAX20120805_115949_V06
+Label: 
+Image: 
+Filename: 
+KIND20140807_090015_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 24 Loss: 0.6541101932525635 Accuracy 0.5116279125213623
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KIND20140730_105313_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20120805_112348_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20160706_110031_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130823_121223_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KGRB20120520_102047_V06
+Label: 
+Image: 
+Filename: 
+KGRK20160520_113227_V06
+Label: 
+Image: 
+Filename: 
+KPAH20160715_090122_V06
+Label: 
+Image: 
+Filename: 
+KILN20130730_115644_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 25 Loss: 0.9856899976730347 Accuracy 0.4642857015132904
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDLH20120810_112657_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140905_115644_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KNQA20130624_101134_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20150814_110932_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KGRB20150901_091007_V06
+Label: 
+Image: 
+Filename: 
+KTLH20150712_115303_V06
+Label: 
+Image: 
+Filename: 
+KLVX20140806_090750_V06
+Label: 
+Image: 
+Filename: 
+KDLH20140815_115814_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+Validation Epoch: 25 Loss: 0.7332253456115723 Accuracy 0.5813953280448914
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEAX20170815_112750_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20160813_105949_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20120602_105012_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20150805_105242_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KGRB20130723_090448_V06
+Label: 
+Image: 
+Filename: 
+KJAX20131010_112645_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20141010_114103_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KENX20120702_112308_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 26 Loss: 0.5457236170768738 Accuracy 0.7534246444702148
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMPX20120818_113921_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20120706_104804_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20130723_103741_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140803_111606_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20130714_115612_V06
+Label: 
+Image: 
+Filename: 
+KMOB20140802_115543_V06
+Label: 
+Image: 
+Filename: 
+KBRO20161010_115109_V06
+Label: 
+Image: 
+Filename: 
+KEVX20130809_115913_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 27 Loss: 0.6097519397735596 Accuracy 0.6279069781303406
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGSP20160730_104825_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20140721_110914_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20160614_105331_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130719_115247_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KINX20170815_094132_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20160814_090507_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20130729_115810_V06
+Label: 
+Image: 
+Filename: 
+KOAX20161010_115544_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 28 Loss: 0.4504411220550537 Accuracy 0.7586206793785095
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KCAE20160719_102729_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRR20150725_105915_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20150818_114824_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KEWX20150717_111647_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20160709_115952_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20170902_092741_V06
+Label: 
+Image: 
+Filename: 
+KSRX20131010_115324_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20160810_092116_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 29 Loss: 0.4494525194168091 Accuracy 0.7586206793785095
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KTWX20120811_110352_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20170713_105941_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20140715_110803_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20150620_093701_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20150820_115817_V06
+Label: 
+Image: 
+Filename: 
+KOKX20150717_090937_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KOKX20160520_095410_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20170831_090126_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 30 Loss: 0.40306833386421204 Accuracy 0.7241379022598267
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20140806_110437_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KAKQ20160807_102339_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20160819_111229_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130717_120031_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KRLX20150731_090940_V06
+Label: 
+Image: 
+Filename: 
+KENX20150520_100340_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20150520_115706_V06
+Label: 
+Image: 
+Filename: 
+KLSX20140812_091652_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 30 Loss: 0.34936684370040894 Accuracy 0.7906976938247681
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KAKQ20120721_102402_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20150908_104831_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KEWX20120728_120412_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20130721_110145_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBUF20140520_102029_V06
+Label: 
+Image: 
+Filename: 
+KGRK20130702_115620_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KFWS20140520_113115_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20140614_115558_V07
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+(65, 2)
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 31 Loss: 0.5889119505882263 Accuracy 0.6461538672447205
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KBGM20140818_104354_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KOHX20160805_105501_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20170618_104749_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20160731_105333_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20141010_115906_V06
+Label: 
+Image: 
+Filename: 
+KOAX20150821_115503_V06
+Label: 
+Image: 
+Filename: 
+KLOT20160520_105434_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20140804_091752_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 32 Loss: 0.5048367977142334 Accuracy 0.8139534592628479
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20150910_115533_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140716_112344_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20130714_112819_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140705_113027_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20170705_115823_V06
+Label: 
+Image: 
+Filename: 
+KMPX20160520_110857_V06
+Label: 
+Image: 
+Filename: 
+KBGM20130729_115316_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20160828_115909_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 33 Loss: 0.6693145632743835 Accuracy 0.5813953280448914
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEAX20130724_105649_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KPOE20130718_113147_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20170714_105843_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBUF20160909_111730_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20130703_115622_V06
+Label: 
+Image: 
+Filename: 
+KDOX20150915_090010_V06
+Label: 
+Image: 
+Filename: 
+KSGF20120520_113106_V06
+Label: 
+Image: 
+Filename: 
+KGRK20170713_093111_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 34 Loss: 0.8493607640266418 Accuracy 0.4642857015132904
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDOX20140725_101450_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGWX20140807_113300_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20130714_104212_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20140715_110049_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20150830_115628_V06
+Label: 
+Image: 
+Filename: 
+KMOB20140804_115553_V06
+Label: 
+Image: 
+Filename: 
+KHGX20140714_092807_V06
+Label: 
+Image: 
+Filename: 
+KNQA20120520_111755_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 35 Loss: 0.5448929071426392 Accuracy 0.6976743936538696
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDLH20120810_112657_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140731_113838_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20110710_100336_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLOT20150814_111034_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20170921_101643_V06
+Label: 
+Image: 
+Filename: 
+KLIX20150520_113406_V06
+Label: 
+Image: 
+Filename: 
+KDLH20140815_090439_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KOAX20140731_115324_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 35 Loss: 0.5267181992530823 Accuracy 0.8372092843055725
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHTX20130628_105413_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBUF20150813_103641_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KGWX20140707_104927_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20140723_110340_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140814_115446_V06
+Label: 
+Image: 
+Filename: 
+KDTX20130810_115128_V06
+Label: 
+Image: 
+Filename: 
+KRAX20131010_111722_V06
+Label: 
+Image: 
+Filename: 
+KTLX20131010_115440_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 36 Loss: 0.46170851588249207 Accuracy 0.7441860437393188
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDVN20120802_111820_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20150717_112220_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130715_113603_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KAKQ20130807_101156_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20130730_090555_V06
+Label: 
+Image: 
+Filename: 
+KDGX20160627_090107_V06
+Label: 
+Image: 
+Filename: 
+KHGX20130822_095303_V06
+Label: 
+Image: 
+Filename: 
+KIWX20160821_090739_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 37 Loss: 0.8248849511146545 Accuracy 0.4285714328289032
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLZK20130807_111324_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20160828_111522_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20140824_103448_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20150721_111125_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KGWX20141010_115638_V07
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20161010_115828_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20160728_091207_V06
+Label: 
+Image: 
+Filename: 
+KLCH20160715_115831_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 38 Loss: 0.5219866037368774 Accuracy 0.7758620977401733
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KPAH20130721_112012_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KOHX20130724_111045_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBUF20120804_103050_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20170730_110250_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20140717_115733_V06
+Label: 
+Image: 
+Filename: 
+KPBZ20150801_090233_V06
+Label: 
+Image: 
+Filename: 
+KFSD20140520_112543_V06
+Label: 
+Image: 
+Filename: 
+KDVN20120802_115726_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 39 Loss: 0.3932252526283264 Accuracy 0.8139534592628479
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGRR20150710_103643_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20170730_102859_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20120628_103758_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20170605_104153_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDLH20140804_090313_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20130805_090713_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KHPX20161010_115058_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20160714_115553_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 40 Loss: 0.5993678569793701 Accuracy 0.7123287916183472
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLTX20150630_100821_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140810_114853_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20170906_105707_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20150705_113319_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPOE20130726_115215_V06
+Label: 
+Image: 
+Image size: 
+(22, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20150726_115934_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20150520_103304_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(80, 240, 240, 3)
+Train data: 
+Filename: 
+KDYX20150520_115814_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(95, 240, 240, 3)
+Train data: 
+(95, 2)
+Validation Epoch: 40 Loss: 0.9561407566070557 Accuracy 0.5789473652839661
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20130721_111542_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20140725_104959_V06
+Label: 
+Image: 
+Filename: 
+KLZK20170915_114850_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20120727_102522_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20120809_090324_V06
+Label: 
+Image: 
+Filename: 
+KAMX20141010_114835_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KGSP20140520_105208_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(51, 240, 240, 3)
+Train data: 
+Filename: 
+KCLX20140520_101911_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(66, 240, 240, 3)
+Train data: 
+(66, 2)
+66
+X AND Y: 
+(66, 240, 240, 3)
+(66, 2)
+Training Epoch: 41 Loss: 0.5592719316482544 Accuracy 0.7424242496490479
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KILN20170730_101916_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20150801_114138_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20150710_104715_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140714_112041_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20161010_112402_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20131010_115556_V06
+Label: 
+Image: 
+Filename: 
+KLWX20120818_115504_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20150703_115715_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 42 Loss: 0.5678246021270752 Accuracy 0.7931034564971924
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEWX20160624_112905_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20140728_112950_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20120628_104240_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20170623_105619_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150929_101243_V06
+Label: 
+Image: 
+Filename: 
+KICT20170713_091433_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20131010_115932_V06
+Label: 
+Image: 
+Filename: 
+KBRO20150911_101403_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 43 Loss: 0.3606029152870178 Accuracy 0.8837209343910217
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KJKL20170731_103534_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20170713_111804_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20140721_110225_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150717_112056_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20130720_115709_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KDLH20140813_090030_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140520_112602_V06
+Label: 
+Image: 
+Filename: 
+KCRP20161010_115613_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+(65, 2)
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 44 Loss: 0.5965592861175537 Accuracy 0.7384615540504456
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20130719_105635_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KOKX20150808_101148_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20170701_093927_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130714_114843_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20170615_115520_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KDVN20120820_091914_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KCLX20170626_115903_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KDMX20160520_112337_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(88, 240, 240, 3)
+Train data: 
+(88, 2)
+88
+X AND Y: 
+(88, 240, 240, 3)
+(88, 2)
+Training Epoch: 45 Loss: 0.6242437958717346 Accuracy 0.7045454382896423
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KFFC20150630_103316_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20150630_103215_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KOHX20150622_101723_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140821_120628_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20140711_115854_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20121010_115233_V06
+Label: 
+Image: 
+Filename: 
+KIWX20160811_090120_V06
+Label: 
+Image: 
+Filename: 
+KIWX20150807_115154_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 45 Loss: 0.5664556622505188 Accuracy 0.7906976938247681
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KVWX20130728_104127_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140807_120533_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20150811_102455_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20130816_105551_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20161010_112818_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KNQA20160615_090624_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20150701_090101_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140716_093657_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 46 Loss: 0.6127804517745972 Accuracy 0.7534246444702148
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20160627_112830_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140901_121641_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20160731_104348_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20150828_111707_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20110725_115711_V06
+Label: 
+Image: 
+Filename: 
+KFSD20160520_112307_V06
+Label: 
+Image: 
+Filename: 
+KTBW20170605_115505_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20160520_102457_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 47 Loss: 0.33734971284866333 Accuracy 0.8604651093482971
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20150717_113653_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170831_110937_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140911_115654_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20120717_105601_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20161010_112402_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20150611_090836_V06
+Label: 
+Image: 
+Filename: 
+KILN20131010_113914_V06
+Label: 
+Image: 
+Filename: 
+KTLX20130816_095020_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 48 Loss: 0.6971487402915955 Accuracy 0.7068965435028076
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KILN20160825_111347_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KABR20160814_111146_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20130721_112259_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150911_115348_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20140520_105352_V06
+Label: 
+Image: 
+Filename: 
+KILN20150805_090630_V06
+Label: 
+Image: 
+Filename: 
+KBRO20150818_115606_V06
+Label: 
+Image: 
+Filename: 
+KMPX20130826_092658_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 49 Loss: 1.0233962535858154 Accuracy 0.5
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KVWX20140801_110509_V06
+Label: 
+Image: 
+Filename: 
+KJGX20120706_104804_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20150803_111740_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20150623_112624_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLWX20141010_111237_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20160715_115544_V06
+Label: 
+Image: 
+Filename: 
+KILX20160823_091534_V06
+Label: 
+Image: 
+Filename: 
+KICT20130810_094040_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(51, 240, 240, 3)
+Train data: 
+(51, 2)
+51
+X AND Y: 
+(51, 240, 240, 3)
+(51, 2)
+Training Epoch: 50 Loss: 0.3397141993045807 Accuracy 0.8823529481887817
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KTLX20150903_115421_V06
+Label: 
+Image: 
+Image size: 
+(22, 240, 240, 3)
+Train data shape: 
+(22, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20140727_110834_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(29, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20120722_112248_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KSHV20160807_114651_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20150727_090821_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KPBZ20160829_115743_V06
+Label: 
+Image: 
+Filename: 
+KBRO20140821_100928_V06
+Label: 
+Image: 
+Filename: 
+KAKQ20121010_110743_V06
+Label: 
+Image: 
+(58, 2)
+Validation Epoch: 50 Loss: 0.6002763509750366 Accuracy 0.6379310488700867
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20140714_114120_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRB20120731_102620_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20170702_104047_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20150813_101232_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20131010_114703_V06
+Label: 
+Image: 
+Filename: 
+KLIX20130720_115649_V06
+Label: 
+Image: 
+Filename: 
+KLCH20160520_111329_V06
+Label: 
+Image: 
+Filename: 
+KNQA20130824_115852_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 51 Loss: 0.6209514737129211 Accuracy 0.7441860437393188
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLCH20140728_113935_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20150624_102917_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20120628_103758_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20150815_101955_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KSRX20161010_115921_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20130711_115621_V06
+Label: 
+Image: 
+Filename: 
+KIND20160808_090327_V06
+Label: 
+Image: 
+Filename: 
+KIWX20141010_115131_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 52 Loss: 0.3660634160041809 Accuracy 0.8139534592628479
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGRK20150808_114357_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140803_120540_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20140808_112201_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20150815_113941_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20160828_115627_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KDMX20140818_115859_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KBGM20131010_113940_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130804_094344_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 53 Loss: 0.5431375503540039 Accuracy 0.767123281955719
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20150717_114135_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20160714_104657_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140817_122003_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20170714_105430_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20141010_115505_V06
+Label: 
+Image: 
+Filename: 
+KPAH20170626_090815_V06
+Label: 
+Image: 
+Filename: 
+KGRK20160719_115702_V06
+Label: 
+Image: 
+Filename: 
+KMHX20120624_090318_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 54 Loss: 0.8469257950782776 Accuracy 0.5714285969734192
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGRK20140716_120447_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20130826_115553_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20140723_101807_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20150620_105923_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBOX20131010_112300_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140520_112602_V06
+Label: 
+Image: 
+Filename: 
+KBOX20161010_112442_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20140520_104652_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 55 Loss: 0.44190943241119385 Accuracy 0.7586206793785095
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KDTX20150727_104259_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20170710_104013_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20140806_103315_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140726_113628_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDIX20150520_093445_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140810_095136_V06
+Label: 
+Image: 
+Filename: 
+KMPX20121010_115909_V06
+Label: 
+Image: 
+Filename: 
+KIND20130814_115519_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 55 Loss: 0.3379635810852051 Accuracy 0.8604651093482971
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGRB20150815_110209_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20140804_104958_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20160717_095602_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140721_110543_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20130718_115705_V06
+Label: 
+Image: 
+Filename: 
+KCLE20150720_090319_V06
+Label: 
+Image: 
+Filename: 
+KDIX20150728_114937_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20120802_092037_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 56 Loss: 0.5372308492660522 Accuracy 0.7674418687820435
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLSX20140818_113846_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGSP20160726_111249_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20160806_115649_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20160717_110109_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20120624_115619_V06
+Label: 
+Image: 
+Filename: 
+KLSX20130722_115709_V06
+Label: 
+Image: 
+Filename: 
+KEAX20170713_115545_V06
+Label: 
+Image: 
+Filename: 
+KPBZ20131010_115751_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 57 Loss: 0.9475905299186707 Accuracy 0.4285714328289032
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20130722_113951_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20120720_105747_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20140808_110836_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20130729_110329_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20120719_090246_V06
+Label: 
+Image: 
+Filename: 
+KBGM20160520_100713_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20120709_115644_V06
+Label: 
+Image: 
+Filename: 
+KMRX20160520_105500_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 58 Loss: 0.4746544361114502 Accuracy 0.8103448152542114
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KRAX20140723_102857_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KICT20150906_120856_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20120802_110126_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20150812_112043_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20130824_115733_V06
+Label: 
+Image: 
+Filename: 
+KGRK20130720_115709_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20161010_115640_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20161010_115856_V06
+Label: 
+Image: 
+(50, 2)
+50
+X AND Y: 
+(50, 240, 240, 3)
+(50, 2)
+Training Epoch: 59 Loss: 0.49444228410720825 Accuracy 0.8199999928474426
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20140725_111219_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20160719_115033_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20130730_102100_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20150809_113515_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150829_115710_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+Filename: 
+KHPX20130630_090004_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(50, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20140723_115544_V06
+Label: 
+Image: 
+Filename: 
+KMOB20130617_090539_V06
+Label: 
+Image: 
+(50, 2)
+50
+X AND Y: 
+(50, 240, 240, 3)
+(50, 2)
+Training Epoch: 60 Loss: 0.7670965790748596 Accuracy 0.5400000214576721
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KAKQ20140731_100517_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20140731_112906_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20130814_111853_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20150807_104402_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KOAX20140731_091758_V06
+Label: 
+Image: 
+Filename: 
+KNQA20160827_115629_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20140810_090343_V06
+Label: 
+Image: 
+Filename: 
+KLZK20170805_115731_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+Validation Epoch: 60 Loss: 0.5482771992683411 Accuracy 0.7241379022598267
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KNQA20140712_105206_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150627_113447_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20150723_105924_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMVX20160808_110405_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20170709_090341_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20130810_115702_V06
+Label: 
+Image: 
+Filename: 
+KILN20160823_115621_V06
+Label: 
+Image: 
+Filename: 
+KLSX20140520_111229_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 61 Loss: 0.4032236635684967 Accuracy 0.7906976938247681
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGRK20130714_112409_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20150812_110125_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20130920_125615_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20160917_115853_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20140817_115651_V06
+Label: 
+Image: 
+Filename: 
+KILX20140520_103447_V06
+Label: 
+Image: 
+Filename: 
+KBOX20141010_111802_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KTLX20161010_115758_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 62 Loss: 0.6892337203025818 Accuracy 0.6896551847457886
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20130712_112632_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150721_115355_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDMX20150724_111549_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20150813_112301_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130719_093220_V06
+Label: 
+Image: 
+Filename: 
+KLCH20150805_115807_V06
+Label: 
+Image: 
+Filename: 
+KLIX20140707_115323_V06
+Label: 
+Image: 
+Filename: 
+KBMX20160520_111122_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 63 Loss: 0.5956369638442993 Accuracy 0.7209302186965942
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20150628_112607_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20170705_094257_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20130831_111910_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KABR20120818_112306_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20130718_090708_V06
+Label: 
+Image: 
+Filename: 
+KABR20120811_115818_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20141010_115859_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20130816_115909_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 64 Loss: 0.41271787881851196 Accuracy 0.8448275923728943
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEWX20120728_120412_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KEVX20170808_104808_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150623_113213_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20170709_110233_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KIND20130827_115421_V06
+Label: 
+Image: 
+Filename: 
+KJGX20150619_090001_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20150815_091524_V06
+Label: 
+Image: 
+Filename: 
+KOHX20140520_110345_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 65 Loss: 0.5516050457954407 Accuracy 0.7209302186965942
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KTLX20140711_112033_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150902_120622_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20140727_111952_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KOAX20150826_114304_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20140810_115206_V06
+Label: 
+Image: 
+Filename: 
+KLIX20160628_115834_V06
+Label: 
+Image: 
+Filename: 
+KDOX20160916_115540_V06
+Label: 
+Image: 
+Filename: 
+KHPX20150520_111159_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+Validation Epoch: 65 Loss: 0.31003788113594055 Accuracy 0.8372092843055725
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KOHX20150725_105828_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20160709_111205_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20150723_111759_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20130721_111133_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20160725_091349_V06
+Label: 
+Image: 
+Filename: 
+KLSX20150801_090234_V06
+Label: 
+Image: 
+Filename: 
+KNQA20140723_090829_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20160801_115105_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 66 Loss: 0.4451579749584198 Accuracy 0.8103448152542114
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KILN20170730_100933_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20150702_104928_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20170730_102859_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140708_105957_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBGM20120808_090140_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20161010_115714_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20140813_115623_V06
+Label: 
+Image: 
+Filename: 
+KOAX20140824_094501_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 67 Loss: 0.4166739881038666 Accuracy 0.8793103694915771
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20150704_114245_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20140808_104621_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20140712_103649_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20130719_111355_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20131010_115447_V06
+Label: 
+Image: 
+Filename: 
+KHTX20160731_115910_V06
+Label: 
+Image: 
+Filename: 
+KOAX20131010_115102_V06
+Label: 
+Image: 
+Filename: 
+KDLH20120520_102508_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 68 Loss: 0.46777060627937317 Accuracy 0.8604651093482971
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KOHX20150803_110114_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20140721_112022_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20130718_103407_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170714_103556_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130801_115755_V06
+Label: 
+Image: 
+Filename: 
+KBRO20140906_115721_V06
+Label: 
+Image: 
+Filename: 
+KJAX20160520_105854_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20150818_115722_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 69 Loss: 0.35579925775527954 Accuracy 0.8372092843055725
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLCH20130811_114844_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20160730_112003_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170808_110939_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150815_115500_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20170626_090036_V06
+Label: 
+Image: 
+Filename: 
+KPBZ20140520_100056_V06
+Label: 
+Image: 
+Filename: 
+KILN20150808_090918_V06
+Label: 
+Image: 
+Filename: 
+KEOX20140705_090203_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 70 Loss: 0.8720377683639526 Accuracy 0.5714285969734192
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KINX20170906_120230_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20130626_112327_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20140812_104155_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20160809_111715_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMKX20121010_115958_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20140806_091154_V06
+Label: 
+Image: 
+Filename: 
+KMPX20150903_094141_V06
+Label: 
+Image: 
+Filename: 
+KRLX20121010_115218_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 70 Loss: 0.8083054423332214 Accuracy 0.7674418687820435
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLIX20150818_112747_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20140701_112756_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDLH20160825_114052_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20150720_111335_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20131010_111722_V06
+Label: 
+Image: 
+Filename: 
+KCAE20160706_090447_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20130810_091551_V06
+Label: 
+Image: 
+Filename: 
+KDGX20150808_091843_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 71 Loss: 0.24451245367527008 Accuracy 0.9534883499145508
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KPOE20170809_114852_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20160717_104834_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20170630_095642_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20150815_104653_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20130724_115847_V06
+Label: 
+Image: 
+Filename: 
+KGRB20120520_104954_V06
+Label: 
+Image: 
+Filename: 
+KHGX20130718_092941_V06
+Label: 
+Image: 
+Filename: 
+KVWX20130812_090522_V06
+Label: 
+Image: 
+(28, 2)
+28
+X AND Y: 
+(28, 240, 240, 3)
+(28, 2)
+Training Epoch: 72 Loss: 0.7190347909927368 Accuracy 0.5714285969734192
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLZK20150803_114128_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20130721_110842_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20130811_114844_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KTYX20130823_102712_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20130720_090235_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20141010_115850_V06
+Label: 
+Image: 
+Filename: 
+KVWX20131010_115150_V06
+Label: 
+Image: 
+Filename: 
+KMXX20140712_115214_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 73 Loss: 0.40970155596733093 Accuracy 0.8103448152542114
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KGWX20140716_105840_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170808_105952_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KRAX20170701_093927_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDGX20160726_110802_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140801_091651_V06
+Label: 
+Image: 
+Filename: 
+KOHX20130807_090156_V06
+Label: 
+Image: 
+Filename: 
+KSRX20160520_113731_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMOB20140802_115543_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 74 Loss: 0.525513231754303 Accuracy 0.6976743936538696
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KPBZ20150815_105015_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20130728_103511_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20150828_110532_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20140715_112959_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20150703_115715_V06
+Label: 
+Image: 
+Filename: 
+KRLX20150815_115122_V06
+Label: 
+Image: 
+Filename: 
+KVWX20131010_115150_V06
+Label: 
+Image: 
+Filename: 
+KJKL20130821_090230_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 75 Loss: 0.5542697906494141 Accuracy 0.6976743936538696
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KRLX20170805_103045_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20120716_104130_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KNQA20120622_104325_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20120718_101528_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDVN20150520_103958_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KABR20150902_115957_V06
+Label: 
+Image: 
+Image size: 
+(22, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+Filename: 
+KICT20120819_094917_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(80, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20120608_090501_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(95, 240, 240, 3)
+Train data: 
+(95, 2)
+Validation Epoch: 75 Loss: 0.9469442367553711 Accuracy 0.6315789222717285
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20130810_115656_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20150818_123027_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20130721_105906_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBOX20130824_102819_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KDLH20160520_105611_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20160726_090011_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KICT20150821_095001_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20161010_115913_V06
+Label: 
+Image: 
+(73, 2)
+73
+X AND Y: 
+(73, 240, 240, 3)
+(73, 2)
+Training Epoch: 76 Loss: 0.7725334167480469 Accuracy 0.6164383292198181
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KRAX20170615_094138_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20170730_101916_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KJKL20140817_111043_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20160726_102854_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBUF20120804_115630_V06
+Label: 
+Image: 
+Filename: 
+KBOX20160520_091813_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20131010_114224_V06
+Label: 
+Image: 
+Filename: 
+KEAX20161010_115605_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 77 Loss: 0.24557244777679443 Accuracy 0.9069767594337463
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KAMX20130703_102935_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20140818_104124_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20170731_105720_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130712_114129_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHTX20140811_115837_V06
+Label: 
+Image: 
+Filename: 
+KTYX20161010_110855_V06
+Label: 
+Image: 
+Filename: 
+KGRR20160520_100854_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KSHV20140520_114602_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 78 Loss: 0.6541499495506287 Accuracy 0.7241379022598267
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KEAX20160722_111531_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20130902_115753_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20150723_105017_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20160821_103328_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20160810_092116_V06
+Label: 
+Image: 
+Filename: 
+KDOX20140807_090738_V07
+Label: 
+Image: 
+Filename: 
+KFCX20140712_090752_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20140520_103938_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 79 Loss: 0.3848804235458374 Accuracy 0.7441860437393188
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KBUF20140808_104120_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20170726_104347_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KEWX20120728_115919_V06
+Label: 
+Image: 
+Image size: 
+(22, 240, 240, 3)
+Train data shape: 
+(36, 240, 240, 3)
+Train data: 
+Filename: 
+KHPX20130630_105101_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20170809_090101_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20130810_115656_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(65, 240, 240, 3)
+Train data: 
+Filename: 
+KCLE20140729_115210_V06
+Label: 
+Image: 
+Filename: 
+KPBZ20120731_090303_V06
+Label: 
+Image: 
+(65, 2)
+65
+X AND Y: 
+(65, 240, 240, 3)
+(65, 2)
+Training Epoch: 80 Loss: 0.8174910545349121 Accuracy 0.5692307949066162
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLVX20170805_104436_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20170710_112257_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLSX20140820_113433_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KMRX20170711_104144_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KTLX20121010_115310_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KILX20121010_115233_V06
+Label: 
+Image: 
+Filename: 
+KMOB20150520_112445_V06
+Label: 
+Image: 
+Filename: 
+KOAX20140731_115324_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 80 Loss: 0.9958269596099854 Accuracy 0.7441860437393188
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KJKL20140817_111043_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20120811_101805_V07
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150627_110941_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20170612_103441_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KHPX20150812_090336_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLWX20130810_115935_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KJAX20131010_112645_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(73, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20160706_090451_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(88, 240, 240, 3)
+Train data: 
+(88, 2)
+88
+X AND Y: 
+(88, 240, 240, 3)
+(88, 2)
+Training Epoch: 81 Loss: 0.6168568134307861 Accuracy 0.6818181872367859
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KPAH20160812_112933_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20150813_112646_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20160728_112747_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140708_110640_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20150815_090318_V06
+Label: 
+Image: 
+Filename: 
+KMOB20130801_090900_V06
+Label: 
+Image: 
+Filename: 
+KVWX20170808_115832_V06
+Label: 
+Image: 
+Filename: 
+KHGX20150929_115901_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(35, 240, 240, 3)
+Train data: 
+(35, 2)
+35
+X AND Y: 
+(35, 240, 240, 3)
+(35, 2)
+Training Epoch: 82 Loss: 0.8801137208938599 Accuracy 0.5714285969734192
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20130823_122220_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KDTX20140818_111016_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20160715_102754_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KAMX20130712_103306_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20140814_115100_V06
+Label: 
+Image: 
+Filename: 
+KLIX20141010_115954_V06
+Label: 
+Image: 
+Filename: 
+KCAE20130728_090015_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20140803_115840_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 83 Loss: 0.5669474005699158 Accuracy 0.7413793206214905
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KLTX20130724_103526_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KGRK20160622_111048_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150623_112348_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBGM20120808_100900_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KIWX20130723_090519_V06
+Label: 
+Image: 
+Filename: 
+KAMX20161010_114618_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KFCX20140712_115205_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20161010_115109_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 84 Loss: 0.4727346897125244 Accuracy 0.8103448152542114
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KPAH20170731_104740_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20140721_111814_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KDOX20150723_095350_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KFFC20140725_103801_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140825_100324_V06
+Label: 
+Image: 
+Filename: 
+KHGX20140807_094053_V06
+Label: 
+Image: 
+Filename: 
+KJKL20161010_115904_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMHX20120624_115619_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 85 Loss: 0.3078777492046356 Accuracy 0.9069767594337463
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KVWX20150817_110401_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KTBW20130726_110454_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20160807_111117_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KBOX20140823_100926_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KJGX20160803_090407_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KPAH20140718_115730_V06
+Label: 
+Image: 
+Filename: 
+KCLE20120722_115429_V06
+Label: 
+Image: 
+Filename: 
+KILX20150520_110652_V06
+Label: 
+Image: 
+(43, 2)
+Validation Epoch: 85 Loss: 0.511903703212738 Accuracy 0.8139534592628479
+'NoneType' object is not iterable
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KBUF20160818_103535_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KILN20150805_103324_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KTLH20160714_105228_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20170730_105535_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20140627_115635_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20170725_091546_V06
+Label: 
+Image: 
+Filename: 
+KENX20120702_112308_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+Filename: 
+KLTX20130703_090236_V06
+Label: 
+Image: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 86 Loss: 0.5794193148612976 Accuracy 0.7068965435028076
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20150702_103750_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140817_120025_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KBRO20140822_115116_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KCAE20130719_105314_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEWX20150624_115712_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20160714_090906_V06
+Label: 
+Image: 
+Filename: 
+KAKQ20140717_090630_V06
+Label: 
+Image: 
+Filename: 
+KMRX20130718_115924_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 87 Loss: 0.6024670004844666 Accuracy 0.6379310488700867
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KMOB20130721_113425_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLIX20140818_113930_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KMXX20170702_104047_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KHGX20150628_113656_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KEAX20140808_115307_V06
+Label: 
+Image: 
+Filename: 
+KSGF20131010_115934_V06
+Label: 
+Image: 
+Filename: 
+KEWX20160624_093017_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMVX20120520_104317_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 88 Loss: 0.5061773061752319 Accuracy 0.7413793206214905
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KCAE20160718_102314_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20150827_114655_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KLZK20140803_111929_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KLCH20140715_111717_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KLWX20130722_115642_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20140520_110129_V06
+Label: 
+Image: 
+Filename: 
+KLCH20140811_093835_V06
+Label: 
+Image: 
+Filename: 
+KMKX20131010_115802_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(58, 240, 240, 3)
+Train data: 
+(58, 2)
+58
+X AND Y: 
+(58, 240, 240, 3)
+(58, 2)
+Training Epoch: 89 Loss: 0.5955230593681335 Accuracy 0.6896551847457886
+Get batch: 
+3
+3
+4469
+1711
+1521
+4399
+1541
+1520
+Filename: 
+KHGX20130714_112634_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(7, 240, 240, 3)
+Train data: 
+Filename: 
+KAKQ20120721_102402_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(14, 240, 240, 3)
+Train data: 
+Filename: 
+KVWX20140814_105828_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(21, 240, 240, 3)
+Train data: 
+Filename: 
+KENX20120802_095718_V06
+Label: 
+Image: 
+Image size: 
+(7, 240, 240, 3)
+Train data shape: 
+(28, 240, 240, 3)
+Train data: 
+Filename: 
+KSGF20120702_090209_V06
+Label: 
+Image: 
+Filename: 
+KCAE20120520_105020_V06
+Label: 
+Image: 
+Image size: 
+(15, 240, 240, 3)
+Train data shape: 
+(43, 240, 240, 3)
+Train data: 
+Filename: 
+KMPX20120904_093917_V06
+Label: 
+Image: 
+Filename: 
+KLIX20130722_115829_V06
+Label: 
+Image: 
+(43, 2)
+43
+X AND Y: 
+(43, 240, 240, 3)
+(43, 2)
+Training Epoch: 90 Loss: 0.43369656801223755 Accuracy 0.8372092843055725

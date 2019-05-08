@@ -3,7 +3,7 @@ import os
 
 RADAR_FILE_DIR = 'radarfiles/'
 # TODO change when running on schooner
-RADAR_IMAGE_DIR = '/Users/Kate/workspace/BirdRoostLocation/MLData/'
+RADAR_IMAGE_DIR = "/condo/swatwork/keavery/masters_thesis/clean_images"
 
 
 class ML_Set(Enum):
