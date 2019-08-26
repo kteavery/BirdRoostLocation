@@ -22,7 +22,6 @@ WORKING_DIRECTORY = str(data["cwd"])
 LABEL_CSV = str(data["label_csv"])
 SUBSET_CSV = str(data["subset_files_csv"])
 ML_SPLITS_DATA = str(data["ml_splits_csv"])
-SUBSET_LABEL_CSV = str(data["subset_labels"])
 DEFAULT_BATCH_SIZE = 8
 
 if bool(data["schooner"]):

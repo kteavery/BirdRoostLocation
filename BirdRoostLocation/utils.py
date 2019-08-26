@@ -9,12 +9,15 @@ RADAR_IMAGE_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData/"
 class ML_Set(Enum):
     """Machine learning set enum, includes validation, train, and test."""
 
-    def __new__(cls, value):
-        enum_names = {0: "Validation", 1: "Training", 2: "Testing"}
+    validation = 0, "Validation"
+    training = 1, "Training"
+    testing = 2, "Testing"
 
+    def __new__(cls, value, name):
+        # enum_names = {0: "Validation", 1: "Training", 2: "Testing"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = enum_names[value]
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):
@@ -22,12 +25,15 @@ class ML_Set(Enum):
 
 
 class ML_Model(Enum):
-    def __new__(cls, value):
-        enum_names = {0: "Shallow_CNN", 1: "Shallow_CNN_All", 2: "Shallow_CNN_Time"}
+    Shallow_CNN = 0, "Shallow_CNN"
+    Shallow_CNN_All = 1, "Shallow_CNN_All"
+    Shallow_CNN_Time = 2, "Shallow_CNN_Time"
 
+    def __new__(cls, value, name):
+        # enum_names = {0: "Shallow_CNN", 1: "Shallow_CNN_All", 2: "Shallow_CNN_Time"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = enum_names[value]
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):
@@ -37,12 +43,16 @@ class ML_Model(Enum):
 class Radar_Products(Enum):
     """Radar Product enum, includes reflectivity, velocity, rho_hv, and zdr."""
 
-    def __new__(cls, value):
-        enum_names = {0: "Reflectivity", 1: "Velocity", 2: "Rho_HV", 3: "Zdr"}
+    reflectivity = 0, "Reflectivity"
+    velocity = 1, "Velocity"
+    cc = 2, "Rho_HV"
+    diff_reflectivity = 3, "Zdr"
 
+    def __new__(cls, value, name):
+        # enum_names = {0: "Reflectivity", 1: "Velocity", 2: "Rho_HV", 3: "Zdr"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = enum_names[value]
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):

@@ -56,6 +56,8 @@ class Batch_Generator:
         print(validate_k_index)
         print(test_k_index)
 
+        print(ml_split_csv)
+
         ml_split_pd = pandas.read_csv(ml_split_csv)
 
         # Remove files that weren't found
@@ -260,6 +262,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
     ):
         Batch_Generator.__init__(
             self,
+            ml_label_csv,
             ml_split_csv,
             validate_k_index,
             test_k_index,

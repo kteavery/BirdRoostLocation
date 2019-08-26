@@ -29,7 +29,7 @@ def main():
     create_subset_labels(
         csv_input_path=settings.LABEL_CSV,
         subset_path=settings.SUBSET_CSV,
-        csv_output_path=settings.SUBSET_LABEL_CSV,
+        csv_output_path=settings.LABEL_CSV,
     )
 
 
