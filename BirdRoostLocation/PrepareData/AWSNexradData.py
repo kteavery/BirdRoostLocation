@@ -31,7 +31,7 @@ def GetNexradBucket(conn):
     Returns:
         An instantiated NOAA NEXRAD level 2 radar data bucket.
     """
-    bucket = conn.get_bucket('noaa-nexrad-level2', validate=False)
+    bucket = conn.get_bucket("noaa-nexrad-level2", validate=False)
     return bucket
 
 
@@ -69,7 +69,7 @@ def getFileNamesFromBucket(bucket, bucketName):
     """
     names = []
     for key in bucket.list(bucketName, "/"):
-        location = key.name.encode('utf-8')
+        location = key.name.encode("utf-8")
         names.append(location)
     return names
 
@@ -117,13 +117,11 @@ def getFileNameCloseToDatetime(files, radar, roost_date):
     for index, f in enumerate(files):
         base_f = os.path.basename(f)
 
-        if base_f[0:4] == radar and base_f[13:15] > '08' and base_f[
-                                                             13:15] < '12':
+        if base_f[0:4] == radar and base_f[13:15] > "08" and base_f[13:15] < "12":
 
-            radar_date = datetime.datetime.strptime(base_f[4:19],
-                                                    '%Y%m%d_%H%M%S')
+            radar_date = datetime.datetime.strptime(base_f[4:19], "%Y%m%d_%H%M%S")
             dif = max(roost_date - radar_date, radar_date - roost_date)
-            if (min_dif > dif):
+            if min_dif > dif:
                 min_dif = dif
                 AWSFile = f
                 i = index
@@ -140,7 +138,7 @@ def main():
     bucket = GetNexradBucket(conn)
 
     # Bucket for a single Radar, single day.
-    bucketName = getBucketName(2015, 7, 4, 'KMOB')
+    bucketName = getBucketName(2015, 7, 4, "KMOB")
 
     # Get list of all files from bucket
     fileNames = getFileNamesFromBucket(bucket, bucketName)
@@ -150,7 +148,7 @@ def main():
     print(radar)
 
     # Use this format if you already know the exact name of the desired file
-    fileName = '2015/07/04/KMOB/KMOB20150704_111944_V06.gz'
+    fileName = "2015/07/04/KMOB/KMOB20150704_111944_V06.gz"
     file = downloadDataFromBucket(bucket, fileName)
     radar = pyart.io.read_nexrad_archive(file.name)
     print(radar)

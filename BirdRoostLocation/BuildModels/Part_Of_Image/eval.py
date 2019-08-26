@@ -6,16 +6,17 @@ from BirdRoostLocation import utils
 from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import skill_scores
 
+
 def eval(log_path, radar_product):
     batch_generator = BatchGenerator.Small_Image_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
-        high_memory_mode=False)
+        high_memory_mode=False,
+    )
 
     x, y, filenames = batch_generator.get_batch(
-                    ml_set=utils.ML_Set.testing,
-                    dualPol=False,
-                    radar_product=radar_product)
+        ml_set=utils.ML_Set.testing, dualPol=False, radar_product=radar_product
+    )
 
     model = ml_model.smaller_build_model(inputDimensions=(80, 80, 1))
     model.load_weights(log_path)
@@ -28,18 +29,17 @@ def eval(log_path, radar_product):
 def main(results):
     os.chdir(settings.WORKING_DIRECTORY)
     radar_product = utils.Radar_Products(results.radar_product)
-    log_path = 'model/small_images/Reflectivity.h5'
+    log_path = "model/small_images/Reflectivity.h5"
 
     print(log_path)
-    eval(log_path=log_path,
-         radar_product=radar_product)
+    eval(log_path=log_path, radar_product=radar_product)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-r',
-        '--radar_product',
+        "-r",
+        "--radar_product",
         type=int,
         default=1,
         help="""
@@ -48,7 +48,7 @@ if __name__ == "__main__":
             1 : Velocity
             2 : Correlation Coefficient
             3 : Differential Reflectivity
-        """
+        """,
     )
 
     results = parser.parse_args()

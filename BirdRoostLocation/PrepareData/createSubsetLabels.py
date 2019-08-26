@@ -3,17 +3,15 @@ import os
 import pandas
 
 
-def create_subset_labels(csv_input_path,
-                         subset_path,
-                         csv_output_path):
+def create_subset_labels(csv_input_path, subset_path, csv_output_path):
     full = pandas.read_csv(csv_input_path)
     subset = pandas.read_csv(subset_path)
 
     full_basenames = {}
     subset_basenames = []
-    full_file_list = list(full['AWS_file'])
-    is_roost_list = list(full['Roost'])
-    subset_file_list = list(subset['file_names'])
+    full_file_list = list(full["AWS_file"])
+    is_roost_list = list(full["Roost"])
+    subset_file_list = list(subset["file_names"])
 
     for i, file_name in enumerate(full_file_list):
         fbasename = file_name[:23]
@@ -29,9 +27,11 @@ def create_subset_labels(csv_input_path,
 
 
 def main():
-    create_subset_labels(csv_input_path=settings.LABEL_CSV,
-                         subset_path=settings.SUBSET_CSV,
-                         csv_output_path=settings.SUBSET_LABEL_CSV)
+    create_subset_labels(
+        csv_input_path=settings.LABEL_CSV,
+        subset_path=settings.SUBSET_CSV,
+        csv_output_path=settings.SUBSET_LABEL_CSV,
+    )
 
 
 if __name__ == "__main__":
