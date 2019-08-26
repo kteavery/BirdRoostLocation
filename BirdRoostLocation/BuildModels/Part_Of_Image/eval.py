@@ -14,11 +14,12 @@ def eval(log_path, radar_product):
         high_memory_mode=False,
     )
 
-    x, y, filenames = batch_generator.get_batch(
+    x, y, _ = batch_generator.get_batch(
         ml_set=utils.ML_Set.testing, dualPol=False, radar_product=radar_product
     )
 
-    model = ml_model.smaller_build_model(inputDimensions=(80, 80, 1))
+    # originally smaller_build_model()
+    model = ml_model.build_model(inputDimensions=(80, 80, 1))
     model.load_weights(log_path)
 
     predictions = model.predict(x)

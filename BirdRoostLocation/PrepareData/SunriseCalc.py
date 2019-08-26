@@ -33,16 +33,12 @@ def calculate_sunrise(year, month, day, latitude, longitude):
     # date
     dt = datetime.date(year, month, day)
 
-    # weekday
-    dow = dt.weekday()
-
     # Calculate the day of the year
     N = dt.toordinal() - datetime.date(dt.year, 1, 1).toordinal() + 1
 
     # Convert the longitude to hour value and calculate an approximate time
     lngHour = longitude / 15
     t_rise = N + ((6 - lngHour) / 24)
-    t_set = N + ((18 - lngHour) / 24)
 
     # Calculate the Sun's mean anomaly
     M_rise = (0.9856 * t_rise) - 3.289

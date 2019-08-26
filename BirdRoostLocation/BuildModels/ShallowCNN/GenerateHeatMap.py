@@ -65,7 +65,9 @@ def create_heatmaps(log_path, radar_product, epoch=""):
     model.load_weights(os.path.join(checkpoint_path, save_file.format(epoch)))
     batch_generator.get_batch(utils.ML_Set.testing, radar_product)
 
-    x, y, filenames = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
+    y, x, filenames, _, _ = batch_generator.get_batch(
+        utils.ML_Set.testing, radar_product
+    )
     for i in range(len(filenames)):
         img = x[i : i + 1]
         label = y[i : i + 1]

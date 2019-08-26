@@ -10,7 +10,6 @@ def create_subset_labels(csv_input_path, subset_path, csv_output_path):
     full_basenames = {}
     subset_basenames = []
     full_file_list = list(full["AWS_file"])
-    is_roost_list = list(full["Roost"])
     subset_file_list = list(subset["file_names"])
 
     for i, file_name in enumerate(full_file_list):

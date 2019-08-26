@@ -9,14 +9,12 @@ RADAR_IMAGE_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData/"
 class ML_Set(Enum):
     """Machine learning set enum, includes validation, train, and test."""
 
-    validation = 0, "Validation"
-    training = 1, "Training"
-    testing = 2, "Testing"
+    def __new__(cls, value):
+        enum_names = {0: "Validation", 1: "Training", 2: "Testing"}
 
-    def __new__(cls, value, name):
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = enum_names[value]
         return member
 
     def __int__(self):
@@ -24,14 +22,12 @@ class ML_Set(Enum):
 
 
 class ML_Model(Enum):
-    Shallow_CNN = 0, "Shallow_CNN"
-    Shallow_CNN_All = 1, "Shallow_CNN_All"
-    Shallow_CNN_Time = 2, "Shallow_CNN_Time"
+    def __new__(cls, value):
+        enum_names = {0: "Shallow_CNN", 1: "Shallow_CNN_All", 2: "Shallow_CNN_Time"}
 
-    def __new__(cls, value, name):
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = enum_names[value]
         return member
 
     def __int__(self):
@@ -41,15 +37,12 @@ class ML_Model(Enum):
 class Radar_Products(Enum):
     """Radar Product enum, includes reflectivity, velocity, rho_hv, and zdr."""
 
-    reflectivity = 0, "Reflectivity"
-    velocity = 1, "Velocity"
-    cc = 2, "Rho_HV"
-    diff_reflectivity = 3, "Zdr"
+    def __new__(cls, value):
+        enum_names = {0: "Reflectivity", 1: "Velocity", 2: "Rho_HV", 3: "Zdr"}
 
-    def __new__(cls, value, name):
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = enum_names[value]
         return member
 
     def __int__(self):
@@ -77,7 +70,7 @@ def getListOfFilesInDirectory(dir, fileType):
         list of fileNames
     """
     fileNames = []
-    for root, dirs, files in os.walk(dir):
+    for root, _, files in os.walk(dir):
         for f in files:
             if os.path.splitext(f)[1].lower() == fileType:
                 fullPath = os.path.join(root, f)

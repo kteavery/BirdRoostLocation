@@ -38,7 +38,7 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
             This should be a text file. (e.g. error.txt)
     """
     errors = []
-    for index, f in enumerate(fileNames):
+    for _, f in enumerate(fileNames):
         file_date = NexradUtils.getTimeStampFromFilename(f)
         file_radar = NexradUtils.getRadarFromFilename(f)
         bucketName = AWSNexradData.getBucketName(
@@ -79,7 +79,7 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
         outfile.write("\n".join(errors))
 
 
-def main():
+def main(results):
     """Formatted to run either locally or on schooner. Read in csv and get radar
      files listed in 'AWS_file' column"""
     savepath = "radarfiles/"

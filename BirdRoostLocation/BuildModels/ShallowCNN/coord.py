@@ -77,7 +77,7 @@ class _CoordinateChannel(Layer):
 
         if self.rank == 1:
             input_shape = [input_shape[i] for i in range(3)]
-            batch_shape, dim, channels = input_shape
+            batch_shape, dim, _ = input_shape
 
             xx_range = K.tile(
                 K.expand_dims(K.arange(0, dim), axis=0), K.stack([batch_shape, 1])
@@ -96,7 +96,7 @@ class _CoordinateChannel(Layer):
                 input_shape = K.shape(inputs)
 
             input_shape = [input_shape[i] for i in range(4)]
-            batch_shape, dim1, dim2, channels = input_shape
+            batch_shape, dim1, dim2, _ = input_shape
 
             xx_ones = K.ones(K.stack([batch_shape, dim2]), dtype="int32")
             xx_ones = K.expand_dims(xx_ones, axis=-1)
@@ -145,7 +145,7 @@ class _CoordinateChannel(Layer):
                 input_shape = K.shape(inputs)
 
             input_shape = [input_shape[i] for i in range(5)]
-            batch_shape, dim1, dim2, dim3, channels = input_shape
+            batch_shape, dim1, dim2, dim3, _ = input_shape
 
             xx_ones = K.ones(K.stack([batch_shape, dim3]), dtype="int32")
             xx_ones = K.expand_dims(xx_ones, axis=-1)

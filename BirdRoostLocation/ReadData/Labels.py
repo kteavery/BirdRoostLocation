@@ -194,9 +194,7 @@ class Color_ML_Label(ML_Label):
     def __init__(self, file_name, pd_row, root_dir, high_memory_mode):
         ML_Label.__init__(self, file_name, pd_row, root_dir, high_memory_mode)
         for radar_product in utils.Radar_Products:
-            image_path = self.__get_radar_product_path(
-                root_dir, radar_product.fullname, self.is_roost
-            )
+            image_path = self.__get_radar_product_path(root_dir, radar_product.fullname)
             self.images[radar_product] = image_path
 
     def __get_radar_product_path(self, root_dir, radar_product):

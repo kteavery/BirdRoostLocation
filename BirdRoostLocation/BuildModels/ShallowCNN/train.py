@@ -155,7 +155,7 @@ def train(
                         val_logs[1],
                     )
                 )
-                x_, y_, _, x, y = None
+                x_, y_, x, y = [None] * 4
 
             except Exception as e:
                 print(e)

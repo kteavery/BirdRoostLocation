@@ -43,7 +43,7 @@ def eval(log_path, radar_product):
         default_batch_size=5000,
     )
 
-    x, y, filenames = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
+    y, x, _, _, _ = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
     model = ml_model.build_model(inputDimensions=(240, 240, 3))
     model.load_weights(log_path)
 
