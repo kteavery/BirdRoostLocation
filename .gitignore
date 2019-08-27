@@ -18,3 +18,5 @@ QuickCode
 *.jpg
 *.code-workspace
 *.vscode
+*.out
+*.err

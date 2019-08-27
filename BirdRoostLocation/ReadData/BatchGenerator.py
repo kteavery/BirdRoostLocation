@@ -305,6 +305,14 @@ class Single_Product_Batch_Generator(Batch_Generator):
         for key in no_roost_sets:
             print(len(no_roost_sets[key]))
 
+        #print("Get batch: ")
+        #print(str(len(roost_sets)))
+        #print(str(len(no_roost_sets)))
+        #for key in roost_sets:
+        #print(len(roost_sets[key]))
+        #for key in no_roost_sets:
+        #print(len(no_roost_sets[key]))
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
 
@@ -493,7 +501,7 @@ class Temporal_Batch_Generator(Batch_Generator):
                 if len(images) == (num_temporal_data * 24) + 1:  # 24 or 3?
                     ground_truths.append([is_roost, 1 - is_roost])
                     train_data.append(images)
-        # print("TRAIN DATA")
+        #print("TRAIN DATA")
         # print(np.array(train_data).shape)
         train_data = np.rollaxis(np.array(train_data), 1, 4)
 

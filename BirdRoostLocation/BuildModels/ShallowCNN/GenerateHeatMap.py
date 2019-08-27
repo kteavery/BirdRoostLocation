@@ -56,6 +56,7 @@ def create_heatmaps(log_path, radar_product, epoch=""):
         default_batch_size=8,
     )
 
+
     save_file = ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, "{}")
 
     titles = ["No Roost", "Roost"]

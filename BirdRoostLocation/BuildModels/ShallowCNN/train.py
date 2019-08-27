@@ -126,6 +126,7 @@ def train(
         print("X AND Y: ")
         print(x.shape)
         print(y.shape)
+        
         train_logs = model.train_on_batch(x, y)
         print(
             progress_string.format(
