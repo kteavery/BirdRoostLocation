@@ -15,7 +15,7 @@ import os
 import matplotlib
 
 real_path = os.path.realpath(__file__)
-setting_path = os.path.join(os.path.dirname(real_path), 'settings.json')
+setting_path = os.path.join(os.path.dirname(real_path), "settings.json")
 data = json.load(open(setting_path))
 
 WORKING_DIRECTORY = str(data["cwd"])
@@ -24,7 +24,7 @@ SUBSET_CSV = str(data["subset_files_csv"])
 ML_SPLITS_DATA = str(data["ml_splits_csv"])
 DEFAULT_BATCH_SIZE = 8
 
-if(bool(data["schooner"])):
-    print('schooner')
+if bool(data["schooner"]):
+    print("schooner")
 
-matplotlib.use('agg')  # Required for running on schooner
+matplotlib.use("agg")  # Required for running on schooner

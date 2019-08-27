@@ -38,13 +38,15 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
             This should be a text file. (e.g. error.txt)
     """
     errors = []
-    for index, f in enumerate(fileNames):
+    for _, f in enumerate(fileNames):
         file_date = NexradUtils.getTimeStampFromFilename(f)
         file_radar = NexradUtils.getRadarFromFilename(f)
-        bucketName = AWSNexradData.getBucketName(year=file_date.year,
-                                                 month=file_date.month,
-                                                 day=file_date.day,
-                                                 radar=file_radar)
+        bucketName = AWSNexradData.getBucketName(
+            year=file_date.year,
+            month=file_date.month,
+            day=file_date.day,
+            radar=file_radar,
+        )
         fileName = bucketName + f
 
         radardir = saveDir + bucketName[11:] + bucketName[:11]
@@ -57,47 +59,47 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
         if not os.path.isfile(radardir + f):
             try:
                 file = None
-                for filename in AWSNexradData.getFileNamesFromBucket(bucket,
-                                                                     bucketName):
+                for filename in AWSNexradData.getFileNamesFromBucket(
+                    bucket, bucketName
+                ):
                     # Ignore seconds when searching for file
                     if f[0:17] in filename:
-                        file = AWSNexradData.downloadDataFromBucket(bucket,
-                                                                    filename)
-                print('downloaded: ', f)
+                        file = AWSNexradData.downloadDataFromBucket(bucket, filename)
+                print("downloaded: ", f)
                 shutil.copy(file.name, radardir + f)
             except Exception as e:
-                errors.append('{}, {}'.format(fileName, str(e)))
+                errors.append("{}, {}".format(fileName, str(e)))
 
         else:
-            print('skipping, file already exists: {}{}'.format(radardir, f))
+            print("skipping, file already exists: {}{}".format(radardir, f))
         conn.close()
 
     if len(errors) > 0:
-        outfile = open(error_file_name, 'w')
+        outfile = open(error_file_name, "w")
         outfile.write("\n".join(errors))
 
 
-def main():
+def main(results):
     """Formatted to run either locally or on schooner. Read in csv and get radar
      files listed in 'AWS_file' column"""
-    savepath = 'radarfiles/'
-    labels = pandas.read_csv(filepath_or_buffer=settings.LABEL_CSV,
-                             skip_blank_lines=True)
+    savepath = "radarfiles/"
+    labels = pandas.read_csv(
+        filepath_or_buffer=settings.LABEL_CSV, skip_blank_lines=True
+    )
     radar_labels = labels[labels.radar == results.radar]
-    fileNames = list(radar_labels['AWS_file'])
-    downloadRadarsFromList(fileNames, savepath,
-                           'error_{0}.txt'.format(results.radar))
+    fileNames = list(radar_labels["AWS_file"])
+    downloadRadarsFromList(fileNames, savepath, "error_{0}.txt".format(results.radar))
 
 
 if __name__ == "__main__":
     os.chdir(settings.WORKING_DIRECTORY)
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-r',
-        '--radar',
+        "-r",
+        "--radar",
         type=str,
-        default='KLIX',
-        help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX"""
+        default="KLIX",
+        help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX""",
     )
     results = parser.parse_args()
     main(results)

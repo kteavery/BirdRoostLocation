@@ -24,17 +24,14 @@ def calculate_sunrise(year, month, day, latitude, longitude):
         Datetime object, the sunrise time in UTC
     """
     if latitude < -90 or latitude > 90:
-        raise ValueError('Invalid latitude value')
+        raise ValueError("Invalid latitude value")
     if longitude < -180 or longitude > 180:
-        raise ValueError('Invalid longitude value')
+        raise ValueError("Invalid longitude value")
 
     zenith = 90.83333
 
     # date
     dt = datetime.date(year, month, day)
-
-    # weekday
-    dow = dt.weekday()
 
     # Calculate the day of the year
     N = dt.toordinal() - datetime.date(dt.year, 1, 1).toordinal() + 1
@@ -42,23 +39,22 @@ def calculate_sunrise(year, month, day, latitude, longitude):
     # Convert the longitude to hour value and calculate an approximate time
     lngHour = longitude / 15
     t_rise = N + ((6 - lngHour) / 24)
-    t_set = N + ((18 - lngHour) / 24)
 
     # Calculate the Sun's mean anomaly
     M_rise = (0.9856 * t_rise) - 3.289
 
     # Calculate the Sun's true longitude, and adjust angle to be between 0
     # and 360
-    L_rise = ((M_rise
-               + (1.916 * math.sin(math.radians(M_rise)))
-               + (0.020 * math.sin(math.radians(2 * M_rise)))
-               + 282.634)
-              % 360)
+    L_rise = (
+        M_rise
+        + (1.916 * math.sin(math.radians(M_rise)))
+        + (0.020 * math.sin(math.radians(2 * M_rise)))
+        + 282.634
+    ) % 360
 
     # Calculate the Sun's right ascension, and adjust angle to be between 0
     # and 360
-    RA_rise = (math.degrees(math.atan(
-        0.91764 * math.tan(math.radians(L_rise))))) % 360
+    RA_rise = (math.degrees(math.atan(0.91764 * math.tan(math.radians(L_rise))))) % 360
 
     # Right ascension value needs to be in the same quadrant as L
     Lquadrant_rise = (math.floor(L_rise / 90)) * 90
@@ -77,8 +73,9 @@ def calculate_sunrise(year, month, day, latitude, longitude):
     radian_lat = math.radians(latitude)
     sin_latitude = math.sin(radian_lat)
     cos_latitude = math.cos(radian_lat)
-    cosH_rise = (cos_zenith - (sinDec_rise * sin_latitude)) / \
-                (cosDec_rise * cos_latitude)
+    cosH_rise = (cos_zenith - (sinDec_rise * sin_latitude)) / (
+        cosDec_rise * cos_latitude
+    )
 
     # Finish calculating H and convert into hours
     H_rise = (360 - math.degrees(math.acos(cosH_rise))) / 15
@@ -95,7 +92,8 @@ def calculate_sunrise(year, month, day, latitude, longitude):
 
     # Create datetime objects with same date, but with hour and minute
     # specified
-    rise_dt = datetime.datetime(year=year, day=day, month=month, hour=h_rise,
-                                minute=m_rise)
+    rise_dt = datetime.datetime(
+        year=year, day=day, month=month, hour=h_rise, minute=m_rise
+    )
 
     return rise_dt

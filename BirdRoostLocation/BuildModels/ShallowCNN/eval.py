@@ -40,10 +40,10 @@ def eval(log_path, radar_product):
         ml_split_csv=settings.ML_SPLITS_DATA,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=5000)
+        default_batch_size=5000,
+    )
 
-    x, y, filenames = batch_generator.get_batch(utils.ML_Set.testing,
-                                                radar_product)
+    y, x, _, _, _ = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
     model = ml_model.build_model(inputDimensions=(240, 240, 3))
     model.load_weights(log_path)
 
@@ -57,21 +57,20 @@ def main(results):
     if results.log_path is None:
         log_path = os.path.join(
             ml_utils.LOG_PATH.format(radar_product.fullname),
-            ml_utils.KERAS_SAVE_FILE.format(
-                radar_product.fullname, ''))
+            ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, ""),
+        )
     else:
         log_path = results.log_path
 
     print(log_path)
-    eval(log_path=log_path,
-         radar_product=radar_product)
+    eval(log_path=log_path, radar_product=radar_product)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-r',
-        '--radar_product',
+        "-r",
+        "--radar_product",
         type=int,
         default=0,
         help="""
@@ -80,17 +79,17 @@ if __name__ == "__main__":
             1 : Velocity
             2 : Correlation Coefficient
             3 : Differential Reflectivity
-        """
+        """,
     )
     parser.add_argument(
-        '-l',
-        '--log_path',
+        "-l",
+        "--log_path",
         type=str,
         default=None,
         help="""
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5
-        """
+        """,
     )
     results = parser.parse_args()
     main(results)

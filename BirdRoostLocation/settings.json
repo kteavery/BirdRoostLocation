@@ -1,7 +1,7 @@
 {
-  "cwd": "/condo/swatwork/keavery/masters_thesis/clean_images",
-  "label_csv": "ml_labels.csv",
-  "ml_splits_csv": "ml_splits.csv",
+  "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
+  "label_csv": "subset_labels.csv",
+  "ml_splits_csv": "subset_ml_splits.csv",
   "subset_files_csv": "subset_files.csv",
-  "schooner": true
+  "schooner": false
 }
