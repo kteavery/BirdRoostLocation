@@ -31,19 +31,20 @@ def createLabelForFiles(fileNames, saveDir):
             files.
         saveDir: The directory where the images will be saved in.
     """
-    radarFilePath = 'radarfiles/'
+    radarFilePath = "radarfiles/"
     for f in fileNames:
         try:
             root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
-            name = f.replace('.gz', '')
-            imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + '/'
+            name = f.replace(".gz", "")
+            imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
             imgPath = os.path.join(
-                imgDir.replace(saveDir, os.path.join(saveDir, 'All_Color/')),
-                name + '.png')
+                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color/")),
+                name + ".png",
+            )
             print(imgPath)
 
             if not os.path.isfile(imgPath):
-                file = open(os.path.join(root, name), 'r')
+                file = open(os.path.join(root, name), "r")
                 if not os.path.exists(os.path.dirname(imgPath)):
                     os.makedirs(os.path.dirname(imgPath))
 
@@ -53,15 +54,13 @@ def createLabelForFiles(fileNames, saveDir):
                 VisualizeNexradData.visualizeRadardata(rad, imgPath, dualPol)
                 file.close()
 
-                d1 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                          'Reflectivity_Color/'))
-                d2 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                          'Velocity_Color/'))
+                d1 = imgDir.replace(
+                    saveDir, os.path.join(saveDir, "Reflectivity_Color/")
+                )
+                d2 = imgDir.replace(saveDir, os.path.join(saveDir, "Velocity_Color/"))
                 if dualPol:
-                    d3 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                              'Rho_HV_Color/'))
-                    d4 = imgDir.replace(saveDir, os.path.join(saveDir,
-                                                              'Zdr_Color/'))
+                    d3 = imgDir.replace(saveDir, os.path.join(saveDir, "Rho_HV_Color/"))
+                    d4 = imgDir.replace(saveDir, os.path.join(saveDir, "Zdr_Color/"))
 
                 if not os.path.exists(d1):
                     os.makedirs(d1)
@@ -74,52 +73,54 @@ def createLabelForFiles(fileNames, saveDir):
                         os.makedirs(d4)
 
                 img = Image.open(imgPath)
-                save_extension = '.png'
-                if (not dualPol):
+                save_extension = ".png"
+                if not dualPol:
                     img1 = img.crop((115, 100, 365, 350))
-                    img1.save(d1 + name + '_Reflectivity' + save_extension)
+                    img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 100, 740, 350))
-                    img2.save(d2 + name + '_Velocity' + save_extension)
+                    img2.save(d2 + name + "_Velocity" + save_extension)
 
-                if (dualPol):
+                if dualPol:
                     img1 = img.crop((115, 140, 365, 390))
-                    img1.save(d1 + name + '_Reflectivity' + save_extension)
+                    img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 140, 740, 390))
-                    img2.save(d2 + name + '_Velocity' + save_extension)
+                    img2.save(d2 + name + "_Velocity" + save_extension)
 
                     img3 = img.crop((115, 520, 365, 770))
-                    img3.save(d3 + name + '_Zdr' + save_extension)
+                    img3.save(d3 + name + "_Zdr" + save_extension)
 
                     img4 = img.crop((495, 520, 740, 770))
-                    img4.save(d4 + name + '_Rho_HV' + save_extension)
+                    img4.save(d4 + name + "_Rho_HV" + save_extension)
 
                     # print root + '/' + name
         except Exception as e:
-            print('{}, {}'.format(imgPath, str(e)))
+            print("{}, {}".format(imgPath, str(e)))
 
 
 def main(results):
     """Formatted to run either locally or on schooner. Read in csv and get radar
      files listed in 'AWS_file' column. Save these files out as png images."""
-    labels = pandas.read_csv(filepath_or_buffer=settings.LABEL_CSV,
-                             skip_blank_lines=True)
+    labels = pandas.read_csv(
+        filepath_or_buffer=settings.LABEL_CSV, skip_blank_lines=True
+    )
 
     radar_labels = labels[labels.radar == results.radar]
-    createLabelForFiles(fileNames=list(radar_labels['AWS_file']),
-                        saveDir=utils.RADAR_IMAGE_DIR)
+    createLabelForFiles(
+        fileNames=list(radar_labels["AWS_file"]), saveDir=utils.RADAR_IMAGE_DIR
+    )
 
 
 if __name__ == "__main__":
     os.chdir(settings.WORKING_DIRECTORY)
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-r',
-        '--radar',
+        "-r",
+        "--radar",
         type=str,
-        default='KLIX',
-        help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX"""
+        default="KLIX",
+        help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX""",
     )
     results = parser.parse_args()
     main(results)

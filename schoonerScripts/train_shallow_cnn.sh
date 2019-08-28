@@ -9,7 +9,7 @@
 #SBATCH -p swat_plus
 #SBATCH -t 47:00:00
 #SBATCH --array=0-3
-#SBATCH --mem 32G
+#SBATCH --mem 120G
 
 # cd to directory where job was submitted from
 cd $SLURM_SUBMIT_DIR
@@ -26,13 +26,13 @@ echo $SLURM_ARRAY_TASK_ID
 
 python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
 BirdRoostLocation/BuildModels/ShallowCNN/train.py \
---radar_product=$RADARS_PRODUCT \
---log_path=model/Reflectivity/ \
+--radar_product=1 \
+--log_path=model/Velocity/ \
 --eval_increment=5 \
 --num_iterations=10000 \
 --checkpoint_frequency=100 \
 --learning_rate=.0001 \
---model=2 \
---high_memory_mode=True \
---num_temporal_data=$TIME \
---dual_pol=$DUAL_POL
+--model=0 \
+--high_memory_mode="" \
+--num_temporal_data=1 \
+--dual_pol="true"

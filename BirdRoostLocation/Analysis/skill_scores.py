@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.metrics import roc_curve, auc
 
+
 def get_skill_scores(predictions, truths):
     """Compute skill score and accuracy metrics for the machine learning
     results.
@@ -36,11 +37,11 @@ def get_skill_scores(predictions, truths):
             TP += 1
 
     ACC = (TP + TN) / (TP + FP + FN + TN)
-    if (TP + FN) > 0 :
+    if (TP + FN) > 0:
         TPR = (TP) / (TP + FN)
     else:
         TPR = 0
-    if (TN + FP) > 0 :
+    if (TN + FP) > 0:
         TNR = (TN) / (TN + FP)
     else:
         TNR = 0
@@ -51,12 +52,12 @@ def get_skill_scores(predictions, truths):
 
 
 def print_skill_scores(ACC, TPR, TNR, ROC_AUC):
-    print('\tACC', ACC)
-    print('\tTPR', TPR)
-    print('\tTNR', TNR)
-    print('\tAUC', ROC_AUC)
+    print("\tACC", ACC)
+    print("\tTPR", TPR)
+    print("\tTNR", TNR)
+    print("\tAUC", ROC_AUC)
 
     # This command prints a row of my latex table
-    print('\t& {0:.3f} & {1:.3f} & {2:.3f} & {3:.3f} \\\\'.format(ACC, TPR,
-                                                                  TNR,
-                                                                  ROC_AUC))
+    print(
+        "\t& {0:.3f} & {1:.3f} & {2:.3f} & {3:.3f} \\\\".format(ACC, TPR, TNR, ROC_AUC)
+    )

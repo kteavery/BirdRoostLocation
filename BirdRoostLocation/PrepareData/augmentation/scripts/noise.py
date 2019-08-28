@@ -8,13 +8,20 @@ from PIL import Image
 ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation"
 
 directory = ROOT_DIR
-data_directories = ["Roost_Reflectivity", "Roost_Velocity",
-                    "Roost_Zdr", "Roost_Rho_HV", "NoRoost_Reflectivity",
-                    "NoRoost_Velocity", "NoRoost_Zdr", "NoRoost_Rho_HV"]
+data_directories = [
+    "Roost_Reflectivity",
+    "Roost_Velocity",
+    "Roost_Zdr",
+    "Roost_Rho_HV",
+    "NoRoost_Reflectivity",
+    "NoRoost_Velocity",
+    "NoRoost_Zdr",
+    "NoRoost_Rho_HV",
+]
 
-flip_directories = ["Flip_"+i for i in data_directories]
+flip_directories = ["Flip_" + i for i in data_directories]
 data_directories.extend(flip_directories)
-rotate_directories = ["Rotate_"+i for i in data_directories]
+rotate_directories = ["Rotate_" + i for i in data_directories]
 data_directories.extend(rotate_directories)
 
 # https://stackoverflow.com/questions/22937589/how-to-add-noise-gaussian
@@ -22,38 +29,41 @@ data_directories.extend(rotate_directories)
 
 
 def salt_pepper(image):
-    row, col, ch = image.shape
     s_vs_p = 0.5
     amount = 0.02
     out = np.copy(image)
     # Salt
     num_salt = np.ceil(amount * image.size * s_vs_p)
-    coords = [np.random.randint(0, i - 1, int(num_salt))
-              for i in image.shape]
+    coords = [np.random.randint(0, i - 1, int(num_salt)) for i in image.shape]
     out[tuple(coords)] = 255
 
     # Pepper
-    num_pepper = np.ceil(amount * image.size * (1. - s_vs_p))
-    coords = [np.random.randint(0, i - 1, int(num_pepper))
-              for i in image.shape]
+    num_pepper = np.ceil(amount * image.size * (1.0 - s_vs_p))
+    coords = [np.random.randint(0, i - 1, int(num_pepper)) for i in image.shape]
     out[tuple(coords)] = 0
     return out
 
 
 def main():
     for data_dir in data_directories:
-        for file in os.listdir(directory+"/MLData/data/"+data_dir):
+        for file in os.listdir(directory + "/MLData/data/" + data_dir):
             if file.endswith(".png") or file.endswith(".jpg"):
-                image_ary = cv2.imread(directory+"/MLData/data/" +
-                                       data_dir+"/"+file)
+                image_ary = cv2.imread(
+                    directory + "/MLData/data/" + data_dir + "/" + file
+                )
 
                 noisy = salt_pepper(image_ary)
 
                 filename = os.path.basename(file)
-                os.makedirs(directory + "/MLData/data/Noise_" + data_dir,
-                            exist_ok=True)
-                newfile = directory + "/MLData/data/Noise_" + data_dir + "/" \
-                    + filename[:-4] + "_noise.png"
+                os.makedirs(directory + "/MLData/data/Noise_" + data_dir, exist_ok=True)
+                newfile = (
+                    directory
+                    + "/MLData/data/Noise_"
+                    + data_dir
+                    + "/"
+                    + filename[:-4]
+                    + "_noise.png"
+                )
                 cv2.imwrite(newfile, noisy)
 
 

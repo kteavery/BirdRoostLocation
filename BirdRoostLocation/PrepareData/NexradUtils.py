@@ -19,11 +19,10 @@ def getRadarNames(minLat, maxLat, minLon, maxLon):
     """
     radars = []
     for key in list(nexrad.NEXRAD_LOCATIONS.keys()):
-        if (key[0] == 'K'):
-            lat = float(nexrad.NEXRAD_LOCATIONS[key]['lat'])
-            lon = float(nexrad.NEXRAD_LOCATIONS[key]['lon'])
-            if (lat >= minLat and lat <= maxLat
-                and lon >= minLon and lon <= maxLon):
+        if key[0] == "K":
+            lat = float(nexrad.NEXRAD_LOCATIONS[key]["lat"])
+            lon = float(nexrad.NEXRAD_LOCATIONS[key]["lon"])
+            if lat >= minLat and lat <= maxLat and lon >= minLon and lon <= maxLon:
                 radars.append(key)
     return radars
 
@@ -37,8 +36,10 @@ def getRadarLocation(radar):
     Returns:
         A list: [lat, lon]
     """
-    return [nexrad.NEXRAD_LOCATIONS[radar]['lat'],
-            nexrad.NEXRAD_LOCATIONS[radar]['lon']]
+    return [
+        nexrad.NEXRAD_LOCATIONS[radar]["lat"],
+        nexrad.NEXRAD_LOCATIONS[radar]["lon"],
+    ]
 
 
 def getRadarsInRadius(lat, lon, radius_km=300.0):
@@ -72,8 +73,8 @@ def getDistanceFromRadar(lat, lon, radar):
     Returns:
         distance in kilometers, float
     """
-    radar_lat = float(nexrad.NEXRAD_LOCATIONS[radar]['lat'])
-    radar_lon = float(nexrad.NEXRAD_LOCATIONS[radar]['lon'])
+    radar_lat = float(nexrad.NEXRAD_LOCATIONS[radar]["lat"])
+    radar_lon = float(nexrad.NEXRAD_LOCATIONS[radar]["lon"])
     distance_km = geo.haversine_distance(lat, lon, radar_lat, radar_lon) / 1000
     return distance_km
 
@@ -93,7 +94,7 @@ def getClosestRadar(lat, lon):
     min_distance = sys.maxsize
     for key in list(nexrad.NEXRAD_LOCATIONS.keys()):
         distance = getDistanceFromRadar(lat, lon, key)
-        if (min_distance > distance):
+        if min_distance > distance:
             radar = key
             min_distance = distance
     return radar, min_distance
@@ -109,8 +110,7 @@ def getTimeStampFromFilename(filename):
         datetime object, the date corresponding with the radar datum timestamp.
     """
     base_f = os.path.basename(filename)
-    radar_date = datetime.datetime.strptime(base_f[4:19],
-                                            '%Y%m%d_%H%M%S')
+    radar_date = datetime.datetime.strptime(base_f[4:19], "%Y%m%d_%H%M%S")
     return radar_date
 
 
@@ -141,5 +141,10 @@ def getBasePath(radarFileName):
         string path, RRRR/YYYY/MM/DD
     """
     radarFileName = os.path.basename(radarFileName)
-    return os.path.join(radarFileName[0:4], radarFileName[4:8],
-                        radarFileName[8:10], radarFileName[10:12])
+    return os.path.join(
+        radarFileName[0:4],
+        radarFileName[4:8],
+        radarFileName[8:10],
+        radarFileName[10:12],
+    )
+

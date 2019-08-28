@@ -1,21 +1,23 @@
 from enum import Enum
 import os
 
-RADAR_FILE_DIR = 'radarfiles/'
+RADAR_FILE_DIR = "radarfiles/"
 # TODO change when running on schooner
-RADAR_IMAGE_DIR = '/Users/Kate/workspace/BirdRoostLocation/MLData/'
+RADAR_IMAGE_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData/"
 
 
 class ML_Set(Enum):
     """Machine learning set enum, includes validation, train, and test."""
-    validation = 0, 'Validation'
-    training = 1, 'Training'
-    testing = 2, 'Testing'
+
+    validation = 0, "Validation"
+    training = 1, "Training"
+    testing = 2, "Testing"
 
     def __new__(cls, value, name):
+        # enum_names = {0: "Validation", 1: "Training", 2: "Testing"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):
@@ -23,14 +25,15 @@ class ML_Set(Enum):
 
 
 class ML_Model(Enum):
-    Shallow_CNN = 0, 'Shallow_CNN'
-    Shallow_CNN_All = 1, 'Shallow_CNN_All'
-    Shallow_CNN_Time = 2, 'Shallow_CNN_Time'
+    Shallow_CNN = 0, "Shallow_CNN"
+    Shallow_CNN_All = 1, "Shallow_CNN_All"
+    Shallow_CNN_Time = 2, "Shallow_CNN_Time"
 
     def __new__(cls, value, name):
+        # enum_names = {0: "Shallow_CNN", 1: "Shallow_CNN_All", 2: "Shallow_CNN_Time"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):
@@ -39,15 +42,17 @@ class ML_Model(Enum):
 
 class Radar_Products(Enum):
     """Radar Product enum, includes reflectivity, velocity, rho_hv, and zdr."""
-    reflectivity = 0, 'Reflectivity'
-    velocity = 1, 'Velocity'
-    cc = 2, 'Rho_HV'
-    diff_reflectivity = 3, 'Zdr'
+
+    reflectivity = 0, "Reflectivity"
+    velocity = 1, "Velocity"
+    cc = 2, "Rho_HV"
+    diff_reflectivity = 3, "Zdr"
 
     def __new__(cls, value, name):
+        # enum_names = {0: "Reflectivity", 1: "Velocity", 2: "Rho_HV", 3: "Zdr"}
         member = object.__new__(cls)
         member._value_ = value
-        member.fullname = name
+        member.fullname = name  # enum_names[value]
         return member
 
     def __int__(self):
@@ -57,10 +62,10 @@ class Radar_Products(Enum):
 Legacy_radar_products = [Radar_Products.reflectivity, Radar_Products.velocity]
 
 pyart_key_dict = {
-    Radar_Products.reflectivity: 'reflectivity',
-    Radar_Products.velocity: 'velocity',
-    Radar_Products.diff_reflectivity: 'differential_reflectivity',
-    Radar_Products.cc: 'cross_correlation_ratio'
+    Radar_Products.reflectivity: "reflectivity",
+    Radar_Products.velocity: "velocity",
+    Radar_Products.diff_reflectivity: "differential_reflectivity",
+    Radar_Products.cc: "cross_correlation_ratio",
 }
 
 
@@ -75,7 +80,7 @@ def getListOfFilesInDirectory(dir, fileType):
         list of fileNames
     """
     fileNames = []
-    for root, dirs, files in os.walk(dir):
+    for root, _, files in os.walk(dir):
         for f in files:
             if os.path.splitext(f)[1].lower() == fileType:
                 fullPath = os.path.join(root, f)
