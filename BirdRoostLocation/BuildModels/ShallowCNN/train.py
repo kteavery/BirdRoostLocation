@@ -98,7 +98,6 @@ def train(
 
     # Setup callbacks
     callback = TensorBoard(log_path)
-    callback.set_model(model)
     train_names = ["train_loss", "train_accuracy"]
     val_names = ["val_loss", "val_accuracy"]
 
@@ -132,6 +131,7 @@ def train(
                 lr=lr,
                 coordConv=True,
             )
+        callback.set_model(model)
 
         train_logs = model.train_on_batch(x, y)
         print(
