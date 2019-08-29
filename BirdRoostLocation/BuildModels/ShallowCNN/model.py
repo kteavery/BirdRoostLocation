@@ -68,6 +68,6 @@ def build_model(numSamples, inputDimensions, lr=0.0001, coordConv=False):
         metrics=["accuracy"],
     )
 
-    model.summary()
+    # model.summary()
 
     return model

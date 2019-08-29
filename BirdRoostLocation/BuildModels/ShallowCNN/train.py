@@ -29,6 +29,7 @@ from keras.callbacks import TensorBoard
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
+import tensorflow as tf
 import datetime
 
 
@@ -81,12 +82,18 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
+        model = keras_model.build_model(
+            numSamples=200, inputDimensions=(240, 240, 3), lr=lr, coordConv=True
+        )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
+        )
+        model = keras_model.build_model(
+            numSamples=200, inputDimensions=(240, 240, 4), lr=lr, coordConv=True
         )
 
     else:
@@ -95,9 +102,16 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=True,
         )
+        model = keras_model.build_model(
+            numSamples=200,
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+            lr=lr,
+            coordConv=True,
+        )
 
     # Setup callbacks
     callback = TensorBoard(log_path)
+    callback.set_model(model)
     train_names = ["train_loss", "train_accuracy"]
     val_names = ["val_loss", "val_accuracy"]
 
@@ -116,24 +130,33 @@ def train(
         print(x.shape)
         print(y.shape)
 
-        if model_name == utils.ML_Model.Shallow_CNN:
-            model = keras_model.build_model(
-                numSamples=len(x), inputDimensions=(240, 240, 3), lr=lr, coordConv=True
-            )
-        elif model_name == utils.ML_Model.Shallow_CNN_All:
-            model = keras_model.build_model(
-                numSamples=len(x), inputDimensions=(240, 240, 4), lr=lr, coordConv=True
-            )
-        else:
-            model = keras_model.build_model(
-                numSamples=len(x),
-                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-                lr=lr,
-                coordConv=True,
-            )
-        callback.set_model(model)
+        # sometimes, batch size will differ, and numSamples will need to change
+        try:
+            train_logs = model.train_on_batch(x, y)
+        except tf.python.framework.errors_impl.InvalidArgumentError as e:
+            if model_name == utils.ML_Model.Shallow_CNN:
+                model = keras_model.build_model(
+                    numSamples=len(x),
+                    inputDimensions=(240, 240, 3),
+                    lr=lr,
+                    coordConv=True,
+                )
+            elif model_name == utils.ML_Model.Shallow_CNN_All:
+                model = keras_model.build_model(
+                    numSamples=len(x),
+                    inputDimensions=(240, 240, 4),
+                    lr=lr,
+                    coordConv=True,
+                )
+            else:
+                model = keras_model.build_model(
+                    numSamples=len(x),
+                    inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+                    lr=lr,
+                    coordConv=True,
+                )
+            train_logs = model.train_on_batch(x, y)
 
-        train_logs = model.train_on_batch(x, y)
         print(
             progress_string.format(
                 utils.ML_Set.training.fullname, batch_no, train_logs[0], train_logs[1]
