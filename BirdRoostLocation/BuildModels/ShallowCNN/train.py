@@ -164,6 +164,7 @@ def train(
         )
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
+        # only print validation and create plots every once in a while
         if batch_no % eval_increment == 0:
             currentDT = datetime.datetime.now()
             model.save_weights(log_path + str(currentDT) + save_file.format(""))
