@@ -99,12 +99,16 @@ class ML_Label:
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
         if is_roost:
             return os.path.join(
-                root_dir, "data/Roost_" + "{1}/", "{2}{0}_{1}" + ".png"
-            ).format(self.fileName, radar_product, self.fileName[10:12])
+                root_dir,
+                "data/Roost_" + f"{radar_product}/",
+                f"{self.fileName[10:12]}{self.fileName}_{radar_product}" + ".png",
+            )
         else:
             return os.path.join(
-                root_dir, "data/NoRoost_" + "{1}/", "{2}{0}_{1}" + ".png"
-            ).format(self.fileName, radar_product, self.fileName[10:12])
+                root_dir,
+                "data/NoRoost_" + f"{radar_product}/",
+                f"{self.fileName[10:12]}{self.fileName}_{radar_product}" + ".png",
+            )
 
     def __get_augmented_product_paths(self, root_dir, radar_product, is_roost):
         paths = []
@@ -112,21 +116,31 @@ class ML_Label:
             paths.extend(
                 [
                     os.path.join(
-                        root_dir + "data/" + roost + "{1}/" + "{2}{0}_{1}.png"
-                    ).format(self.fileName, radar_product, self.fileName[10:12]),
+                        root_dir
+                        + "data/"
+                        + roost
+                        + f"{radar_product}/"
+                        + f"{self.fileName[10:12]}{self.fileName}_{radar_product}.png"
+                    ),
                     os.path.join(
-                        root_dir + "data/Flip_" + roost + "{1}/" + "{2}{0}_{1}_flip.png"
-                    ).format(self.fileName, radar_product, self.fileName[10:12]),
+                        root_dir
+                        + "data/Flip_"
+                        + roost
+                        + f"{radar_product}/"
+                        + f"{self.fileName[10:12]}{self.fileName}_{radar_product}_flip.png"
+                    ),
                     os.path.join(
                         root_dir
                         + "data/Noise_Flip_"
                         + roost
-                        + "{1}/"
-                        + "{2}{0}_{1}_flip_noise.png"
-                    ).format(self.fileName, radar_product, self.fileName[10:12]),
+                        + f"{radar_product}/"
+                        + f"{self.fileName[10:12]}{self.fileName}_{radar_product}_flip_noise.png"
+                    ),
                     os.path.join(
-                        root_dir, "data/Noise_" + roost + "{1}/", "{2}{0}_{1}_noise.png"
-                    ).format(self.fileName, radar_product, self.fileName[10:12]),
+                        root_dir,
+                        "data/Noise_" + roost + f"{radar_product}/",
+                        f"{self.fileName[10:12]}{self.fileName}_{radar_product}_noise.png",
+                    ),
                 ]
             )
 
@@ -135,19 +149,25 @@ class ML_Label:
                     [
                         os.path.join(
                             root_dir,
-                            "data/Noise_Rotate_" + roost + "{1}/",
-                            "{2}{0}_{1}_" + angle + "_noise.png",
-                        ).format(self.fileName, radar_product, self.fileName[10:12]),
+                            "data/Noise_Rotate_" + roost + f"{radar_product}/",
+                            f"{self.fileName[10:12]}{self.fileName}_{radar_product}_"
+                            + angle
+                            + "_noise.png",
+                        ),
                         os.path.join(
                             root_dir,
-                            "data/Rotate_" + roost + "{1}/",
-                            "{2}{0}_{1}_" + angle + ".png",
-                        ).format(self.fileName, radar_product, self.fileName[10:12]),
+                            "data/Rotate_" + roost + f"{radar_product}/",
+                            f"{self.fileName[10:12]}{self.fileName}_{radar_product}_"
+                            + angle
+                            + ".png",
+                        ),
                         os.path.join(
                             root_dir,
-                            "data/Rotate_Flip_" + roost + "{1}/",
-                            "{2}{0}_{1}_flip_" + angle + ".png",
-                        ).format(self.fileName, radar_product, self.fileName[10:12]),
+                            "data/Rotate_Flip_" + roost + f"{radar_product}/",
+                            f"{self.fileName[10:12]}{self.fileName}_{radar_product}_flip_"
+                            + angle
+                            + ".png",
+                        ),
                     ]
                 )
         return paths
@@ -198,8 +218,8 @@ class Color_ML_Label(ML_Label):
             self.images[radar_product] = image_path
 
     def __get_radar_product_path(self, root_dir, radar_product):
-        return os.path.join(root_dir, "{1}_Color/", "{0}_{1}.png").format(
-            self.fileName, radar_product
+        return os.path.join(
+            root_dir, f"{radar_product}_Color/", f"{self.fileName}_{radar_product}.png"
         )
 
     def __str__(self):

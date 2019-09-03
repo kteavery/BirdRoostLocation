@@ -58,6 +58,4 @@ def print_skill_scores(ACC, TPR, TNR, ROC_AUC):
     print("\tAUC", ROC_AUC)
 
     # This command prints a row of my latex table
-    print(
-        "\t& {0:.3f} & {1:.3f} & {2:.3f} & {3:.3f} \\\\".format(ACC, TPR, TNR, ROC_AUC)
-    )
+    print(f"\t& {ACC:.3f} & {TPR:.3f} & {TNR:.3f} & {ROC_AUC:.3f} \\\\")

@@ -68,10 +68,10 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
                 print("downloaded: ", f)
                 shutil.copy(file.name, radardir + f)
             except Exception as e:
-                errors.append("{}, {}".format(fileName, str(e)))
+                errors.append(f"{fileName}, {str(e)}")
 
         else:
-            print("skipping, file already exists: {}{}".format(radardir, f))
+            print(f"skipping, file already exists: {radardir}{f}")
         conn.close()
 
     if len(errors) > 0:
@@ -88,7 +88,7 @@ def main(results):
     )
     radar_labels = labels[labels.radar == results.radar]
     fileNames = list(radar_labels["AWS_file"])
-    downloadRadarsFromList(fileNames, savepath, "error_{0}.txt".format(results.radar))
+    downloadRadarsFromList(fileNames, savepath, f"error_{results.radar}.txt")
 
 
 if __name__ == "__main__":
