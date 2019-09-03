@@ -133,7 +133,7 @@ def train(
         # sometimes, batch size will differ, and numSamples will need to change
         try:
             train_logs = model.train_on_batch(x, y)
-        except tf.python.framework.errors_impl.InvalidArgumentError as e:
+        except:
             if model_name == utils.ML_Model.Shallow_CNN:
                 model = keras_model.build_model(
                     numSamples=len(x),
