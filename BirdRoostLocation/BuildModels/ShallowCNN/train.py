@@ -83,7 +83,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            numSamples=200, inputDimensions=(240, 240, 3), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 3), lr=lr, coordConv=True
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -93,7 +93,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            numSamples=200, inputDimensions=(240, 240, 4), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=True
         )
 
     else:
@@ -103,10 +103,7 @@ def train(
             high_memory_mode=True,
         )
         model = keras_model.build_model(
-            numSamples=200,
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-            lr=lr,
-            coordConv=True,
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1), lr=lr, coordConv=True
         )
 
     # Setup callbacks

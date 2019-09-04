@@ -74,10 +74,9 @@ class _CoordinateChannel(Layer):
         self.built = True
 
     def call(self, inputs, training=None, mask=None):
-        shape = K.shape(inputs)[1:]
-        # pool_shape = tf.unstack([shape[0], ...])  # Here you can mix integers and symbolic elements of `shape`
-        # input_shape = K.reshape(inputs, pool_shape)
-        input_shape = K.reshape(inputs, None + shape)
+        input_shape = K.shape(inputs)
+        # coord_shape = tf.unstack([None, shape])
+        # input_shape = K.reshape(inputs, coord_shape)
 
         if self.rank == 1:
             input_shape = [input_shape[i] for i in range(3)]
@@ -97,10 +96,9 @@ class _CoordinateChannel(Layer):
         if self.rank == 2:
             if self.data_format == "channels_first":
                 inputs = K.permute_dimensions(inputs, [0, 2, 3, 1])
-                shape = K.shape(inputs)[1:]
-                # pool_shape = tf.unstack([shape[0], ...])  # Here you can mix integers and symbolic elements of `shape`
-                # input_shape = K.reshape(inputs, pool_shape)
-                input_shape = K.reshape(inputs, None + shape)
+                input_shape = K.shape(inputs)
+                # coord_shape = tf.unstack([None, shape])
+                # input_shape = K.reshape(inputs, coord_shape)
 
             input_shape = [input_shape[i] for i in range(4)]
             batch_shape, dim1, dim2, _ = input_shape
@@ -150,10 +148,9 @@ class _CoordinateChannel(Layer):
             if self.data_format == "channels_first":
                 inputs = K.permute_dimensions(inputs, [0, 2, 3, 4, 1])
                 # input_shape = K.shape(inputs)
-                shape = K.shape(inputs)[1:]
-                # pool_shape = tf.unstack([shape[0], ...])  # Here you can mix integers and symbolic elements of `shape`
-                # input_shape = K.reshape(inputs, pool_shape)
-                input_shape = K.reshape(inputs, None + shape)
+                input_shape = K.shape(inputs)
+                # coord_shape = tf.unstack([None, shape])
+                # input_shape = K.reshape(inputs, coord_shape)
 
             input_shape = [input_shape[i] for i in range(5)]
             batch_shape, dim1, dim2, dim3, _ = input_shape

@@ -6,7 +6,7 @@ from BirdRoostLocation.BuildModels.ShallowCNN.coord import CoordinateChannel2D
 import keras
 
 
-def build_model(numSamples, inputDimensions, lr=0.0001, coordConv=False):
+def build_model(inputDimensions, lr=0.0001, coordConv=False):
     """Build the shallow CNN model.
 
     Args:
@@ -24,9 +24,7 @@ def build_model(numSamples, inputDimensions, lr=0.0001, coordConv=False):
     model = Sequential()
 
     if coordConv == True:
-        model.add(
-            CoordinateChannel2D(batch_input_shape=(numSamples,) + inputDimensions)
-        )
+        model.add(CoordinateChannel2D(input_shape=inputDimensions))
 
     model.add(Conv2D(8, kernel_size=(5, 5), input_shape=inputDimensions))
     model.add(BatchNormalization())
