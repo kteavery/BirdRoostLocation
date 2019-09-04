@@ -131,31 +131,31 @@ def train(
         print(y.shape)
 
         # sometimes, batch size will differ, and numSamples will need to change
-        try:
-            train_logs = model.train_on_batch(x, y)
-        except:
-            if model_name == utils.ML_Model.Shallow_CNN:
-                model = keras_model.build_model(
-                    numSamples=len(x),
-                    inputDimensions=(240, 240, 3),
-                    lr=lr,
-                    coordConv=True,
-                )
-            elif model_name == utils.ML_Model.Shallow_CNN_All:
-                model = keras_model.build_model(
-                    numSamples=len(x),
-                    inputDimensions=(240, 240, 4),
-                    lr=lr,
-                    coordConv=True,
-                )
-            else:
-                model = keras_model.build_model(
-                    numSamples=len(x),
-                    inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-                    lr=lr,
-                    coordConv=True,
-                )
-            train_logs = model.train_on_batch(x, y)
+        # try:
+        train_logs = model.train_on_batch(x, y)
+        # except:
+        #     if model_name == utils.ML_Model.Shallow_CNN:
+        #         model = keras_model.build_model(
+        #             numSamples=len(x),
+        #             inputDimensions=(240, 240, 3),
+        #             lr=lr,
+        #             coordConv=True,
+        #         )
+        #     elif model_name == utils.ML_Model.Shallow_CNN_All:
+        #         model = keras_model.build_model(
+        #             numSamples=len(x),
+        #             inputDimensions=(240, 240, 4),
+        #             lr=lr,
+        #             coordConv=True,
+        #         )
+        #     else:
+        #         model = keras_model.build_model(
+        #             numSamples=len(x),
+        #             inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+        #             lr=lr,
+        #             coordConv=True,
+        #         )
+        #     train_logs = model.train_on_batch(x, y)
 
         print(
             progress_string.format(
