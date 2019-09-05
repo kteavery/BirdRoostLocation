@@ -75,8 +75,6 @@ class _CoordinateChannel(Layer):
 
     def call(self, inputs, training=None, mask=None):
         input_shape = K.shape(inputs)
-        # coord_shape = tf.unstack([None, shape])
-        # input_shape = K.reshape(inputs, coord_shape)
 
         if self.rank == 1:
             input_shape = [input_shape[i] for i in range(3)]
@@ -97,8 +95,6 @@ class _CoordinateChannel(Layer):
             if self.data_format == "channels_first":
                 inputs = K.permute_dimensions(inputs, [0, 2, 3, 1])
                 input_shape = K.shape(inputs)
-                # coord_shape = tf.unstack([None, shape])
-                # input_shape = K.reshape(inputs, coord_shape)
 
             input_shape = [input_shape[i] for i in range(4)]
             batch_shape, dim1, dim2, _ = input_shape
@@ -147,10 +143,7 @@ class _CoordinateChannel(Layer):
         if self.rank == 3:
             if self.data_format == "channels_first":
                 inputs = K.permute_dimensions(inputs, [0, 2, 3, 4, 1])
-                # input_shape = K.shape(inputs)
                 input_shape = K.shape(inputs)
-                # coord_shape = tf.unstack([None, shape])
-                # input_shape = K.reshape(inputs, coord_shape)
 
             input_shape = [input_shape[i] for i in range(5)]
             batch_shape, dim1, dim2, dim3, _ = input_shape
