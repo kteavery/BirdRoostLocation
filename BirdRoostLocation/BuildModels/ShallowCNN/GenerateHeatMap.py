@@ -56,7 +56,6 @@ def create_heatmaps(log_path, radar_product, epoch=""):
         default_batch_size=8,
     )
 
-
     save_file = ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, "{}")
 
     titles = ["No Roost", "Roost"]
@@ -96,7 +95,7 @@ def create_heatmaps(log_path, radar_product, epoch=""):
 
         fig.colorbar(im, ax=axes.ravel().tolist(), orientation="horizontal", aspect=60)
 
-        fig.suptitle("{0}: {1}, {2}".format(titles[label[0][0]], prediction, filename))
+        fig.suptitle(f"{titles[label[0][0]]}: {prediction}, {filename}")
         save_file = filename + ".png"
         print(save_file)
         plt.savefig(save_file)

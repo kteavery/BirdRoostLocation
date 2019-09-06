@@ -96,7 +96,7 @@ def createLabelForFiles(fileNames, saveDir):
 
                     # print root + '/' + name
         except Exception as e:
-            print("{}, {}".format(imgPath, str(e)))
+            print(f"{imgPath}, {str(e)}")
 
 
 def main(results):

@@ -29,6 +29,7 @@ from keras.callbacks import TensorBoard
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
+import tensorflow as tf
 import datetime
 
 
@@ -74,6 +75,7 @@ def train(
 
     print("MODEL NAME")
     print(model_name)
+
     if model_name == utils.ML_Model.Shallow_CNN:
         batch_generator = BatchGenerator.Single_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -81,7 +83,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coordConv=False
+            inputDimensions=(240, 240, 3), lr=lr, coordConv=True
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -91,19 +93,17 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coordConv=False
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=True
         )
 
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
-            high_memory_mode=False,
+            high_memory_mode=True,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-            lr=lr,
-            coordConv=False,
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1), lr=lr, coordConv=True
         )
 
     # Setup callbacks
@@ -126,8 +126,9 @@ def train(
         print("X AND Y: ")
         print(x.shape)
         print(y.shape)
-        
+
         train_logs = model.train_on_batch(x, y)
+
         print(
             progress_string.format(
                 utils.ML_Set.training.fullname, batch_no, train_logs[0], train_logs[1]
@@ -135,6 +136,7 @@ def train(
         )
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
+        # only print validation and create plots every once in a while
         if batch_no % eval_increment == 0:
             currentDT = datetime.datetime.now()
             model.save_weights(log_path + str(currentDT) + save_file.format(""))

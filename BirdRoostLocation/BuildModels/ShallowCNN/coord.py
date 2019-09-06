@@ -7,6 +7,7 @@ from keras.engine import Layer, InputSpec
 from keras import backend as K
 from keras.utils.generic_utils import get_custom_objects
 import numpy as np
+import tensorflow as tf
 
 
 class _CoordinateChannel(Layer):
@@ -208,6 +209,7 @@ class _CoordinateChannel(Layer):
         return outputs
 
     def compute_output_shape(self, input_shape):
+
         assert input_shape and len(input_shape) >= 2
         assert input_shape[self.axis]
 
