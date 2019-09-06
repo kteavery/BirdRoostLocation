@@ -1,4 +1,5 @@
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 KERAS_SAVE_FILE = "{}{}.h5"
 LOG_PATH = "model/{}/{}/"
@@ -36,3 +37,22 @@ def write_log(callback, names, logs, batch_no):
         summary_value.tag = name
         callback.writer.add_summary(summary, batch_no)
         callback.writer.flush()
+
+
+# def create_plots():
+#     # summarize history for accuracy
+#     plt.plot(history.history["acc"])
+#     plt.plot(history.history["val_acc"])
+#     plt.title("model accuracy")
+#     plt.ylabel("accuracy")
+#     plt.xlabel("epoch")
+#     plt.legend(["train", "test"], loc="upper left")
+#     plt.show()
+#     # summarize history for loss
+#     plt.plot(history.history["loss"])
+#     plt.plot(history.history["val_loss"])
+#     plt.title("model loss")
+#     plt.ylabel("loss")
+#     plt.xlabel("epoch")
+#     plt.legend(["train", "test"], loc="upper left")
+#     plt.show()

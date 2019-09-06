@@ -182,9 +182,7 @@ def main():
         month = filename[8:10]
         day = filename[10:12]
         print(radar, year, month, day)
-        image_path = "radarimages/{0}_Color/{1}/{2}/{3}/{4}" "/{5}_{0}.png".format(
-            "{0}", radar, year, month, day, filename
-        )
+        image_path = f"radarimages/{'{0}'}_Color/{radar}/{year}/{month}/{day}/{filename}_{{'{0}'}}.png"
         create_heatmap_for_filename(image_path)
 
 

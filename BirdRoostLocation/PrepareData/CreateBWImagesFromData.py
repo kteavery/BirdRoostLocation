@@ -21,7 +21,7 @@ def plot_radar_files(file_names):
             )
             VisualizeNexradData.visualizeBWRadarData(file_path, img_path, True)
         except Exception as e:
-            print("{}, {}".format(file_name, str(e)))
+            print(f"{file_name}, {str(e)}")
 
 
 def main(results):
