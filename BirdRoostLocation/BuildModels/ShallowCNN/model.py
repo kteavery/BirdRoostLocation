@@ -6,7 +6,7 @@ from BirdRoostLocation.BuildModels.ShallowCNN.coord import CoordinateChannel2D
 import keras
 
 
-def build_model(inputDimensions, lr=0.0001, coordConv=False):
+def build_model(inputDimensions, lr=0.0001, coordConv=False, problem="detection"):
     """Build the shallow CNN model.
 
     Args:
@@ -68,11 +68,18 @@ def build_model(inputDimensions, lr=0.0001, coordConv=False):
     num_classes = 2
     model.add(Dense(num_classes, activation="softmax"))
 
-    model.compile(
-        loss=keras.losses.categorical_crossentropy,
-        optimizer=keras.optimizers.adam(lr),
-        metrics=["accuracy"],
-    )
+    if problem == "detection":
+        model.compile(
+            loss=keras.losses.categorical_crossentropy,
+            optimizer=keras.optimizers.adam(lr),
+            metrics=["accuracy"],
+        )
+    else:  # localization
+        model.compile(
+            loss=keras.losses.mean_squared_error,
+            optimizer=keras.optimizers.adam(lr),
+            metrics=["accuracy"],
+        )
 
     model.summary()
 

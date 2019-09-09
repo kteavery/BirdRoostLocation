@@ -44,6 +44,7 @@ def train(
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
+    problem="detection",
 ):
     """Train the shallow CNN model on a single radar product.
 
@@ -83,7 +84,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 3), lr=lr, coordConv=True, problem=problem
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -93,7 +94,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=True, problem=problem
         )
 
     else:
@@ -103,7 +104,10 @@ def train(
             high_memory_mode=True,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1), lr=lr, coordConv=True
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+            lr=lr,
+            coordConv=True,
+            problem=problem,
         )
 
     # Setup callbacks
@@ -120,6 +124,7 @@ def train(
             dualPol=dual_pol,
             radar_product=radar_product,
             num_temporal_data=num_temporal_data,
+            problem=problem,
         )
         print(len(y))
 
@@ -146,6 +151,7 @@ def train(
                     dualPol=dual_pol,
                     radar_product=radar_product,
                     num_temporal_data=num_temporal_data,
+                    problem=problem,
                 )
 
                 val_logs = model.test_on_batch(x_, y_)
@@ -207,6 +213,7 @@ def main(results):
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
+        problem=results.problem,
     )
 
 
@@ -323,6 +330,15 @@ if __name__ == "__main__":
                 frames in either direction used for training. 0 will give array
                 size of 1, 1 -> 3, 2 -> 5, and 3 -> 7.
                 """,
+    )
+    parser.add_argument(
+        "-p",
+        "--problem",
+        type=str,
+        default="detection",
+        help="""
+            Type of problem to solve. Either 'detection' or 'localization'.
+            """,
     )
     results = parser.parse_args()
     main(results)

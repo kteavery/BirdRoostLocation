@@ -275,7 +275,14 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
 
-    def get_batch(self, ml_set, dualPol, radar_product=None, num_temporal_data=0):
+    def get_batch(
+        self,
+        ml_set,
+        dualPol,
+        radar_product=None,
+        num_temporal_data=0,
+        problem="detection",
+    ):
         """Get a batch of data for machine learning. As a default, a batch
         contains data from a single radar product.
 
@@ -305,55 +312,76 @@ class Single_Product_Batch_Generator(Batch_Generator):
         for key in no_roost_sets:
             print(len(no_roost_sets[key]))
 
-        #print("Get batch: ")
-        #print(str(len(roost_sets)))
-        #print(str(len(no_roost_sets)))
-        #for key in roost_sets:
-        #print(len(roost_sets[key]))
-        #for key in no_roost_sets:
-        #print(len(no_roost_sets[key]))
+        # print("Get batch: ")
+        # print(str(len(roost_sets)))
+        # print(str(len(no_roost_sets)))
+        # for key in roost_sets:
+        # print(len(roost_sets[key]))
+        # for key in no_roost_sets:
+        # print(len(no_roost_sets[key]))
 
         for ml_sets in [roost_sets, no_roost_sets]:
-            indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+            if ml_sets: # in case you only train on true or false labels
+                indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
 
-            for index in indices:
-                filename = ml_sets[ml_set][index]
-                print("Filename: ")
-                print(filename)
-                is_roost = int(self.label_dict[filename].is_roost)
-                image = self.label_dict[filename].get_image(radar_product)
-                print("Label:")
-                # print(self.label_dict[filename])
-                print("Image: ")
-                # print(image)
-                if image != []:
-                    filenames.append(filename)
-                    print("Image size: ")
-                    print(np.array(image).shape)
-                    if np.array(train_data).size == 0:
-                        train_data = image
-                        train_data = np.array(train_data)
-                    else:
+                for index in indices:
+                    filename = ml_sets[ml_set][index]
+                    is_roost = int(self.label_dict[filename].is_roost)
+                    lat = float(self.label_dict[filename].latitude)
+                    long = float(self.label_dict[filename].longitude)
+                    image = self.label_dict[filename].get_image(radar_product)
+
+                    print("Filename: ")
+                    print(filename)
+                    print("Label:")
+                    # print(self.label_dict[filename])
+                    print("Image: ")
+                    # print(image)
+                    if image != []:
+                        filenames.append(filename)
+                        print("Image size: ")
                         print(np.array(image).shape)
-                        print(train_data.shape)
-                        train_data = np.concatenate(
-                            (train_data, np.array(image)), axis=0
-                        )
-                    if np.array(ground_truths).size == 0:
-                        ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-                            image
-                        ).shape[0]
-                    else:
-                        ground_truths = np.concatenate(
-                            (
-                                ground_truths,
-                                [[is_roost, 1 - is_roost]] * np.array(image).shape[0],
-                            ),
-                            axis=0,
-                        )
+                        if np.array(train_data).size == 0:
+                            train_data = image
+                            train_data = np.array(train_data)
+                        else:
+                            print(np.array(image).shape)
+                            print(train_data.shape)
+                            train_data = np.concatenate(
+                                (train_data, np.array(image)), axis=0
+                            )
 
-                    print("Train data shape: ")
-                    print(train_data.shape)
+                        if problem == "detection":
+                            if np.array(ground_truths).size == 0:
+                                ground_truths = [[is_roost, 1 - is_roost]] * np.array(
+                                    image
+                                ).shape[0]
+                            else:
+                                ground_truths = np.concatenate(
+                                    (
+                                        ground_truths,
+                                        [[is_roost, 1 - is_roost]]
+                                        * np.array(image).shape[0],
+                                    ),
+                                    axis=0,
+                                )
+                        else:  # localization
+                            if np.array(ground_truths).size == 0:
+                                ground_truths = [[lat, long]] * np.array(
+                                    image
+                                ).shape[0]
+                            else:
+                                ground_truths = np.concatenate(
+                                    (
+                                        ground_truths,
+                                        [[lat, long]]
+                                        * np.array(image).shape[0],
+                                    ),
+                                    axis=0,
+                                )
+
+                        print("Train data shape: ")
+                        print(train_data.shape)
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
@@ -501,7 +529,7 @@ class Temporal_Batch_Generator(Batch_Generator):
                 if len(images) == (num_temporal_data * 24) + 1:  # 24 or 3?
                     ground_truths.append([is_roost, 1 - is_roost])
                     train_data.append(images)
-        #print("TRAIN DATA")
+        # print("TRAIN DATA")
         # print(np.array(train_data).shape)
         train_data = np.rollaxis(np.array(train_data), 1, 4)
 
