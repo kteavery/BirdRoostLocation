@@ -36,5 +36,5 @@ BirdRoostLocation/BuildModels/ShallowCNN/train.py \
 --high_memory_mode="" \
 --num_temporal_data=1 \
 --dual_pol="true" \
---coordconv="" \
+--coord_conv="" \
 --problem="localization"

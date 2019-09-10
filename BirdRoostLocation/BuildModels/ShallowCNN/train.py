@@ -31,6 +31,9 @@ from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 import tensorflow as tf
 import datetime
+import warnings
+
+warnings.simplefilter("ignore")
 
 
 def train(
@@ -44,7 +47,7 @@ def train(
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
-    coordConv=True,
+    coord_conv=True,
     problem="detection",
 ):
     """Train the shallow CNN model on a single radar product.
@@ -85,7 +88,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coordConv=coordConv, problem=problem
+            inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv, problem=problem
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -95,7 +98,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coordConv=coordConv, problem=problem
+            inputDimensions=(240, 240, 4), lr=lr, coord_conv=coord_conv, problem=problem
         )
 
     else:
@@ -107,7 +110,7 @@ def train(
         model = keras_model.build_model(
             inputDimensions=(240, 240, num_temporal_data * 3 + 1),
             lr=lr,
-            coordConv=coordConv,
+            coord_conv=coord_conv,
             problem=problem,
         )
 
@@ -214,7 +217,7 @@ def main(results):
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
-        coordconv=results.coordconv,
+        coord_conv=results.coord_conv,
         problem=results.problem,
     )
 
@@ -327,11 +330,11 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-cc",
-        "--coordconv",
+        "--coord_conv",
         type=bool,
         default=True,
         help="""
-            Turn coordConv layers on and off. See model.py.
+            Turn coord_conv layers on and off. See model.py.
             """,
     )
     parser.add_argument(
