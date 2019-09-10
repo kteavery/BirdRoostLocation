@@ -44,6 +44,7 @@ def train(
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
+    coordConv=True,
     problem="detection",
 ):
     """Train the shallow CNN model on a single radar product.
@@ -84,7 +85,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coordConv=True, problem=problem
+            inputDimensions=(240, 240, 3), lr=lr, coordConv=coordConv, problem=problem
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -94,7 +95,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coordConv=True, problem=problem
+            inputDimensions=(240, 240, 4), lr=lr, coordConv=coordConv, problem=problem
         )
 
     else:
@@ -106,7 +107,7 @@ def train(
         model = keras_model.build_model(
             inputDimensions=(240, 240, num_temporal_data * 3 + 1),
             lr=lr,
-            coordConv=True,
+            coordConv=coordConv,
             problem=problem,
         )
 
@@ -213,6 +214,7 @@ def main(results):
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
+        coordconv=results.coordconv,
         problem=results.problem,
     )
 
@@ -233,7 +235,6 @@ if __name__ == "__main__":
                 3 : Differential Reflectivity
             """,
     )
-
     parser.add_argument(
         "-l",
         "--log_path",
@@ -244,7 +245,6 @@ if __name__ == "__main__":
             model/radar_product
             """,
     )
-
     parser.add_argument(
         "-e",
         "--eval_increment",
@@ -252,7 +252,6 @@ if __name__ == "__main__":
         default=5,
         help="""How frequently the model prints out the validation results.""",
     )
-
     parser.add_argument(
         "-n",
         "--num_iterations",
@@ -260,7 +259,6 @@ if __name__ == "__main__":
         default=2500,
         help="""The number of training iterations the model will run""",
     )
-
     parser.add_argument(
         "-c",
         "--checkpoint_frequency",
@@ -271,7 +269,6 @@ if __name__ == "__main__":
             out a checkpoint of the model training.
             """,
     )
-
     parser.add_argument(
         "-lr",
         "--learning_rate",
@@ -282,7 +279,6 @@ if __name__ == "__main__":
             .e.g. .1, .05, .001
             """,
     )
-
     parser.add_argument(
         "-m",
         "--model",
@@ -295,7 +291,6 @@ if __name__ == "__main__":
                 2 : Shallow CNN, temporal model
             """,
     )
-
     parser.add_argument(
         "-d",
         "--dual_pol",
@@ -307,7 +302,6 @@ if __name__ == "__main__":
             the model is training on legacy data.
             """,
     )
-
     parser.add_argument(
         "-hm",
         "--high_memory_mode",
@@ -330,6 +324,15 @@ if __name__ == "__main__":
                 frames in either direction used for training. 0 will give array
                 size of 1, 1 -> 3, 2 -> 5, and 3 -> 7.
                 """,
+    )
+    parser.add_argument(
+        "-cc",
+        "--coordconv",
+        type=bool,
+        default=True,
+        help="""
+            Turn coordConv layers on and off. See model.py.
+            """,
     )
     parser.add_argument(
         "-p",

@@ -29,10 +29,12 @@ BirdRoostLocation/BuildModels/ShallowCNN/train.py \
 --radar_product=1 \
 --log_path=model/Velocity/ \
 --eval_increment=5 \
---num_iterations=10000 \
+--num_iterations=4000 \
 --checkpoint_frequency=100 \
 --learning_rate=.0001 \
 --model=0 \
 --high_memory_mode="" \
 --num_temporal_data=1 \
---dual_pol="true"
+--dual_pol="true" \
+--coordconv="" \
+--problem="localization"

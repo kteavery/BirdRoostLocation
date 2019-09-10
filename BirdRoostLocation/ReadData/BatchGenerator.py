@@ -321,7 +321,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         # print(len(no_roost_sets[key]))
 
         for ml_sets in [roost_sets, no_roost_sets]:
-            if ml_sets: # in case you only train on true or false labels
+            if ml_sets[ml_set]:  # in case you only train on true or false labels
                 indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
 
                 for index in indices:
@@ -367,15 +367,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[lat, long]] * np.array(
-                                    image
-                                ).shape[0]
+                                ground_truths = [[lat, long]] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[lat, long]]
-                                        * np.array(image).shape[0],
+                                        [[lat, long]] * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )
