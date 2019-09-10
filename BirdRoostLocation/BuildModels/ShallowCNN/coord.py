@@ -49,7 +49,9 @@ class _CoordinateChannel(Layer):
         - [An Intriguing Failing of Convolutional Neural Networks and the CoordConv Solution](https://arxiv.org/abs/1807.03247)
     """
 
-    def __init__(self, rank, use_radius=False, data_format=None, **kwargs):
+    def __init__(
+        self, rank: int, use_radius: bool = False, data_format: str = None, **kwargs
+    ) -> None:
         super(_CoordinateChannel, self).__init__(**kwargs)
 
         if data_format not in [None, "channels_first", "channels_last"]:
@@ -222,8 +224,8 @@ class _CoordinateChannel(Layer):
         output_shape[self.axis] = input_shape[self.axis] + channel_count
         return tuple(output_shape)
 
-    def get_config(self):
-        config = {
+    def get_config(self) -> dict:
+        config: dict = {
             "rank": self.rank,
             "use_radius": self.use_radius,
             "data_format": self.data_format,
@@ -256,13 +258,13 @@ class CoordinateChannel1D(_CoordinateChannel):
         - [An Intriguing Failing of Convolutional Neural Networks and the CoordConv Solution](https://arxiv.org/abs/1807.03247)
     """
 
-    def __init__(self, data_format=None, **kwargs):
+    def __init__(self, data_format: str = None, **kwargs) -> None:
         super(CoordinateChannel1D, self).__init__(
             rank=1, use_radius=False, data_format=data_format, **kwargs
         )
 
-    def get_config(self):
-        config = super(CoordinateChannel1D, self).get_config()
+    def get_config(self) -> dict:
+        config: dict = super(CoordinateChannel1D, self).get_config()
         config.pop("rank")
         config.pop("use_radius")
         return config
@@ -308,13 +310,15 @@ class CoordinateChannel2D(_CoordinateChannel):
         - [An Intriguing Failing of Convolutional Neural Networks and the CoordConv Solution](https://arxiv.org/abs/1807.03247)
     """
 
-    def __init__(self, use_radius=False, data_format=None, **kwargs):
+    def __init__(
+        self, use_radius: bool = False, data_format: str = None, **kwargs
+    ) -> None:
         super(CoordinateChannel2D, self).__init__(
             rank=2, use_radius=use_radius, data_format=data_format, **kwargs
         )
 
-    def get_config(self):
-        config = super(CoordinateChannel2D, self).get_config()
+    def get_config(self) -> dict:
+        config: dict = super(CoordinateChannel2D, self).get_config()
         config.pop("rank")
         return config
 
@@ -358,13 +362,13 @@ class CoordinateChannel3D(_CoordinateChannel):
         - [An Intriguing Failing of Convolutional Neural Networks and the CoordConv Solution](https://arxiv.org/abs/1807.03247)
     """
 
-    def __init__(self, data_format=None, **kwargs):
+    def __init__(self, data_format: str = None, **kwargs) -> None:
         super(CoordinateChannel3D, self).__init__(
             rank=3, use_radius=False, data_format=data_format, **kwargs
         )
 
-    def get_config(self):
-        config = super(CoordinateChannel3D, self).get_config()
+    def get_config(self) -> dict:
+        config:dict = super(CoordinateChannel3D, self).get_config()
         config.pop("rank")
         config.pop("use_radius")
         return config
