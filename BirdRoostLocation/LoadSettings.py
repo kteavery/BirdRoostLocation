@@ -18,11 +18,11 @@ real_path = os.path.realpath(__file__)
 setting_path = os.path.join(os.path.dirname(real_path), "settings.json")
 data = json.load(open(setting_path))
 
-WORKING_DIRECTORY = str(data["cwd"])
-LABEL_CSV = str(data["label_csv"])
-SUBSET_CSV = str(data["subset_files_csv"])
-ML_SPLITS_DATA = str(data["ml_splits_csv"])
-DEFAULT_BATCH_SIZE = 8
+WORKING_DIRECTORY: str = str(data["cwd"])
+LABEL_CSV: str = str(data["label_csv"])
+SUBSET_CSV: str = str(data["subset_files_csv"])
+ML_SPLITS_DATA: str = str(data["ml_splits_csv"])
+DEFAULT_BATCH_SIZE: int = 8
 
 if bool(data["schooner"]):
     print("schooner")

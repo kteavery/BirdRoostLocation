@@ -68,15 +68,17 @@ class _CoordinateChannel(Layer):
         self.input_spec = InputSpec(min_ndim=2)
         self.supports_masking = True
 
-    def build(self, input_shape):
+    def build(self, input_shape) -> None:
         assert len(input_shape) >= 2
         input_dim = input_shape[self.axis]
 
         self.input_spec = InputSpec(min_ndim=self.rank + 2, axes={self.axis: input_dim})
         self.built = True
 
-    def call(self, inputs, training=None, mask=None):
-        input_shape = K.shape(inputs)
+    def call(
+        self, inputs, training=None, mask=None
+    ) -> Union[SparseTensor, NoneType, list]:
+        input_shape: list = K.shape(inputs)
 
         if self.rank == 1:
             input_shape = [input_shape[i] for i in range(3)]
@@ -210,7 +212,7 @@ class _CoordinateChannel(Layer):
 
         return outputs
 
-    def compute_output_shape(self, input_shape):
+    def compute_output_shape(self, input_shape) -> tuple:
 
         assert input_shape and len(input_shape) >= 2
         assert input_shape[self.axis]
@@ -220,7 +222,7 @@ class _CoordinateChannel(Layer):
         else:
             channel_count = self.rank
 
-        output_shape = list(input_shape)
+        output_shape: list = list(input_shape)
         output_shape[self.axis] = input_shape[self.axis] + channel_count
         return tuple(output_shape)
 
@@ -230,7 +232,7 @@ class _CoordinateChannel(Layer):
             "use_radius": self.use_radius,
             "data_format": self.data_format,
         }
-        base_config = super(_CoordinateChannel, self).get_config()
+        base_config: dict = super(_CoordinateChannel, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
 
@@ -368,7 +370,7 @@ class CoordinateChannel3D(_CoordinateChannel):
         )
 
     def get_config(self) -> dict:
-        config:dict = super(CoordinateChannel3D, self).get_config()
+        config: dict = super(CoordinateChannel3D, self).get_config()
         config.pop("rank")
         config.pop("use_radius")
         return config
