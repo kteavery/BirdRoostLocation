@@ -25,7 +25,7 @@ from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 
 
-def eval(log_path, radar_product):
+def eval(log_path, radar_product, coord_conv, problem):
     """Evaluate the shallow CNN model trained on a single radar product.
 
         Args:
@@ -44,7 +44,9 @@ def eval(log_path, radar_product):
     )
 
     y, x, _, _, _ = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
-    model = ml_model.build_model(inputDimensions=(240, 240, 3))
+    model = ml_model.build_model(
+        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+    )
     model.load_weights(log_path)
 
     loss, acc = model.evaluate(x, y)
@@ -63,7 +65,12 @@ def main(results):
         log_path = results.log_path
 
     print(log_path)
-    eval(log_path=log_path, radar_product=radar_product)
+    eval(
+        log_path=log_path,
+        radar_product=radar_product,
+        coord_conv=results.coord_conv,
+        problem=results.problem,
+    )
 
 
 if __name__ == "__main__":
@@ -90,6 +97,24 @@ if __name__ == "__main__":
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5
         """,
+    )
+    parser.add_argument(
+        "-cc",
+        "--coord_conv",
+        type=bool,
+        default=True,
+        help="""
+            Turn coord_conv layers on and off. See model.py.
+            """,
+    )
+    parser.add_argument(
+        "-p",
+        "--problem",
+        type=str,
+        default="detection",
+        help="""
+            Type of problem to solve. Either 'detection' or 'localization'.
+            """,
     )
     results = parser.parse_args()
     main(results)
