@@ -75,9 +75,7 @@ class _CoordinateChannel(Layer):
         self.input_spec = InputSpec(min_ndim=self.rank + 2, axes={self.axis: input_dim})
         self.built = True
 
-    def call(
-        self, inputs, training=None, mask=None
-    ) -> Union[SparseTensor, NoneType, list]:
+    def call(self, inputs, training=None, mask=None):
         input_shape: list = K.shape(inputs)
 
         if self.rank == 1:

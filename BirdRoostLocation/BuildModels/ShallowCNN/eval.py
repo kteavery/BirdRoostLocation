@@ -57,6 +57,10 @@ def main(results):
     os.chdir(settings.WORKING_DIRECTORY)
     radar_product = utils.Radar_Products(results.radar_product)
     if results.log_path is None:
+        c = radar_product.fullname
+        print(c)
+        a = ml_utils.LOG_PATH.format(radar_product.fullname)
+        b = ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, "")
         log_path = os.path.join(
             ml_utils.LOG_PATH.format(radar_product.fullname),
             ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, ""),
@@ -79,7 +83,7 @@ if __name__ == "__main__":
         "-r",
         "--radar_product",
         type=int,
-        default=0,
+        default=1,
         help="""
         Use an integer to select a radar_product from the following list:
             0 : Reflectivity
@@ -92,7 +96,7 @@ if __name__ == "__main__":
         "-l",
         "--log_path",
         type=str,
-        default=None,
+        default="model/Velocity",
         help="""
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5

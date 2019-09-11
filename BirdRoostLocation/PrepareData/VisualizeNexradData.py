@@ -6,7 +6,7 @@ import os
 from PIL import Image
 
 plot_dict = {
-    utils.Radar_Products.reflectivity: [-20, 30, None],
+    utils.Radar_Products.reflectivity: [-10, 30, None],
     utils.Radar_Products.velocity: [-20, 20, "coolwarm"],
     utils.Radar_Products.diff_reflectivity: [-4, 8, "coolwarm"],
     utils.Radar_Products.cc: [0.3, 0.95, "jet"],
@@ -29,6 +29,10 @@ def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False
         dualPolarization:
         displayCircles:
     """
+    # http://arm-doe.github.io/pyart-docs-travis/dev_reference/generated/
+    # pyart.config.load_config.html
+    pyart.config.load_config(filename="./pyartConfig.py")
+
     display = pyart.graph.RadarDisplay(radar)
     if dualPolarization:
         fig = plt.figure(figsize=(9, 9))
