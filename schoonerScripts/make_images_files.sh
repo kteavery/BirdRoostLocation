@@ -2,13 +2,12 @@
 
 #SBATCH --job-name=make_images
 #SBATCH --ntasks=1
-#SBATCH -o log.out
-#SBATCH -e log.err
+#SBATCH -o train_shallow_%J.out
+#SBATCH -e train_shallow_%J.err
 #SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p swat_plus
 #SBATCH -t 6:00:00
-#SBATCH -D /condo/swatwork/keavery/masters_thesis/downloaded_filtered_data
 #SBATCH --array=0-80
 
 # cd to directory where job was submitted from
@@ -20,11 +19,9 @@ RADAR=${RADARS[$SLURM_ARRAY_TASK_ID]}
 
 echo $SLURM_ARRAY_TASK_ID
 
-python /home/cchilson/gitRepositories/BirdRoostDetection/BirdRoostDetection\
+python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/BirdRoostLocation\
 /PrepareData/CreateImagesFromData.py \
-$RADAR \
-ml_labels.csv \
-/condo/swatwork/keavery/masters_thesis
+$RADAR 
 
 
 
