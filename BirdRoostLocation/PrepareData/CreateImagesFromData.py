@@ -41,6 +41,7 @@ def createLabelForFiles(fileNames, saveDir):
                 imgDir.replace(saveDir, os.path.join(saveDir, "All_Color/")),
                 name + ".png",
             )
+            print("IMGPATH:")
             print(imgPath)
 
             if not os.path.isfile(imgPath):
@@ -94,7 +95,6 @@ def createLabelForFiles(fileNames, saveDir):
                     img4 = img.crop((495, 520, 740, 770))
                     img4.save(d4 + name + "_Rho_HV" + save_extension)
 
-                    # print root + '/' + name
         except Exception as e:
             print(f"{imgPath}, {str(e)}")
 

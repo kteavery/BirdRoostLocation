@@ -312,14 +312,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
         for key in no_roost_sets:
             print(len(no_roost_sets[key]))
 
-        # print("Get batch: ")
-        # print(str(len(roost_sets)))
-        # print(str(len(no_roost_sets)))
-        # for key in roost_sets:
-        # print(len(roost_sets[key]))
-        # for key in no_roost_sets:
-        # print(len(no_roost_sets[key]))
-
         for ml_sets in [roost_sets, no_roost_sets]:
             if ml_sets[ml_set]:  # in case you only train on true or false labels
                 indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
@@ -329,6 +321,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     is_roost = int(self.label_dict[filename].is_roost)
                     lat = float(self.label_dict[filename].latitude)
                     long = float(self.label_dict[filename].longitude)
+                    radius = float(self.label_dict[filename].radius)
                     image = self.label_dict[filename].get_image(radar_product)
 
                     print("Filename: ")
@@ -367,12 +360,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[lat, long]] * np.array(image).shape[0]
+                                ground_truths = [[lat, long, radius]] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[lat, long]] * np.array(image).shape[0],
+                                        [[lat, long, radius]] * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )

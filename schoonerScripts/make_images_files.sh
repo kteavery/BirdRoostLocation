@@ -2,8 +2,8 @@
 
 #SBATCH --job-name=make_images
 #SBATCH --ntasks=1
-#SBATCH -o train_shallow_%J.out
-#SBATCH -e train_shallow_%J.err
+#SBATCH -o make_images_%J.out
+#SBATCH -e make_images_%J.err
 #SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p swat_plus
@@ -21,7 +21,7 @@ echo $SLURM_ARRAY_TASK_ID
 
 python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/BirdRoostLocation\
 /PrepareData/CreateImagesFromData.py \
-$RADAR 
+--radar=$RADAR 
 
 
 
