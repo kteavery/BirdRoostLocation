@@ -78,7 +78,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
         model.compile(
             loss=keras.losses.mean_squared_error,
             optimizer=keras.optimizers.adam(lr),
-            metrics=["accuracy"],
+            metrics=["mse", "mae", "mape", "cosine"],
         )
 
     model.summary()

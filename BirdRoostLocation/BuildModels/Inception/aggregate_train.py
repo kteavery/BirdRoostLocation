@@ -223,7 +223,7 @@ def train(
     model.save_weights(save_file)
 
 
-def create_model(input_dimention, save=None):
+def create_model(input_dimention, save=None, problem="detection"):
     # input_dim = 4 for dual-pol, 2 for legagy
     model = Sequential()
     model.add(Dense(256, input_dim=input_dimention, activation=None))
@@ -231,11 +231,18 @@ def create_model(input_dimention, save=None):
     model.add(Activation("relu"))
     model.add(Dense(2, activation="sigmoid"))
     # Compile model
-    model.compile(
-        loss="binary_crossentropy",
-        optimizer=keras.optimizers.sgd(lr=0.0001),
-        metrics=["accuracy"],
-    )
+    if problem == "detection":
+        model.compile(
+            loss="binary_crossentropy",
+            optimizer=keras.optimizers.sgd(lr=0.0001),
+            metrics=["accuracy"],
+        )
+    else:  # location
+        model.compile(
+            loss=keras.losses.mean_squared_error,
+            optimizer=keras.optimizers.sgd(lr=0.0001),
+            metrics=["mse", "mae", "mape", "cosine"],
+        )
 
     if save is not None:
         model.load_weights(save)
