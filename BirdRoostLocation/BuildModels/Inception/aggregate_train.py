@@ -241,7 +241,7 @@ def create_model(input_dimention, save=None, problem="detection"):
         model.compile(
             loss=keras.losses.mean_squared_error,
             optimizer=keras.optimizers.sgd(lr=0.0001),
-            metrics=["mse", "mae", "mape", "cosine"],
+            metrics=["mae", "mape", "cosine"],
         )
 
     if save is not None:

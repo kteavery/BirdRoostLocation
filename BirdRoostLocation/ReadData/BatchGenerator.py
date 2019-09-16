@@ -326,7 +326,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                     print("Filename: ")
                     print(filename)
-                    
+
                     if image != []:
                         filenames.append(filename)
                         print("Image size: ")
@@ -375,15 +375,9 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
+        print(np.array(ground_truths).shape)
 
-        if problem == "detection":
-            ground_truths = np.array(ground_truths).reshape(
-                truth_shape[0], truth_shape[1]
-            )
-        else:  # location
-            ground_truths = np.array(ground_truths).reshape(
-                truth_shape[0], truth_shape[1], truth_shape[2]
-            )
+        ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
         train_data_np = np.array(train_data)
         shape = train_data_np.shape

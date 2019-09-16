@@ -31,7 +31,11 @@ def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False
     """
     # http://arm-doe.github.io/pyart-docs-travis/dev_reference/generated/
     # pyart.config.load_config.html
-    pyart.config.load_config(filename="./pyartConfig.py")
+    pyart.config.load_config(
+        filename=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "pyartConfig.py"
+        )
+    )
 
     display = pyart.graph.RadarDisplay(radar)
     if dualPolarization:

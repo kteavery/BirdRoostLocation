@@ -65,7 +65,10 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     model.add(Dense(500))
     model.add(BatchNormalization())
     model.add(Activation("relu"))
-    num_classes = 2
+    if problem == "detection":
+        num_classes = 2  # yes, no
+    else:  # location
+        num_classes = 3  # lat, long, radius
     model.add(Dense(num_classes, activation="softmax"))
 
     if problem == "detection":
@@ -78,7 +81,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
         model.compile(
             loss=keras.losses.mean_squared_error,
             optimizer=keras.optimizers.adam(lr),
-            metrics=["mse", "mae", "mape", "cosine"],
+            metrics=["mae", "mape", "cosine"],
         )
 
     model.summary()

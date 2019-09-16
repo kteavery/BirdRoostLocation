@@ -42,9 +42,11 @@ def createLabelForFiles(fileNames, saveDir):
             name = f.replace(".gz", "")
             print("NAME: ")
             print(name)
+            print("SAVEDIR: ")
+            print(saveDir)
             imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
             imgPath = os.path.join(
-                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color/")),
+                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")),
                 name + ".png",
             )
             print("IMGPATH:")
