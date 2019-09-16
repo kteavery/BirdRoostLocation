@@ -34,8 +34,14 @@ def createLabelForFiles(fileNames, saveDir):
     radarFilePath = "radarfiles/"
     for f in fileNames:
         try:
+            print("FILENAME: ")
+            print(f)
             root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
+            print("ROOT: ")
+            print(root)
             name = f.replace(".gz", "")
+            print("NAME: ")
+            print(name)
             imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
             imgPath = os.path.join(
                 imgDir.replace(saveDir, os.path.join(saveDir, "All_Color/")),

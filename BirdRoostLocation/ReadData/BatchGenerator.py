@@ -326,10 +326,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                     print("Filename: ")
                     print(filename)
-                    print("Label:")
-                    # print(self.label_dict[filename])
-                    print("Image: ")
-                    # print(image)
+                    
                     if image != []:
                         filenames.append(filename)
                         print("Image size: ")
@@ -360,12 +357,15 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[lat, long, radius]] * np.array(image).shape[0]
+                                ground_truths = [[lat, long, radius]] * np.array(
+                                    image
+                                ).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[lat, long, radius]] * np.array(image).shape[0],
+                                        [[lat, long, radius]]
+                                        * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )
@@ -376,12 +376,17 @@ class Single_Product_Batch_Generator(Batch_Generator):
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
 
-        ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
+        if problem == "detection":
+            ground_truths = np.array(ground_truths).reshape(
+                truth_shape[0], truth_shape[1]
+            )
+        else:  # location
+            ground_truths = np.array(ground_truths).reshape(
+                truth_shape[0], truth_shape[1], truth_shape[2]
+            )
 
-        # print(np.array(ground_truths).shape)
         train_data_np = np.array(train_data)
         shape = train_data_np.shape
-        # print(shape)
         train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
         return train_data_np, np.array(ground_truths), np.array(filenames)
 
