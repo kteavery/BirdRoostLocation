@@ -13,10 +13,11 @@ Set file paths in the settings.json file.
 import json
 import os
 import matplotlib
+from typing import Dict
 
-real_path = os.path.realpath(__file__)
-setting_path = os.path.join(os.path.dirname(real_path), "settings.json")
-data = json.load(open(setting_path))
+real_path: str = os.path.realpath(__file__)
+setting_path: str = os.path.join(os.path.dirname(real_path), "settings.json")
+data: Dict[str, Any] = json.load(open(setting_path))
 
 WORKING_DIRECTORY: str = str(data["cwd"])
 LABEL_CSV: str = str(data["label_csv"])
