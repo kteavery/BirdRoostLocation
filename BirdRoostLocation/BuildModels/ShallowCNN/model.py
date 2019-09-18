@@ -68,7 +68,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     if problem == "detection":
         num_classes = 2  # yes, no
     else:  # location
-        num_classes = 3  # lat, long, radius
+        num_classes = 2  # lat, long
     model.add(Dense(num_classes, activation="softmax"))
 
     if problem == "detection":

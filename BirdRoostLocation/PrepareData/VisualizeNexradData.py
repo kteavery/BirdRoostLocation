@@ -29,6 +29,7 @@ def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False
         dualPolarization:
         displayCircles:
     """
+    # load custom config file with smaller reflectivity range
     # http://arm-doe.github.io/pyart-docs-travis/dev_reference/generated/
     # pyart.config.load_config.html
     pyart.config.load_config(
