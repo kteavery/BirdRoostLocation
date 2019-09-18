@@ -85,22 +85,30 @@ def createLabelForFiles(fileNames, saveDir):
                 save_extension = ".png"
                 if not dualPol:
                     img1 = img.crop((115, 100, 365, 350))
+                    print("DIR NAMES: ")
+                    print(d1 + name + "_Reflectivity" + save_extension)
                     img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 100, 740, 350))
+                    print(d2 + name + "_Velocity" + save_extension)
                     img2.save(d2 + name + "_Velocity" + save_extension)
 
                 if dualPol:
                     img1 = img.crop((115, 140, 365, 390))
+                    print("DIR NAMES: ")
+                    print(d1 + name + "_Reflectivity" + save_extension)
                     img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 140, 740, 390))
+                    print(d2 + name + "_Velocity" + save_extension)
                     img2.save(d2 + name + "_Velocity" + save_extension)
 
                     img3 = img.crop((115, 520, 365, 770))
+                    print(d3 + name + "_Zdr" + save_extension)
                     img3.save(d3 + name + "_Zdr" + save_extension)
 
                     img4 = img.crop((495, 520, 740, 770))
+                    print(d4 + name + "_Rho_HV" + save_extension)
                     img4.save(d4 + name + "_Rho_HV" + save_extension)
 
         except Exception as e:

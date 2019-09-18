@@ -96,7 +96,7 @@ if __name__ == "__main__":
         "-l",
         "--log_path",
         type=str,
-        default="model/Velocity",
+        default="Velocity/{/}.h5",
         help="""
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5
