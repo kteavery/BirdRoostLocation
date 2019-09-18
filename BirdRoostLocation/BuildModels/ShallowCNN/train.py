@@ -117,10 +117,17 @@ def train(
     # Setup callbacks
     callback = TensorBoard(log_path)
     callback.set_model(model)
-    train_names = ["train_loss", "train_accuracy"]
-    val_names = ["val_loss", "val_accuracy"]
 
-    progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
+    if problem == "detection":
+        train_names = ["train_loss", "train_accuracy"]
+        val_names = ["val_loss", "val_accuracy"]
+
+        progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
+    else:  # location "mae", "mape", "cosine"
+        train_names = ["train_loss", "train_mae", "train_mape", "train_cosine"]
+        val_names = ["val_loss", "val_mae", "val_mape", "val_cosine"]
+
+        progress_string = "{} Epoch: {} Loss: {} MAE: {} MAPE: {} Cosine: {}"
 
     for batch_no in range(num_iterations):
         x, y, _ = batch_generator.get_batch(
@@ -138,11 +145,27 @@ def train(
 
         train_logs = model.train_on_batch(x, y)
 
-        print(
-            progress_string.format(
-                utils.ML_Set.training.fullname, batch_no, train_logs[0], train_logs[1]
+        if problem == "detection":
+            print(
+                progress_string.format(
+                    utils.ML_Set.training.fullname,
+                    batch_no,
+                    train_logs[0],
+                    train_logs[1],
+                )
             )
-        )
+        else:
+            print(
+                progress_string.format(
+                    utils.ML_Set.training.fullname,
+                    batch_no,
+                    train_logs[0],
+                    train_logs[1],
+                    train_logs[2],
+                    train_logs[3],
+                )
+            )
+
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         # only print validation and create plots every once in a while
@@ -160,14 +183,26 @@ def train(
 
                 val_logs = model.test_on_batch(x_, y_)
                 ml_utils.write_log(callback, val_names, val_logs, batch_no)
-                print(
-                    progress_string.format(
-                        utils.ML_Set.validation.fullname,
-                        batch_no,
-                        val_logs[0],
-                        val_logs[1],
+                if problem == "detection":
+                    print(
+                        progress_string.format(
+                            utils.ML_Set.validation.fullname,
+                            batch_no,
+                            val_logs[0],
+                            val_logs[1],
+                        )
                     )
-                )
+                else:
+                    print(
+                        progress_string.format(
+                            utils.ML_Set.validation.fullname,
+                            batch_no,
+                            val_logs[0],
+                            val_logs[1],
+                            val_logs[2],
+                            val_logs[3],
+                        )
+                    )
                 x_, y_, x, y = [None] * 4
 
             except Exception as e:

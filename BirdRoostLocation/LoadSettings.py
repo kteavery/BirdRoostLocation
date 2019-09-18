@@ -13,7 +13,7 @@ Set file paths in the settings.json file.
 import json
 import os
 import matplotlib
-from typing import Dict
+from typing import Dict, Any
 
 real_path: str = os.path.realpath(__file__)
 setting_path: str = os.path.join(os.path.dirname(real_path), "settings.json")
