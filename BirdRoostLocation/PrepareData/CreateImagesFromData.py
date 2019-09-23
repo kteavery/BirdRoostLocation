@@ -52,6 +52,8 @@ def createLabelForFiles(fileNames, saveDir):
             print("IMGPATH:")
             print(imgPath)
 
+            print("IF")
+            print(os.path.isfile(imgPath))
             if not os.path.isfile(imgPath):
                 file = open(os.path.join(root, name), "r")
                 if not os.path.exists(os.path.dirname(imgPath)):
