@@ -23,6 +23,7 @@ WORKING_DIRECTORY: str = str(data["cwd"])
 LABEL_CSV: str = str(data["label_csv"])
 SUBSET_CSV: str = str(data["subset_files_csv"])
 ML_SPLITS_DATA: str = str(data["ml_splits_csv"])
+NEXRAD_CSV: str = str(data["nexrad_csv"])
 DEFAULT_BATCH_SIZE: int = 8
 
 if bool(data["schooner"]):
