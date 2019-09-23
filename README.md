@@ -23,3 +23,6 @@ This code was developed for the Oklahoma Biological Survey for a research projec
 
 ## Using the software
 Many of the scripts in this class will include instructions at the beginning of the document with instructions of how to use them.
+
+## Other
+I'm using the commit message codes described [here](https://gitmoji.carloscuesta.me/).

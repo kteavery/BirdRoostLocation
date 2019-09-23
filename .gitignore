@@ -8,6 +8,7 @@
 *.pyc
 BirdRoostDetection.egg-info/*
 venv/
+.mypy_cache/
 build/*
 dist/*
 MLData/

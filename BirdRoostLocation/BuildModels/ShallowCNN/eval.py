@@ -25,7 +25,7 @@ from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 
 
-def eval(log_path, radar_product):
+def eval(log_path, radar_product, coord_conv, problem):
     """Evaluate the shallow CNN model trained on a single radar product.
 
         Args:
@@ -44,7 +44,9 @@ def eval(log_path, radar_product):
     )
 
     y, x, _, _, _ = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
-    model = ml_model.build_model(inputDimensions=(240, 240, 3))
+    model = ml_model.build_model(
+        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+    )
     model.load_weights(log_path)
 
     loss, acc = model.evaluate(x, y)
@@ -55,6 +57,10 @@ def main(results):
     os.chdir(settings.WORKING_DIRECTORY)
     radar_product = utils.Radar_Products(results.radar_product)
     if results.log_path is None:
+        c = radar_product.fullname
+        print(c)
+        a = ml_utils.LOG_PATH.format(radar_product.fullname)
+        b = ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, "")
         log_path = os.path.join(
             ml_utils.LOG_PATH.format(radar_product.fullname),
             ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, ""),
@@ -63,7 +69,12 @@ def main(results):
         log_path = results.log_path
 
     print(log_path)
-    eval(log_path=log_path, radar_product=radar_product)
+    eval(
+        log_path=log_path,
+        radar_product=radar_product,
+        coord_conv=results.coord_conv,
+        problem=results.problem,
+    )
 
 
 if __name__ == "__main__":
@@ -72,7 +83,7 @@ if __name__ == "__main__":
         "-r",
         "--radar_product",
         type=int,
-        default=0,
+        default=1,
         help="""
         Use an integer to select a radar_product from the following list:
             0 : Reflectivity
@@ -85,11 +96,29 @@ if __name__ == "__main__":
         "-l",
         "--log_path",
         type=str,
-        default=None,
+        default="Velocity/{/}.h5",
         help="""
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5
         """,
+    )
+    parser.add_argument(
+        "-cc",
+        "--coord_conv",
+        type=bool,
+        default=True,
+        help="""
+            Turn coord_conv layers on and off. See model.py.
+            """,
+    )
+    parser.add_argument(
+        "-p",
+        "--problem",
+        type=str,
+        default="detection",
+        help="""
+            Type of problem to solve. Either 'detection' or 'localization'.
+            """,
     )
     results = parser.parse_args()
     main(results)
