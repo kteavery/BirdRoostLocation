@@ -34,15 +34,26 @@ def createLabelForFiles(fileNames, saveDir):
     radarFilePath = "radarfiles/"
     for f in fileNames:
         try:
+            print("FILENAME: ")
+            print(f)
             root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
+            print("ROOT: ")
+            print(root)
             name = f.replace(".gz", "")
+            print("NAME: ")
+            print(name)
+            print("SAVEDIR: ")
+            print(saveDir)
             imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
             imgPath = os.path.join(
-                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color/")),
+                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")),
                 name + ".png",
             )
+            print("IMGPATH:")
             print(imgPath)
 
+            print("IF")
+            print(os.path.isfile(imgPath))
             if not os.path.isfile(imgPath):
                 file = open(os.path.join(root, name), "r")
                 if not os.path.exists(os.path.dirname(imgPath)):
@@ -76,25 +87,32 @@ def createLabelForFiles(fileNames, saveDir):
                 save_extension = ".png"
                 if not dualPol:
                     img1 = img.crop((115, 100, 365, 350))
+                    print("DIR NAMES: ")
+                    print(d1 + name + "_Reflectivity" + save_extension)
                     img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 100, 740, 350))
+                    print(d2 + name + "_Velocity" + save_extension)
                     img2.save(d2 + name + "_Velocity" + save_extension)
 
                 if dualPol:
                     img1 = img.crop((115, 140, 365, 390))
+                    print("DIR NAMES: ")
+                    print(d1 + name + "_Reflectivity" + save_extension)
                     img1.save(d1 + name + "_Reflectivity" + save_extension)
 
                     img2 = img.crop((495, 140, 740, 390))
+                    print(d2 + name + "_Velocity" + save_extension)
                     img2.save(d2 + name + "_Velocity" + save_extension)
 
                     img3 = img.crop((115, 520, 365, 770))
+                    print(d3 + name + "_Zdr" + save_extension)
                     img3.save(d3 + name + "_Zdr" + save_extension)
 
                     img4 = img.crop((495, 520, 740, 770))
+                    print(d4 + name + "_Rho_HV" + save_extension)
                     img4.save(d4 + name + "_Rho_HV" + save_extension)
 
-                    # print root + '/' + name
         except Exception as e:
             print(f"{imgPath}, {str(e)}")
 

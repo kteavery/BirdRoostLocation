@@ -16,7 +16,8 @@ class ML_Label:
         self.roost_id: The id of the roost, -1 if no roost
         self.latitude: The latitude of the roost in the radar file
         self.longitude: The longitude of the roost in the radar file
-        self.timestamp: The radius of the roost in the radar file
+        self.radius: The radius of the roost in the radar file
+        self.timestamp: The timestamp at which the nexrad data was recorded
         self.sunrise_time: The sunrise time at the lat, lon coordinates
         self.image_paths: A dictionary that contains path to the images with the
             following radar products : reflectivity, velocity, rho_hv, zdr

@@ -31,6 +31,9 @@ from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 import tensorflow as tf
 import datetime
+import warnings
+
+warnings.simplefilter("ignore")
 
 
 def train(
@@ -44,6 +47,8 @@ def train(
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
+    coord_conv=True,
+    problem="detection",
 ):
     """Train the shallow CNN model on a single radar product.
 
@@ -83,7 +88,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv, problem=problem
         )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
@@ -93,7 +98,7 @@ def train(
             high_memory_mode=high_memory_mode,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coordConv=True
+            inputDimensions=(240, 240, 4), lr=lr, coord_conv=coord_conv, problem=problem
         )
 
     else:
@@ -103,16 +108,26 @@ def train(
             high_memory_mode=True,
         )
         model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1), lr=lr, coordConv=True
+            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+            lr=lr,
+            coord_conv=coord_conv,
+            problem=problem,
         )
 
     # Setup callbacks
     callback = TensorBoard(log_path)
     callback.set_model(model)
-    train_names = ["train_loss", "train_accuracy"]
-    val_names = ["val_loss", "val_accuracy"]
 
-    progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
+    if problem == "detection":
+        train_names = ["train_loss", "train_accuracy"]
+        val_names = ["val_loss", "val_accuracy"]
+
+        progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
+    else:  # location "mae", "mape", "cosine"
+        train_names = ["train_loss", "train_mae", "train_mape", "train_cosine"]
+        val_names = ["val_loss", "val_mae", "val_mape", "val_cosine"]
+
+        progress_string = "{} Epoch: {} Loss: {} MAE: {} MAPE: {} Cosine: {}"
 
     for batch_no in range(num_iterations):
         x, y, _ = batch_generator.get_batch(
@@ -120,6 +135,7 @@ def train(
             dualPol=dual_pol,
             radar_product=radar_product,
             num_temporal_data=num_temporal_data,
+            problem=problem,
         )
         print(len(y))
 
@@ -129,11 +145,27 @@ def train(
 
         train_logs = model.train_on_batch(x, y)
 
-        print(
-            progress_string.format(
-                utils.ML_Set.training.fullname, batch_no, train_logs[0], train_logs[1]
+        if problem == "detection":
+            print(
+                progress_string.format(
+                    utils.ML_Set.training.fullname,
+                    batch_no,
+                    train_logs[0],
+                    train_logs[1],
+                )
             )
-        )
+        else:
+            print(
+                progress_string.format(
+                    utils.ML_Set.training.fullname,
+                    batch_no,
+                    train_logs[0],
+                    train_logs[1],
+                    train_logs[2],
+                    train_logs[3],
+                )
+            )
+
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         # only print validation and create plots every once in a while
@@ -146,18 +178,31 @@ def train(
                     dualPol=dual_pol,
                     radar_product=radar_product,
                     num_temporal_data=num_temporal_data,
+                    problem=problem,
                 )
 
                 val_logs = model.test_on_batch(x_, y_)
                 ml_utils.write_log(callback, val_names, val_logs, batch_no)
-                print(
-                    progress_string.format(
-                        utils.ML_Set.validation.fullname,
-                        batch_no,
-                        val_logs[0],
-                        val_logs[1],
+                if problem == "detection":
+                    print(
+                        progress_string.format(
+                            utils.ML_Set.validation.fullname,
+                            batch_no,
+                            val_logs[0],
+                            val_logs[1],
+                        )
                     )
-                )
+                else:
+                    print(
+                        progress_string.format(
+                            utils.ML_Set.validation.fullname,
+                            batch_no,
+                            val_logs[0],
+                            val_logs[1],
+                            val_logs[2],
+                            val_logs[3],
+                        )
+                    )
                 x_, y_, x, y = [None] * 4
 
             except Exception as e:
@@ -207,6 +252,8 @@ def main(results):
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
+        coord_conv=results.coord_conv,
+        problem=results.problem,
     )
 
 
@@ -226,7 +273,6 @@ if __name__ == "__main__":
                 3 : Differential Reflectivity
             """,
     )
-
     parser.add_argument(
         "-l",
         "--log_path",
@@ -237,7 +283,6 @@ if __name__ == "__main__":
             model/radar_product
             """,
     )
-
     parser.add_argument(
         "-e",
         "--eval_increment",
@@ -245,7 +290,6 @@ if __name__ == "__main__":
         default=5,
         help="""How frequently the model prints out the validation results.""",
     )
-
     parser.add_argument(
         "-n",
         "--num_iterations",
@@ -253,7 +297,6 @@ if __name__ == "__main__":
         default=2500,
         help="""The number of training iterations the model will run""",
     )
-
     parser.add_argument(
         "-c",
         "--checkpoint_frequency",
@@ -264,7 +307,6 @@ if __name__ == "__main__":
             out a checkpoint of the model training.
             """,
     )
-
     parser.add_argument(
         "-lr",
         "--learning_rate",
@@ -275,7 +317,6 @@ if __name__ == "__main__":
             .e.g. .1, .05, .001
             """,
     )
-
     parser.add_argument(
         "-m",
         "--model",
@@ -288,7 +329,6 @@ if __name__ == "__main__":
                 2 : Shallow CNN, temporal model
             """,
     )
-
     parser.add_argument(
         "-d",
         "--dual_pol",
@@ -300,7 +340,6 @@ if __name__ == "__main__":
             the model is training on legacy data.
             """,
     )
-
     parser.add_argument(
         "-hm",
         "--high_memory_mode",
@@ -323,6 +362,24 @@ if __name__ == "__main__":
                 frames in either direction used for training. 0 will give array
                 size of 1, 1 -> 3, 2 -> 5, and 3 -> 7.
                 """,
+    )
+    parser.add_argument(
+        "-cc",
+        "--coord_conv",
+        type=bool,
+        default=True,
+        help="""
+            Turn coord_conv layers on and off. See model.py.
+            """,
+    )
+    parser.add_argument(
+        "-p",
+        "--problem",
+        type=str,
+        default="detection",
+        help="""
+            Type of problem to solve. Either 'detection' or 'localization'.
+            """,
     )
     results = parser.parse_args()
     main(results)
