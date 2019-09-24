@@ -171,7 +171,9 @@ def train(
         # only print validation and create plots every once in a while
         if batch_no % eval_increment == 0:
             currentDT = datetime.datetime.now()
-            model.save_weights(log_path + str(currentDT) + save_file.format(""))
+            model.save_weights(
+                log_path + str(currentDT) + str(batch_no) + save_file.format("")
+            )
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
