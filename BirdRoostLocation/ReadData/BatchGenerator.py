@@ -179,7 +179,6 @@ class Small_Image_Batch_Generator(Batch_Generator):
                 filenames is an array of filenames, corresponding to the
                 ground truth values.
         """
-        # len(ml_sets[ml_set])
         if ml_set is utils.ML_Set.testing:
 
             ground_truths, train_data, filenames, roost_sets, _ = Batch_Generator.get_batch(
@@ -319,8 +318,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 for index in indices:
                     filename = ml_sets[ml_set][index]
                     is_roost = int(self.label_dict[filename].is_roost)
-                    lat = float(self.label_dict[filename].latitude)
-                    long = float(self.label_dict[filename].longitude)
+                    polar_radius = float(self.label_dict[filename].polar_radius)
+                    polar_theta = float(self.label_dict[filename].polar_theta)
                     image = self.label_dict[filename].get_image(radar_product)
 
                     print("Filename: ")
@@ -356,12 +355,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[lat, long]] * np.array(image).shape[0]
+                                ground_truths = [[polar_radius, polar_theta]] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[lat, long]] * np.array(image).shape[0],
+                                        [[polar_radius, polar_theta]] * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )
