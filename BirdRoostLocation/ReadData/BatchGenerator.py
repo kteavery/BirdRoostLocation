@@ -103,7 +103,7 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
-        #print(ml_sets[utils.ML_Set.testing])
+        # print(ml_sets[utils.ML_Set.testing])
 
         for key in list(ml_sets.keys()):
             ml_sets_V06[key] = []
@@ -312,6 +312,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
             print(len(roost_sets[key]))
         for key in no_roost_sets:
             print(len(no_roost_sets[key]))
+        print(roost_sets[utils.ML_Set.testing])
 
         for ml_sets in [roost_sets, no_roost_sets]:
             if ml_sets[ml_set]:  # in case you only train on true or false labels
