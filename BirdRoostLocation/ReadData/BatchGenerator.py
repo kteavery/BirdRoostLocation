@@ -99,9 +99,11 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
+        print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
+        #print(ml_sets[utils.ML_Set.testing])
 
         for key in list(ml_sets.keys()):
             ml_sets_V06[key] = []
@@ -133,7 +135,7 @@ class Batch_Generator:
             roost_sets = self.roost_sets_V06
             no_roost_sets = self.no_roost_sets_V06
 
-        return ground_truths, train_data, filenames, roost_sets, no_roost_sets
+        return train_data, ground_truths, filenames, roost_sets, no_roost_sets
 
 
 class Small_Image_Batch_Generator(Batch_Generator):
@@ -355,12 +357,15 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[polar_radius, polar_theta]] * np.array(image).shape[0]
+                                ground_truths = [
+                                    [polar_radius, polar_theta]
+                                ] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[polar_radius, polar_theta]] * np.array(image).shape[0],
+                                        [[polar_radius, polar_theta]]
+                                        * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )

@@ -17,6 +17,7 @@ from typing import Dict, Any
 
 real_path: str = os.path.realpath(__file__)
 setting_path: str = os.path.join(os.path.dirname(real_path), "settings.json")
+print(setting_path)
 data: Dict[str, Any] = json.load(open(setting_path))
 
 WORKING_DIRECTORY: str = str(data["cwd"])

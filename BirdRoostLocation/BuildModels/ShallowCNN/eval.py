@@ -17,6 +17,7 @@ python eval.py \
 """
 import argparse
 import os
+import numpy as np
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.LoadSettings as settings
@@ -35,7 +36,14 @@ def eval(log_path, radar_product, coord_conv, problem):
                 should be a value of type utils.Radar_Products.
 
         """
-    batch_generator = BatchGenerator.Batch_Generator(
+    # batch_generator = BatchGenerator.Batch_Generator(
+    #     ml_label_csv=settings.LABEL_CSV,
+    #     ml_split_csv=settings.ML_SPLITS_DATA,
+    #     validate_k_index=3,
+    #     test_k_index=4,
+    #     default_batch_size=5000,
+    # )
+    batch_generator = BatchGenerator.Single_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
         validate_k_index=3,
@@ -43,7 +51,7 @@ def eval(log_path, radar_product, coord_conv, problem):
         default_batch_size=5000,
     )
 
-    y, x, _, _, _ = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
+    x, y, _, = batch_generator.get_batch(utils.ML_Set.testing, radar_product)
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
     )
