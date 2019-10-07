@@ -13,7 +13,13 @@ def calculate_polar(roost_lat, roost_long, nexrad_lat, nexrad_long):
     long_diff = roost_long - nexrad_long
     rad = math.sqrt(lat_diff * lat_diff + long_diff * long_diff)
     theta = math.degrees(math.atan(lat_diff / long_diff))
-    return rad, theta  # lat/long degrees, radians
+    if lat_diff < 0 and long_diff < 0:
+        theta = 180 + theta
+    if lat_diff < 0 and long_diff >= 0:
+        theta = 180 + theta
+    if long_diff < 0 and lat_diff >= 0:
+        theta = 360 + theta
+    return rad, theta  # lat/long degrees, degrees
 
 
 def create_nexrad_dict():

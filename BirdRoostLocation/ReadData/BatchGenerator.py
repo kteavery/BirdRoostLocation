@@ -103,7 +103,6 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
-        # print(ml_sets[utils.ML_Set.testing])
 
         for key in list(ml_sets.keys()):
             ml_sets_V06[key] = []
@@ -276,6 +275,9 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
 
+    def normalize(self, x, maxi, mini):
+        return (x - mini) / (maxi - mini)
+
     def get_batch(
         self,
         ml_set,
@@ -312,7 +314,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
             print(len(roost_sets[key]))
         for key in no_roost_sets:
             print(len(no_roost_sets[key]))
-        print(roost_sets[utils.ML_Set.testing])
 
         for ml_sets in [roost_sets, no_roost_sets]:
             if ml_sets[ml_set]:  # in case you only train on true or false labels
@@ -325,8 +326,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     image = self.label_dict[filename].get_image(radar_product)
 
-                    print("Filename: ")
-                    print(filename)
+                    print("POLAR RADIUS, THETA")
+                    print(str(polar_radius) + ", " + str(polar_theta))
 
                     if image != []:
                         filenames.append(filename)
@@ -359,13 +360,21 @@ class Single_Product_Batch_Generator(Batch_Generator):
                         else:  # localization
                             if np.array(ground_truths).size == 0:
                                 ground_truths = [
-                                    [polar_radius, polar_theta]
+                                    [
+                                        self.normalize(polar_radius, 2, 0),
+                                        self.normalize(polar_theta, 360, 0),
+                                    ]
                                 ] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[polar_radius, polar_theta]]
+                                        [
+                                            [
+                                                self.normalize(polar_radius, 2, 0),
+                                                self.normalize(polar_theta, 360, 0),
+                                            ]
+                                        ]
                                         * np.array(image).shape[0],
                                     ),
                                     axis=0,

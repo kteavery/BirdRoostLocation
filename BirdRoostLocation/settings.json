@@ -1,8 +1,8 @@
 {
   "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
-  "label_csv": "ml_labels_polar.csv",
-  "update_label_csv": "ml_labels_polar.csv",
-  "ml_splits_csv": "true_subset_ml_splits.csv",
+  "label_csv": "true_ml_labels_polar.csv",
+  "update_label_csv": "true_ml_labels_polar.csv",
+  "ml_splits_csv": "true_ml_splits.csv",
   "subset_files_csv": "subset_files.csv",
   "nexrad_csv": "nexrad.csv",
   "schooner": false
