@@ -34,15 +34,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
                 read the save located in this directory.
             radar_product: The radar product the model is evaluating. This
                 should be a value of type utils.Radar_Products.
-
-        """
-    # batch_generator = BatchGenerator.Batch_Generator(
-    #     ml_label_csv=settings.LABEL_CSV,
-    #     ml_split_csv=settings.ML_SPLITS_DATA,
-    #     validate_k_index=3,
-    #     test_k_index=4,
-    #     default_batch_size=5000,
-    # )
+    """
     batch_generator = BatchGenerator.Single_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
@@ -63,8 +55,20 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
     )
     model.load_weights(log_path)
 
-    loss, acc = model.evaluate(x, y)
-    print(loss, acc)
+    predictions = model.predict(x)
+    print("PREDICTIONS")
+    print(predictions)
+    print("GROUND TRUTH")
+    print(y)
+
+    if problem == "detection":
+        loss, acc = model.evaluate(x, y)
+        print("LOSS, ACC: ")
+        print(loss, acc)
+    else:
+        loss, mae, mape, cosine = model.evaluate(x, y)
+        print("LOSS, MAE, MAPE, COSINE: ")
+        print(loss, mae, mape, cosine)
 
 
 def main(results):

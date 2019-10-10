@@ -326,19 +326,19 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     image = self.label_dict[filename].get_image(radar_product)
 
-                    print("POLAR RADIUS, THETA")
-                    print(str(polar_radius) + ", " + str(polar_theta))
+                    #print("POLAR RADIUS, THETA")
+                    #print(str(polar_radius) + ", " + str(polar_theta))
 
                     if image != []:
                         filenames.append(filename)
-                        print("Image size: ")
-                        print(np.array(image).shape)
+                        #print("Image size: ")
+                        #print(np.array(image).shape)
                         if np.array(train_data).size == 0:
                             train_data = image
                             train_data = np.array(train_data)
                         else:
-                            print(np.array(image).shape)
-                            print(train_data.shape)
+                            #print(np.array(image).shape)
+                            #print(train_data.shape)
                             train_data = np.concatenate(
                                 (train_data, np.array(image)), axis=0
                             )
@@ -380,12 +380,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     axis=0,
                                 )
 
-                        print("Train data shape: ")
-                        print(train_data.shape)
+                        #print("Train data shape: ")
+                        #print(train_data.shape)
 
         truth_shape = np.array(ground_truths).shape
-        print(truth_shape)
-        print(np.array(ground_truths).shape)
+        #print(truth_shape)
+        #print(np.array(ground_truths).shape)
 
         ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
