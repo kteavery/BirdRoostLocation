@@ -27,6 +27,6 @@ echo $SLURM_ARRAY_TASK_ID
 python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
 BirdRoostLocation/BuildModels/ShallowCNN/eval.py \
 --radar_product=1 \
---log_path="/condo/swatwork/keavery/masters_thesis/clean_images/model/Velocity/2019-09-26 16:29:01.4725133995Velocity.h5" \
+--log_path="/condo/swatwork/keavery/masters_thesis/clean_images/model/Velocity/2019-10-08 13:52:27.7995153995Velocity.h5" \
 --coord_conv="" \
 --problem="localization"
