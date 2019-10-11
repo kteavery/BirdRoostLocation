@@ -58,15 +58,13 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     predictions = model.predict(x)
 
-    ACC_RAD, TPR_RAD, TNR_RAD, ROC_AUC_RAD = skill_scores.get_skill_scores(
-        predictions[:, 0], y[:, 0]
-    )
-    skill_scores.print_skill_scores(ACC_RAD, TPR_RAD, TNR_RAD, ROC_AUC_RAD)
+    ACC_RAD = skill_scores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
+    print("ACC_RAD: " + str(ACC_RAD))
 
-    ACC_THETA, TPR_THETA, TNR_THETA, ROC_AUC_THETA = skill_scores.get_skill_scores(
-        predictions[:, 1], y[:, 1]
+    ACC_THETA = skill_scores.get_skill_scores_regression(
+        predictions[:, 1], y[:, 1], 0.1
     )
-    skill_scores.print_skill_scores(ACC_THETA, TPR_THETA, TNR_THETA, ROC_AUC_THETA)
+    print("ACC_THETA: " + str(ACC_THETA))
 
     print("PREDICTIONS")
     print(predictions)
