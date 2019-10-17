@@ -17,6 +17,12 @@ class ML_Label:
         self.latitude: The latitude of the roost in the radar file
         self.longitude: The longitude of the roost in the radar file
         self.radius: The radius of the roost in the radar file
+        self.nexrad_latitude: The latitude of the radar
+        self.nexrad_longitude: The longitude of the radar
+        self.polar_radius: The distance of the roost to the radar 
+        (with the radar defined as the origin)
+        self.polar_theta: The angle in degrees of the roost relative to the radar 
+        (with the radar defined as the origin)
         self.timestamp: The timestamp at which the nexrad data was recorded
         self.sunrise_time: The sunrise time at the lat, lon coordinates
         self.image_paths: A dictionary that contains path to the images with the
@@ -43,6 +49,10 @@ class ML_Label:
         self.latitude = pd_row["lat"]
         self.longitude = pd_row["lon"]
         self.radius = pd_row["radius"]
+        self.nexrad_latitude = pd_row["nexrad_lat"]
+        self.nexrad_longitude = pd_row["nexrad_lon"]
+        self.polar_radius = pd_row["polar_radius"]
+        self.polar_theta = pd_row["polar_theta"]
         self.timestamp = datetime.datetime.strptime(
             pd_row["roost_time"], "%Y-%m-%d %H:%M:%S"
         )
@@ -75,6 +85,14 @@ class ML_Label:
             + str(self.longitude)
             + ", "
             + str(self.radius)
+            + ", "
+            + str(self.nexrad_latitude)
+            + ", "
+            + str(self.nexrad_longitude)
+            + ", "
+            + str(self.polar_radius)
+            + ", "
+            + str(self.polar_theta)
             + ", "
             + str(self.timestamp)
             + ", "

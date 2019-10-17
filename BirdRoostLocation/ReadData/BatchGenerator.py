@@ -99,6 +99,7 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
+        print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
@@ -133,7 +134,7 @@ class Batch_Generator:
             roost_sets = self.roost_sets_V06
             no_roost_sets = self.no_roost_sets_V06
 
-        return ground_truths, train_data, filenames, roost_sets, no_roost_sets
+        return train_data, ground_truths, filenames, roost_sets, no_roost_sets
 
 
 class Small_Image_Batch_Generator(Batch_Generator):
@@ -179,7 +180,6 @@ class Small_Image_Batch_Generator(Batch_Generator):
                 filenames is an array of filenames, corresponding to the
                 ground truth values.
         """
-        # len(ml_sets[ml_set])
         if ml_set is utils.ML_Set.testing:
 
             ground_truths, train_data, filenames, roost_sets, _ = Batch_Generator.get_batch(
@@ -275,6 +275,9 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
 
+    def normalize(self, x, maxi, mini):
+        return (x - mini) / (maxi - mini)
+
     def get_batch(
         self,
         ml_set,
@@ -319,23 +322,16 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 for index in indices:
                     filename = ml_sets[ml_set][index]
                     is_roost = int(self.label_dict[filename].is_roost)
-                    lat = float(self.label_dict[filename].latitude)
-                    long = float(self.label_dict[filename].longitude)
+                    polar_radius = float(self.label_dict[filename].polar_radius)
+                    polar_theta = float(self.label_dict[filename].polar_theta)
                     image = self.label_dict[filename].get_image(radar_product)
-
-                    print("Filename: ")
-                    print(filename)
 
                     if image != []:
                         filenames.append(filename)
-                        print("Image size: ")
-                        print(np.array(image).shape)
                         if np.array(train_data).size == 0:
                             train_data = image
                             train_data = np.array(train_data)
                         else:
-                            print(np.array(image).shape)
-                            print(train_data.shape)
                             train_data = np.concatenate(
                                 (train_data, np.array(image)), axis=0
                             )
@@ -356,22 +352,33 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                         else:  # localization
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [[lat, long]] * np.array(image).shape[0]
+                                ground_truths = [
+                                    [
+                                        self.normalize(polar_radius, 2, 0),
+                                        self.normalize(polar_theta, 360, 0),
+                                    ]
+                                ] * np.array(image).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
-                                        [[lat, long]] * np.array(image).shape[0],
+                                        [
+                                            [
+                                                self.normalize(polar_radius, 2, 0),
+                                                self.normalize(polar_theta, 360, 0),
+                                            ]
+                                        ]
+                                        * np.array(image).shape[0],
                                     ),
                                     axis=0,
                                 )
 
-                        print("Train data shape: ")
-                        print(train_data.shape)
+                        #print("Train data shape: ")
+                        #print(train_data.shape)
 
         truth_shape = np.array(ground_truths).shape
-        print(truth_shape)
-        print(np.array(ground_truths).shape)
+        #print(truth_shape)
+        #print(np.array(ground_truths).shape)
 
         ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
