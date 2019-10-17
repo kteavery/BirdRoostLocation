@@ -58,12 +58,11 @@ def get_skill_scores_regression(predictions, truths, cutoff):
     predictions = predictions[~np.isnan(predictions)]
     truths = truths[~np.isnan(truths)]
 
-    for prediction, truth in predictions, truths:
-        rad_diff = abs(prediction[0] - truth[0])
-        theta_diff = abs(prediction[1] - truth[1])
-        if rad_diff < cutoff:
+    for prediction, truth in zip(predictions, truths):
+        diff = abs(prediction[0] - truth[0])
+        if diff < cutoff:
             T += 1
-        elif rad_diff >= cutoff:
+        elif diff >= cutoff:
             F += 1
 
     ACC = T / (T + F)
