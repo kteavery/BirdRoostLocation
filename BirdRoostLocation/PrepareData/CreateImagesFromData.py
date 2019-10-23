@@ -62,7 +62,7 @@ def createLabelForFiles(fileNames, saveDir):
                 rad = pyart.io.read_nexrad_archive(file.name)
 
                 dualPol = int(name[-1:]) >= 6
-                VisualizeNexradData.visualizeRadardata(rad, imgPath, dualPol)
+                VisualizeNexradData.visualizeRadarData(rad, imgPath, dualPol)
                 file.close()
 
                 d1 = imgDir.replace(

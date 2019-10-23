@@ -29,5 +29,4 @@ DEFAULT_BATCH_SIZE: int = 8
 
 if bool(data["schooner"]):
     print("schooner")
-
-matplotlib.use("agg")  # Required for running on schooner
+    matplotlib.use("agg")  # Required for running on schooner
