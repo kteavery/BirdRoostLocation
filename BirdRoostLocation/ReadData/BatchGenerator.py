@@ -1,5 +1,6 @@
 import os
 import pandas
+import ntpath
 from BirdRoostLocation.ReadData import Labels
 import numpy as np
 from BirdRoostLocation import utils
@@ -274,9 +275,28 @@ class Single_Product_Batch_Generator(Batch_Generator):
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
+            # print(self.label_dict[row["AWS_file"]])
 
     def normalize(self, x, maxi, mini):
         return (x - mini) / (maxi - mini)
+
+    def adjustTheta(self, theta, path):
+        filename = os.path.splitext(ntpath.basename(path))[0]
+        parts = filename.split("_")
+        if "flip" in parts:
+            if theta > 180.0:
+                theta = 540 - theta
+            else:
+                theta = 180 - theta
+
+        # rotation
+        try:
+            degree_offset = int(parts[-1])
+            theta += degree_offset
+        except ValueError:
+            return theta
+
+        return theta
 
     def get_batch(
         self,
@@ -324,61 +344,77 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     is_roost = int(self.label_dict[filename].is_roost)
                     polar_radius = float(self.label_dict[filename].polar_radius)
                     polar_theta = float(self.label_dict[filename].polar_theta)
-                    image = self.label_dict[filename].get_image(radar_product)
+                    images = self.label_dict[filename].get_image(radar_product)
+                    # print(self.label_dict[filename].images[radar_product])
 
-                    if image != []:
+                    if images != []:
                         filenames.append(filename)
                         if np.array(train_data).size == 0:
-                            train_data = image
+                            train_data = images
                             train_data = np.array(train_data)
                         else:
                             train_data = np.concatenate(
-                                (train_data, np.array(image)), axis=0
+                                (train_data, np.array(images)), axis=0
                             )
 
                         if problem == "detection":
                             if np.array(ground_truths).size == 0:
                                 ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-                                    image
+                                    images
                                 ).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
                                         [[is_roost, 1 - is_roost]]
-                                        * np.array(image).shape[0],
+                                        * np.array(images).shape[0],
                                     ),
                                     axis=0,
                                 )
                         else:  # localization
-                            if np.array(ground_truths).size == 0:
-                                ground_truths = [
-                                    [
-                                        self.normalize(polar_radius, 2, 0),
-                                        self.normalize(polar_theta, 360, 0),
-                                    ]
-                                ] * np.array(image).shape[0]
-                            else:
-                                ground_truths = np.concatenate(
-                                    (
-                                        ground_truths,
+                            for i in range(len(images)):
+                                if np.array(ground_truths).size == 0:
+                                    ground_truths = [
                                         [
-                                            [
-                                                self.normalize(polar_radius, 2, 0),
-                                                self.normalize(polar_theta, 360, 0),
-                                            ]
+                                            self.normalize(polar_radius, 2, 0),
+                                            self.normalize(
+                                                self.adjustTheta(
+                                                    polar_theta,
+                                                    self.label_dict[filename].images[
+                                                        radar_product
+                                                    ][i],
+                                                ),
+                                                360,
+                                                0,
+                                            ),
                                         ]
-                                        * np.array(image).shape[0],
-                                    ),
-                                    axis=0,
-                                )
-
-                        #print("Train data shape: ")
-                        #print(train_data.shape)
+                                    ]
+                                else:
+                                    ground_truths = np.concatenate(
+                                        (
+                                            ground_truths,
+                                            [
+                                                [
+                                                    self.normalize(polar_radius, 2, 0),
+                                                    self.normalize(
+                                                        self.adjustTheta(
+                                                            polar_theta,
+                                                            self.label_dict[
+                                                                filename
+                                                            ].images[radar_product][i],
+                                                        ),
+                                                        360,
+                                                        0,
+                                                    ),
+                                                ]
+                                            ],
+                                        ),
+                                        axis=0,
+                                    )
 
         truth_shape = np.array(ground_truths).shape
-        #print(truth_shape)
-        #print(np.array(ground_truths).shape)
+        # print(truth_shape)
+        # print(np.array(ground_truths).shape)
 
         ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
