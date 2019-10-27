@@ -18,6 +18,8 @@ python eval.py \
 import argparse
 import os
 import numpy as np
+import csv
+import ntpath
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.LoadSettings as settings
@@ -36,6 +38,8 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
             radar_product: The radar product the model is evaluating. This
                 should be a value of type utils.Radar_Products.
     """
+    model_file = os.path.splitext(ntpath.basename(log_path))[0]
+
     batch_generator = BatchGenerator.Single_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
@@ -44,13 +48,17 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         default_batch_size=5000,
     )
 
-    x, y, _, = batch_generator.get_batch(
+    x, y, filenames = batch_generator.get_batch(
         utils.ML_Set.testing,
         dualPol=dual_pol,
         radar_product=radar_product,
         num_temporal_data=num_temporal_data,
         problem=problem,
     )
+    print("FILENAMES: ")
+    print(filenames)
+    print(len(filenames))
+
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
     )
@@ -67,9 +75,16 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
     print("ACC_THETA: " + str(ACC_THETA))
 
     print("PREDICTIONS")
-    print(predictions)
+    print(len(predictions))
+    # print(predictions)
     print("GROUND TRUTH")
-    print(y)
+    print(len(y))
+    # print(y)
+
+    with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
+        writer = csv.writer(predict_file, delimiter=",")
+        for i in range(len(predictions)):
+            writer.writerow([filenames[i], y[i], predictions[i]])
 
     if problem == "detection":
         loss, acc = model.evaluate(x, y)
