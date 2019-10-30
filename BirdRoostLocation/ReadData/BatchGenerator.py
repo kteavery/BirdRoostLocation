@@ -376,35 +376,56 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     axis=0,
                                 )
                         else:  # localization
-                            radii = [polar_radius for i in range(len(images))]
-                            thetas = []
-                            for i in range(len(images)):
-                                thetas.append(
-                                    self.adjustTheta(
-                                        polar_theta,
-                                        self.label_dict[filename].images[radar_product][
-                                            i
-                                        ],
-                                    )
-                                )
-
-                            pairs = list(
-                                    zip(
-                                        self.normalize(radii, 2, 0),
-                                        self.normalize(thetas, 360, 0),
-                                    )
-                                )
-                            pairs = [list(x) for x in pairs]
-
                             if np.array(ground_truths).size == 0:
-                                ground_truths = pairs
+                                ground_truths = [
+                                    [
+                                        self.normalize(polar_radius, 2, 0),
+                                        self.normalize(polar_theta, 360, 0),
+                                    ]
+                                ] * np.array(images).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
-                                        ground_truths, pairs,
+                                        ground_truths,
+                                        [
+                                            [
+                                                self.normalize(polar_radius, 2, 0),
+                                                self.normalize(polar_theta, 360, 0),
+                                            ]
+                                        ]
+                                        * np.array(images).shape[0],
                                     ),
                                     axis=0,
                                 )
+                            # radii = [polar_radius for i in range(len(images))]
+                            # thetas = []
+                            # for i in range(len(images)):
+                            #     thetas.append(
+                            #         self.adjustTheta(
+                            #             polar_theta,
+                            #             self.label_dict[filename].images[radar_product][
+                            #                 i
+                            #             ],
+                            #         )
+                            #     )
+
+                            # pairs = list(
+                            #         zip(
+                            #             self.normalize(radii, 2, 0),
+                            #             self.normalize(thetas, 360, 0),
+                            #         )
+                            #     )
+                            # pairs = [list(x) for x in pairs]
+
+                            # if np.array(ground_truths).size == 0:
+                            #     ground_truths = pairs
+                            # else:
+                            #     ground_truths = np.concatenate(
+                            #         (
+                            #             ground_truths, pairs,
+                            #         ),
+                            #         axis=0,
+                            #     )
 
         truth_shape = np.array(ground_truths).shape
         # print(truth_shape)
