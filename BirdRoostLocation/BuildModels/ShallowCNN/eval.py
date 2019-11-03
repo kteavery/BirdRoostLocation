@@ -83,7 +83,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
-        for i in range(len(predictions)):
+        for i in range(len(predictions) - 1):
             writer.writerow([filenames[i], y[i], predictions[i]])
 
     if problem == "detection":
