@@ -68,7 +68,7 @@ def get_skill_scores_regression(predictions, truths, cutoff):
     ACC = T / (T + F)
 
     return ACC
-
+    
 
 def print_skill_scores(ACC, TPR, TNR, ROC_AUC):
     print("\tACC", ACC)
