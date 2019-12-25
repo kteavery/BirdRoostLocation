@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import math
 import pandas
+import pylab as pl
+import numpy as np
 import re
 import csv, os
 import pyart
@@ -27,12 +29,24 @@ def visualizeResults(image, truth, prediction, path):
     ax = fig.add_subplot(111, polar=True, label="polar")
     ax.set_facecolor("None")
     ax.scatter(truth[0], truth[1], c="black", marker="*", s=70.0)
+    circle100 = plt.Circle(
+        (0, 0), 100, transform=ax.transData._b, color="black", fill=False, linewidth=2.0
+    )
+    ax.add_artist(circle100)
+    circle200 = plt.Circle(
+        (0, 0), 200, transform=ax.transData._b, color="black", fill=False, linewidth=2.0
+    )
+    ax.add_artist(circle200)
+    circle300 = plt.Circle(
+        (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=3.0
+    )
+    ax.add_artist(circle300)
     # ax.scatter(prediction[0], prediction[1], c="black", marker="o")
     ax.axis("off")
     ax.set_rmax(300)
 
     plt.show()
-    plt.savefig(path)
+    # plt.savefig(path)
     plt.close()
 
 
@@ -76,8 +90,6 @@ if __name__ == "__main__":
                 + ".png"
             )
 
-            print("ISFILE")
-            print(os.path.isfile(full_path))
             try:
                 if os.path.isfile(full_path):
                     visualizeResults(
