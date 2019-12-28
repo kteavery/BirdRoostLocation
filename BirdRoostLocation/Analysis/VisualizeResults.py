@@ -23,6 +23,7 @@ def visualizeResults(image, truth, prediction, path):
     ax0 = fig.add_subplot(111)
     # ax0.axis("off")
     ax0.imshow(data)
+    # plt.show()
 
     # create polar axes in the foreground and remove its background
     # to see through
@@ -30,23 +31,23 @@ def visualizeResults(image, truth, prediction, path):
     ax.set_facecolor("None")
     ax.scatter(truth[0], truth[1], c="black", marker="*", s=70.0)
     circle100 = plt.Circle(
-        (0, 0), 100, transform=ax.transData._b, color="black", fill=False, linewidth=2.0
+        (0, 0), 100, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle100)
     circle200 = plt.Circle(
-        (0, 0), 200, transform=ax.transData._b, color="black", fill=False, linewidth=2.0
+        (0, 0), 200, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle200)
     circle300 = plt.Circle(
-        (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=3.0
+        (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle300)
     # ax.scatter(prediction[0], prediction[1], c="black", marker="o")
     ax.axis("off")
     ax.set_rmax(300)
 
-    plt.show()
-    # plt.savefig(path)
+    # plt.show()
+    plt.savefig(path)
     plt.close()
 
 
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
         for field in fields:
             full_path = (
-                "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/Roost_"
+                "/Users/Kate/workspace/BirdRoostLocation/MLData/no_rings_filtered/Roost_"
                 + field
                 + "/"
                 + aws_file[i][10:12]
@@ -80,7 +81,7 @@ if __name__ == "__main__":
                 + ".png"
             )
             save_path = (
-                "/Users/Kate/workspace/BirdRoostLocation/MLData/predictions/Roost_"
+                "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/Roost_"
                 + field
                 + "/"
                 + aws_file[i][10:12]

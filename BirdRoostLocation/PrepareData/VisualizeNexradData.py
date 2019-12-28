@@ -45,6 +45,7 @@ def visualizeRadarData(
         fig = plt.figure(figsize=(9, 9))
     else:
         fig = plt.figure(figsize=(9, 4.5))
+
     # display the lowest elevation scan data
     plots = []
     plots.append([utils.Radar_Products.reflectivity, "Reflectivity_0 (dBZ)", 0])
