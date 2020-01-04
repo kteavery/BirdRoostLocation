@@ -37,7 +37,7 @@ def convertLatLong(labels):
             newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item()
         )
 
-    print(latLongLabels)
+    # print(latLongLabels)
 
     return latLongLabels
 
@@ -84,7 +84,7 @@ def processLabels(labels):
 
     # print(falses.head())
 
-    newLabels = falses.groupby(["filename"]).apply(combineN)
+    newLabels = falses.groupby(falses["filename"].str[:12]).apply(combineN)
     # print(newLabels)
 
     return newLabels
