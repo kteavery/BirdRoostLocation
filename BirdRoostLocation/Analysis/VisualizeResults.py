@@ -46,8 +46,8 @@ def visualizeResults(image, truth, prediction, path):
     ax.axis("off")
     ax.set_rmax(300)
 
-    # plt.show()
-    plt.savefig(path)
+    plt.show()
+    # plt.savefig(path)
     plt.close()
 
 
