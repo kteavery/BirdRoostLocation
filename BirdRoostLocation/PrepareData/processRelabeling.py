@@ -94,8 +94,9 @@ def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "/all_true_data/output.csv")
     newLabels = processLabels(labels)
     latLongLabels = convertLatLong(newLabels)
-
-    # write latLongLabels to csv
+    latLongLabels[["filename", "latitude", "longitude", "flag"]].to_csv(
+        settings.WORKING_DIRECTORY + "/processed_relabels.csv", index=False
+    )
 
 
 if __name__ == "__main__":

@@ -294,7 +294,10 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
         # rotation
         try:
-            degree_offset = int(parts[-1])
+            if "noise" in parts:
+                degree_offset = int(parts[-2])
+            else:
+                degree_offset = int(parts[-1])
             theta += degree_offset
         except ValueError:
             return theta
@@ -412,15 +415,14 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 print(self.label_dict[filename].images[radar_product][
                                             i
                                         ])
-                                print(thetas.append(
-                                    self.adjustTheta(
+                                print(self.adjustTheta(
                                         polar_theta,
                                         self.label_dict[filename].images[radar_product][
                                             i
                                         ],
                                     )
-                                ))
-                            print(polar_radius)
+                                )
+                                print(polar_radius)
 
                             pairs = list(
                                     zip(
