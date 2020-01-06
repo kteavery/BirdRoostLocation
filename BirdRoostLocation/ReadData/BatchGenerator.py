@@ -399,6 +399,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 # )
                             radii = [polar_radius]*np.array(images).shape[0]
                             thetas = []
+                            
                             for i in range(len(images)):
                                 thetas.append(
                                     self.adjustTheta(
@@ -408,18 +409,18 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         ],
                                     )
                                 )
-
-                            # radii = [polar_radius for i in range(len(images))]
-                            # thetas = []
-                            # for i in range(len(images)):
-                            #     thetas.append(
-                            #         self.adjustTheta(
-                            #             polar_theta,
-                            #             self.label_dict[filename].images[radar_product][
-                            #                 i
-                            #             ],
-                            #         )
-                            #     )
+                                print(self.label_dict[filename].images[radar_product][
+                                            i
+                                        ])
+                                print(thetas.append(
+                                    self.adjustTheta(
+                                        polar_theta,
+                                        self.label_dict[filename].images[radar_product][
+                                            i
+                                        ],
+                                    )
+                                ))
+                            print(polar_radius)
 
                             pairs = list(
                                     zip(
@@ -429,7 +430,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
                             pairs = [list(x) for x in pairs]
 
-                            print(pairs)
                             if np.array(ground_truths).size == 0:
                                 ground_truths = pairs
                             else:
