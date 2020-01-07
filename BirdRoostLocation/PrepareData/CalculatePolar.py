@@ -55,7 +55,9 @@ def create_nexrad_dict():
 
 
 def add_cols():
-    df = pandas.read_csv(settings.LABEL_CSV)
+    df = pandas.read_csv(
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels.csv"
+    )
     nexrads = create_nexrad_dict()
     # print(df)
 
@@ -85,11 +87,14 @@ def add_cols():
 
 
 def main():
-    print(calculate_polar(37.0242098, -80.2736664, 36.113, -80.61))
-    print(calculate_polar(33.9487579, -81.1184281, 33.37, -80.0))
-    print(calculate_polar(38.9753957, -77.4778444, 38.3667, -76.9177))
-    # updated_df = add_cols()
-    # updated_df.to_csv(settings.UPDATE_LABEL_CSV, index=False)
+    # print(calculate_polar(37.0242098, -80.2736664, 36.113, -80.61))
+    # print(calculate_polar(33.9487579, -81.1184281, 33.37, -80.0))
+    # print(calculate_polar(38.9753957, -77.4778444, 38.3667, -76.9177))
+    updated_df = add_cols()
+    updated_df.to_csv(
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar.csv",
+        index=False,
+    )
 
 
 if __name__ == "__main__":
