@@ -42,7 +42,7 @@ def visualizeResults(image, truth, prediction, path):
         (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle300)
-    # ax.scatter(prediction[0], prediction[1], c="black", marker="o")
+    ax.scatter(prediction[0], prediction[1], c="black", marker="o")
     ax.axis("off")
     ax.set_rmax(300)
 
@@ -65,9 +65,9 @@ if __name__ == "__main__":
         # truth = re.findall(r"[-+]?\d*\.\d+|\d+", truth[i])
         # prediction = re.findall(r"[-+]?\d*\.\d+|\d+", prediction[i])
 
-        print(aws_file[i])
-        print(theta[i])
-        print(radius[i])
+        # print(aws_file[i])
+        # print(theta[i])
+        # print(radius[i])
 
         for field in fields:
             full_path = (
@@ -90,15 +90,18 @@ if __name__ == "__main__":
                 + field
                 + ".png"
             )
-
             try:
+                print(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
+                print((math.radians(theta[i] + 180), radius[i]))
+                print((theta[i], radius[i]))
+                print((math.degrees(9.9998057), (1.9471960e-05) * 3000000))
                 if os.path.isfile(full_path):
                     visualizeResults(
                         full_path,
                         # (math.radians(float(truth[1])), float(truth[0])),
-                        (math.radians(theta[i]), radius[i]),
+                        (math.radians(theta[i] + 180), radius[i]),
                         # (float(prediction[1]), float(prediction[0]) * 300),
-                        (0, 0),
+                        (212, (1.9471960e-05) * 3000000),
                         save_path,
                     )
             except:

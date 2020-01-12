@@ -53,11 +53,11 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-        print("Ks: ")
-        print(validate_k_index)
-        print(test_k_index)
+        # print("Ks: ")
+        # print(validate_k_index)
+        # print(test_k_index)
 
-        print(ml_split_csv)
+        # print(ml_split_csv)
 
         ml_split_pd = pandas.read_csv(ml_split_csv)
 
@@ -100,7 +100,7 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
-        print(test_k)
+        # print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
@@ -412,17 +412,17 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         ],
                                     )
                                 )
-                                print(self.label_dict[filename].images[radar_product][
-                                            i
-                                        ])
-                                print(self.adjustTheta(
-                                        polar_theta,
-                                        self.label_dict[filename].images[radar_product][
-                                            i
-                                        ],
-                                    )
-                                )
-                                print(polar_radius)
+                                # print(self.label_dict[filename].images[radar_product][
+                                #             i
+                                #         ])
+                                # print(self.adjustTheta(
+                                #         polar_theta,
+                                #         self.label_dict[filename].images[radar_product][
+                                #             i
+                                #         ],
+                                #     )
+                                # )
+                                # print(polar_radius)
 
                             pairs = list(
                                     zip(

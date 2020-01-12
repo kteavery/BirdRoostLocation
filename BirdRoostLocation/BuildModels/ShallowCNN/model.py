@@ -65,10 +65,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     model.add(Dense(500))
     model.add(BatchNormalization())
     model.add(Activation("relu"))
-    if problem == "detection":
-        num_classes = 2  # yes, no
-    else:  # location
-        num_classes = 2  # lat, long
+    num_classes = 2  # detection: yes, no OR location: lat, long
     model.add(Dense(num_classes, activation="softmax"))
 
     if problem == "detection":
