@@ -104,7 +104,7 @@ def copySameLabels(labels):
             timestamps.str.contains(label["filename"][0:10])
         ].to_frame()
 
-        sharedStamps.columns = ["filename"]
+        sharedStamps.columns = ["AWS_file"]
         sharedStamps["latitude"] = label["latitude"]
         sharedStamps["longitude"] = label["longitude"]
         sharedStamps["flag"] = label["flag"]
@@ -121,7 +121,7 @@ def main():
     newLabels = processLabels(labels)
     latLongLabels = convertLatLong(newLabels)
     extendedLabels = copySameLabels(latLongLabels)
-    extendedLabels[["filename", "latitude", "longitude", "flag"]].to_csv(
+    extendedLabels[["AWS_file", "latitude", "longitude", "flag"]].to_csv(
         settings.WORKING_DIRECTORY + "/processed_relabels.csv", index=False
     )
 
