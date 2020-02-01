@@ -90,11 +90,38 @@ def processLabels(labels):
     return newLabels
 
 
+def copySameLabels(labels):
+    labelDF = copy.deepcopy(labels[["filename", "latitude", "longitude", "flag"]])
+    print(len(labelDF))
+    timestamps = pd.read_csv(settings.WORKING_DIRECTORY + "/true_ml_labels_polar.csv")[
+        "AWS_file"
+    ]
+
+    for index, label in labels[
+        ["filename", "latitude", "longitude", "flag"]
+    ].iterrows():
+        sharedStamps = timestamps[
+            timestamps.str.contains(label["filename"][0:10])
+        ].to_frame()
+
+        sharedStamps.columns = ["filename"]
+        sharedStamps["latitude"] = label["latitude"]
+        sharedStamps["longitude"] = label["longitude"]
+        sharedStamps["flag"] = label["flag"]
+        # print(type(sharedStamps))
+        # labelDF.append(sharedStamps, ignore_index=True)
+        labelDF = pd.concat([labelDF, sharedStamps], axis=0)
+
+    print(len(labelDF))
+    return labelDF
+
+
 def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "/all_true_data/output.csv")
     newLabels = processLabels(labels)
     latLongLabels = convertLatLong(newLabels)
-    latLongLabels[["filename", "latitude", "longitude", "flag"]].to_csv(
+    extendedLabels = copySameLabels(latLongLabels)
+    extendedLabels[["filename", "latitude", "longitude", "flag"]].to_csv(
         settings.WORKING_DIRECTORY + "/processed_relabels.csv", index=False
     )
 
