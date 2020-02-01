@@ -36,7 +36,7 @@ def visualizeRadarData(
     # pyart.config.load_config.html
     pyart.config.load_config(
         filename=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "pyartConfig.py"
+            os.path.dirname(os.path.abspath(__file__)), "PyartConfig.py"
         )
     )
 
