@@ -1,5 +1,6 @@
 import os
 import pandas
+import ntpath
 from BirdRoostLocation.ReadData import Labels
 import numpy as np
 from BirdRoostLocation import utils
@@ -52,11 +53,11 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-        print("Ks: ")
-        print(validate_k_index)
-        print(test_k_index)
+        # print("Ks: ")
+        # print(validate_k_index)
+        # print(test_k_index)
 
-        print(ml_split_csv)
+        # print(ml_split_csv)
 
         ml_split_pd = pandas.read_csv(ml_split_csv)
 
@@ -99,7 +100,7 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
-        print(test_k)
+        # print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
@@ -274,9 +275,34 @@ class Single_Product_Batch_Generator(Batch_Generator):
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
+            # print(self.label_dict[row["AWS_file"]])
 
     def normalize(self, x, maxi, mini):
-        return (x - mini) / (maxi - mini)
+        if type(x) is list:
+            return [(y - mini) / (maxi - mini) for y in x]
+        else:
+            return (x - mini) / (maxi - mini)
+
+    def adjustTheta(self, theta, path):
+        filename = os.path.splitext(ntpath.basename(path))[0]
+        parts = filename.split("_")
+        if "flip" in parts:
+            if theta > 180.0:
+                theta = 540 - theta
+            else:
+                theta = 180 - theta
+
+        # rotation
+        try:
+            if "noise" in parts:
+                degree_offset = int(parts[-2])
+            else:
+                degree_offset = int(parts[-1])
+            theta += degree_offset
+        except ValueError:
+            return theta
+
+        return theta
 
     def get_batch(
         self,
@@ -324,61 +350,101 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     is_roost = int(self.label_dict[filename].is_roost)
                     polar_radius = float(self.label_dict[filename].polar_radius)
                     polar_theta = float(self.label_dict[filename].polar_theta)
-                    image = self.label_dict[filename].get_image(radar_product)
+                    images = self.label_dict[filename].get_image(radar_product)
+                    # print(images)
+                    # print(self.label_dict[filename].images[radar_product])
 
-                    if image != []:
+                    if images != []:
                         filenames.append(filename)
                         if np.array(train_data).size == 0:
-                            train_data = image
+                            train_data = images
                             train_data = np.array(train_data)
                         else:
                             train_data = np.concatenate(
-                                (train_data, np.array(image)), axis=0
+                                (train_data, np.array(images)), axis=0
                             )
 
                         if problem == "detection":
                             if np.array(ground_truths).size == 0:
                                 ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-                                    image
+                                    images
                                 ).shape[0]
                             else:
                                 ground_truths = np.concatenate(
                                     (
                                         ground_truths,
                                         [[is_roost, 1 - is_roost]]
-                                        * np.array(image).shape[0],
+                                        * np.array(images).shape[0],
                                     ),
                                     axis=0,
                                 )
                         else:  # localization
+                            # if np.array(ground_truths).size == 0:
+                            #     ground_truths = [
+                            #         [
+                            #             self.normalize(polar_radius, 2, 0),
+                            #             self.normalize(polar_theta, 360, 0),
+                            #         ]
+                            #     ] * np.array(images).shape[0]
+                            # else:
+                                # ground_truths = np.concatenate(
+                                #     (
+                                #         ground_truths,
+                                #         [
+                                #             [
+                                #                 self.normalize(polar_radius, 2, 0),
+                                #                 self.normalize(polar_theta, 360, 0),
+                                #             ]
+                                #         ]
+                                #         * np.array(images).shape[0],
+                                #     ),
+                                #     axis=0,
+                                # )
+                            radii = [polar_radius]*np.array(images).shape[0]
+                            thetas = []
+                            
+                            for i in range(len(images)):
+                                thetas.append(
+                                    self.adjustTheta(
+                                        polar_theta,
+                                        self.label_dict[filename].images[radar_product][
+                                            i
+                                        ],
+                                    )
+                                )
+                                # print(self.label_dict[filename].images[radar_product][
+                                #             i
+                                #         ])
+                                # print(self.adjustTheta(
+                                #         polar_theta,
+                                #         self.label_dict[filename].images[radar_product][
+                                #             i
+                                #         ],
+                                #     )
+                                # )
+                                # print(polar_radius)
+
+                            pairs = list(
+                                    zip(
+                                        self.normalize(radii, 2, 0),
+                                        self.normalize(thetas, 360, 0),
+                                    )
+                                )
+                            pairs = [list(x) for x in pairs]
+
                             if np.array(ground_truths).size == 0:
-                                ground_truths = [
-                                    [
-                                        self.normalize(polar_radius, 2, 0),
-                                        self.normalize(polar_theta, 360, 0),
-                                    ]
-                                ] * np.array(image).shape[0]
+                                ground_truths = pairs
                             else:
                                 ground_truths = np.concatenate(
                                     (
-                                        ground_truths,
-                                        [
-                                            [
-                                                self.normalize(polar_radius, 2, 0),
-                                                self.normalize(polar_theta, 360, 0),
-                                            ]
-                                        ]
-                                        * np.array(image).shape[0],
+                                        ground_truths, pairs,
                                     ),
                                     axis=0,
                                 )
 
-                        #print("Train data shape: ")
-                        #print(train_data.shape)
-
         truth_shape = np.array(ground_truths).shape
-        #print(truth_shape)
-        #print(np.array(ground_truths).shape)
+        # print(truth_shape)
+        # print(np.array(ground_truths).shape)
 
         ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 

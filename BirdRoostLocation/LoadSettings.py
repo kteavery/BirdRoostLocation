@@ -21,6 +21,7 @@ data: Dict[str, Any] = json.load(open(setting_path))
 
 WORKING_DIRECTORY: str = str(data["cwd"])
 LABEL_CSV: str = str(data["label_csv"])
+PREDICTION_CSV: str = str(data["prediction_csv"])
 UPDATE_LABEL_CSV: str = str(data["update_label_csv"])
 SUBSET_CSV: str = str(data["subset_files_csv"])
 ML_SPLITS_DATA: str = str(data["ml_splits_csv"])
@@ -29,5 +30,4 @@ DEFAULT_BATCH_SIZE: int = 8
 
 if bool(data["schooner"]):
     print("schooner")
-
-matplotlib.use("agg")  # Required for running on schooner
+    matplotlib.use("agg")  # Required for running on schooner

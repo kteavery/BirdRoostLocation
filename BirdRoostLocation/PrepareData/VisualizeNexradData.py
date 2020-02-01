@@ -13,7 +13,9 @@ plot_dict = {
 }
 
 
-def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False):
+def visualizeRadarData(
+    radar, save, dualPolarization=False, displayCircles=False, points=[]
+):
     """Visualize the LDM2 radar data. Either display or save resulting image.
 
     This method was modified from code found at the following website :
@@ -38,11 +40,12 @@ def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False
         )
     )
 
-    display = pyart.graph.RadarDisplay(radar)
+    display = pyart.graph.RadarMapDisplay(radar)
     if dualPolarization:
         fig = plt.figure(figsize=(9, 9))
     else:
         fig = plt.figure(figsize=(9, 4.5))
+
     # display the lowest elevation scan data
     plots = []
     plots.append([utils.Radar_Products.reflectivity, "Reflectivity_0 (dBZ)", 0])
@@ -84,6 +87,9 @@ def visualizeRadardata(radar, save, dualPolarization=False, displayCircles=False
             display.plot_range_rings(
                 list(range(100, 350, 100)), lw=0.5, col="black", ax=ax
             )
+        if points != []:
+            display.plot_point(points[0][0], points[0][1], symbol="ro")
+            display.plot_point(points[1][0], points[1][1], symbol="bo")
     if save:
         plt.savefig(save)
     else:
