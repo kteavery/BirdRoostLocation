@@ -46,13 +46,13 @@ class ML_Label:
         self.fileName = file_name
         self.is_roost = pd_row["Roost"]
         self.roost_id = pd_row["roost_id"]
-        self.latitude = pd_row["lat"]
-        self.longitude = pd_row["lon"]
+        self.latitude = pd_row["lat"]  # changes if augmented
+        self.longitude = pd_row["lon"]  # changes if augmented
         self.radius = pd_row["radius"]
         self.nexrad_latitude = pd_row["nexrad_lat"]
         self.nexrad_longitude = pd_row["nexrad_lon"]
         self.polar_radius = pd_row["polar_radius"]
-        self.polar_theta = pd_row["polar_theta"]
+        self.polar_theta = pd_row["polar_theta"]  # changes if augmented
         self.timestamp = datetime.datetime.strptime(
             pd_row["roost_time"], "%Y-%m-%d %H:%M:%S"
         )
