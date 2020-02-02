@@ -118,18 +118,20 @@ def train(
             problem=problem,
         )
 
-    # Setup callbacks
-    callback = History()
-    callback.set_model(model)
-
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
         val_names = ["val_loss", "val_accuracy"]
 
         progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
     else:  # location "mae", "mape", "cosine"
-        train_names = ["train_loss", "train_mae", "train_mape", "train_cosine"]
-        val_names = ["val_loss", "val_mae", "val_mape", "val_cosine"]
+        # Set up callback
+        train_history = ml_utils.LossHistory()
+        train_history.on_train_begin()
+        val_history = ml_utils.LossHistory()
+        val_history.on_train_begin()
+
+        train_names = ["train_mse", "train_mae", "train_mape", "train_cosine"]
+        val_names = ["val_mse", "val_mae", "val_mape", "val_cosine"]
 
         progress_string = "{} Epoch: {} Loss: {} MAE: {} MAPE: {} Cosine: {}"
 
@@ -159,6 +161,8 @@ def train(
                 )
             )
         else:
+            train_history.on_batch_end(logs=train_logs)
+
             print(
                 progress_string.format(
                     utils.ML_Set.training.fullname,
@@ -188,7 +192,9 @@ def train(
                 )
 
                 val_logs = model.test_on_batch(x_, y_)
+
                 # ml_utils.write_log(callback, val_names, val_logs, batch_no)
+
                 if problem == "detection":
                     print(
                         progress_string.format(
@@ -199,6 +205,8 @@ def train(
                         )
                     )
                 else:
+                    val_history.on_batch_end(logs=val_logs)
+
                     print(
                         progress_string.format(
                             utils.ML_Set.validation.fullname,
@@ -222,9 +230,8 @@ def train(
                 )
             )
             ml_utils.create_plots(
-                history=history,
-                train_name=train_names[0],
-                val_name=val_names[0],
+                train=train_history,
+                val=val_history,
                 save_path=os.path.join(
                     checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
                 ),
