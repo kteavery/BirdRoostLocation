@@ -39,20 +39,12 @@ def write_log(callback, names, logs, batch_no):
         callback.writer.flush()
 
 
-# def create_plots():
-#     # summarize history for accuracy
-#     plt.plot(history.history["acc"])
-#     plt.plot(history.history["val_acc"])
-#     plt.title("model accuracy")
-#     plt.ylabel("accuracy")
-#     plt.xlabel("epoch")
-#     plt.legend(["train", "test"], loc="upper left")
-#     plt.show()
-#     # summarize history for loss
-#     plt.plot(history.history["loss"])
-#     plt.plot(history.history["val_loss"])
-#     plt.title("model loss")
-#     plt.ylabel("loss")
-#     plt.xlabel("epoch")
-#     plt.legend(["train", "test"], loc="upper left")
-#     plt.show()
+def create_plots(train_name, val_name, save_path):
+    # summarize history for loss
+    plt.plot(history.history[train_name])
+    plt.plot(history.history[val_name])
+    plt.title("model " + val_name[4:])
+    plt.ylabel(val_name[4:])
+    plt.xlabel("epoch")
+    plt.legend(["train", "test"], loc="upper left")
+    plt.savefig(save_path)

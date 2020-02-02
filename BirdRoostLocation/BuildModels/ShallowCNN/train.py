@@ -33,6 +33,10 @@ import tensorflow as tf
 import datetime
 import warnings
 
+import matplotlib.pyplot as plt
+import pandas
+import numpy as np
+
 warnings.simplefilter("ignore")
 
 
@@ -168,7 +172,7 @@ def train(
 
         ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
-        # only print validation and create plots every once in a while
+        # only print validation every once in a while
         if batch_no % eval_increment == 0:
             currentDT = datetime.datetime.now()
             model.save_weights(
@@ -217,10 +221,34 @@ def train(
                     checkpoint_path, str(currentDT) + save_file.format(batch_no)
                 )
             )
+            ml_utils.create_plots(train_name=train_names[0],
+                                val_name=val_names[0], 
+                                os.path.join(
+                                checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
+                )
+            )
+            # create_plots(, "mse",
+            #     os.path.join(
+            #         checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
+            #     )
+            # )
 
     print("SAVE FILE")
     print(save_file)
     model.save_weights(save_file)
+
+
+# def create_plots(y_train, y_valid, method, save_path):
+#     x_train = list(range(0, len(y_train)))
+#     x_valid = list(range(0, len(y_train), 5))
+
+#     plt.plot(x_train, y_train[method][0:], color="lightblue")
+#     plt.plot(x_valid, y_valid[method][0:], color="wheat")
+
+#     plt.ylabel(method)
+#     plt.xlabel("epochs")
+#     plt.legend()
+#     plt.savefig(save_path)
 
 
 def main(results):
