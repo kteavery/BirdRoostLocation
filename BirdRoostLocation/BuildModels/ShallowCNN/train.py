@@ -233,7 +233,8 @@ def train(
                 train=train_history,
                 val=val_history,
                 save_path=os.path.join(
-                    checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
+                    checkpoint_path,
+                    "mse_plot_" + str(currentDT) + "_" + str(batch_no) + ".png",
                 ),
             )
             # create_plots(, "mse",
