@@ -25,7 +25,7 @@ import argparse
 import os
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as keras_model
-from keras.callbacks import TensorBoard
+from keras.callbacks import History
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
@@ -119,7 +119,7 @@ def train(
         )
 
     # Setup callbacks
-    callback = TensorBoard(log_path)
+    callback = History()
     callback.set_model(model)
 
     if problem == "detection":
@@ -170,7 +170,7 @@ def train(
                 )
             )
 
-        ml_utils.write_log(callback, train_names, train_logs, batch_no)
+        # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         # only print validation every once in a while
         if batch_no % eval_increment == 0:
@@ -188,7 +188,7 @@ def train(
                 )
 
                 val_logs = model.test_on_batch(x_, y_)
-                ml_utils.write_log(callback, val_names, val_logs, batch_no)
+                # ml_utils.write_log(callback, val_names, val_logs, batch_no)
                 if problem == "detection":
                     print(
                         progress_string.format(
@@ -221,11 +221,13 @@ def train(
                     checkpoint_path, str(currentDT) + save_file.format(batch_no)
                 )
             )
-            ml_utils.create_plots(train_name=train_names[0],
-                                val_name=val_names[0], 
-                                os.path.join(
-                                checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
-                )
+            ml_utils.create_plots(
+                history=history,
+                train_name=train_names[0],
+                val_name=val_names[0],
+                save_path=os.path.join(
+                    checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
+                ),
             )
             # create_plots(, "mse",
             #     os.path.join(
