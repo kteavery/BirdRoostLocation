@@ -443,15 +443,17 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 )
 
         truth_shape = np.array(ground_truths).shape
-        # print(truth_shape)
+        print(truth_shape)
         # print(np.array(ground_truths).shape)
+        try:
+            ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
-        ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
-
-        train_data_np = np.array(train_data)
-        shape = train_data_np.shape
-        train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
-        return train_data_np, np.array(ground_truths), np.array(filenames)
+            train_data_np = np.array(train_data)
+            shape = train_data_np.shape
+            train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
+            return train_data_np, np.array(ground_truths), np.array(filenames)
+        except IndexError: 
+            return None, None, None
 
 
 class Multiple_Product_Batch_Generator(Batch_Generator):

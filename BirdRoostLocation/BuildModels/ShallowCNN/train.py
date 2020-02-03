@@ -136,13 +136,17 @@ def train(
         progress_string = "{} Epoch: {} Loss: {} MAE: {} MAPE: {} Cosine: {}"
 
     for batch_no in range(num_iterations):
-        x, y, _ = batch_generator.get_batch(
-            ml_set=utils.ML_Set.training,
-            dualPol=dual_pol,
-            radar_product=radar_product,
-            num_temporal_data=num_temporal_data,
-            problem=problem,
-        )
+        x = None
+        y = None
+        while x == None and y == None:
+            x, y, _ = batch_generator.get_batch(
+                ml_set=utils.ML_Set.training,
+                dualPol=dual_pol,
+                radar_product=radar_product,
+                num_temporal_data=num_temporal_data,
+                problem=problem,
+            )
+            
         print(len(y))
 
         print("X AND Y: ")

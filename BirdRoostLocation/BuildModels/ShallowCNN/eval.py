@@ -48,13 +48,16 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         default_batch_size=5000,
     )
 
-    x, y, filenames = batch_generator.get_batch(
-        utils.ML_Set.testing,
-        dualPol=dual_pol,
-        radar_product=radar_product,
-        num_temporal_data=num_temporal_data,
-        problem=problem,
-    )
+    x = None
+    y = None
+    while x == None and y == None:
+        x, y, filenames = batch_generator.get_batch(
+            utils.ML_Set.testing,
+            dualPol=dual_pol,
+            radar_product=radar_product,
+            num_temporal_data=num_temporal_data,
+            problem=problem,
+        )
     print("FILENAMES: ")
     print(filenames)
     print(len(filenames))
