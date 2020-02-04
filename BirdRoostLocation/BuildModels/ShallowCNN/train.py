@@ -233,14 +233,17 @@ def train(
                     checkpoint_path, str(currentDT) + save_file.format(batch_no)
                 )
             )
-            ml_utils.create_plots(
-                train=train_history,
-                val=val_history,
-                save_path=os.path.join(
-                    checkpoint_path,
-                    "mse_plot_" + str(currentDT) + "_" + str(batch_no) + ".png",
-                ),
-            )
+            try:
+                ml_utils.create_plots(
+                    train=train_history,
+                    val=val_history,
+                    save_path=os.path.join(
+                        checkpoint_path,
+                        "mse_plot_" + str(currentDT) + "_" + str(batch_no) + ".png",
+                    ),
+                )
+            except Exception as e:
+                print(e)
             # create_plots(, "mse",
             #     os.path.join(
             #         checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)

@@ -11,6 +11,10 @@ CHECKPOINT_DIR = "/checkpoint/"
 def create_plots(train, val, save_path):
     x_train = list(range(0, len(train.mse)))
     x_val = list(range(0, len(train.mse), 5))
+    if len(x_val) > len(val.mse):
+        x_val = x_val[-1]
+    if len(x_val) < len(val.mse):
+        val.mse = val.mse[-1]
 
     plt.plot(x_train, train.mse)
     plt.plot(x_val, val.mse)
