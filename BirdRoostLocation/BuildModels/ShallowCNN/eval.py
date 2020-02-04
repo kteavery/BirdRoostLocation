@@ -50,7 +50,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     x = None
     y = None
-    while x == None and y == None:
+    while type(x) == type(None) and type(y) == type(None):
         x, y, filenames = batch_generator.get_batch(
             utils.ML_Set.testing,
             dualPol=dual_pol,

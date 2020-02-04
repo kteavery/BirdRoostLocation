@@ -165,7 +165,7 @@ def train(
                 )
             )
         else:
-            train_history.on_batch_end(logs=train_logs)
+            train_history.on_batch_end(batch=(x, y), logs=train_logs)
 
             print(
                 progress_string.format(
@@ -209,7 +209,7 @@ def train(
                         )
                     )
                 else:
-                    val_history.on_batch_end(logs=val_logs)
+                    val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
                     print(
                         progress_string.format(
