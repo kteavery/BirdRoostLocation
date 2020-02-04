@@ -138,7 +138,7 @@ def train(
     for batch_no in range(num_iterations):
         x = None
         y = None
-        while x == None and y == None:
+        while x.any() == None and y.any() == None:
             x, y, _ = batch_generator.get_batch(
                 ml_set=utils.ML_Set.training,
                 dualPol=dual_pol,
@@ -146,7 +146,7 @@ def train(
                 num_temporal_data=num_temporal_data,
                 problem=problem,
             )
-            
+
         print(len(y))
 
         print("X AND Y: ")
