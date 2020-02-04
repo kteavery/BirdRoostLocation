@@ -138,7 +138,7 @@ def train(
     for batch_no in range(num_iterations):
         x = None
         y = None
-        while x.any() == None and y.any() == None:
+        while type(x) == type(None) and type(y) == type(None):
             x, y, _ = batch_generator.get_batch(
                 ml_set=utils.ML_Set.training,
                 dualPol=dual_pol,

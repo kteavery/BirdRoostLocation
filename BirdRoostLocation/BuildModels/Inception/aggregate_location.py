@@ -173,7 +173,7 @@ def main():
 
     radar_product = utils.Radar_Products(3)
     filenames = None
-    while filenames == None:
+    while type(filenames) == type(None):
         _, _, filenames = batch_generator.get_batch(
             utils.ML_Set.testing, dualPol=dual_pol, radar_product=radar_product
         )
