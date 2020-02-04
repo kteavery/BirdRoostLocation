@@ -66,15 +66,16 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     model.add(BatchNormalization())
     model.add(Activation("relu"))
     num_classes = 2  # detection: yes, no OR location: lat, long
-    model.add(Dense(num_classes, activation="softmax"))
 
     if problem == "detection":
+        model.add(Dense(num_classes, activation="softmax"))
         model.compile(
             loss=keras.losses.categorical_crossentropy,
             optimizer=keras.optimizers.adam(lr),
             metrics=["accuracy"],
         )
     else:  # localization
+        model.add(Dense(num_classes, activation="linear"))
         model.compile(
             loss=keras.losses.mean_squared_error,
             optimizer=keras.optimizers.adam(lr),
