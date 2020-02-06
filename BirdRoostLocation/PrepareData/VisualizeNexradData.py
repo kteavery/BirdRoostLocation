@@ -2,8 +2,10 @@ import matplotlib.pyplot as plt
 import pyart.graph
 import pyart.io
 from BirdRoostLocation import utils
+from mpl_toolkits.basemap import Basemap
 import os
 from PIL import Image
+import math
 
 plot_dict = {
     utils.Radar_Products.reflectivity: [-10, 30, None],
@@ -14,7 +16,7 @@ plot_dict = {
 
 
 def visualizeRadarData(
-    radar, save, dualPolarization=False, displayCircles=False, points=[]
+    radar, save, dualPolarization=False, displayCircles=False, nexrads=[], points=[]
 ):
     """Visualize the LDM2 radar data. Either display or save resulting image.
 
@@ -88,6 +90,36 @@ def visualizeRadarData(
                 list(range(100, 350, 100)), lw=0.5, col="black", ax=ax
             )
         if points != []:
+            print("LAT")
+            print(nexrads[0])
+            print(nexrads[0] - 1 / (300 * 110.574))
+            print(nexrads[0] + 1 / (300 * 110.574))
+            print("LON")
+            print(nexrads[1])
+            print(
+                nexrads[1] - 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574)))
+            )
+            print(
+                nexrads[1] + 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574)))
+            )
+            display.basemap = Basemap(
+                # width=300 * 1000,
+                # height=300 * 1000,
+                lon_0=nexrads[1],
+                lat_0=nexrads[0],
+                llcrnrlat=-90,
+                urcrnrlat=90,
+                llcrnrlon=-90,
+                urcrnrlon=90,
+                # llcrnrlat=nexrads[0] - 1 / (300 * 110.574),
+                # urcrnrlat=nexrads[0] + 1 / (300 * 110.574),
+                # llcrnrlon=nexrads[1]
+                # - 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574))),
+                # urcrnrlon=nexrads[1]
+                # + 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574))),
+                # projection="lcc",
+                ax=ax,
+            )
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
     if save:
@@ -143,6 +175,10 @@ def __plot_ppi(radar, field, ax, sweep=0):
     x = x[:, 0:cutoff]
     y = y[:, 0:cutoff]
     data = data[:, 0:cutoff]
+    print("X, Y, DATA")
+    print(x)
+    print(y)
+    print(data)
 
     ax.pcolormesh(
         x, y, data, vmin=plot_dict[field][0], vmax=plot_dict[field][1], cmap="binary"

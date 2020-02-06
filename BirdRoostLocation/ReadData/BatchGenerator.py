@@ -379,27 +379,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     axis=0,
                                 )
                         else:  # localization
-                            # if np.array(ground_truths).size == 0:
-                            #     ground_truths = [
-                            #         [
-                            #             self.normalize(polar_radius, 2, 0),
-                            #             self.normalize(polar_theta, 360, 0),
-                            #         ]
-                            #     ] * np.array(images).shape[0]
-                            # else:
-                                # ground_truths = np.concatenate(
-                                #     (
-                                #         ground_truths,
-                                #         [
-                                #             [
-                                #                 self.normalize(polar_radius, 2, 0),
-                                #                 self.normalize(polar_theta, 360, 0),
-                                #             ]
-                                #         ]
-                                #         * np.array(images).shape[0],
-                                #     ),
-                                #     axis=0,
-                                # )
                             radii = [polar_radius]*np.array(images).shape[0]
                             thetas = []
                             
@@ -412,17 +391,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         ],
                                     )
                                 )
-                                # print(self.label_dict[filename].images[radar_product][
-                                #             i
-                                #         ])
-                                # print(self.adjustTheta(
-                                #         polar_theta,
-                                #         self.label_dict[filename].images[radar_product][
-                                #             i
-                                #         ],
-                                #     )
-                                # )
-                                # print(polar_radius)
 
                             pairs = list(
                                     zip(

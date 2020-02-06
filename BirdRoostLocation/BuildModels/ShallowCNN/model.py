@@ -31,35 +31,35 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
         model.add(Conv2D(8, kernel_size=(5, 5), input_shape=inputDimensions))
     model.add(Activation("relu"))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     if coord_conv == True:
         model.add(CoordinateChannel2D(use_radius=True))
     model.add(Conv2D(8, (5, 5)))
     model.add(Activation("relu"))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     if coord_conv == True:
         model.add(CoordinateChannel2D(use_radius=True))
     model.add(Conv2D(16, (5, 5)))
     model.add(Activation("relu"))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     if coord_conv == True:
         model.add(CoordinateChannel2D(use_radius=True))
     model.add(Conv2D(32, (5, 5)))
     model.add(Activation("relu"))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     if coord_conv == True:
         model.add(CoordinateChannel2D(use_radius=True))
     model.add(Conv2D(64, (5, 5)))
     model.add(Activation("relu"))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     model.add(Flatten())
     model.add(Dense(500))
