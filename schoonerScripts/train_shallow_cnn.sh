@@ -26,13 +26,14 @@ echo $SLURM_ARRAY_TASK_ID
 
 python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
 BirdRoostLocation/BuildModels/ShallowCNN/train.py \
---radar_product=1 \
---log_path=model/Velocity/ \
+--radar_product=0 \
+--log_path=model/Reflectivity/ \
 --eval_increment=5 \
 --num_iterations=4000 \
 --checkpoint_frequency=100 \
 --learning_rate=.0001 \
 --model=0 \
+--model_type="unet" \
 --high_memory_mode="" \
 --num_temporal_data=1 \
 --dual_pol="true" \

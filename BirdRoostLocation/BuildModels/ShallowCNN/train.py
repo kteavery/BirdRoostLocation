@@ -24,7 +24,8 @@ python train.py \
 import argparse
 import os
 import BirdRoostLocation.LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN import model as keras_model
+from BirdRoostLocation.BuildModels.ShallowCNN import unet as unet
+from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 from keras.callbacks import History
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
@@ -91,9 +92,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv, problem=problem
-        )
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, 3),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, 3),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
@@ -101,9 +113,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coord_conv=coord_conv, problem=problem
-        )
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, 4),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, 4),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
@@ -111,12 +134,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=True,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-            lr=lr,
-            coord_conv=coord_conv,
-            problem=problem,
-        )
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
@@ -244,28 +275,10 @@ def train(
                 )
             except Exception as e:
                 print(e)
-            # create_plots(, "mse",
-            #     os.path.join(
-            #         checkpoint_path, "mse_plot_" + str(currentDT) + "_" + str(batch_no)
-            #     )
-            # )
 
     print("SAVE FILE")
     print(save_file)
     model.save_weights(save_file)
-
-
-# def create_plots(y_train, y_valid, method, save_path):
-#     x_train = list(range(0, len(y_train)))
-#     x_valid = list(range(0, len(y_train), 5))
-
-#     plt.plot(x_train, y_train[method][0:], color="lightblue")
-#     plt.plot(x_valid, y_valid[method][0:], color="wheat")
-
-#     plt.ylabel(method)
-#     plt.xlabel("epochs")
-#     plt.legend()
-#     plt.savefig(save_path)
 
 
 def main(results):
@@ -296,6 +309,7 @@ def main(results):
         checkpoint_frequency=results.checkpoint_frequency,
         lr=results.learning_rate,
         model_name=model,
+        model_type=results.model_type,
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
@@ -374,6 +388,16 @@ if __name__ == "__main__":
                 0 : Shallow CNN
                 1 : Shallow CNN, all radar products
                 2 : Shallow CNN, temporal model
+            """,
+    )
+    parser.add_argument(
+        "-mt",
+        "--model_type",
+        type=str,
+        default="shallow_model",
+        help="""
+            shallow_model
+            unet
             """,
     )
     parser.add_argument(

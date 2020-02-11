@@ -43,6 +43,7 @@ def visualizeRadarData(
     )
 
     display = pyart.graph.RadarMapDisplay(radar)
+    x, y = display._get_x_y(0, True, None)
     if dualPolarization:
         fig = plt.figure(figsize=(9, 9))
     else:
@@ -103,23 +104,21 @@ def visualizeRadarData(
                 nexrads[1] + 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574)))
             )
             display.basemap = Basemap(
-                # width=300 * 1000,
-                # height=300 * 1000,
+                projection="lcc",
                 lon_0=nexrads[1],
                 lat_0=nexrads[0],
-                llcrnrlat=-90,
-                urcrnrlat=90,
-                llcrnrlon=-90,
-                urcrnrlon=90,
-                # llcrnrlat=nexrads[0] - 1 / (300 * 110.574),
-                # urcrnrlat=nexrads[0] + 1 / (300 * 110.574),
-                # llcrnrlon=nexrads[1]
-                # - 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574))),
-                # urcrnrlon=nexrads[1]
-                # + 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574))),
-                # projection="lcc",
-                ax=ax,
+                llcrnrlat=nexrads[0] - 1.25,
+                llcrnrlon=nexrads[1] - 1.5,
+                urcrnrlat=nexrads[0] + 1.25,
+                urcrnrlon=nexrads[1] + 1.5,
+                resolution="h",
             )
+            x0, y0 = display.basemap(nexrads[1], nexrads[0])
+            glons, glats = display.basemap(
+                (x0 + x * 1000.0), (y0 + y * 1000.0), inverse=True
+            )
+
+            # m.scatter(lon0,lat0,marker='o',s=20,color='k',ax=ax,latlon=True)
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
     if save:

@@ -1,7 +1,12 @@
+"""
+adapted from https://github.com/zhixuhao/unet/blob/master/model.py
+"""
+
 import numpy as np
 import os
-import skimage.io as io
-import skimage.transform as trans
+
+# import skimage.io as io
+# import skimage.transform as trans
 import numpy as np
 from keras.models import *
 from keras.layers import *
@@ -10,8 +15,8 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
 
-def unet(input_dimensions, lr=0.0001, coord_conv=False, problem="detection"):
-    inputs = Input(input_dimensions)
+def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection"):
+    inputs = Input(inputDimensions)
     conv1 = Conv2D(
         64, 3, activation="relu", padding="same", kernel_initializer="he_normal"
     )(inputs)
@@ -96,7 +101,8 @@ def unet(input_dimensions, lr=0.0001, coord_conv=False, problem="detection"):
     conv9 = Conv2D(
         2, 3, activation="relu", padding="same", kernel_initializer="he_normal"
     )(conv9)
-    conv10 = Conv2D(1, 1, activation="sigmoid")(conv9)
+
+    conv10 = Conv2D(2, 1, activation="sigmoid")(conv9)
 
     model = Model(input=inputs, output=conv10)
 

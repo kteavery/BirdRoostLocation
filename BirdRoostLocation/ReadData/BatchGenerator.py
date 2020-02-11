@@ -350,6 +350,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     is_roost = int(self.label_dict[filename].is_roost)
                     polar_radius = float(self.label_dict[filename].polar_radius)
                     polar_theta = float(self.label_dict[filename].polar_theta)
+                    roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
                     # print(images)
                     # print(self.label_dict[filename].images[radar_product])
@@ -392,23 +393,48 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     )
                                 )
 
-                            pairs = list(
-                                    zip(
-                                        self.normalize(radii, 2, 0),
-                                        self.normalize(thetas, 360, 0),
+                            if model_type == "shallow_cnn":
+                                pairs = list(
+                                        zip(
+                                            self.normalize(radii, 2, 0),
+                                            self.normalize(thetas, 360, 0),
+                                        )
                                     )
-                                )
-                            pairs = [list(x) for x in pairs]
+                                pairs = [list(x) for x in pairs]
 
-                            if np.array(ground_truths).size == 0:
-                                ground_truths = pairs
-                            else:
-                                ground_truths = np.concatenate(
-                                    (
-                                        ground_truths, pairs,
-                                    ),
-                                    axis=0,
-                                )
+                                if np.array(ground_truths).size == 0:
+                                    ground_truths = pairs
+                                else:
+                                    ground_truths = np.concatenate(
+                                        (
+                                            ground_truths, pairs,
+                                        ),
+                                        axis=0,
+                                    )
+                            else: #unet
+                                masks = np.zeros((len(radii), 240, 240))
+                                if roost_size = None:
+                                    roost_size = 28.0
+                                else:
+                                    roost_size = roost_size/1000 # convert to km
+
+                                mask_roost_size = (roost_size/300)*(240/2)
+
+                                mask_radii = (radii/300)*(240/2)
+                                print(radii)
+                                print(mask_radii)
+
+                                vconvert_to_cart = np.vectorize(convert_to_cart)
+                                cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
+
+                                for k, mask in enumerate(masks):
+                                    mask[ 120+cart_x[k], 120-cart_y[k] ] = 1
+
+                                    color_pts = points_in_circle_np(mask_roost_size, 
+                                                x0=120+cart_x[k], 
+                                                y0=120-cart_y[k])
+                                    [mask[i,j]=1 for i,j in list(color_pts)]
+                                
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
@@ -422,6 +448,18 @@ class Single_Product_Batch_Generator(Batch_Generator):
             return train_data_np, np.array(ground_truths), np.array(filenames)
         except IndexError: 
             return None, None, None
+
+
+def convert_to_cart(radius, theta):
+    return radius * math.cos(theta), radius * math.sin(theta)
+
+def points_in_circle_np(radius, x0=0, y0=0, ):
+    x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
+    y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
+    x, y = np.where((x_[:,np.newaxis] - x0)**2 + (y_ - y0)**2 <= radius**2)
+    # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
+    for x, y in zip(x_[x], y_[y]):
+        yield x, y
 
 
 class Multiple_Product_Batch_Generator(Batch_Generator):
