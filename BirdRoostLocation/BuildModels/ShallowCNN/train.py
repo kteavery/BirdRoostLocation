@@ -99,7 +99,7 @@ def train(
                 coord_conv=coord_conv,
                 problem=problem,
             )
-        else:
+        else:  # shallow CNN
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
                 lr=lr,
@@ -141,7 +141,7 @@ def train(
                 coord_conv=coord_conv,
                 problem=problem,
             )
-        else:
+        else:  # shallow CNN
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, num_temporal_data * 3 + 1),
                 lr=lr,
@@ -178,12 +178,6 @@ def train(
                 problem=problem,
             )
 
-        print(len(y))
-
-        print("X AND Y: ")
-        print(x.shape)
-        print(y.shape)
-
         train_logs = model.train_on_batch(x, y)
 
         if problem == "detection":
@@ -213,10 +207,8 @@ def train(
 
         # only print validation every once in a while
         if batch_no % eval_increment == 0:
-            currentDT = datetime.datetime.now()
-            model.save_weights(
-                log_path + str(currentDT) + str(batch_no) + save_file.format("")
-            )
+            # currentDT = datetime.datetime.now()
+            # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
@@ -239,7 +231,7 @@ def train(
                             val_logs[1],
                         )
                     )
-                else:
+                else:  # localization
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
                     print(
@@ -258,19 +250,14 @@ def train(
                 print(e)
 
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
-            currentDT = datetime.datetime.now()
-            model.save_weights(
-                os.path.join(
-                    checkpoint_path, str(currentDT) + save_file.format(batch_no)
-                )
-            )
+            # currentDT = datetime.datetime.now()
+            model.save_weights(os.path.join(checkpoint_path, save_file.format("")))
             try:
                 ml_utils.create_plots(
                     train=train_history,
                     val=val_history,
                     save_path=os.path.join(
-                        checkpoint_path,
-                        "mse_plot_" + str(currentDT) + "_" + str(batch_no) + ".png",
+                        checkpoint_path, "mse_plot_" + str(batch_no) + ".png"
                     ),
                 )
             except Exception as e:
@@ -278,7 +265,7 @@ def train(
 
     print("SAVE FILE")
     print(save_file)
-    model.save_weights(save_file)
+    # model.save_weights(save_file)
 
 
 def main(results):
@@ -362,7 +349,7 @@ if __name__ == "__main__":
         "-c",
         "--checkpoint_frequency",
         type=int,
-        default=100,
+        default=300,
         help="""
             How many training iterations should the model perform before saving 
             out a checkpoint of the model training.

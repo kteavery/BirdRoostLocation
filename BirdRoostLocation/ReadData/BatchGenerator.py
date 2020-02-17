@@ -53,11 +53,6 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-        # print("Ks: ")
-        # print(validate_k_index)
-        # print(test_k_index)
-
-        # print(ml_split_csv)
 
         ml_split_pd = pandas.read_csv(ml_split_csv)
 
@@ -100,7 +95,6 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
-        # print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
@@ -413,7 +407,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     )
                             else: #unet
                                 masks = np.zeros((len(radii), 240, 240))
-                                if roost_size = None:
+                                if roost_size == None:
                                     roost_size = 28.0
                                 else:
                                     roost_size = roost_size/1000 # convert to km
@@ -433,12 +427,13 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     color_pts = points_in_circle_np(mask_roost_size, 
                                                 x0=120+cart_x[k], 
                                                 y0=120-cart_y[k])
-                                    [mask[i,j]=1 for i,j in list(color_pts)]
+                                    for pt in color_pts:
+                                        mask[pt[0],pt[1]]=1
                                 
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
-        # print(np.array(ground_truths).shape)
+        
         try:
             ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
