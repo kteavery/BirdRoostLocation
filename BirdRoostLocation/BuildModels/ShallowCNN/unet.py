@@ -106,7 +106,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
 
     model = Model(input=inputs, output=conv10)
 
-    model.compile(optimizer=Adam(lr), loss="mean squared error", metrics=["accuracy"])
+    model.compile(optimizer=Adam(lr), loss="mse", metrics=["accuracy"])
 
     model.summary()
 
