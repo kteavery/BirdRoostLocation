@@ -346,8 +346,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
-                    # print(images)
-                    # print(self.label_dict[filename].images[radar_product])
+                    print(images)
+                    print(self.label_dict[filename].images[radar_product])
 
                     if images != []:
                         filenames.append(filename)
@@ -433,7 +433,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
         truth_shape = np.array(ground_truths).shape
         print(truth_shape)
-        
+
         try:
             ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
