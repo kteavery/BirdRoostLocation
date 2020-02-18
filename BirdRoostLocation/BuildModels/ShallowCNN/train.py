@@ -49,6 +49,7 @@ def train(
     checkpoint_frequency=100,
     lr=0.0001,
     model_name=utils.ML_Model.Shallow_CNN,
+    model_type="shallow_cnn",
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
