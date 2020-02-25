@@ -415,7 +415,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                                 mask_roost_size = (roost_size/300)*(240/2)
 
-                                mask_radii = (radii/300)*(240/2)
+                                mask_radii = [(radius/300)*(240/2) for radius in radii]
                                 print(radii)
                                 print(mask_radii)
 
