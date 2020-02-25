@@ -304,6 +304,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         dualPol,
         radar_product=None,
         num_temporal_data=0,
+        model_type="shallow_cnn",
         problem="detection",
     ):
         """Get a batch of data for machine learning. As a default, a batch

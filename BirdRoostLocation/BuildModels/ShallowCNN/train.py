@@ -176,6 +176,7 @@ def train(
                 dualPol=dual_pol,
                 radar_product=radar_product,
                 num_temporal_data=num_temporal_data,
+                model_type=model_type,
                 problem=problem,
             )
 
@@ -216,6 +217,7 @@ def train(
                     dualPol=dual_pol,
                     radar_product=radar_product,
                     num_temporal_data=num_temporal_data,
+                    model_type=model_type,
                     problem=problem,
                 )
 
