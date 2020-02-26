@@ -422,6 +422,11 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                                 vconvert_to_cart = np.vectorize(convert_to_cart)
                                 cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
+                                print("CART: ")
+                                print(type(cart_x))
+                                print(type(cart_y))
+                                print(cart_x)
+                                print(cart_y)
 
                                 for k, mask in enumerate(masks):
                                     mask[ 120+cart_x[k], 120-cart_y[k] ] = 1
