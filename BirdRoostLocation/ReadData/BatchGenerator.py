@@ -423,7 +423,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 vconvert_to_cart = np.vectorize(convert_to_cart)
                                 cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
-                                for k, mask in enumerate(masks):
+                                for mask, k in enumerate(masks):
                                     mask[ 120+list(cart_x)[k], 120-list(cart_y)[k] ] = 1
 
                                     color_pts = points_in_circle_np(mask_roost_size, 
