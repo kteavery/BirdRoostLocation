@@ -452,6 +452,9 @@ def convert_to_cart(radius, theta):
 
 def points_in_circle_np(radius, x0=0, y0=0, ):
     print("x0, y0: ")
+    print(x0)
+    print(y0)
+    print(radius)
     print(x0 - radius - 1)
     print(x0 + radius + 1)
     print(y0 - radius - 1)
