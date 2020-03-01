@@ -427,8 +427,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     mask[ 120+int(round(list(cart_x)[k])), 120-int(round(list(cart_y)[k])) ] = 1.0
 
                                     color_pts = points_in_circle_np(mask_roost_size, 
-                                                x0=120+cart_x[k], 
-                                                y0=120-cart_y[k])
+                                                x0=120+int(round(list(cart_x)[k])), 
+                                                y0=120-int(round(list(cart_y)[k])))
                                     for pt in color_pts:
                                         mask[pt[0],pt[1]]=1.0
                                 
