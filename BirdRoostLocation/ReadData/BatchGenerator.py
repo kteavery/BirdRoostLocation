@@ -409,7 +409,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     )
                             else: #unet
                                 masks = np.zeros((len(radii), 240, 240))
-                                if roost_size == None or roost_size == np.nan:
+                                if type(roost_size)!=float:
                                     roost_size = 28.0
                                 else:
                                     roost_size = roost_size/1000 # convert to km
