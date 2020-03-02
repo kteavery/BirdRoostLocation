@@ -408,14 +408,16 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         axis=0,
                                     )
                             else: #unet
+                                print("Roost Size: ")
+
                                 masks = np.zeros((len(radii), 240, 240))
-                                if type(roost_size)!=float:
+                                if type(roost_size)!=float or math.isnan(roost_size):
                                     roost_size = 28.0
+                                    print(roost_size)
                                 else:
                                     roost_size = roost_size/1000 # convert to km
+                                    print(roost_size)
 
-                                print("Roost Size: ")
-                                print(roost_size)
                                 mask_roost_size = (roost_size/300)*(240/2)
 
                                 mask_radii = [(radius/300)*(240/2) for radius in radii]
