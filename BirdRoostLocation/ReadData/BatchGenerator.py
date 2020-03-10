@@ -348,7 +348,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
-                    print(images)
                     print(self.label_dict[filename].images[radar_product])
 
                     if images != []:
@@ -408,21 +407,21 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         axis=0,
                                     )
                             else: #unet
-                                print("Roost Size: ")
+                                # print("Roost Size: ")
 
                                 masks = np.zeros((len(radii), 240, 240))
                                 if type(roost_size)!=float or math.isnan(roost_size):
                                     roost_size = 28.0
-                                    print(roost_size)
+                                    # print(roost_size)
                                 else:
                                     roost_size = roost_size/1000 # convert to km
-                                    print(roost_size)
+                                    # print(roost_size)
 
                                 mask_roost_size = (roost_size/300)*(240/2)
 
                                 mask_radii = [(radius/300)*(240/2) for radius in radii]
-                                print(radii)
-                                print(mask_radii)
+                                # print(radii)
+                                # print(mask_radii)
 
                                 vconvert_to_cart = np.vectorize(convert_to_cart)
                                 cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
@@ -455,14 +454,14 @@ def convert_to_cart(radius, theta):
     return radius * math.cos(theta), radius * math.sin(theta)
 
 def points_in_circle_np(radius, x0=0, y0=0, ):
-    print("x0, y0: ")
-    print(x0)
-    print(y0)
-    print(radius)
-    print(x0 - radius - 1)
-    print(x0 + radius + 1)
-    print(y0 - radius - 1)
-    print(y0 + radius + 1)
+    # print("x0, y0: ")
+    # print(x0)
+    # print(y0)
+    # print(radius)
+    # print(x0 - radius - 1)
+    # print(x0 + radius + 1)
+    # print(y0 - radius - 1)
+    # print(y0 + radius + 1)
     x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
     y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
     x, y = np.where((x_[:,np.newaxis] - x0)**2 + (y_ - y0)**2 <= radius**2)
