@@ -79,6 +79,7 @@ def processLabels(labels):
     equal a false flag
     """
 
+    print(labels.head())
     falses = labels.groupby(["flag"]).get_group(False)
     trues = labels.groupby(["flag"]).get_group(True)
 
@@ -110,7 +111,7 @@ def copySameLabels(labels):
         sharedStamps["flag"] = label["flag"]
         # print(type(sharedStamps))
         # labelDF.append(sharedStamps, ignore_index=True)
-        labelDF = pd.concat([labelDF, sharedStamps], axis=0)
+        labelDF = pd.concat([labelDF, sharedStamps], axis=0, sort=True)
 
     print(len(labelDF))
     return labelDF
