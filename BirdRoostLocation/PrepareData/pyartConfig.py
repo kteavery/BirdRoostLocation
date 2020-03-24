@@ -1341,7 +1341,7 @@ def spectrum_width_limit(container=None, selection=0):
 
 DEFAULT_FIELD_COLORMAP = {
     # field name : colormap
-    reflectivity: 'pyart_HomeyerRainbow',
+    reflectivity: 'pyart_NWSRef',
     corrected_reflectivity: 'pyart_HomeyerRainbow',
     total_power: 'pyart_HomeyerRainbow',
     signal_to_noise_ratio: 'pyart_Carbone17',

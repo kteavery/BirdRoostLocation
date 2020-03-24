@@ -7,11 +7,17 @@ import os
 from PIL import Image
 import math
 
+import BirdRoostLocation.PrepareData.PyartConfig as pyart_config
+
 plot_dict = {
-    utils.Radar_Products.reflectivity: [-10, 30, None],
-    utils.Radar_Products.velocity: [-20, 20, "coolwarm"],
-    utils.Radar_Products.diff_reflectivity: [-4, 8, "coolwarm"],
-    utils.Radar_Products.cc: [0.3, 0.95, "jet"],
+    utils.Radar_Products.reflectivity: [-30, 75, "pyart_NWSRef"],
+    utils.Radar_Products.velocity: [
+        pyart_config.DEFAULT_FIELD_LIMITS.velocity[0],
+        pyart_config.DEFAULT_FIELD_LIMITS.velocity[1],
+        "pyart_BuDRd18",
+    ],
+    utils.Radar_Products.diff_reflectivity: [-1, 8, "pyart_RefDiff"],
+    utils.Radar_Products.cc: [0.5, 1.05, "pyart_RefDiff"],
 }
 
 
@@ -38,7 +44,7 @@ def visualizeRadarData(
     # pyart.config.load_config.html
     pyart.config.load_config(
         filename=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "PyartConfig.py"
+            os.path.dirname(os.path.abspath(__file__)), "pyartConfig.py"
         )
     )
 
