@@ -54,8 +54,7 @@ def createLabelForFiles(fileNames, saveDir):
         print(saveDir)
         imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
         imgPath = os.path.join(
-            imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")),
-            name + ".png",
+            imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")), name + ".png"
         )
         print("IMGPATH:")
         print(imgPath)
@@ -88,7 +87,7 @@ def createLabelForFiles(fileNames, saveDir):
                     float(label_row["nexrad_lat"].iloc[[i]]),
                     float(label_row["nexrad_lon"].iloc[[i]]),
                 ],
-                points=[[lat, lon], [lat, lon]],
+                # points=[[lat, lon], [lat, lon]],
             )
         file.close()
 
@@ -139,7 +138,7 @@ def createLabelForFiles(fileNames, saveDir):
             print(d4 + name + "_Rho_HV" + save_extension)
             img4.save(d4 + name + "_Rho_HV" + save_extension)
 
-        #except Exception as e:
+        # except Exception as e:
         #    print(f"{imgPath}, {str(e)}")
 
 

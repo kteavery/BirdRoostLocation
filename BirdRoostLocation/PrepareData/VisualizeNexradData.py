@@ -44,7 +44,7 @@ def visualizeRadarData(
     # pyart.config.load_config.html
     pyart.config.load_config(
         filename=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "pyartConfig.py"
+            os.path.dirname(os.path.abspath(__file__)), "PyartConfig.py"
         )
     )
 
@@ -127,8 +127,12 @@ def visualizeRadarData(
             # m.scatter(lon0,lat0,marker='o',s=20,color='k',ax=ax,latlon=True)
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
+    print("SAVE")
+    print(save)
     if save:
-        plt.savefig(save)
+        print("SAVE")
+        print(save)
+        fig.savefig(save)
     else:
         plt.show()
     plt.close()
