@@ -1,10 +1,10 @@
 {
-  "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
-  "label_csv": "true_ml_relabels_polar.csv",
-  "update_label_csv": "true_ml_relabels_polar.csv",
+  "cwd": "/condo/swatwork/keavery/masters_thesis/clean_images",
+  "label_csv": "true_ml_labels_polar.csv",
+  "update_label_csv": "true_ml_labels_polar.csv",
+  "nexrad_csv": "nexrad.csv",
   "ml_splits_csv": "true_ml_splits.csv",
   "prediction_csv": "true_predictions_2019-10-08 13:52:27.7995153995Velocity.csv",
   "subset_files_csv": "subset_files.csv",
-  "nexrad_csv": "nexrad.csv",
-  "schooner": false
+  "schooner": true
 }

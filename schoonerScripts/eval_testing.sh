@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+#
+#SBATCH --job-name=eval_debug
+#SBATCH --ntasks=1
+#SBATCH -o eval_%J.out
+#SBATCH -e eval_%J.err
+#SBATCH --mail-user=katherine.avery@ou.edu
+#SBATCH --mail-type=ALL
+#SBATCH -p debug
+#SBATCH -t 00:30:00
+#SBATCH --array=0-3
+#SBATCH --mem 32G
+
+# cd to directory where job was submitted from
+cd $SLURM_SUBMIT_DIR
+
+RADARS_PRODUCTS=(0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3)
+TIMES=(0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3)
+DUAL_POLS=(0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1)
+# get the day information from the array
+RADARS_PRODUCT=${RADARS_PRODUCTS[$SLURM_ARRAY_TASK_ID]}
+TIME=${TIMES[$SLURM_ARRAY_TASK_ID]}
+DUAL_POL=${DUAL_POLS[$SLURM_ARRAY_TASK_ID]}
+
+echo $SLURM_ARRAY_TASK_ID
+
+python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
+BirdRoostLocation/BuildModels/ShallowCNN/eval.py \
+--radar_product=1 \
+--log_path="/condo/swatwork/keavery/masters_thesis/clean_images/model/Velocity/2019-10-08 13:52:27.7995153995Velocity.h5" \
+--coord_conv="" \
+--problem="localization"
