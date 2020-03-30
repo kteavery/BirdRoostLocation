@@ -107,7 +107,7 @@ def createLabelForFiles(fileNames, saveDir):
             if not os.path.exists(d4):
                 os.makedirs(d4)
 
-        img = Image.open(imgPath)
+        img = Image.open(imgPath[:-4] + "_" + str(i) + ".png")
 
         save_extension = ".png"
         if not dualPol:

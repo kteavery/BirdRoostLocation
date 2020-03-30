@@ -9,13 +9,11 @@ import math
 
 import BirdRoostLocation.PrepareData.PyartConfig as pyart_config
 
+vel = pyart_config.DEFAULT_FIELD_LIMITS.get("velocity")
+
 plot_dict = {
     utils.Radar_Products.reflectivity: [-30, 75, "pyart_NWSRef"],
-    utils.Radar_Products.velocity: [
-        pyart_config.DEFAULT_FIELD_LIMITS.get(velocity[0]),
-        pyart_config.DEFAULT_FIELD_LIMITS.get(velocity[1]),
-        "pyart_BuDRd18",
-    ],
+    utils.Radar_Products.velocity: [vel()[0], vel()[1], "pyart_BuDRd18"],
     utils.Radar_Products.diff_reflectivity: [-1, 8, "pyart_RefDiff"],
     utils.Radar_Products.cc: [0.5, 1.05, "pyart_RefDiff"],
 }
@@ -127,14 +125,14 @@ def visualizeRadarData(
             # m.scatter(lon0,lat0,marker='o',s=20,color='k',ax=ax,latlon=True)
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
-    print("SAVE")
-    print(save)
-    if save:
-        print("SAVE")
-        print(save)
-        fig.savefig(save)
-    else:
-        plt.show()
+    # print("SAVE")
+    # print(save)
+    # if save:
+    #     print("SAVE")
+    #     print(save)
+    #     plt.savefig(save)
+    # else:
+    plt.show()
     plt.close()
 
 
