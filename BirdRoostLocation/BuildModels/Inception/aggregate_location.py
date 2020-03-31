@@ -172,9 +172,11 @@ def main():
     )
 
     radar_product = utils.Radar_Products(3)
-    _, _, filenames = batch_generator.get_batch(
-        utils.ML_Set.testing, dualPol=dual_pol, radar_product=radar_product
-    )
+    filenames = None
+    while type(filenames) == type(None):
+        _, _, filenames = batch_generator.get_batch(
+            utils.ML_Set.testing, dualPol=dual_pol, radar_product=radar_product
+        )
 
     for filename in filenames:
         radar = filename[0:4]

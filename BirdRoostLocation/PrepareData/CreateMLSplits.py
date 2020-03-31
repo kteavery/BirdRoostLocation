@@ -33,15 +33,17 @@ def ml_splits_by_date(csv_input_path, csv_output_path, k=5):
 
     index = 0
     for i, file_name in enumerate(file_list):
-        basename = file_name[4:12]
-        if basename not in basenames:
-            basenames[basename] = index
+        #base_radar = file_name[4:8]
+        base_radar = file_name[0:4]
+        print(base_radar)
+        if base_radar not in basenames:
+            basenames[base_radar] = index
             index = (index + 1) % 5
 
-        hash = basenames[basename]
+        year_hash = basenames[base_radar]
 
         for split_index in range(k):
-            if hash == split_index:
+            if year_hash == split_index:
                 fold_images[split_index].append([file_name, is_roost_list[i]])
 
     output = []

@@ -2,19 +2,25 @@ import matplotlib.pyplot as plt
 import pyart.graph
 import pyart.io
 from BirdRoostLocation import utils
+from mpl_toolkits.basemap import Basemap
 import os
 from PIL import Image
+import math
+
+import BirdRoostLocation.PrepareData.PyartConfig as pyart_config
+
+vel = pyart_config.DEFAULT_FIELD_LIMITS.get("velocity")
 
 plot_dict = {
-    utils.Radar_Products.reflectivity: [-10, 30, None],
-    utils.Radar_Products.velocity: [-20, 20, "coolwarm"],
-    utils.Radar_Products.diff_reflectivity: [-4, 8, "coolwarm"],
-    utils.Radar_Products.cc: [0.3, 0.95, "jet"],
+    utils.Radar_Products.reflectivity: [-30, 75, "pyart_NWSRef"],
+    utils.Radar_Products.velocity: [vel()[0], vel()[1], "pyart_BuDRd18"],
+    utils.Radar_Products.diff_reflectivity: [-1, 8, "pyart_RefDiff"],
+    utils.Radar_Products.cc: [0.5, 1.05, "pyart_RefDiff"],
 }
 
 
 def visualizeRadarData(
-    radar, save, dualPolarization=False, displayCircles=False, points=[]
+    radar, save, dualPolarization=False, displayCircles=False, nexrads=[], points=[]
 ):
     """Visualize the LDM2 radar data. Either display or save resulting image.
 
@@ -36,11 +42,12 @@ def visualizeRadarData(
     # pyart.config.load_config.html
     pyart.config.load_config(
         filename=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "pyartConfig.py"
+            os.path.dirname(os.path.abspath(__file__)), "PyartConfig.py"
         )
     )
 
     display = pyart.graph.RadarMapDisplay(radar)
+    x, y = display._get_x_y(0, True, None)
     if dualPolarization:
         fig = plt.figure(figsize=(9, 9))
     else:
@@ -88,12 +95,44 @@ def visualizeRadarData(
                 list(range(100, 350, 100)), lw=0.5, col="black", ax=ax
             )
         if points != []:
+            print("LAT")
+            print(nexrads[0])
+            print(nexrads[0] - 1 / (300 * 110.574))
+            print(nexrads[0] + 1 / (300 * 110.574))
+            print("LON")
+            print(nexrads[1])
+            print(
+                nexrads[1] - 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574)))
+            )
+            print(
+                nexrads[1] + 1 / (111.320 * math.cos(nexrads[0] + 1 / (300 * 110.574)))
+            )
+            display.basemap = Basemap(
+                projection="lcc",
+                lon_0=nexrads[1],
+                lat_0=nexrads[0],
+                llcrnrlat=nexrads[0] - 1.25,
+                llcrnrlon=nexrads[1] - 1.5,
+                urcrnrlat=nexrads[0] + 1.25,
+                urcrnrlon=nexrads[1] + 1.5,
+                resolution="h",
+            )
+            x0, y0 = display.basemap(nexrads[1], nexrads[0])
+            glons, glats = display.basemap(
+                (x0 + x * 1000.0), (y0 + y * 1000.0), inverse=True
+            )
+
+            # m.scatter(lon0,lat0,marker='o',s=20,color='k',ax=ax,latlon=True)
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
-    if save:
-        plt.savefig(save)
-    else:
-        plt.show()
+    # print("SAVE")
+    # print(save)
+    # if save:
+    #     print("SAVE")
+    #     print(save)
+    #     plt.savefig(save)
+    # else:
+    plt.show()
     plt.close()
 
 
@@ -143,6 +182,10 @@ def __plot_ppi(radar, field, ax, sweep=0):
     x = x[:, 0:cutoff]
     y = y[:, 0:cutoff]
     data = data[:, 0:cutoff]
+    print("X, Y, DATA")
+    print(x)
+    print(y)
+    print(data)
 
     ax.pcolormesh(
         x, y, data, vmin=plot_dict[field][0], vmax=plot_dict[field][1], cmap="binary"

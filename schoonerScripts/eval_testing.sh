@@ -1,15 +1,15 @@
 #!/usr/bin/bash
 #
-#SBATCH --job-name=train_cnn
+#SBATCH --job-name=eval_debug
 #SBATCH --ntasks=1
-#SBATCH -o train_shallow_%J.out
-#SBATCH -e train_shallow_%J.err
+#SBATCH -o eval_%J.out
+#SBATCH -e eval_%J.err
 #SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
-#SBATCH -p swat_plus
-#SBATCH -t 47:00:00
+#SBATCH -p debug
+#SBATCH -t 00:30:00
 #SBATCH --array=0-3
-#SBATCH --mem 120G
+#SBATCH --mem 32G
 
 # cd to directory where job was submitted from
 cd $SLURM_SUBMIT_DIR
@@ -25,17 +25,8 @@ DUAL_POL=${DUAL_POLS[$SLURM_ARRAY_TASK_ID]}
 echo $SLURM_ARRAY_TASK_ID
 
 python /condo/swatwork/keavery/masters_thesis/gitRepos/BirdRoostLocation/\
-BirdRoostLocation/BuildModels/ShallowCNN/train.py \
---radar_product=0 \
---log_path=model/Reflectivity/ \
---eval_increment=5 \
---num_iterations=4000 \
---checkpoint_frequency=100 \
---learning_rate=.0001 \
---model=0 \
---model_type="unet" \
---high_memory_mode="" \
---num_temporal_data=1 \
---dual_pol="true" \
+BirdRoostLocation/BuildModels/ShallowCNN/eval.py \
+--radar_product=1 \
+--log_path="/condo/swatwork/keavery/masters_thesis/clean_images/model/Velocity/2019-10-08 13:52:27.7995153995Velocity.h5" \
 --coord_conv="" \
 --problem="localization"

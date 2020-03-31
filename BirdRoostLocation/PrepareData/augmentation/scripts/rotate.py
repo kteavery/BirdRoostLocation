@@ -6,7 +6,7 @@ import scipy.misc
 from PIL import Image
 from scipy.ndimage import rotate
 
-ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation"
+ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData"
 
 directory = ROOT_DIR
 data_directories = [
@@ -26,11 +26,9 @@ data_directories.extend(flip_directories)
 
 def main():
     for data_dir in data_directories:
-        for file in os.listdir(directory + "/MLData/data/" + data_dir):
+        for file in os.listdir(directory + "/data/" + data_dir):
             if file.endswith(".png") or file.endswith(".jpg"):
-                image_ary = cv2.imread(
-                    directory + "/MLData/data/" + data_dir + "/" + file
-                )
+                image_ary = cv2.imread(directory + "/data/" + data_dir + "/" + file)
 
                 for angle in np.arange(45, 360, 45):
                     rotated = scipy.ndimage.rotate(
@@ -38,12 +36,10 @@ def main():
                     )
 
                     filename = os.path.basename(file)
-                    os.makedirs(
-                        directory + "/MLData/data/Rotate_" + data_dir, exist_ok=True
-                    )
+                    os.makedirs(directory + "/data/Rotate_" + data_dir, exist_ok=True)
                     newfile = (
                         directory
-                        + "/MLData/data/Rotate_"
+                        + "/data/Rotate_"
                         + data_dir
                         + "/"
                         + filename[:-4]
