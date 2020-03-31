@@ -5,7 +5,7 @@ import cv2
 import scipy.misc
 from PIL import Image
 
-ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation"
+ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData"
 
 directory = ROOT_DIR
 data_directories = [
@@ -46,19 +46,17 @@ def salt_pepper(image):
 
 def main():
     for data_dir in data_directories:
-        for file in os.listdir(directory + "/MLData/data/" + data_dir):
+        for file in os.listdir(directory + "/data/" + data_dir):
             if file.endswith(".png") or file.endswith(".jpg"):
-                image_ary = cv2.imread(
-                    directory + "/MLData/data/" + data_dir + "/" + file
-                )
+                image_ary = cv2.imread(directory + "/data/" + data_dir + "/" + file)
 
                 noisy = salt_pepper(image_ary)
 
                 filename = os.path.basename(file)
-                os.makedirs(directory + "/MLData/data/Noise_" + data_dir, exist_ok=True)
+                os.makedirs(directory + "/data/Noise_" + data_dir, exist_ok=True)
                 newfile = (
                     directory
-                    + "/MLData/data/Noise_"
+                    + "/data/Noise_"
                     + data_dir
                     + "/"
                     + filename[:-4]

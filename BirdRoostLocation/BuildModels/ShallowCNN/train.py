@@ -24,14 +24,19 @@ python train.py \
 import argparse
 import os
 import BirdRoostLocation.LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN import model as keras_model
-from keras.callbacks import TensorBoard
+from BirdRoostLocation.BuildModels.ShallowCNN import unet as unet
+from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
+from keras.callbacks import History
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 import tensorflow as tf
 import datetime
 import warnings
+
+import matplotlib.pyplot as plt
+import pandas
+import numpy as np
 
 warnings.simplefilter("ignore")
 
@@ -44,6 +49,7 @@ def train(
     checkpoint_frequency=100,
     lr=0.0001,
     model_name=utils.ML_Model.Shallow_CNN,
+    model_type="shallow_cnn",
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
@@ -87,9 +93,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv, problem=problem
-        )
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, 3),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:  # shallow CNN
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, 3),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
@@ -97,9 +114,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, 4), lr=lr, coord_conv=coord_conv, problem=problem
-        )
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, 4),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, 4),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
@@ -107,16 +135,20 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=True,
         )
-        model = keras_model.build_model(
-            inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-            lr=lr,
-            coord_conv=coord_conv,
-            problem=problem,
-        )
-
-    # Setup callbacks
-    callback = TensorBoard(log_path)
-    callback.set_model(model)
+        if model_type == "unet":
+            model = unet.build_model(
+                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
+        else:  # shallow CNN
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
+                lr=lr,
+                coord_conv=coord_conv,
+                problem=problem,
+            )
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
@@ -124,24 +156,29 @@ def train(
 
         progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
     else:  # location "mae", "mape", "cosine"
-        train_names = ["train_loss", "train_mae", "train_mape", "train_cosine"]
-        val_names = ["val_loss", "val_mae", "val_mape", "val_cosine"]
+        # Set up callback
+        train_history = ml_utils.LossHistory()
+        train_history.on_train_begin()
+        val_history = ml_utils.LossHistory()
+        val_history.on_train_begin()
+
+        train_names = ["train_mse", "train_mae", "train_mape", "train_cosine"]
+        val_names = ["val_mse", "val_mae", "val_mape", "val_cosine"]
 
         progress_string = "{} Epoch: {} Loss: {} MAE: {} MAPE: {} Cosine: {}"
 
     for batch_no in range(num_iterations):
-        x, y, _ = batch_generator.get_batch(
-            ml_set=utils.ML_Set.training,
-            dualPol=dual_pol,
-            radar_product=radar_product,
-            num_temporal_data=num_temporal_data,
-            problem=problem,
-        )
-        print(len(y))
-
-        print("X AND Y: ")
-        print(x.shape)
-        print(y.shape)
+        x = None
+        y = None
+        while type(x) == type(None) and type(y) == type(None):
+            x, y, _ = batch_generator.get_batch(
+                ml_set=utils.ML_Set.training,
+                dualPol=dual_pol,
+                radar_product=radar_product,
+                num_temporal_data=num_temporal_data,
+                model_type=model_type,
+                problem=problem,
+            )
 
         train_logs = model.train_on_batch(x, y)
 
@@ -155,6 +192,8 @@ def train(
                 )
             )
         else:
+            train_history.on_batch_end(batch=(x, y), logs=train_logs)
+
             print(
                 progress_string.format(
                     utils.ML_Set.training.fullname,
@@ -166,25 +205,26 @@ def train(
                 )
             )
 
-        ml_utils.write_log(callback, train_names, train_logs, batch_no)
+        # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
-        # only print validation and create plots every once in a while
+        # only print validation every once in a while
         if batch_no % eval_increment == 0:
-            currentDT = datetime.datetime.now()
-            model.save_weights(
-                log_path + str(currentDT) + str(batch_no) + save_file.format("")
-            )
+            # currentDT = datetime.datetime.now()
+            # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
                 x_, y_, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.validation,
                     dualPol=dual_pol,
                     radar_product=radar_product,
                     num_temporal_data=num_temporal_data,
+                    model_type=model_type,
                     problem=problem,
                 )
 
                 val_logs = model.test_on_batch(x_, y_)
-                ml_utils.write_log(callback, val_names, val_logs, batch_no)
+
+                # ml_utils.write_log(callback, val_names, val_logs, batch_no)
+
                 if problem == "detection":
                     print(
                         progress_string.format(
@@ -194,7 +234,9 @@ def train(
                             val_logs[1],
                         )
                     )
-                else:
+                else:  # localization
+                    val_history.on_batch_end(batch=(x, y), logs=val_logs)
+
                     print(
                         progress_string.format(
                             utils.ML_Set.validation.fullname,
@@ -211,16 +253,22 @@ def train(
                 print(e)
 
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
-            currentDT = datetime.datetime.now()
-            model.save_weights(
-                os.path.join(
-                    checkpoint_path, str(currentDT) + save_file.format(batch_no)
+            # currentDT = datetime.datetime.now()
+            model.save_weights(os.path.join(checkpoint_path, save_file.format("")))
+            try:
+                ml_utils.create_plots(
+                    train=train_history,
+                    val=val_history,
+                    save_path=os.path.join(
+                        checkpoint_path, "mse_plot_" + str(batch_no) + ".png"
+                    ),
                 )
-            )
+            except Exception as e:
+                print(e)
 
     print("SAVE FILE")
     print(save_file)
-    model.save_weights(save_file)
+    # model.save_weights(save_file)
 
 
 def main(results):
@@ -251,6 +299,7 @@ def main(results):
         checkpoint_frequency=results.checkpoint_frequency,
         lr=results.learning_rate,
         model_name=model,
+        model_type=results.model_type,
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
         num_temporal_data=results.num_temporal_data,
@@ -303,7 +352,7 @@ if __name__ == "__main__":
         "-c",
         "--checkpoint_frequency",
         type=int,
-        default=100,
+        default=300,
         help="""
             How many training iterations should the model perform before saving 
             out a checkpoint of the model training.
@@ -329,6 +378,16 @@ if __name__ == "__main__":
                 0 : Shallow CNN
                 1 : Shallow CNN, all radar products
                 2 : Shallow CNN, temporal model
+            """,
+    )
+    parser.add_argument(
+        "-mt",
+        "--model_type",
+        type=str,
+        default="shallow_model",
+        help="""
+            shallow_model
+            unet
             """,
     )
     parser.add_argument(

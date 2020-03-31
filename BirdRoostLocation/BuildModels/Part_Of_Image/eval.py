@@ -4,7 +4,7 @@ import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation import utils
 from BirdRoostLocation.ReadData import BatchGenerator
-from BirdRoostLocation.Analysis import skill_scores
+from BirdRoostLocation.Analysis import SkillScores
 
 
 def eval(log_path, radar_product):
@@ -23,8 +23,8 @@ def eval(log_path, radar_product):
     model.load_weights(log_path)
 
     predictions = model.predict(x)
-    ACC, TPR, TNR, ROC_AUC = skill_scores.get_skill_scores(predictions[:, 0], y[:, 0])
-    skill_scores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+    ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions[:, 0], y[:, 0])
+    SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
 
 
 def main(results):

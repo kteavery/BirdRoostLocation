@@ -26,7 +26,7 @@ import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
-from BirdRoostLocation.Analysis import skill_scores
+from BirdRoostLocation.Analysis import SkillScores
 
 
 def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, problem):
@@ -48,13 +48,16 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         default_batch_size=5000,
     )
 
-    x, y, filenames = batch_generator.get_batch(
-        utils.ML_Set.testing,
-        dualPol=dual_pol,
-        radar_product=radar_product,
-        num_temporal_data=num_temporal_data,
-        problem=problem,
-    )
+    x = None
+    y = None
+    while type(x) == type(None) and type(y) == type(None):
+        x, y, filenames = batch_generator.get_batch(
+            utils.ML_Set.testing,
+            dualPol=dual_pol,
+            radar_product=radar_product,
+            num_temporal_data=num_temporal_data,
+            problem=problem,
+        )
     print("FILENAMES: ")
     print(filenames)
     print(len(filenames))
@@ -66,12 +69,10 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     predictions = model.predict(x)
 
-    ACC_RAD = skill_scores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
+    ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     print("ACC_RAD: " + str(ACC_RAD))
 
-    ACC_THETA = skill_scores.get_skill_scores_regression(
-        predictions[:, 1], y[:, 1], 0.1
-    )
+    ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
     print("ACC_THETA: " + str(ACC_THETA))
 
     print("PREDICTIONS")

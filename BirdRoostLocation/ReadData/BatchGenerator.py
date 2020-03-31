@@ -1,5 +1,6 @@
 import os
 import pandas
+import math
 import ntpath
 from BirdRoostLocation.ReadData import Labels
 import numpy as np
@@ -53,11 +54,6 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-        # print("Ks: ")
-        # print(validate_k_index)
-        # print(test_k_index)
-
-        # print(ml_split_csv)
 
         ml_split_pd = pandas.read_csv(ml_split_csv)
 
@@ -100,7 +96,6 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.validation] = list(
             ml_split_pd[ml_split_pd.split_index == val_k]["AWS_file"]
         )
-        # print(test_k)
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
@@ -310,6 +305,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         dualPol,
         radar_product=None,
         num_temporal_data=0,
+        model_type="shallow_cnn",
         problem="detection",
     ):
         """Get a batch of data for machine learning. As a default, a batch
@@ -350,9 +346,9 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     is_roost = int(self.label_dict[filename].is_roost)
                     polar_radius = float(self.label_dict[filename].polar_radius)
                     polar_theta = float(self.label_dict[filename].polar_theta)
+                    roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
-                    # print(images)
-                    # print(self.label_dict[filename].images[radar_product])
+                    print(self.label_dict[filename].images[radar_product])
 
                     if images != []:
                         filenames.append(filename)
@@ -379,27 +375,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     axis=0,
                                 )
                         else:  # localization
-                            # if np.array(ground_truths).size == 0:
-                            #     ground_truths = [
-                            #         [
-                            #             self.normalize(polar_radius, 2, 0),
-                            #             self.normalize(polar_theta, 360, 0),
-                            #         ]
-                            #     ] * np.array(images).shape[0]
-                            # else:
-                                # ground_truths = np.concatenate(
-                                #     (
-                                #         ground_truths,
-                                #         [
-                                #             [
-                                #                 self.normalize(polar_radius, 2, 0),
-                                #                 self.normalize(polar_theta, 360, 0),
-                                #             ]
-                                #         ]
-                                #         * np.array(images).shape[0],
-                                #     ),
-                                #     axis=0,
-                                # )
                             radii = [polar_radius]*np.array(images).shape[0]
                             thetas = []
                             
@@ -412,46 +387,87 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                         ],
                                     )
                                 )
-                                # print(self.label_dict[filename].images[radar_product][
-                                #             i
-                                #         ])
-                                # print(self.adjustTheta(
-                                #         polar_theta,
-                                #         self.label_dict[filename].images[radar_product][
-                                #             i
-                                #         ],
-                                #     )
-                                # )
-                                # print(polar_radius)
 
-                            pairs = list(
-                                    zip(
-                                        self.normalize(radii, 2, 0),
-                                        self.normalize(thetas, 360, 0),
+                            if model_type == "shallow_cnn":
+                                pairs = list(
+                                        zip(
+                                            self.normalize(radii, 2, 0),
+                                            self.normalize(thetas, 360, 0),
+                                        )
                                     )
-                                )
-                            pairs = [list(x) for x in pairs]
+                                pairs = [list(x) for x in pairs]
 
-                            if np.array(ground_truths).size == 0:
-                                ground_truths = pairs
-                            else:
-                                ground_truths = np.concatenate(
-                                    (
-                                        ground_truths, pairs,
-                                    ),
-                                    axis=0,
-                                )
+                                if np.array(ground_truths).size == 0:
+                                    ground_truths = pairs
+                                else:
+                                    ground_truths = np.concatenate(
+                                        (
+                                            ground_truths, pairs,
+                                        ),
+                                        axis=0,
+                                    )
+                            else: #unet
+                                # print("Roost Size: ")
+
+                                masks = np.zeros((len(radii), 240, 240))
+                                if type(roost_size)!=float or math.isnan(roost_size):
+                                    roost_size = 28.0
+                                    # print(roost_size)
+                                else:
+                                    roost_size = roost_size/1000 # convert to km
+                                    # print(roost_size)
+
+                                mask_roost_size = (roost_size/300)*(240/2)
+
+                                mask_radii = [(radius/300)*(240/2) for radius in radii]
+                                # print(radii)
+                                # print(mask_radii)
+
+                                vconvert_to_cart = np.vectorize(convert_to_cart)
+                                cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
+
+                                for k, mask in enumerate(masks):
+                                    mask[ 120+int(round(list(cart_x)[k])), 120-int(round(list(cart_y)[k])) ] = 1.0
+
+                                    color_pts = points_in_circle_np(mask_roost_size, 
+                                                x0=120+int(round(list(cart_x)[k])), 
+                                                y0=120-int(round(list(cart_y)[k])))
+                                    for pt in color_pts:
+                                        mask[pt[0],pt[1]]=1.0
+                                
 
         truth_shape = np.array(ground_truths).shape
-        # print(truth_shape)
-        # print(np.array(ground_truths).shape)
+        print(truth_shape)
 
-        ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
+        try:
+            ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
 
-        train_data_np = np.array(train_data)
-        shape = train_data_np.shape
-        train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
-        return train_data_np, np.array(ground_truths), np.array(filenames)
+            train_data_np = np.array(train_data)
+            shape = train_data_np.shape
+            train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
+            return train_data_np, np.array(ground_truths), np.array(filenames)
+        except IndexError: 
+            return None, None, None
+
+
+def convert_to_cart(radius, theta):
+    return radius * math.cos(theta), radius * math.sin(theta)
+
+def points_in_circle_np(radius, x0=0, y0=0, ):
+    # print("x0, y0: ")
+    # print(x0)
+    # print(y0)
+    # print(radius)
+    # print(x0 - radius - 1)
+    # print(x0 + radius + 1)
+    # print(y0 - radius - 1)
+    # print(y0 + radius + 1)
+    x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
+    y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
+    x, y = np.where((x_[:,np.newaxis] - x0)**2 + (y_ - y0)**2 <= radius**2)
+    # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
+    for x, y in zip(x_[x], y_[y]):
+        yield x, y
 
 
 class Multiple_Product_Batch_Generator(Batch_Generator):

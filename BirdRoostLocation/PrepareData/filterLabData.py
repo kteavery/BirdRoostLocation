@@ -5,10 +5,10 @@ import shutil
 
 
 def filter_data():
-    lab_output_csv = (
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/output.csv"
+    lab_output_csv = "/Users/Kate/workspace/BirdRoostLocation/MLData/new_data_filtered/no_preds/output.csv"
+    original_data = (
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/new_data_filtered/no_preds/"
     )
-    original_data = "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/"
     fields = ["Roost_Reflectivity", "Roost_Velocity", "Roost_Rho_HV", "Roost_Zdr"]
     filtered_data = "/Users/Kate/workspace/BirdRoostLocation/MLData/no_rings_filtered/"
 

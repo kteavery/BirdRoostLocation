@@ -102,11 +102,10 @@ def getRadarLocation(radar):
 
 
 def main():
-    # Get the print radars in the easter part of the united states
+    # Get the print radars in the eastern part of the united states
     print("Bird Radars", getBirdRadarNames())
     print("eastern radars", getEasternRadarNames())
 
 
 if __name__ == "__main__":
     main()
-
