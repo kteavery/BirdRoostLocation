@@ -35,7 +35,7 @@ def GetNexradBucket(conn):
     return bucket
 
 
-# Get the name of the buck for a year, month, day and radar
+# Get the name of the bucket for a year, month, day and radar
 def getBucketName(year, month, day, radar):
     """ Get the name of a specific bucket where radar data is stored.
 
@@ -72,6 +72,20 @@ def getFileNamesFromBucket(bucket, bucketName):
         location = key.name.encode("utf-8")
         names.append(location)
     return names
+
+
+def getFileNamesBetweenTwoTimes(files, datetime1, datetime2):
+    filtered = []
+    for file in files:
+        hour = file[29:31]
+        minute = file[31:33]
+        fileDatetime = datetime.datetime(
+            datetime1.year, datetime1.month, datetime1.day, int(hour), int(minute)
+        )
+        if datetime1 < fileDatetime < datetime2:
+            filtered.append(file)
+
+    return filtered
 
 
 def downloadDataFromBucket(bucket, fileName):

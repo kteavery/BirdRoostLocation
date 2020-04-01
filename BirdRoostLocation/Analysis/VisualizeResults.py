@@ -53,7 +53,8 @@ def visualizeResults(image, truth, prediction, path):
 
 if __name__ == "__main__":
     df = pandas.read_csv(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
-    df = df.loc[df["radar"] == "KLIX"]
+    df = df.loc[df["radar"] == "KLIX"].reset_index()
+    print(df.head())
     fields = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
 
     for i in range(len(df)):

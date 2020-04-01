@@ -33,10 +33,6 @@ def createLabelForFiles(fileNames, saveDir):
         saveDir: The directory where the images will be saved in.
     """
     labelDF = pandas.read_csv(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
-    # for i in range(len(labelDF)):
-    #     aws_file = labelDF["AWS_file"].iloc[[i]]
-    #     theta = labelDF["polar_theta"].iloc[[i]]
-    #     radius = labelDF["polar_radius"].iloc[[i]]
 
     radarFilePath = "radarfiles/"
     for f in fileNames:
@@ -59,10 +55,6 @@ def createLabelForFiles(fileNames, saveDir):
         print("IMGPATH:")
         print(imgPath)
 
-        # print("IF")
-        # print(os.path.isfile(imgPath))
-        # if not os.path.isfile(imgPath):
-
         file = open(os.path.join(root, name), "r")
         if not os.path.exists(os.path.dirname(imgPath)):
             os.makedirs(os.path.dirname(imgPath))
@@ -71,10 +63,7 @@ def createLabelForFiles(fileNames, saveDir):
 
         dualPol = int(name[-1:]) >= 6
 
-        # VisualizeNexradData.visualizeRadarData(rad, imgPath, dualPol)
         for i in range(len(label_row)):
-            print("IMGPATH label_row: ")
-            # print(imgPath[:-4] + "_" + str(i) + ".png")
             lat = float(label_row["lat"].iloc[[i]])
             lon = float(label_row["lon"].iloc[[i]])
             print(float(label_row["nexrad_lat"].iloc[[i]]))
@@ -87,7 +76,6 @@ def createLabelForFiles(fileNames, saveDir):
                     float(label_row["nexrad_lat"].iloc[[i]]),
                     float(label_row["nexrad_lon"].iloc[[i]]),
                 ],
-                # points=[[lat, lon], [lat, lon]],
             )
         file.close()
 
@@ -137,9 +125,6 @@ def createLabelForFiles(fileNames, saveDir):
             img4 = img.crop((495, 520, 740, 770))
             print(d4 + name + "_Rho_HV" + save_extension)
             img4.save(d4 + name + "_Rho_HV" + save_extension)
-
-        # except Exception as e:
-        #    print(f"{imgPath}, {str(e)}")
 
 
 def main(results):

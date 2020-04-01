@@ -13,10 +13,15 @@ python DownloadData.py KLIX
 import BirdRoostLocation.LoadSettings as settings
 import os
 import shutil
+import pyart
 import argparse
+import datetime
 import pandas
 from BirdRoostLocation.PrepareData import AWSNexradData
 from BirdRoostLocation.PrepareData import NexradUtils
+from BirdRoostLocation.PrepareData import SunriseCalc
+
+from BirdRoostLocation import utils
 
 
 def downloadRadarsFromList(fileNames, saveDir, error_file_name):
@@ -79,7 +84,7 @@ def downloadRadarsFromList(fileNames, saveDir, error_file_name):
         outfile.write("\n".join(errors))
 
 
-def main(results):
+def downloadDataFromLabels(results):
     """Formatted to run either locally or on schooner. Read in csv and get radar
      files listed in 'AWS_file' column"""
     savepath = "radarfiles/"
@@ -89,6 +94,46 @@ def main(results):
     radar_labels = labels[labels.radar == results.radar]
     fileNames = list(radar_labels["AWS_file"])
     downloadRadarsFromList(fileNames, savepath, f"error_{results.radar}.txt")
+
+
+def download2019Data(results):
+    savepath = "2019radarfiles/"
+    fileList = []
+    conn = AWSNexradData.ConnectToAWS()
+    bucket = AWSNexradData.GetNexradBucket(conn)
+
+    # get june 15 - august 31
+    locations = {
+        "KIND": [39.707_496_200_000_01, -86.280_367_500_000_03],
+        "KIWX": [41.358_635_6, -85.700_048_8],
+        "KVWX": [38.260_390_1, -87.724_655_3],
+    }
+    days = {6: list(range(15, 31)), 7: list(range(1, 32)), 8: list(range(1, 32))}
+    for radar in locations.keys():
+        for month in days.keys():
+            for day in days[month]:
+                # get 1.5 hours before sunrise to 0.5 hours after sunrise
+                bucketName = AWSNexradData.getBucketName(2019, month, day, radar)
+                sunrise = SunriseCalc.calculate_sunrise(
+                    2019, month, day, locations[radar][0], locations[radar][1]
+                )
+                beforeSunrise = sunrise - datetime.timedelta(hours=1, minutes=30)
+                afterSunrise = sunrise + datetime.timedelta(minutes=30)
+                print(radar + " " + str(sunrise))
+                fileNames = AWSNexradData.getFileNamesFromBucket(bucket, bucketName)
+                fileList.extend(
+                    AWSNexradData.getFileNamesBetweenTwoTimes(
+                        fileNames, beforeSunrise, afterSunrise
+                    )
+                )
+
+    print(fileList)
+
+    for file in fileList:
+        fileObject = AWSNexradData.downloadDataFromBucket(bucket, file)
+        shutil.copy(fileObject.name, utils.RADAR_IMAGE_DIR + "/" + savepath)
+
+    conn.close()
 
 
 if __name__ == "__main__":
@@ -102,4 +147,4 @@ if __name__ == "__main__":
         help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX""",
     )
     results = parser.parse_args()
-    main(results)
+    download2019Data(results)
