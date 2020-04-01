@@ -4,7 +4,7 @@ from typing import Dict, Tuple, List
 
 RADAR_FILE_DIR: str = "radarfiles/"
 # TODO change when running on schooner
-RADAR_IMAGE_DIR: str = "/condo/swatwork/keavery/masters_thesis/clean_images"
+RADAR_IMAGE_DIR: str = "/Users/Kate/workspace/BirdRoostLocation/MLData"
 
 
 class ML_Set(Enum):

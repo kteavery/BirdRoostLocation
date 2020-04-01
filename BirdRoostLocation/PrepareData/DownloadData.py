@@ -127,11 +127,13 @@ def download2019Data(results):
                     )
                 )
 
-    print(fileList)
-
     for file in fileList:
         fileObject = AWSNexradData.downloadDataFromBucket(bucket, file)
         shutil.copy(fileObject.name, utils.RADAR_IMAGE_DIR + "/" + savepath)
+        os.rename(
+            utils.RADAR_IMAGE_DIR + "/" + savepath + os.path.basename(fileObject.name),
+            utils.RADAR_IMAGE_DIR + "/" + savepath + file.decode("utf-8")[16:] + ".gz",
+        )
 
     conn.close()
 
