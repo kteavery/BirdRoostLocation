@@ -72,26 +72,25 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
                     float(label_row["nexrad_lon"].iloc[[i]]),
                 ],
             )
+            print("HERE")
+
         file.close()
 
         saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
 
 
 def createWithoutCSV(fileNames, saveDir, radarFilePath):
-    for f in fileNames:
-        root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
+    for k, f in enumerate(fileNames):
+        # root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
         name = f.replace(".gz", "")
 
         print("SAVEDIR: ")
         print(saveDir)
-        imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
-        imgPath = os.path.join(
-            imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")), name + ".png"
-        )
+        imgPath = os.path.join(saveDir, "2019images", name + ".png")
         print("IMGPATH:")
         print(imgPath)
 
-        file = open(os.path.join(root, name), "r")
+        file = open(os.path.join(radarFilePath, name + ".gz"), "r")
         if not os.path.exists(os.path.dirname(imgPath)):
             os.makedirs(os.path.dirname(imgPath))
 
@@ -102,19 +101,16 @@ def createWithoutCSV(fileNames, saveDir, radarFilePath):
         nexrad_csv = pandas.read_csv(
             saveDir + "/nexrad.csv", names=["radar", "lat", "lon"]
         )
-        for i in range(len(fileNames)):
-            nexrad_row = nexrad_csv[nexrad_csv["radar"] == fileNames[i][0:4]]
-            VisualizeNexradData.visualizeRadarData(
-                rad,
-                imgPath[:-4] + "_" + str(i) + ".png",
-                dualPol,
-                nexrads=[
-                    float(nexrad_row["lat"].iloc[[i]]),
-                    float(nexrad_row["lon"].iloc[[i]]),
-                ],
-            )
 
-    saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
+        nexrad_row = nexrad_csv[nexrad_csv["radar"] == fileNames[k][0:4]]
+        VisualizeNexradData.visualizeRadarData(
+            rad,
+            imgPath[:-4] + ".png",
+            dualPol,
+            nexrads=[float(nexrad_row["lat"]), float(nexrad_row["lon"])],
+        )
+
+        saveAndSplitImages(saveDir + "2019images/", saveDir, dualPol, imgPath, name)
 
 
 def saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name):
@@ -180,8 +176,13 @@ def main(results):
     #     radarFilePath="radarfiles/",
     # )
     aws_files = []
-    for file in glob.glob("*.gz"):
-        aws_files.append(file[0:19])
+    for file in glob.glob(utils.RADAR_IMAGE_DIR + "/2019radarfiles/" + "*.gz"):
+        if file[-6:-3] != "MDM" and file[:-3] not in glob.glob(
+            utils.RADAR_IMAGE_DIR + "/2019images/" + "*.png"
+        ):
+            aws_files.append(os.path.basename(file)[0:23])
+    # print(aws_files)
+
     createWithoutCSV(
         fileNames=aws_files,
         saveDir=utils.RADAR_IMAGE_DIR,

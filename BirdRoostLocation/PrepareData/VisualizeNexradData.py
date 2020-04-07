@@ -128,11 +128,11 @@ def visualizeRadarData(
     # print("SAVE")
     # print(save)
     # if save:
-    #     print("SAVE")
-    #     print(save)
-    #     plt.savefig(save)
+    print("SAVE")
+    print(save)
+    plt.savefig(save)
     # else:
-    plt.show()
+    # plt.show()
     plt.close()
 
 
