@@ -568,7 +568,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                             (train_data, np.array(images)), axis=0
                         )
                     print(np.array(images).shape)
-                    print(np.array(train_data))
+                    print(np.array(train_data).shape)
 
                     # if problem == "detection":
                     if np.array(ground_truths).size == 0:
