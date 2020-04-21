@@ -17,6 +17,7 @@ import argparse
 import pyart.io
 from PIL import Image
 import pandas
+import sys
 import glob
 
 
@@ -176,17 +177,28 @@ def main(results):
     )
     """aws_files = []
     for file in glob.glob(utils.RADAR_IMAGE_DIR + "/2019radarfiles/" + "*.gz"):
-        if file[-6:-3] != "MDM" and file[:-3] not in glob.glob(
-            utils.RADAR_IMAGE_DIR + "/2019images/" + "*.png"
+        if file[-6:-3] != "MDM" and not os.path.isfile(
+            utils.RADAR_IMAGE_DIR + "/2019images/" + file[-26:-3] + ".png"
         ):
             aws_files.append(os.path.basename(file)[0:23])
+        # else:
+        #     print(file)
     # print(aws_files)
+    print(len(aws_files))
 
     createWithoutCSV(
         fileNames=aws_files,
         saveDir=utils.RADAR_IMAGE_DIR,
         radarFilePath="2019radarfiles/",
     )"""
+    try:
+        createWithoutCSV(
+            fileNames=aws_files[748:],
+            saveDir=utils.RADAR_IMAGE_DIR,
+            radarFilePath="2019radarfiles/",
+        )
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
