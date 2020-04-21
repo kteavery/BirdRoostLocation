@@ -542,6 +542,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             self, ml_set, dualPol, radar_product
         )
         print("MULTIPLE PRODUCT GET BATCH")
+
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
             for index in indices:
@@ -555,8 +556,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     radar_products = utils.Legacy_radar_products
                 for radar_product in radar_products:
                     image = self.label_dict[filename].get_image(radar_product)
+                    print(image.shape)
                     images.append(image)
                 ground_truths.append([is_roost, 1 - is_roost])
+                print(np.array(images).shape)
                 train_data.append(np.array(images))
 
         # Update to channel last ordering
