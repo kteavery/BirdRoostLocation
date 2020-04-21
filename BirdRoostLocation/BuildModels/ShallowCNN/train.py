@@ -146,27 +146,6 @@ def train(
             #    problem=problem,
             # )
 
-    else:
-        batch_generator = BatchGenerator.Temporal_Batch_Generator(
-            ml_label_csv=settings.LABEL_CSV,
-            ml_split_csv=settings.ML_SPLITS_DATA,
-            high_memory_mode=True,
-        )
-        if model_type == "unet":
-            model = unet.build_model(
-                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
-            )
-        else:  # shallow CNN
-            model = shallow_model.build_model(
-                inputDimensions=(240, 240, num_temporal_data * 3 + 1),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
-            )
-
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
         val_names = ["val_loss", "val_accuracy"]
