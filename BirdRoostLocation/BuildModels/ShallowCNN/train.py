@@ -132,18 +132,19 @@ def train(
             )
         else:
             model = Sequential()
-            #model.add(Dense((8,2,1)))
-            model.add(Dense(16, input_shape=(4,), activation='relu'))
+            model.add(Dense(16, input_shape=(4,), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
-                loss=keras.losses.categorical_crossentropy,optimizer=keras.optimizers.adam(lr),metrics=["accuracy"],
+                loss=keras.losses.categorical_crossentropy,
+                optimizer=keras.optimizers.adam(lr),
+                metrics=["accuracy"],
             )
-            #model = shallow_model.build_model(
+            # model = shallow_model.build_model(
             #    inputDimensions=(240, 240, 4),
             #    lr=lr,
             #    coord_conv=coord_conv,
             #    problem=problem,
-            #)
+            # )
 
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
@@ -198,17 +199,18 @@ def train(
                 )
             if model_name == utils.ML_Model.Shallow_CNN_All:
                 x, y, _ = batch_generator.get_batch(
-                         ml_set=utils.ML_Set.training,
-                         dualPol=dual_pol,
-                         radar_product=radar_product,
-                         num_temporal_data=num_temporal_data,
-                     )
+                    ml_set=utils.ML_Set.training,
+                    dualPol=dual_pol,
+                    radar_product=radar_product,
+                    num_temporal_data=num_temporal_data,
+                )
+                print(type(batch_generator))
                 print(x.shape)
                 print(y.shape)
-                x = np.reshape(x,(x.shape[1],x.shape[2],1))
-                #print(x.shape)
+                x = np.reshape(x, (x.shape[1], x.shape[2], 1))
+                # print(x.shape)
                 y = np.reshape(y, (y.shape[0], y.shape[1]))
-        
+
         print(x.shape)
         print(y.shape)
         print(type(x))
