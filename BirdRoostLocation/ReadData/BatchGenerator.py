@@ -558,9 +558,20 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     image = self.label_dict[filename].get_image(radar_product)
                     print(np.array(image).shape)
                     images.append(image)
+                if images != []:
+                    filenames.append(filename)
+                    if np.array(train_data).size == 0:
+                        train_data = images
+                        train_data = np.array(train_data)
+                    else:
+                        train_data = np.concatenate(
+                            (train_data, np.array(images)), axis=0
+                        )
+                    print(np.array(images).shape)
+                    print(np.array(train_data))
                 ground_truths.append([is_roost, 1 - is_roost])
-                print(np.array(images).shape)
-                train_data.append(np.array(images))
+
+                # train_data.append(np.array(images))
 
         # Update to channel last ordering
         train_data = np.array(train_data)
