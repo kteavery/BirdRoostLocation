@@ -34,6 +34,10 @@ import tensorflow as tf
 import datetime
 import warnings
 
+from keras.models import Sequential
+from keras.layers import Dense
+import keras
+
 import matplotlib.pyplot as plt
 import pandas
 import numpy as np
@@ -86,8 +90,12 @@ def train(
 
     print("MODEL NAME")
     print(model_name)
+    print(settings.ML_SPLITS_DATA)
 
     if model_name == utils.ML_Model.Shallow_CNN:
+        print("utils.ML_Model.Shallow_CNN")
+        print(settings.ML_SPLITS_DATA)
+
         batch_generator = BatchGenerator.Single_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
@@ -109,6 +117,7 @@ def train(
             )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
+        print(settings.ML_SPLITS_DATA)
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
@@ -116,18 +125,25 @@ def train(
         )
         if model_type == "unet":
             model = unet.build_model(
-                inputDimensions=(240, 240, 4),
+                inputDimensions=(240, 240, 1),
                 lr=lr,
                 coord_conv=coord_conv,
                 problem=problem,
             )
         else:
-            model = shallow_model.build_model(
-                inputDimensions=(240, 240, 4),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
+            model = Sequential()
+            #model.add(Dense((8,2,1)))
+            model.add(Dense(16, input_shape=(4,), activation='relu'))
+            model.add(Dense(2, activation="softmax"))
+            model.compile(
+                loss=keras.losses.categorical_crossentropy,optimizer=keras.optimizers.adam(lr),metrics=["accuracy"],
             )
+            #model = shallow_model.build_model(
+            #    inputDimensions=(240, 240, 4),
+            #    lr=lr,
+            #    coord_conv=coord_conv,
+            #    problem=problem,
+            #)
 
     else:
         batch_generator = BatchGenerator.Temporal_Batch_Generator(
@@ -171,16 +187,33 @@ def train(
         x = None
         y = None
         while type(x) == type(None) and type(y) == type(None):
-            x, y, _ = batch_generator.get_batch(
-                ml_set=utils.ML_Set.training,
-                dualPol=dual_pol,
-                radar_product=radar_product,
-                num_temporal_data=num_temporal_data,
-                model_type=model_type,
-                problem=problem,
-            )
-
-        train_logs = model.train_on_batch(x, y)
+            if model_name == utils.ML_Model.Shallow_CNN:
+                x, y, _ = batch_generator.get_batch(
+                    ml_set=utils.ML_Set.training,
+                    dualPol=dual_pol,
+                    radar_product=radar_product,
+                    num_temporal_data=num_temporal_data,
+                    model_type=model_type,
+                    problem=problem,
+                )
+            if model_name == utils.ML_Model.Shallow_CNN_All:
+                x, y, _ = batch_generator.get_batch(
+                         ml_set=utils.ML_Set.training,
+                         dualPol=dual_pol,
+                         radar_product=radar_product,
+                         num_temporal_data=num_temporal_data,
+                     )
+                print(x.shape)
+                print(y.shape)
+                x = np.reshape(x,(x.shape[1],x.shape[2],1))
+                #print(x.shape)
+                y = np.reshape(y, (y.shape[0], y.shape[1]))
+        
+        print(x.shape)
+        print(y.shape)
+        print(type(x))
+        print(type(y))
+        train_logs = model.train_on_batch(np.array(x), np.array(y))
 
         if problem == "detection":
             print(
@@ -275,6 +308,8 @@ def main(results):
     os.chdir(settings.WORKING_DIRECTORY)
     radar_product = utils.Radar_Products(results.radar_product)
     model = utils.ML_Model(results.model)
+    print("MODEL")
+    print(model)
     if results.log_path is None:
         if results.model == 1:
             log_path = ml_utils.LOG_PATH.format(model.fullname, str(results.dual_pol))

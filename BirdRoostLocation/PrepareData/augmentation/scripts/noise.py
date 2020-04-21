@@ -5,14 +5,14 @@ import cv2
 import scipy.misc
 from PIL import Image
 
-ROOT_DIR = "/Users/Kate/workspace/BirdRoostLocation/MLData"
+ROOT_DIR = "/datadrive/roost_data"
 
 directory = ROOT_DIR
 data_directories = [
-    "Roost_Reflectivity",
-    "Roost_Velocity",
-    "Roost_Zdr",
-    "Roost_Rho_HV",
+    #"Roost_Reflectivity",
+    #"Roost_Velocity",
+    #"Roost_Zdr",
+    #"Roost_Rho_HV",
     "NoRoost_Reflectivity",
     "NoRoost_Velocity",
     "NoRoost_Zdr",
@@ -53,7 +53,8 @@ def main():
                 noisy = salt_pepper(image_ary)
 
                 filename = os.path.basename(file)
-                os.makedirs(directory + "/data/Noise_" + data_dir, exist_ok=True)
+                if not os.path.exists(directory + "/data/Noise_" + data_dir):
+                    os.makedirs(directory + "/data/Noise_" + data_dir)
                 newfile = (
                     directory
                     + "/data/Noise_"

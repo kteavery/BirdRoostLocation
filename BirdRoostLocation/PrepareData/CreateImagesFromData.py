@@ -40,8 +40,8 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
         root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
         name = f.replace(".gz", "")
 
-        print("SAVEDIR: ")
-        print(saveDir)
+        # print("SAVEDIR: ")
+        # print(saveDir)
         imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
         imgPath = os.path.join(
             imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")), name + ".png"
@@ -61,21 +61,20 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
         for i in range(len(label_row)):
             lat = float(label_row["lat"].iloc[[i]])
             lon = float(label_row["lon"].iloc[[i]])
-            print(float(label_row["nexrad_lat"].iloc[[i]]))
-            print(float(label_row["nexrad_lon"].iloc[[i]]))
+            # print(float(label_row["nexrad_lat"].iloc[[i]]))
+            # print(float(label_row["nexrad_lon"].iloc[[i]]))
             VisualizeNexradData.visualizeRadarData(
                 rad,
-                imgPath[:-4] + "_" + str(i) + ".png",
+                imgPath[:-4] + ".png",
                 dualPol,
                 nexrads=[
                     float(label_row["nexrad_lat"].iloc[[i]]),
                     float(label_row["nexrad_lon"].iloc[[i]]),
                 ],
             )
-            print("HERE")
 
-        file.close()
-
+        file.close() 
+        
         saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
 
 
@@ -84,11 +83,11 @@ def createWithoutCSV(fileNames, saveDir, radarFilePath):
         # root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
         name = f.replace(".gz", "")
 
-        print("SAVEDIR: ")
-        print(saveDir)
+        # print("SAVEDIR: ")
+        # print(saveDir)
         imgPath = os.path.join(saveDir, "2019images", name + ".png")
-        print("IMGPATH:")
-        print(imgPath)
+        # print("IMGPATH:")
+        # print(imgPath)
 
         file = open(os.path.join(radarFilePath, name + ".gz"), "r")
         if not os.path.exists(os.path.dirname(imgPath)):
@@ -114,11 +113,11 @@ def createWithoutCSV(fileNames, saveDir, radarFilePath):
 
 
 def saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name):
-    d1 = imgDir.replace(saveDir, os.path.join(saveDir, "Reflectivity_Color/"))
-    d2 = imgDir.replace(saveDir, os.path.join(saveDir, "Velocity_Color/"))
+    d1 = imgDir.replace(saveDir, os.path.join(saveDir, "Reflectivity_Color"))
+    d2 = imgDir.replace(saveDir, os.path.join(saveDir, "Velocity_Color"))
     if dualPol:
-        d3 = imgDir.replace(saveDir, os.path.join(saveDir, "Rho_HV_Color/"))
-        d4 = imgDir.replace(saveDir, os.path.join(saveDir, "Zdr_Color/"))
+        d3 = imgDir.replace(saveDir, os.path.join(saveDir, "Rho_HV_Color"))
+        d4 = imgDir.replace(saveDir, os.path.join(saveDir, "Zdr_Color"))
 
     if not os.path.exists(d1):
         os.makedirs(d1)
@@ -135,47 +134,47 @@ def saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name):
     save_extension = ".png"
     if not dualPol:
         img1 = img.crop((115, 100, 365, 350))
-        print("DIR NAMES: ")
-        print(d1 + name + "_Reflectivity" + save_extension)
+        # print("DIR NAMES: ")
+        # print(d1 + name + "_Reflectivity" + save_extension)
         img1.save(d1 + name + "_Reflectivity" + save_extension)
 
         img2 = img.crop((495, 100, 740, 350))
-        print(d2 + name + "_Velocity" + save_extension)
+        # print(d2 + name + "_Velocity" + save_extension)
         img2.save(d2 + name + "_Velocity" + save_extension)
 
     if dualPol:
         img1 = img.crop((115, 140, 365, 390))
-        print("DIR NAMES: ")
-        print(d1 + name + "_Reflectivity" + save_extension)
+        # print("DIR NAMES: ")
+        # print(d1 + name + "_Reflectivity" + save_extension)
         img1.save(d1 + name + "_Reflectivity" + save_extension)
 
         img2 = img.crop((495, 140, 740, 390))
-        print(d2 + name + "_Velocity" + save_extension)
+        # print(d2 + name + "_Velocity" + save_extension)
         img2.save(d2 + name + "_Velocity" + save_extension)
 
         img3 = img.crop((115, 520, 365, 770))
-        print(d3 + name + "_Zdr" + save_extension)
+        # print(d3 + name + "_Zdr" + save_extension)
         img3.save(d3 + name + "_Zdr" + save_extension)
 
         img4 = img.crop((495, 520, 740, 770))
-        print(d4 + name + "_Rho_HV" + save_extension)
+        # print(d4 + name + "_Rho_HV" + save_extension)
         img4.save(d4 + name + "_Rho_HV" + save_extension)
 
 
 def main(results):
     """Formatted to run either locally or on schooner. Read in csv and get radar
      files listed in 'AWS_file' column. Save these files out as png images."""
-    # labels = pandas.read_csv(
-    #     filepath_or_buffer=settings.LABEL_CSV, skip_blank_lines=True
-    # )
+    labels = pandas.read_csv(
+        filepath_or_buffer=settings.LABEL_CSV, skip_blank_lines=True
+    )
 
-    # radar_labels = labels[labels.radar == results.radar]
-    # createLabelForFiles(
-    #     fileNames=list(radar_labels["AWS_file"]),
-    #     saveDir=utils.RADAR_IMAGE_DIR,
-    #     radarFilePath="radarfiles/",
-    # )
-    aws_files = []
+    radar_labels = labels[labels.radar == results.radar]
+    createLabelForFiles(
+        fileNames=list(radar_labels["AWS_file"]),
+        saveDir=utils.RADAR_IMAGE_DIR,
+        radarFilePath="radarfiles/",
+    )
+    """aws_files = []
     for file in glob.glob(utils.RADAR_IMAGE_DIR + "/2019radarfiles/" + "*.gz"):
         if file[-6:-3] != "MDM" and file[:-3] not in glob.glob(
             utils.RADAR_IMAGE_DIR + "/2019images/" + "*.png"
@@ -187,7 +186,7 @@ def main(results):
         fileNames=aws_files,
         saveDir=utils.RADAR_IMAGE_DIR,
         radarFilePath="2019radarfiles/",
-    )
+    )"""
 
 
 if __name__ == "__main__":

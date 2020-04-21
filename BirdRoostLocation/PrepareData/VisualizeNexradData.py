@@ -128,8 +128,8 @@ def visualizeRadarData(
     # print("SAVE")
     # print(save)
     # if save:
-    print("SAVE")
-    print(save)
+    # print("SAVE")
+    # print(save)
     plt.savefig(save)
     # else:
     # plt.show()
@@ -149,10 +149,10 @@ def __plot_ppi(radar, field, ax, sweep=0):
     x = x[:, 0:cutoff]
     y = y[:, 0:cutoff]
     data = data[:, 0:cutoff]
-    print("X, Y, DATA")
-    print(x)
-    print(y)
-    print(data)
+    # print("X, Y, DATA")
+    # print(x)
+    # print(y)
+    # print(data)
 
     ax.pcolormesh(
         x, y, data, vmin=plot_dict[field][0], vmax=plot_dict[field][1], cmap="binary"

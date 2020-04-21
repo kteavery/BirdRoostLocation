@@ -37,7 +37,12 @@ class Batch_Generator:
         self.no_roost_sets_V06 = {}
         self.roost_sets_V06 = {}
         self.batch_size = default_batch_size
+        print("__init__")
+        print(ml_split_csv)
+        print(validate_k_index)
+        print(test_k_index)
         self.__set_ml_sets(ml_split_csv, validate_k_index, test_k_index)
+        
 
     def __set_ml_sets(self, ml_split_csv, validate_k_index, test_k_index):
         """Create Train, test, and Validation set from k data folds.
@@ -54,24 +59,31 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-
+        
+        print(ml_split_csv)
         ml_split_pd = pandas.read_csv(ml_split_csv)
-
+        print("ml_split_pd.head()")
+        print(ml_split_pd.head())
+        
         # Remove files that weren't found
-        all_files = utils.getListOfFilesInDirectory(self.root_dir, ".png")
+        all_files = utils.getListOfFilesInDirectory(self.root_dir+"/data", ".png")
+        print("ROOT DIR")
+        print(self.root_dir+"/data")
+        #print(all_files)
 
         all_files_dict = {}
         for i in range(len(all_files)):
             all_files_dict[os.path.basename(all_files[i])[2:25]] = True
+            #print(os.path.basename(all_files[i])[2:25])
 
         for index, row in ml_split_pd.iterrows():
             if all_files_dict.get(row["AWS_file"]) is None:
                 ml_split_pd.drop(index, inplace=True)
-
+        # print(ml_split_pd.head())
         # Sort into train, test, and validation sets
-        # print("LENGTHS OF NO ROOST/ROOST:")
-        # print(len(ml_split_pd[ml_split_pd.Roost != True]))
-        # print(len(ml_split_pd[ml_split_pd.Roost]))
+        print("LENGTHS OF NO ROOST/ROOST:")
+        print(len(ml_split_pd[ml_split_pd.Roost != True]))
+        print(len(ml_split_pd[ml_split_pd.Roost]))
 
         self.__set_ml_sets_helper(
             self.no_roost_sets,
@@ -110,14 +122,14 @@ class Batch_Generator:
             np.random.shuffle(ml_sets_V06[key])
 
     def get_batch_indices(self, ml_sets, ml_set, num_temporal_data=0):
-        # print(ml_sets)
-        # print(len(ml_sets[ml_set]))
-        # print(ml_set)
-        # print(self.batch_size / 2)
+        #print(ml_sets)
+        #print(len(ml_sets[ml_set]))
+        #print(ml_set)
+        #print(self.batch_size / 2)
         indices = np.random.randint(
             low=0, high=len(ml_sets[ml_set]), size=int(self.batch_size / 2)
         )
-        # print(indices)
+        #print(indices)
         return indices
 
     def get_batch(self, ml_set, dualPol, radar_product=None):
@@ -266,6 +278,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
+        #print("ml_label_pd")
+        #print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
@@ -329,13 +343,13 @@ class Single_Product_Batch_Generator(Batch_Generator):
             self, ml_set, dualPol, radar_product
         )
 
-        print("Get batch: ")
-        print(str(len(roost_sets)))
-        print(str(len(no_roost_sets)))
-        for key in roost_sets:
-            print(len(roost_sets[key]))
-        for key in no_roost_sets:
-            print(len(no_roost_sets[key]))
+        #print("Get batch: ")
+        #print(str(len(roost_sets)))
+        #print(str(len(no_roost_sets)))
+        #for key in roost_sets:
+        #    print(len(roost_sets[key]))
+        #for key in no_roost_sets:
+        #    print(len(no_roost_sets[key]))
 
         for ml_sets in [roost_sets, no_roost_sets]:
             if ml_sets[ml_set]:  # in case you only train on true or false labels
@@ -348,7 +362,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
-                    print(self.label_dict[filename].images[radar_product])
+                    #print(self.label_dict[filename].images[radar_product])
 
                     if images != []:
                         filenames.append(filename)
@@ -437,7 +451,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 
 
         truth_shape = np.array(ground_truths).shape
-        print(truth_shape)
+        #print(truth_shape)
 
         try:
             ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
@@ -483,6 +497,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
     ):
         Batch_Generator.__init__(
             self,
+            ml_label_csv,
             ml_split_csv,
             validate_k_index,
             test_k_index,
@@ -537,7 +552,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 ground_truths.append([is_roost, 1 - is_roost])
                 train_data.append(images)
         # Update to channel last ordering
-        train_data = np.rollaxis(np.array(train_data), 1, 4)
+        print(len(train_data))
+        print(np.array(train_data).shape)
+        train_data = np.reshape(np.array(train_data),(1,np.array(train_data).shape[0],np.array(train_data).shape[1],1))
+        #train_data = np.rollaxis(np.array(train_data), 0, 2)
+        print(np.array(train_data).shape)
+
         return train_data, np.array(ground_truths), np.array(filenames)
 
 
