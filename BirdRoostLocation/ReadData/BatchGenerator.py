@@ -562,10 +562,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         # Update to channel last ordering
         print(len(train_data))
         print(np.array(train_data).shape)
-        train_data = np.reshape(
-            np.array(train_data),
-            (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
-        )
+        # train_data = np.reshape(
+        #     np.array(train_data),
+        #     (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
+        # )
         # train_data = np.rollaxis(np.array(train_data), 0, 2)
         print(np.array(train_data).shape)
 
