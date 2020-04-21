@@ -556,7 +556,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     radar_products = utils.Legacy_radar_products
                 for radar_product in radar_products:
                     image = self.label_dict[filename].get_image(radar_product)
-                    print(image.shape)
+                    print(np.array(image).shape)
                     images.append(image)
                 ground_truths.append([is_roost, 1 - is_roost])
                 print(np.array(images).shape)
