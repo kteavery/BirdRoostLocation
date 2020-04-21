@@ -569,7 +569,21 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                         )
                     print(np.array(images).shape)
                     print(np.array(train_data))
-                ground_truths.append([is_roost, 1 - is_roost])
+
+                    # if problem == "detection":
+                    if np.array(ground_truths).size == 0:
+                        ground_truths = [[is_roost, 1 - is_roost]] * np.array(
+                            images
+                        ).shape[0]
+                    else:
+                        ground_truths = np.concatenate(
+                            (
+                                ground_truths,
+                                [[is_roost, 1 - is_roost]] * np.array(images).shape[0],
+                            ),
+                            axis=0,
+                        )
+                # ground_truths.append([is_roost, 1 - is_roost])
 
                 # train_data.append(np.array(images))
 
