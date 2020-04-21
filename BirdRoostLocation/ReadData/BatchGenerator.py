@@ -557,7 +557,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     image = self.label_dict[filename].get_image(radar_product)
                     images.append(image)
                 ground_truths.append([is_roost, 1 - is_roost])
-                train_data.append(images)
+                train_data.append(np.array(images))
 
         # Update to channel last ordering
         print(len(train_data))
@@ -569,7 +569,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         # train_data = np.rollaxis(np.array(train_data), 0, 2)
         print(np.array(train_data).shape)
 
-        return train_data, np.array(ground_truths), np.array(filenames)
+        return np.array(train_data), np.array(ground_truths), np.array(filenames)
 
 
 class Temporal_Batch_Generator(Batch_Generator):

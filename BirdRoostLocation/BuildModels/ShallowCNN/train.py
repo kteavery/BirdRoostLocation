@@ -204,6 +204,8 @@ def train(
                     radar_product=radar_product,
                     num_temporal_data=num_temporal_data,
                 )
+                print(x)
+                print(y)
                 print(x.shape)
                 print(y.shape)
                 x = np.reshape(x, (x.shape[1], x.shape[2]))
