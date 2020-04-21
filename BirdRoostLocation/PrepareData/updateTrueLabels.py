@@ -16,7 +16,9 @@ def replaceRoosts(newcsv, oldcsv):
     print(oldcsv.head())
     print(combined.head())
 
-    combined.to_csv(settings.WORKING_DIRECTORY + "/true_ml_relabels.csv", index=False)
+    combined.to_csv(
+        settings.WORKING_DIRECTORY + "/true_ml_relabels_edited.csv", index=False
+    )
 
 
 def main():
@@ -29,4 +31,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

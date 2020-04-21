@@ -27,6 +27,7 @@ def filter_data():
             for file in glob(
                 original_data + str(field) + "/??" + str(filename)[0:10] + "*"
             ):
+                # print(str(filename)[0:10])
                 if field == "Roost_Reflectivity":
                     counter += 1
                     print(counter)
@@ -35,4 +36,3 @@ def filter_data():
 
 if __name__ == "__main__":
     filter_data()
-

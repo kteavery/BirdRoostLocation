@@ -5,11 +5,11 @@ import copy
 
 from BirdRoostLocation import LoadSettings as settings
 
-X = 231  # pixel location of center
+X = 230  # pixel location of center
+# X = 231
 Y = 230
 KMLAT = 110.574  # km = 1 degree latitude
 MULTLONG = 111.320  # multiplier
-PXTOKM = 300 / 174  # km = 1 px
 
 
 def convertLatLong(labels):
@@ -20,15 +20,37 @@ def convertLatLong(labels):
         header=None,
     )
     for radar in nexrads["radar"]:
-        kmOrigin = 300 * math.sqrt(2)
         latPx = latLongLabels.loc[latLongLabels.filename.str.match(radar), "latitude"]
-        latKm = (X - latPx) * (300 / 174)
-
+        latKm = (latPx - X) * (300 / (X * 2))
+        # latKm = latPx * (300 / (X * 2))
         longPx = latLongLabels.loc[latLongLabels.filename.str.match(radar), "longitude"]
-        longKm = (longPx - Y) * (300 / 174)
+        longKm = (longPx - Y) * (300 / (Y * 2))
+        # longKm = longPx * (300 / (Y * 2))
 
         newLat = latKm * (1 / KMLAT)
         newLong = longKm * (1 / (MULTLONG * (newLat * (math.pi / 180)).apply(math.cos)))
+
+        if radar == "KFSD":
+            print("latPx")
+            print(latPx)
+            print(300 / (Y * 2))
+            # print("latKm")
+            # print(latKm)
+            print("longPx")
+            print(longPx)
+            print(300 / (Y * 2))
+            # print("longKm")
+            # print(longKm)
+            print("newLat")
+            print(newLat)
+            print("newLong")
+            print(newLong)
+            print("newLat + nexrads.loc[nexrads['radar'] == radar]['latitude'].item()")
+            print(newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item())
+            print(
+                "newLong + nexrads.loc[nexrads['radar'] == radar]['longitude'].item()"
+            )
+            print(newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item())
 
         latLongLabels.loc[latLongLabels.filename.str.match(radar), "latitude"] = (
             newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item()
@@ -129,4 +151,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

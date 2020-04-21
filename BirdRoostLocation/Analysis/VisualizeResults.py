@@ -57,44 +57,53 @@ if __name__ == "__main__":
     print(df.head())
     fields = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
 
-    for i in range(len(df)):
-        aws_file = df["AWS_file"].iloc[[i]]
-        theta = df["polar_theta"].iloc[[i]]
-        radius = df["polar_radius"].iloc[[i]]
+    visualizeResults(
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_Reflectivity/KLIX20090712_104815_V03_Reflectivity.png",
+        # (math.radians(float(truth[1])), float(truth[0])), 231.3708697137605,-126.75404144046426
+        (math.radians(-2), 160),
+        # (math.radians(-178.98934224972638), 26.01614465210987),
+        (0, 0),
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_Reflectivity/KLIX20090712_104815_V03_Reflectivity.png",
+    )
 
-        for field in fields:
-            full_path = (
-                "/Users/Kate/workspace/BirdRoostLocation/MLData/no_rings_filtered/Roost_"
-                + field
-                + "/"
-                # + aws_file[i][10:12]
-                + aws_file[i]
-                + "_"
-                + field
-                + ".png"
-            )
-            save_path = (
-                "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/Roost_"
-                + field
-                + "/"
-                # + aws_file[i][10:12]
-                + aws_file[i]
-                + "_"
-                + field
-                + ".png"
-            )
-            try:
-                print(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
-                print((math.radians(theta[i] + 180), radius[i]))
-                print((theta[i], radius[i]))
-                print(full_path)
-                if os.path.isfile(full_path):
-                    visualizeResults(
-                        full_path,
-                        # (math.radians(float(truth[1])), float(truth[0])),
-                        (math.radians(theta[i] + 180), radius[i]),
-                        (0, 0),
-                        save_path,
-                    )
-            except:
-                print(aws_file[i] + " was passed")
+    # for i in range(len(df)):
+    #     aws_file = df["AWS_file"].iloc[[i]]
+    #     theta = df["polar_theta"].iloc[[i]]
+    #     radius = df["polar_radius"].iloc[[i]]
+
+    #     for field in fields:
+    #         full_path = (
+    #             "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_"
+    #             + field
+    #             + "/"
+    #             # + aws_file[i][10:12]
+    #             + aws_file[i]
+    #             + "_"
+    #             + field
+    #             + ".png"
+    #         )
+    #         save_path = (
+    #             "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/Roost_"
+    #             + field
+    #             + "/"
+    #             # + aws_file[i][10:12]
+    #             + aws_file[i]
+    #             + "_"
+    #             + field
+    #             + ".png"
+    #         )
+    #         try:
+    #             print(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
+    #             print((math.radians(theta[i] + 180), radius[i]))
+    #             print((theta[i], radius[i]))
+    #             print(full_path)
+    #             if os.path.isfile(full_path):
+    #                 visualizeResults(
+    #                     full_path,
+    #                     # (math.radians(float(truth[1])), float(truth[0])),
+    #                     (math.radians(theta[i] + 180), radius[i]),
+    #                     (math.radians(theta[i]), radius[i]),
+    #                     save_path,
+    #                 )
+    #         except:
+    #             print(aws_file[i] + " was passed")
