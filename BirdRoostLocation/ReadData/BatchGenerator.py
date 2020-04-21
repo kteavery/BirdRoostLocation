@@ -560,8 +560,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 train_data.append(np.array(images))
 
         # Update to channel last ordering
+        train_data = np.array(train_data)
         print(len(train_data))
-        print(np.array(train_data).shape)
+        print(train_data.shape)
         # train_data = np.reshape(
         #     np.array(train_data),
         #     (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
