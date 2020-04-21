@@ -42,7 +42,6 @@ class Batch_Generator:
         print(validate_k_index)
         print(test_k_index)
         self.__set_ml_sets(ml_split_csv, validate_k_index, test_k_index)
-        
 
     def __set_ml_sets(self, ml_split_csv, validate_k_index, test_k_index):
         """Create Train, test, and Validation set from k data folds.
@@ -59,22 +58,22 @@ class Batch_Generator:
             validate_k_index: The index of the validation set.
             test_k_index: The index of the test set.
         """
-        
+
         print(ml_split_csv)
         ml_split_pd = pandas.read_csv(ml_split_csv)
         print("ml_split_pd.head()")
         print(ml_split_pd.head())
-        
+
         # Remove files that weren't found
-        all_files = utils.getListOfFilesInDirectory(self.root_dir+"/data", ".png")
+        all_files = utils.getListOfFilesInDirectory(self.root_dir + "/data", ".png")
         print("ROOT DIR")
-        print(self.root_dir+"/data")
-        #print(all_files)
+        print(self.root_dir + "/data")
+        # print(all_files)
 
         all_files_dict = {}
         for i in range(len(all_files)):
             all_files_dict[os.path.basename(all_files[i])[2:25]] = True
-            #print(os.path.basename(all_files[i])[2:25])
+            # print(os.path.basename(all_files[i])[2:25])
 
         for index, row in ml_split_pd.iterrows():
             if all_files_dict.get(row["AWS_file"]) is None:
@@ -122,14 +121,14 @@ class Batch_Generator:
             np.random.shuffle(ml_sets_V06[key])
 
     def get_batch_indices(self, ml_sets, ml_set, num_temporal_data=0):
-        #print(ml_sets)
-        #print(len(ml_sets[ml_set]))
-        #print(ml_set)
-        #print(self.batch_size / 2)
+        # print(ml_sets)
+        # print(len(ml_sets[ml_set]))
+        # print(ml_set)
+        # print(self.batch_size / 2)
         indices = np.random.randint(
             low=0, high=len(ml_sets[ml_set]), size=int(self.batch_size / 2)
         )
-        #print(indices)
+        # print(indices)
         return indices
 
     def get_batch(self, ml_set, dualPol, radar_product=None):
@@ -278,8 +277,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
-        #print("ml_label_pd")
-        #print(ml_label_pd.head())
+        # print("ml_label_pd")
+        # print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
@@ -343,12 +342,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
             self, ml_set, dualPol, radar_product
         )
 
-        #print("Get batch: ")
-        #print(str(len(roost_sets)))
-        #print(str(len(no_roost_sets)))
-        #for key in roost_sets:
+        # print("Get batch: ")
+        # print(str(len(roost_sets)))
+        # print(str(len(no_roost_sets)))
+        # for key in roost_sets:
         #    print(len(roost_sets[key]))
-        #for key in no_roost_sets:
+        # for key in no_roost_sets:
         #    print(len(no_roost_sets[key]))
 
         for ml_sets in [roost_sets, no_roost_sets]:
@@ -362,7 +361,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
                     polar_theta = float(self.label_dict[filename].polar_theta)
                     roost_size = float(self.label_dict[filename].radius)
                     images = self.label_dict[filename].get_image(radar_product)
-                    #print(self.label_dict[filename].images[radar_product])
+                    # print(self.label_dict[filename].images[radar_product])
 
                     if images != []:
                         filenames.append(filename)
@@ -389,9 +388,9 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                     axis=0,
                                 )
                         else:  # localization
-                            radii = [polar_radius]*np.array(images).shape[0]
+                            radii = [polar_radius] * np.array(images).shape[0]
                             thetas = []
-                            
+
                             for i in range(len(images)):
                                 thetas.append(
                                     self.adjustTheta(
@@ -404,36 +403,35 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                             if model_type == "shallow_cnn":
                                 pairs = list(
-                                        zip(
-                                            self.normalize(radii, 2, 0),
-                                            self.normalize(thetas, 360, 0),
-                                        )
+                                    zip(
+                                        self.normalize(radii, 2, 0),
+                                        self.normalize(thetas, 360, 0),
                                     )
+                                )
                                 pairs = [list(x) for x in pairs]
 
                                 if np.array(ground_truths).size == 0:
                                     ground_truths = pairs
                                 else:
                                     ground_truths = np.concatenate(
-                                        (
-                                            ground_truths, pairs,
-                                        ),
-                                        axis=0,
+                                        (ground_truths, pairs), axis=0
                                     )
-                            else: #unet
+                            else:  # unet
                                 # print("Roost Size: ")
 
                                 masks = np.zeros((len(radii), 240, 240))
-                                if type(roost_size)!=float or math.isnan(roost_size):
+                                if type(roost_size) != float or math.isnan(roost_size):
                                     roost_size = 28.0
                                     # print(roost_size)
                                 else:
-                                    roost_size = roost_size/1000 # convert to km
+                                    roost_size = roost_size / 1000  # convert to km
                                     # print(roost_size)
 
-                                mask_roost_size = (roost_size/300)*(240/2)
+                                mask_roost_size = (roost_size / 300) * (240 / 2)
 
-                                mask_radii = [(radius/300)*(240/2) for radius in radii]
+                                mask_radii = [
+                                    (radius / 300) * (240 / 2) for radius in radii
+                                ]
                                 # print(radii)
                                 # print(mask_radii)
 
@@ -441,33 +439,42 @@ class Single_Product_Batch_Generator(Batch_Generator):
                                 cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                                 for k, mask in enumerate(masks):
-                                    mask[ 120+int(round(list(cart_x)[k])), 120-int(round(list(cart_y)[k])) ] = 1.0
+                                    mask[
+                                        120 + int(round(list(cart_x)[k])),
+                                        120 - int(round(list(cart_y)[k])),
+                                    ] = 1.0
 
-                                    color_pts = points_in_circle_np(mask_roost_size, 
-                                                x0=120+int(round(list(cart_x)[k])), 
-                                                y0=120-int(round(list(cart_y)[k])))
+                                    color_pts = points_in_circle_np(
+                                        mask_roost_size,
+                                        x0=120 + int(round(list(cart_x)[k])),
+                                        y0=120 - int(round(list(cart_y)[k])),
+                                    )
                                     for pt in color_pts:
-                                        mask[pt[0],pt[1]]=1.0
-                                
+                                        mask[pt[0], pt[1]] = 1.0
 
         truth_shape = np.array(ground_truths).shape
-        #print(truth_shape)
+        # print(truth_shape)
 
         try:
-            ground_truths = np.array(ground_truths).reshape(truth_shape[0], truth_shape[1])
+            ground_truths = np.array(ground_truths).reshape(
+                truth_shape[0], truth_shape[1]
+            )
 
             train_data_np = np.array(train_data)
             shape = train_data_np.shape
-            train_data_np = train_data_np.reshape(shape[0], shape[1], shape[2], shape[3])
+            train_data_np = train_data_np.reshape(
+                shape[0], shape[1], shape[2], shape[3]
+            )
             return train_data_np, np.array(ground_truths), np.array(filenames)
-        except IndexError: 
+        except IndexError:
             return None, None, None
 
 
 def convert_to_cart(radius, theta):
     return radius * math.cos(theta), radius * math.sin(theta)
 
-def points_in_circle_np(radius, x0=0, y0=0, ):
+
+def points_in_circle_np(radius, x0=0, y0=0):
     # print("x0, y0: ")
     # print(x0)
     # print(y0)
@@ -478,7 +485,7 @@ def points_in_circle_np(radius, x0=0, y0=0, ):
     # print(y0 + radius + 1)
     x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
     y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
-    x, y = np.where((x_[:,np.newaxis] - x0)**2 + (y_ - y0)**2 <= radius**2)
+    x, y = np.where((x_[:, np.newaxis] - x0) ** 2 + (y_ - y0) ** 2 <= radius ** 2)
     # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
     for x, y in zip(x_[x], y_[y]):
         yield x, y
@@ -510,7 +517,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
 
-    # TODO update this so to use 3D convolutions
     # channels will be RGB values, first dimension will be radar products
     def get_batch(self, ml_set, dualPol, radar_product=None, num_temporal_data=0):
         """Get a batch of data for machine learning. This batch contains data
@@ -535,6 +541,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product
         )
+        print("MULTIPLE PRODUCT GET BATCH")
         for ml_sets in [roost_sets, no_roost_sets]:
             indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
             for index in indices:
@@ -551,11 +558,15 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     images.append(image)
                 ground_truths.append([is_roost, 1 - is_roost])
                 train_data.append(images)
+
         # Update to channel last ordering
         print(len(train_data))
         print(np.array(train_data).shape)
-        train_data = np.reshape(np.array(train_data),(1,np.array(train_data).shape[0],np.array(train_data).shape[1],1))
-        #train_data = np.rollaxis(np.array(train_data), 0, 2)
+        train_data = np.reshape(
+            np.array(train_data),
+            (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
+        )
+        # train_data = np.rollaxis(np.array(train_data), 0, 2)
         print(np.array(train_data).shape)
 
         return train_data, np.array(ground_truths), np.array(filenames)
