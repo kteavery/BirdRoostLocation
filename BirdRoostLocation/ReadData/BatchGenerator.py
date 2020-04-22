@@ -442,12 +442,16 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         # train_data_np, np.array(ground_truths), np.array(filenames)
 
         if dualPol:
-            radar_products = utils.Radar_Products
+            radar_products = [
+                utils.Radar_Products.cc,
+                utils.Radar_Products.diff_reflectivity,
+                utils.Radar_Products.reflectivity,
+                utils.Radar_Products.velocity,
+            ]
+
         else:
             radar_products = utils.Legacy_radar_products
 
-        print(radar_products)
-        print(type(radar_products))
         for radar_product in radar_products:
             print(radar_product)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
@@ -472,9 +476,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             model.load_weights(
                 settings.WORKING_DIRECTORY
                 + "/model/"
-                + radar_product
+                + str(radar_product)
                 + "/checkpoint/"
-                + radar_product
+                + str(radar_product)
                 + ".h5"
             )
 
