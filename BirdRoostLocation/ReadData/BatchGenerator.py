@@ -251,6 +251,7 @@ class Batch_Generator:
         problem,
     ):
         if filenames == None:
+            filenames = []
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
