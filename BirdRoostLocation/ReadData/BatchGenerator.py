@@ -143,101 +143,18 @@ class Batch_Generator:
 
         return train_data, ground_truths, filenames, roost_sets, no_roost_sets
 
-
-class Single_Product_Batch_Generator(Batch_Generator):
-    def __init__(
+    def single_product_batch_params(
         self,
-        ml_label_csv,
-        ml_split_csv,
-        validate_k_index=3,
-        test_k_index=4,
-        default_batch_size=settings.DEFAULT_BATCH_SIZE,
-        root_dir=utils.RADAR_IMAGE_DIR,
-        high_memory_mode=False,
-    ):
-        Batch_Generator.__init__(
-            self,
-            ml_label_csv,
-            ml_split_csv,
-            validate_k_index,
-            test_k_index,
-            default_batch_size,
-            root_dir,
-        )
-        ml_label_pd = pandas.read_csv(ml_label_csv)
-        # print("ml_label_pd")
-        # print(ml_label_pd.head())
-        for _, row in ml_label_pd.iterrows():
-            self.label_dict[row["AWS_file"]] = Labels.ML_Label(
-                row["AWS_file"], row, self.root_dir, high_memory_mode
-            )
-            # print(self.label_dict[row["AWS_file"]])
-
-    def normalize(self, x, maxi, mini):
-        if type(x) is list:
-            return [(y - mini) / (maxi - mini) for y in x]
-        else:
-            return (x - mini) / (maxi - mini)
-
-    def adjustTheta(self, theta, path):
-        filename = os.path.splitext(ntpath.basename(path))[0]
-        parts = filename.split("_")
-        if "flip" in parts:
-            if theta > 180.0:
-                theta = 540 - theta
-            else:
-                theta = 180 - theta
-
-        # rotation
-        try:
-            if "noise" in parts:
-                degree_offset = int(parts[-2])
-            else:
-                degree_offset = int(parts[-1])
-            theta += degree_offset
-        except ValueError:
-            return theta
-
-        return theta
-
-    def get_batch(
-        self,
+        ground_truths,
+        train_data,
+        filenames,
+        roost_sets,
+        no_roost_sets,
         ml_set,
-        dualPol,
-        radar_product=None,
-        num_temporal_data=0,
-        model_type="shallow_cnn",
-        problem="detection",
+        radar_product,
+        model_type,
+        problem,
     ):
-        """Get a batch of data for machine learning. As a default, a batch
-        contains data from a single radar product.
-
-        Args:
-            ml_set: ML_Set enum value, train, test, or validation.
-            radar_product: Radar_Product enum value, reflectivity, velocity,
-                zdr, or rho_hv.
-
-        Returns:
-            train_data, ground_truth, filenames:
-                The ground truth is an array of batch size, where each item
-                in the array contains a single ground truth label.
-                The train_data is an array of images, corresponding to the
-                ground truth values.
-                filenames is an array of filenames, corresponding to the
-                ground truth values.
-        """
-        ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
-            self, ml_set, dualPol, radar_product
-        )
-
-        # print("Get batch: ")
-        # print(str(len(roost_sets)))
-        # print(str(len(no_roost_sets)))
-        # for key in roost_sets:
-        #    print(len(roost_sets[key]))
-        # for key in no_roost_sets:
-        #    print(len(no_roost_sets[key]))
-
         for ml_sets in [roost_sets, no_roost_sets]:
             if ml_sets[ml_set]:  # in case you only train on true or false labels
                 indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
@@ -359,25 +276,77 @@ class Single_Product_Batch_Generator(Batch_Generator):
             return None, None, None
 
 
-def convert_to_cart(radius, theta):
-    return radius * math.cos(theta), radius * math.sin(theta)
+class Single_Product_Batch_Generator(Batch_Generator):
+    def __init__(
+        self,
+        ml_label_csv,
+        ml_split_csv,
+        validate_k_index=3,
+        test_k_index=4,
+        default_batch_size=settings.DEFAULT_BATCH_SIZE,
+        root_dir=utils.RADAR_IMAGE_DIR,
+        high_memory_mode=False,
+    ):
+        Batch_Generator.__init__(
+            self,
+            ml_label_csv,
+            ml_split_csv,
+            validate_k_index,
+            test_k_index,
+            default_batch_size,
+            root_dir,
+        )
+        ml_label_pd = pandas.read_csv(ml_label_csv)
+        # print("ml_label_pd")
+        # print(ml_label_pd.head())
+        for _, row in ml_label_pd.iterrows():
+            self.label_dict[row["AWS_file"]] = Labels.ML_Label(
+                row["AWS_file"], row, self.root_dir, high_memory_mode
+            )
+            # print(self.label_dict[row["AWS_file"]])
 
+    def get_batch(
+        self,
+        ml_set,
+        dualPol,
+        radar_product=None,
+        num_temporal_data=0,
+        model_type="shallow_cnn",
+        problem="detection",
+    ):
+        """Get a batch of data for machine learning. As a default, a batch
+        contains data from a single radar product.
 
-def points_in_circle_np(radius, x0=0, y0=0):
-    # print("x0, y0: ")
-    # print(x0)
-    # print(y0)
-    # print(radius)
-    # print(x0 - radius - 1)
-    # print(x0 + radius + 1)
-    # print(y0 - radius - 1)
-    # print(y0 + radius + 1)
-    x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
-    y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
-    x, y = np.where((x_[:, np.newaxis] - x0) ** 2 + (y_ - y0) ** 2 <= radius ** 2)
-    # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
-    for x, y in zip(x_[x], y_[y]):
-        yield x, y
+        Args:
+            ml_set: ML_Set enum value, train, test, or validation.
+            radar_product: Radar_Product enum value, reflectivity, velocity,
+                zdr, or rho_hv.
+
+        Returns:
+            train_data, ground_truth, filenames:
+                The ground truth is an array of batch size, where each item
+                in the array contains a single ground truth label.
+                The train_data is an array of images, corresponding to the
+                ground truth values.
+                filenames is an array of filenames, corresponding to the
+                ground truth values.
+        """
+        ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
+            self, ml_set, dualPol, radar_product
+        )
+
+        return Batch_Generator.single_product_batch_params(
+            self,
+            ground_truths,
+            train_data,
+            filenames,
+            roost_sets,
+            no_roost_sets,
+            ml_set,
+            radar_product,
+            model_type,
+            problem,
+        )
 
 
 class Multiple_Product_Batch_Generator(Batch_Generator):
@@ -407,7 +376,15 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
 
     # channels will be RGB values, first dimension will be radar products
-    def get_batch(self, ml_set, dualPol, radar_product=None, num_temporal_data=0):
+    def get_batch(
+        self,
+        ml_set,
+        dualPol,
+        radar_product=None,
+        num_temporal_data=0,
+        model_type="shallow_cnn",
+        problem="detection",
+    ):
         """Get a batch of data for machine learning. This batch contains data
         with four channels in it, one for each radar product. For dualPol data
         this will be four radar products, and for legacy data this will be two
@@ -428,73 +405,136 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 ground truth values.
         """
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
-            self, ml_set, dualPol, radar_product
+            self, ml_set, dualPol, radar_product=None
         )
         print("MULTIPLE PRODUCT GET BATCH")
 
-        for ml_sets in [roost_sets, no_roost_sets]:
-            indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
-            for index in indices:
-                filename = ml_sets[ml_set][index]
-                filenames.append(filename)
-                is_roost = int(self.label_dict[filename].is_roost)
-                images = []
-                if dualPol:
-                    radar_products = utils.Radar_Products
-                else:
-                    radar_products = utils.Legacy_radar_products
+        Batch_Generator.single_product_batch_params(
+            self,
+            ground_truths,
+            train_data,
+            filenames,
+            roost_sets,
+            no_roost_sets,
+            ml_set,
+            "Reflectivity",
+            model_type,
+            problem,
+        )
 
-                for radar_product in radar_products:
-                    image = self.label_dict[filename].get_image(radar_product)
-                    print(np.array(image).shape)
-                    try:
-                        print(type(images))
-                        images.append(image)
-                        images = np.array(images)
-                    except ValueError as e:
-                        print(e)
+        # for ml_sets in [roost_sets, no_roost_sets]:
+        #     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+        #     for index in indices:
+        #         filename = ml_sets[ml_set][index]
+        #         filenames.append(filename)
+        #         is_roost = int(self.label_dict[filename].is_roost)
+        #         images = []
+        #         if dualPol:
+        #             radar_products = utils.Radar_Products
+        #         else:
+        #             radar_products = utils.Legacy_radar_products
 
-                if images != []:
-                    filenames.append(filename)
-                    if np.array(train_data).size == 0:
-                        train_data = images
-                        train_data = np.array(train_data)
-                    else:
-                        train_data = np.concatenate(
-                            (train_data, np.array(images)), axis=0
-                        )
-                    print(np.array(images).shape)
-                    print(np.array(train_data).shape)
+        #         for radar_product in radar_products:
+        #             image = self.label_dict[filename].get_image(radar_product)
+        #             print(np.array(image).shape)
+        #             try:
+        #                 print(type(images))
+        #                 images.append(image)
+        #                 images = np.array(images)
+        #             except ValueError as e:
+        #                 print(e)
 
-                    # if problem == "detection":
-                    if np.array(ground_truths).size == 0:
-                        ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-                            images
-                        ).shape[0]
-                        print(np.array(ground_truths).shape)
-                    else:
-                        ground_truths = np.concatenate(
-                            (
-                                ground_truths,
-                                [[is_roost, 1 - is_roost]] * np.array(images).shape[0],
-                            ),
-                            axis=0,
-                        )
-                        print(np.array(ground_truths).shape)
-                # ground_truths.append([is_roost, 1 - is_roost])
+        #         if images != []:
+        #             filenames.append(filename)
+        #             if np.array(train_data).size == 0:
+        #                 train_data = images
+        #                 train_data = np.array(train_data)
+        #             else:
+        #                 train_data = np.concatenate(
+        #                     (train_data, np.array(images)), axis=0
+        #                 )
+        #             print(np.array(images).shape)
+        #             print(np.array(train_data).shape)
 
-                # train_data.append(np.array(images))
+        #             # if problem == "detection":
+        #             if np.array(ground_truths).size == 0:
+        #                 ground_truths = [[is_roost, 1 - is_roost]] * np.array(
+        #                     images
+        #                 ).shape[0]
+        #                 print(np.array(ground_truths).shape)
+        #             else:
+        #                 ground_truths = np.concatenate(
+        #                     (
+        #                         ground_truths,
+        #                         [[is_roost, 1 - is_roost]] * np.array(images).shape[0],
+        #                     ),
+        #                     axis=0,
+        #                 )
+        #                 print(np.array(ground_truths).shape)
+        #         # ground_truths.append([is_roost, 1 - is_roost])
 
-        # Update to channel last ordering
-        train_data = np.array(train_data)
+        #         # train_data.append(np.array(images))
 
-        # train_data = np.reshape(
-        #     np.array(train_data),
-        #     (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
-        # )
-        # train_data = np.rollaxis(np.array(train_data), 0, 2)
-        print("TRAIN DATA, GROUND TRUTH")
-        print(np.array(train_data).shape)
-        print(np.array(ground_truths).shape)
+        # # Update to channel last ordering
+        # train_data = np.array(train_data)
 
-        return np.array(train_data), np.array(ground_truths), np.array(filenames)
+        # # train_data = np.reshape(
+        # #     np.array(train_data),
+        # #     (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
+        # # )
+        # # train_data = np.rollaxis(np.array(train_data), 0, 2)
+        # print("TRAIN DATA, GROUND TRUTH")
+        # print(np.array(train_data).shape)
+        # print(np.array(ground_truths).shape)
+
+        # return np.array(train_data), np.array(ground_truths), np.array(filenames)
+
+
+def normalize(self, x, maxi, mini):
+    if type(x) is list:
+        return [(y - mini) / (maxi - mini) for y in x]
+    else:
+        return (x - mini) / (maxi - mini)
+
+
+def adjustTheta(self, theta, path):
+    filename = os.path.splitext(ntpath.basename(path))[0]
+    parts = filename.split("_")
+    if "flip" in parts:
+        if theta > 180.0:
+            theta = 540 - theta
+        else:
+            theta = 180 - theta
+
+    # rotation
+    try:
+        if "noise" in parts:
+            degree_offset = int(parts[-2])
+        else:
+            degree_offset = int(parts[-1])
+        theta += degree_offset
+    except ValueError:
+        return theta
+
+    return theta
+
+
+def convert_to_cart(radius, theta):
+    return radius * math.cos(theta), radius * math.sin(theta)
+
+
+def points_in_circle_np(radius, x0=0, y0=0):
+    # print("x0, y0: ")
+    # print(x0)
+    # print(y0)
+    # print(radius)
+    # print(x0 - radius - 1)
+    # print(x0 + radius + 1)
+    # print(y0 - radius - 1)
+    # print(y0 + radius + 1)
+    x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
+    y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
+    x, y = np.where((x_[:, np.newaxis] - x0) ** 2 + (y_ - y0) ** 2 <= radius ** 2)
+    # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
+    for x, y in zip(x_[x], y_[y]):
+        yield x, y
