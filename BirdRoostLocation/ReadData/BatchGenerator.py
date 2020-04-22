@@ -408,19 +408,27 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             self, ml_set, dualPol, radar_product=None
         )
         print("MULTIPLE PRODUCT GET BATCH")
+        # train_data_np, np.array(ground_truths), np.array(filenames)
 
-        Batch_Generator.single_product_batch_params(
-            self,
-            ground_truths,
-            train_data,
-            filenames,
-            roost_sets,
-            no_roost_sets,
-            ml_set,
-            "Reflectivity",
-            model_type,
-            problem,
-        )
+        if dualPol:
+            radar_products = utils.Radar_Products
+        else:
+            radar_products = utils.Legacy_radar_products
+
+        for radar_product in radar_products:
+            train, truth, filenames = Batch_Generator.single_product_batch_params(
+                self,
+                ground_truths,
+                train_data,
+                filenames,
+                roost_sets,
+                no_roost_sets,
+                ml_set,
+                radar_product,
+                model_type,
+                problem,
+            )
+            print(filenames)
 
         # for ml_sets in [roost_sets, no_roost_sets]:
         #     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
