@@ -143,6 +143,102 @@ class Batch_Generator:
 
         return train_data, ground_truths, filenames, roost_sets, no_roost_sets
 
+    def single_product_batch_param_helper(
+        self,
+        filename,
+        filenames,
+        radar_product,
+        problem,
+        model_type,
+        train_data,
+        ground_truths,
+    ):
+        is_roost = int(self.label_dict[filename].is_roost)
+        polar_radius = float(self.label_dict[filename].polar_radius)
+        polar_theta = float(self.label_dict[filename].polar_theta)
+        roost_size = float(self.label_dict[filename].radius)
+        images = self.label_dict[filename].get_image(radar_product)
+        # print(self.label_dict[filename].images[radar_product])
+
+        if images != []:
+            if filenames == None:
+                filenames.append(filename)
+
+            if np.array(train_data).size == 0:
+                train_data = images
+                train_data = np.array(train_data)
+            else:
+                train_data = np.concatenate((train_data, np.array(images)), axis=0)
+
+            if problem == "detection":
+                if np.array(ground_truths).size == 0:
+                    ground_truths = [[is_roost, 1 - is_roost]] * np.array(images).shape[
+                        0
+                    ]
+                else:
+                    ground_truths = np.concatenate(
+                        (
+                            ground_truths,
+                            [[is_roost, 1 - is_roost]] * np.array(images).shape[0],
+                        ),
+                        axis=0,
+                    )
+            else:  # localization
+                radii = [polar_radius] * np.array(images).shape[0]
+                thetas = []
+
+                for i in range(len(images)):
+                    thetas.append(
+                        self.adjustTheta(
+                            polar_theta,
+                            self.label_dict[filename].images[radar_product][i],
+                        )
+                    )
+
+                if model_type == "shallow_cnn":
+                    pairs = list(
+                        zip(self.normalize(radii, 2, 0), self.normalize(thetas, 360, 0))
+                    )
+                    pairs = [list(x) for x in pairs]
+
+                    if np.array(ground_truths).size == 0:
+                        ground_truths = pairs
+                    else:
+                        ground_truths = np.concatenate((ground_truths, pairs), axis=0)
+                else:  # unet
+                    # print("Roost Size: ")
+
+                    masks = np.zeros((len(radii), 240, 240))
+                    if type(roost_size) != float or math.isnan(roost_size):
+                        roost_size = 28.0
+                        # print(roost_size)
+                    else:
+                        roost_size = roost_size / 1000  # convert to km
+                        # print(roost_size)
+
+                    mask_roost_size = (roost_size / 300) * (240 / 2)
+
+                    mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
+                    # print(radii)
+                    # print(mask_radii)
+
+                    vconvert_to_cart = np.vectorize(convert_to_cart)
+                    cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
+
+                    for k, mask in enumerate(masks):
+                        mask[
+                            120 + int(round(list(cart_x)[k])),
+                            120 - int(round(list(cart_y)[k])),
+                        ] = 1.0
+
+                        color_pts = points_in_circle_np(
+                            mask_roost_size,
+                            x0=120 + int(round(list(cart_x)[k])),
+                            y0=120 - int(round(list(cart_y)[k])),
+                        )
+                        for pt in color_pts:
+                            mask[pt[0], pt[1]] = 1.0
+
     def single_product_batch_params(
         self,
         ground_truths,
@@ -155,108 +251,34 @@ class Batch_Generator:
         model_type,
         problem,
     ):
-        for ml_sets in [roost_sets, no_roost_sets]:
-            if ml_sets[ml_set]:  # in case you only train on true or false labels
-                indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
-
-                for index in indices:
-                    filename = ml_sets[ml_set][index]
-                    print(filename)
-                    is_roost = int(self.label_dict[filename].is_roost)
-                    polar_radius = float(self.label_dict[filename].polar_radius)
-                    polar_theta = float(self.label_dict[filename].polar_theta)
-                    roost_size = float(self.label_dict[filename].radius)
-                    images = self.label_dict[filename].get_image(radar_product)
-                    # print(self.label_dict[filename].images[radar_product])
-
-                    if images != []:
-                        filenames.append(filename)
-                        if np.array(train_data).size == 0:
-                            train_data = images
-                            train_data = np.array(train_data)
-                        else:
-                            train_data = np.concatenate(
-                                (train_data, np.array(images)), axis=0
-                            )
-
-                        if problem == "detection":
-                            if np.array(ground_truths).size == 0:
-                                ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-                                    images
-                                ).shape[0]
-                            else:
-                                ground_truths = np.concatenate(
-                                    (
-                                        ground_truths,
-                                        [[is_roost, 1 - is_roost]]
-                                        * np.array(images).shape[0],
-                                    ),
-                                    axis=0,
-                                )
-                        else:  # localization
-                            radii = [polar_radius] * np.array(images).shape[0]
-                            thetas = []
-
-                            for i in range(len(images)):
-                                thetas.append(
-                                    self.adjustTheta(
-                                        polar_theta,
-                                        self.label_dict[filename].images[radar_product][
-                                            i
-                                        ],
-                                    )
-                                )
-
-                            if model_type == "shallow_cnn":
-                                pairs = list(
-                                    zip(
-                                        self.normalize(radii, 2, 0),
-                                        self.normalize(thetas, 360, 0),
-                                    )
-                                )
-                                pairs = [list(x) for x in pairs]
-
-                                if np.array(ground_truths).size == 0:
-                                    ground_truths = pairs
-                                else:
-                                    ground_truths = np.concatenate(
-                                        (ground_truths, pairs), axis=0
-                                    )
-                            else:  # unet
-                                # print("Roost Size: ")
-
-                                masks = np.zeros((len(radii), 240, 240))
-                                if type(roost_size) != float or math.isnan(roost_size):
-                                    roost_size = 28.0
-                                    # print(roost_size)
-                                else:
-                                    roost_size = roost_size / 1000  # convert to km
-                                    # print(roost_size)
-
-                                mask_roost_size = (roost_size / 300) * (240 / 2)
-
-                                mask_radii = [
-                                    (radius / 300) * (240 / 2) for radius in radii
-                                ]
-                                # print(radii)
-                                # print(mask_radii)
-
-                                vconvert_to_cart = np.vectorize(convert_to_cart)
-                                cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
-
-                                for k, mask in enumerate(masks):
-                                    mask[
-                                        120 + int(round(list(cart_x)[k])),
-                                        120 - int(round(list(cart_y)[k])),
-                                    ] = 1.0
-
-                                    color_pts = points_in_circle_np(
-                                        mask_roost_size,
-                                        x0=120 + int(round(list(cart_x)[k])),
-                                        y0=120 - int(round(list(cart_y)[k])),
-                                    )
-                                    for pt in color_pts:
-                                        mask[pt[0], pt[1]] = 1.0
+        if filenames == None:
+            for ml_sets in [roost_sets, no_roost_sets]:
+                if ml_sets[ml_set]:  # in case you only train on true or false labels
+                    indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+                    for index in indices:
+                        filename = ml_sets[ml_set][index]
+                        Batch_Generator.single_product_batch_param_helper(
+                            self,
+                            filename,
+                            filenames,
+                            radar_product,
+                            problem,
+                            model_type,
+                            train_data,
+                            ground_truths,
+                        )
+        else:
+            for filename in filenames:
+                Batch_Generator.single_product_batch_param_helper(
+                    self,
+                    filename,
+                    filenames,
+                    radar_product,
+                    problem,
+                    model_type,
+                    train_data,
+                    ground_truths,
+                )
 
         truth_shape = np.array(ground_truths).shape
         # print(truth_shape)
@@ -417,7 +439,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
         for radar_product in radar_products:
             print(radar_product)
-            train, truth, files = Batch_Generator.single_product_batch_params(
+            train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
                 ground_truths,
                 train_data,
