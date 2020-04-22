@@ -417,7 +417,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
         for radar_product in radar_products:
             print(radar_product)
-            train, truth, filenames = Batch_Generator.single_product_batch_params(
+            train, truth, files = Batch_Generator.single_product_batch_params(
                 self,
                 ground_truths,
                 train_data,
