@@ -446,7 +446,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         else:
             radar_products = utils.Legacy_radar_products
 
-        for radar_product in radar_products.reverse():
+        print(radar_products)
+        print(type(radar_products))
+        for radar_product in radar_products:
             print(radar_product)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
