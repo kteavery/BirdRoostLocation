@@ -257,6 +257,7 @@ class Batch_Generator:
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for index in indices:
                         filename = ml_sets[ml_set][index]
+                        print(filename)
                         Batch_Generator.single_product_batch_param_helper(
                             self,
                             filename,
