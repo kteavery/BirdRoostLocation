@@ -238,6 +238,8 @@ class Batch_Generator:
                         for pt in color_pts:
                             mask[pt[0], pt[1]] = 1.0
 
+        return train_data, ground_truths
+
     def single_product_batch_params(
         self,
         ground_truths,
@@ -250,15 +252,14 @@ class Batch_Generator:
         model_type,
         problem,
     ):
-        if filenames == None:
-            filenames = []
+        if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for index in indices:
                         filename = ml_sets[ml_set][index]
-                        print(filename)
-                        Batch_Generator.single_product_batch_param_helper(
+                        # print(filename)
+                        train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                             self,
                             filename,
                             filenames,
@@ -269,9 +270,10 @@ class Batch_Generator:
                             ground_truths,
                         )
                         filenames.append(filename)
+                    # print(filenames)
         else:
             for filename in filenames:
-                Batch_Generator.single_product_batch_param_helper(
+                train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                     self,
                     filename,
                     filenames,
@@ -283,7 +285,7 @@ class Batch_Generator:
                 )
 
         truth_shape = np.array(ground_truths).shape
-        # print(truth_shape)
+        print(truth_shape)
 
         try:
             ground_truths = np.array(ground_truths).reshape(
