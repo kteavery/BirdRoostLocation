@@ -7,6 +7,7 @@ import numpy as np
 from BirdRoostLocation import utils
 from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
+from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 
 
 class Batch_Generator:
@@ -433,7 +434,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product=None
         )
-        print("MULTIPLE PRODUCT GET BATCH")
+        train_list = []
+        truth_list = []
+        pred_list = []
+        file_list = []
+
         # train_data_np, np.array(ground_truths), np.array(filenames)
 
         if dualPol:
@@ -441,7 +446,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         else:
             radar_products = utils.Legacy_radar_products
 
-        for radar_product in radar_products:
+        for radar_product in radar_products.reverse[::-1]:
             print(radar_product)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
@@ -455,74 +460,38 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 model_type,
                 problem,
             )
+
+            model = shallow_model.build_model(
+                inputDimensions=(240, 240, 3),
+                lr=0.0001,
+                coord_conv=True,
+                problem=problem,
+            )
+            model.load_weights(
+                settings.WORKING_DIRECTORY
+                + "/model/"
+                + radar_product
+                + "/checkpoint/"
+                + radar_product
+                + ".h5"
+            )
+
+            predictions = []
+            for i in range(len(train)):
+                predictions.append(model.predict(train[i]))
+
+            train_list.append(train)
+            truth_list.append(truth)
+            pred_list.append(predictions)
+            file_list.append(filenames)
+
             print(filenames)
+            print(np.array(train_list).shape)
+            print(np.array(truth_list).shape)
+            print(np.array(pred_list).shape)
+            print(np.array(file_list).shape)
 
-        # for ml_sets in [roost_sets, no_roost_sets]:
-        #     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
-        #     for index in indices:
-        #         filename = ml_sets[ml_set][index]
-        #         filenames.append(filename)
-        #         is_roost = int(self.label_dict[filename].is_roost)
-        #         images = []
-        #         if dualPol:
-        #             radar_products = utils.Radar_Products
-        #         else:
-        #             radar_products = utils.Legacy_radar_products
-
-        #         for radar_product in radar_products:
-        #             image = self.label_dict[filename].get_image(radar_product)
-        #             print(np.array(image).shape)
-        #             try:
-        #                 print(type(images))
-        #                 images.append(image)
-        #                 images = np.array(images)
-        #             except ValueError as e:
-        #                 print(e)
-
-        #         if images != []:
-        #             filenames.append(filename)
-        #             if np.array(train_data).size == 0:
-        #                 train_data = images
-        #                 train_data = np.array(train_data)
-        #             else:
-        #                 train_data = np.concatenate(
-        #                     (train_data, np.array(images)), axis=0
-        #                 )
-        #             print(np.array(images).shape)
-        #             print(np.array(train_data).shape)
-
-        #             # if problem == "detection":
-        #             if np.array(ground_truths).size == 0:
-        #                 ground_truths = [[is_roost, 1 - is_roost]] * np.array(
-        #                     images
-        #                 ).shape[0]
-        #                 print(np.array(ground_truths).shape)
-        #             else:
-        #                 ground_truths = np.concatenate(
-        #                     (
-        #                         ground_truths,
-        #                         [[is_roost, 1 - is_roost]] * np.array(images).shape[0],
-        #                     ),
-        #                     axis=0,
-        #                 )
-        #                 print(np.array(ground_truths).shape)
-        #         # ground_truths.append([is_roost, 1 - is_roost])
-
-        #         # train_data.append(np.array(images))
-
-        # # Update to channel last ordering
-        # train_data = np.array(train_data)
-
-        # # train_data = np.reshape(
-        # #     np.array(train_data),
-        # #     (1, np.array(train_data).shape[0], np.array(train_data).shape[1], 1),
-        # # )
-        # # train_data = np.rollaxis(np.array(train_data), 0, 2)
-        # print("TRAIN DATA, GROUND TRUTH")
-        # print(np.array(train_data).shape)
-        # print(np.array(ground_truths).shape)
-
-        # return np.array(train_data), np.array(ground_truths), np.array(filenames)
+        return train_list, truth_list, pred_list, file_list
 
 
 def normalize(self, x, maxi, mini):

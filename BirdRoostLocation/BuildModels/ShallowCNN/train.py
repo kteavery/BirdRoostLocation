@@ -177,7 +177,7 @@ def train(
                     problem=problem,
                 )
             if model_name == utils.ML_Model.Shallow_CNN_All:
-                x, y, _ = batch_generator.get_batch(
+                all_product_batch = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
                     radar_product=radar_product,
