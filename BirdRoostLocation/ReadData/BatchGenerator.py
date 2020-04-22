@@ -244,6 +244,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
                 for index in indices:
                     filename = ml_sets[ml_set][index]
+                    print(filename)
                     is_roost = int(self.label_dict[filename].is_roost)
                     polar_radius = float(self.label_dict[filename].polar_radius)
                     polar_theta = float(self.label_dict[filename].polar_theta)
@@ -447,6 +448,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     image = self.label_dict[filename].get_image(radar_product)
                     print(np.array(image).shape)
                     try:
+                        print(type(images))
                         images.append(image)
                         images = np.array(images)
                     except ValueError as e:
