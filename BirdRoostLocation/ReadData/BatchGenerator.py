@@ -442,10 +442,16 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     radar_products = utils.Radar_Products
                 else:
                     radar_products = utils.Legacy_radar_products
+
                 for radar_product in radar_products:
                     image = self.label_dict[filename].get_image(radar_product)
                     print(np.array(image).shape)
-                    images.append(image)
+                    try:
+                        images.append(image)
+                        images = np.array(images)
+                    except ValueError as e:
+                        print(e)
+
                 if images != []:
                     filenames.append(filename)
                     if np.array(train_data).size == 0:
