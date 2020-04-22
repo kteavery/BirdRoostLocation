@@ -473,12 +473,21 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 coord_conv=True,
                 problem=problem,
             )
+            if str(radar_product) == "Radar_Products.cc":
+                product_str = "Rho_HV"
+            elif str(radar_product) == "Radar_Products.diff_reflectivity":
+                product_str = "Zdr"
+            elif str(radar_product) == "Radar_Products.reflectivity":
+                product_str = "Reflectivity"
+            else:
+                product_str = "Velocity"
+
             model.load_weights(
                 settings.WORKING_DIRECTORY
                 + "/model/"
-                + str(radar_product)
+                + str(product_str)
                 + "/checkpoint/"
-                + str(radar_product)
+                + str(product_str)
                 + ".h5"
             )
 
