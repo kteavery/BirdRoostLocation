@@ -161,8 +161,7 @@ class Batch_Generator:
         # print(self.label_dict[filename].images[radar_product])
 
         if images != []:
-            if filenames == None:
-                filenames.append(filename)
+            # filenames.append(filename)
 
             if np.array(train_data).size == 0:
                 train_data = images
@@ -267,6 +266,7 @@ class Batch_Generator:
                             train_data,
                             ground_truths,
                         )
+                        filenames.append(filename)
         else:
             for filename in filenames:
                 Batch_Generator.single_product_batch_param_helper(
