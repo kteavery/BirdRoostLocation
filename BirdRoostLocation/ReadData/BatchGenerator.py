@@ -482,6 +482,14 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             else:
                 product_str = "Velocity"
 
+            print(
+                settings.WORKING_DIRECTORY
+                + "/model/"
+                + str(product_str)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
             model.load_weights(
                 settings.WORKING_DIRECTORY
                 + "/model/"
