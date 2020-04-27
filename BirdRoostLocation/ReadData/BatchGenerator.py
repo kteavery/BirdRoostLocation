@@ -499,6 +499,13 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + ".h5"
             )
 
+            print(
+                np.reshape(
+                    train[i],
+                    (1, train[i].shape[0], train[i].shape[1], train[i].shape[2]),
+                ).shape
+            )
+
             predictions = []
             for i in range(len(train)):
                 predictions.append(
