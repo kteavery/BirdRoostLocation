@@ -133,6 +133,10 @@ class _CoordinateChannel(Layer):
             yy_channels = yy_channels / K.cast(dim2 - 1, K.floatx())
             yy_channels = (yy_channels * 2) - 1.0
 
+            print("new channel shapes")
+            print(xx_channels.shape)
+            print(yy_channels.shape)
+
             outputs = K.concatenate([inputs, xx_channels, yy_channels], axis=-1)
 
             if self.use_radius:
