@@ -407,6 +407,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         self,
         ml_set,
         dualPol,
+        batch_size=8,
         radar_product=None,
         num_temporal_data=0,
         model_type="shallow_cnn",
@@ -500,28 +501,14 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
 
             predictions = []
-            for i in range(len(train)):
+            print(len(train))
+            for i in range(0, len(train), batch_size):
+                train_batch = []
+                for j in range(0, batch_size):
+                    train_batch.append(train[i])
 
-                print(
-                    np.reshape(
-                        train[i],
-                        (1, train[i].shape[0], train[i].shape[1], train[i].shape[2]),
-                    ).shape
-                )
-
-                predictions.append(
-                    model.predict(
-                        np.reshape(
-                            train[i],
-                            (
-                                1,
-                                train[i].shape[0],
-                                train[i].shape[1],
-                                train[i].shape[2],
-                            ),
-                        )
-                    )
-                )
+                train_batch = np.array(train_batch)
+                predictions.append(model.predict(train[i]))
 
             train_list.append(train)
             truth_list.append(truth)
