@@ -521,7 +521,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
 
                 print(train_batch.shape)
-                with self.graph.as_default():
+                with tf.graph.as_default():
                     predictions.append(model.predict(train_batch))
 
             train_list.append(train)
