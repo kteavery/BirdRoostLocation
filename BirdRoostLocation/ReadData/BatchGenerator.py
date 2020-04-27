@@ -521,7 +521,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
 
                 print(train_batch.shape)
-                predictions.append(model.predict(train_batch))
+                with self.graph.as_default():
+                    predictions.append(model.predict(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
