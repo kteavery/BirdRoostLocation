@@ -10,6 +10,7 @@ from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
 
+
 class Batch_Generator:
     """This class organized the machine learning labels and creates ML batches.
 
@@ -501,6 +502,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
+            model._make_predict_function()
 
             predictions = []
             print(len(train))
