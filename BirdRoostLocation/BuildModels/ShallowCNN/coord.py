@@ -64,6 +64,7 @@ class _CoordinateChannel(Layer):
         self.use_radius: bool = use_radius
         self.data_format: str = K.image_data_format() if data_format is None else data_format
         self.axis: int = 1 if K.image_data_format() == "channels_first" else -1
+        print(data_format)
 
         self.input_spec = InputSpec(min_ndim=2)
         self.supports_masking = True
@@ -222,6 +223,7 @@ class _CoordinateChannel(Layer):
 
         output_shape: list = list(input_shape)
         output_shape[self.axis] = input_shape[self.axis] + channel_count
+        print(output_shape)
         return tuple(output_shape)
 
     def get_config(self) -> dict:
@@ -381,4 +383,3 @@ get_custom_objects().update(
         "CoordinateChannel3D": CoordinateChannel3D,
     }
 )
-
