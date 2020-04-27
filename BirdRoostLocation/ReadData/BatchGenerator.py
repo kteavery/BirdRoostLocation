@@ -10,7 +10,6 @@ from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
 
-
 class Batch_Generator:
     """This class organized the machine learning labels and creates ML batches.
 
@@ -433,6 +432,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 filenames is an array of filenames, corresponding to the
                 ground truth values.
         """
+        tf.compat.v1.disable_eager_execution()
+
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product=None
         )
