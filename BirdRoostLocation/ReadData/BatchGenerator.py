@@ -503,7 +503,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
             predictions = []
             for i in range(len(train)):
-                predictions.append(model.predict(train[i]))
+                predictions.append(
+                    model.predict(
+                        np.reshape(train[i], 1, train[i][0], train[i][1], train[i][2])
+                    )
+                )
 
             train_list.append(train)
             truth_list.append(truth)
