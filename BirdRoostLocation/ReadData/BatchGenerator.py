@@ -505,7 +505,15 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             for i in range(len(train)):
                 predictions.append(
                     model.predict(
-                        np.reshape(train[i], (1, train[i][0], train[i][1], train[i][2]))
+                        np.reshape(
+                            train[i],
+                            (
+                                1,
+                                train[i].shape[0],
+                                train[i].shape[1],
+                                train[i].shape[2],
+                            ),
+                        )
                     )
                 )
 
