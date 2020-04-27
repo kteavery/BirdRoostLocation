@@ -26,7 +26,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     if coord_conv == True:
         model.add(CoordinateChannel2D(input_shape=inputDimensions))
         model.summary()
-        model.add(Conv2D(8, kernel_size=(3, 3)))
+        model.add(Conv2D(8, kernel_size=(5, 5)))
     else:
         # add input_shape param since Conv2D is first layer
         model.add(Conv2D(8, kernel_size=(5, 5), input_shape=inputDimensions))

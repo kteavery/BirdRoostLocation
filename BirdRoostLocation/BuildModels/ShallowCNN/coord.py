@@ -222,6 +222,7 @@ class _CoordinateChannel(Layer):
 
         output_shape: list = list(input_shape)
         output_shape[self.axis] = input_shape[self.axis] + channel_count
+        print(output_shape)
         return tuple(output_shape)
 
     def get_config(self) -> dict:
