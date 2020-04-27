@@ -509,7 +509,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 train_batch = np.array(train_batch)
                 print(train_batch.shape)
-                predictions.append(model.predict(train_batch, batch_size=batch_size))
+                predictions.append(model.predict_proba(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
