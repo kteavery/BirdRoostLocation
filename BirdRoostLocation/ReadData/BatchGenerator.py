@@ -520,7 +520,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
 
                 print(train_batch.shape)
-                with tf.graph.as_default():
+                with tf.Graph().as_default():
                     predictions.append(model.predict(train_batch))
 
             train_list.append(train)
