@@ -257,6 +257,14 @@ class Batch_Generator:
                                 (ground_truths, mask), axis=0
                             )
 
+                            if np.array(ground_truths).size == 0:
+                                ground_truths = mask
+                            else:
+                                ground_truths = np.concatenate(
+                                    (ground_truths, mask), axis=0
+                                )
+                            print(ground_truths)
+
         return train_data, ground_truths
 
     def single_product_batch_params(
