@@ -9,7 +9,6 @@ from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
-import keras
 
 
 class Batch_Generator:
@@ -472,13 +471,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 problem,
             )
 
-            config = tf.compat.v1.ConfigProto(
-                intra_op_parallelism_threads=1, allow_soft_placement=True
-            )
-            tf_session = tf.compat.v1.Session(config=config)
-
-            tf.compat.v1.keras.backend.set_session(tf_session)
-
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
                 lr=0.0001,
@@ -529,10 +521,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 #         train_batch.shape[0],
                 #     ),
                 # )
-                with tf_session.as_default():
-                    print(train_batch.shape)
-                    with tf.Graph().as_default():
-                        predictions.append(model.predict(train_batch))
+
+                print(train_batch.shape)
+                with tf.Graph().as_default():
+                    predictions.append(model.predict(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
