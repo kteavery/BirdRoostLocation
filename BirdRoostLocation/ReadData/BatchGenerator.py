@@ -187,65 +187,71 @@ class Batch_Generator:
             else:  # localization
                 radii = [polar_radius] * np.array(images).shape[0]
                 thetas = []
-                print(radii)
+                # print(radii)
 
-                for i in range(len(images)):
-                    thetas.append(
-                        adjustTheta(
-                            self,
-                            polar_theta,
-                            self.label_dict[filename].images[radar_product][i],
+                if np.nan in radii:
+                    for i in range(len(images)):
+                        thetas.append(
+                            adjustTheta(
+                                self,
+                                polar_theta,
+                                self.label_dict[filename].images[radar_product][i],
+                            )
                         )
-                    )
 
-                if model_type == "shallow_cnn":
-                    pairs = list(
-                        zip(self.normalize(radii, 2, 0), self.normalize(thetas, 360, 0))
-                    )
-                    pairs = [list(x) for x in pairs]
-
-                    if np.array(ground_truths).size == 0:
-                        ground_truths = pairs
-                    else:
-                        ground_truths = np.concatenate((ground_truths, pairs), axis=0)
-                else:  # unet
-                    # print("Roost Size: ")
-
-                    masks = np.zeros((len(radii), 240, 240))
-                    if type(roost_size) != float or math.isnan(roost_size):
-                        roost_size = 28.0
-                        # print(roost_size)
-                    else:
-                        roost_size = roost_size / 1000  # convert to km
-                        # print(roost_size)
-
-                    mask_roost_size = (roost_size / 300) * (240 / 2)
-
-                    mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
-                    # print(radii)
-                    print(mask_radii)
-                    print(thetas)
-
-                    vconvert_to_cart = np.vectorize(convert_to_cart)
-                    cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
-
-                    for k, mask in enumerate(masks):
-                        print("CART_X, CART_Y, K")
-                        print(cart_x)
-                        print(cart_y)
-                        print(k)
-                        mask[
-                            120 + int(round(list(cart_x)[k])),
-                            120 - int(round(list(cart_y)[k])),
-                        ] = 1.0
-
-                        color_pts = points_in_circle_np(
-                            mask_roost_size,
-                            x0=120 + int(round(list(cart_x)[k])),
-                            y0=120 - int(round(list(cart_y)[k])),
+                    if model_type == "shallow_cnn":
+                        pairs = list(
+                            zip(
+                                self.normalize(radii, 2, 0),
+                                self.normalize(thetas, 360, 0),
+                            )
                         )
-                        for pt in color_pts:
-                            mask[pt[0], pt[1]] = 1.0
+                        pairs = [list(x) for x in pairs]
+
+                        if np.array(ground_truths).size == 0:
+                            ground_truths = pairs
+                        else:
+                            ground_truths = np.concatenate(
+                                (ground_truths, pairs), axis=0
+                            )
+                    else:  # unet
+                        # print("Roost Size: ")
+
+                        masks = np.zeros((len(radii), 240, 240))
+                        if type(roost_size) != float or math.isnan(roost_size):
+                            roost_size = 28.0
+                            # print(roost_size)
+                        else:
+                            roost_size = roost_size / 1000  # convert to km
+                            # print(roost_size)
+
+                        mask_roost_size = (roost_size / 300) * (240 / 2)
+
+                        mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
+                        # print(radii)
+                        # print(mask_radii)
+                        # print(thetas)
+
+                        vconvert_to_cart = np.vectorize(convert_to_cart)
+                        cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
+
+                        for k, mask in enumerate(masks):
+                            print("CART_X, CART_Y, K")
+                            print(cart_x)
+                            print(cart_y)
+                            print(k)
+                            mask[
+                                120 + int(round(list(cart_x)[k])),
+                                120 - int(round(list(cart_y)[k])),
+                            ] = 1.0
+
+                            color_pts = points_in_circle_np(
+                                mask_roost_size,
+                                x0=120 + int(round(list(cart_x)[k])),
+                                y0=120 - int(round(list(cart_y)[k])),
+                            )
+                            for pt in color_pts:
+                                mask[pt[0], pt[1]] = 1.0
 
         return train_data, ground_truths
 
