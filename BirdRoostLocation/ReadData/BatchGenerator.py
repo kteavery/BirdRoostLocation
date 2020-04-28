@@ -228,12 +228,10 @@ class Batch_Generator:
                     cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                     for k, mask in enumerate(masks):
-                        print(
-                            mask[
-                                120 + int(round(list(cart_x)[k])),
-                                120 - int(round(list(cart_y)[k])),
-                            ]
-                        )
+                        print("CART_X, CART_Y, K")
+                        print(cart_x)
+                        print(cart_y)
+                        print(k)
                         mask[
                             120 + int(round(list(cart_x)[k])),
                             120 - int(round(list(cart_y)[k])),
