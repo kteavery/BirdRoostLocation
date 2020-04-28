@@ -162,6 +162,7 @@ class Batch_Generator:
         images = self.label_dict[filename].get_image(radar_product)
         # print(self.label_dict[filename].images[radar_product])
 
+        print("np.array(images).shape")
         print(np.array(images).shape)
         if images != []:
             # filenames.append(filename)
@@ -172,6 +173,7 @@ class Batch_Generator:
             else:
                 train_data = np.concatenate((train_data, np.array(images)), axis=0)
 
+            print("train_data.shape")
             print(train_data.shape)
 
             if problem == "detection":
@@ -190,7 +192,7 @@ class Batch_Generator:
             else:  # localization
                 radii = np.array([polar_radius] * np.array(images).shape[0])
                 thetas = []
-                # print(radii)
+                print(radii.shape)
 
                 if math.nan in radii:
                     print("NOT NAN")
