@@ -185,7 +185,6 @@ class Batch_Generator:
                         axis=0,
                     )
             else:  # localization
-                print("LOCALIZATION")
                 radii = np.array([polar_radius] * np.array(images).shape[0])
                 thetas = []
                 # print(radii)
@@ -284,6 +283,7 @@ class Batch_Generator:
         model_type,
         problem,
     ):
+        print(filenames)
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
