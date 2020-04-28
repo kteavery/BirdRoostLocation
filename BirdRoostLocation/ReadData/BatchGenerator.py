@@ -200,6 +200,7 @@ class Batch_Generator:
                         )
 
                     if model_type == "shallow_cnn":
+                        print("SHALLOW_CNN")
                         pairs = list(
                             zip(
                                 self.normalize(radii, 2, 0),
