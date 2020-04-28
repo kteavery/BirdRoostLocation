@@ -187,6 +187,7 @@ class Batch_Generator:
             else:  # localization
                 radii = [polar_radius] * np.array(images).shape[0]
                 thetas = []
+                print(radii)
 
                 for i in range(len(images)):
                     thetas.append(
