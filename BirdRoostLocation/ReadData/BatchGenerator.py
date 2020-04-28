@@ -215,6 +215,7 @@ class Batch_Generator:
                                 (ground_truths, pairs), axis=0
                             )
                     else:  # unet
+                        print("UNET")
                         # print("Roost Size: ")
 
                         masks = np.zeros((len(radii), 240, 240))
