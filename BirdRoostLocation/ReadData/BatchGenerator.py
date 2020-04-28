@@ -503,6 +503,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
+            model._make_predict_function()
+
             global graph
             graph = tf.compat.v1.get_default_graph()
 
