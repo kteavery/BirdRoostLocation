@@ -192,6 +192,7 @@ class Batch_Generator:
             else:  # localization
                 radii = np.array([polar_radius] * np.array(images).shape[0])
                 thetas = []
+                print("radii.shape")
                 print(radii.shape)
 
                 if math.nan in radii:
