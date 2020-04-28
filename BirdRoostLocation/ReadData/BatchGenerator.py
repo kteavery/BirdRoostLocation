@@ -190,7 +190,8 @@ class Batch_Generator:
 
                 for i in range(len(images)):
                     thetas.append(
-                        self.adjustTheta(
+                        adjustTheta(
+                            self,
                             polar_theta,
                             self.label_dict[filename].images[radar_product][i],
                         )
