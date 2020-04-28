@@ -253,6 +253,10 @@ class Batch_Generator:
                             for pt in color_pts:
                                 mask[pt[0], pt[1]] = 1.0
 
+                            ground_truths = np.concatenate(
+                                (ground_truths, mask), axis=0
+                            )
+
         return train_data, ground_truths
 
     def single_product_batch_params(
