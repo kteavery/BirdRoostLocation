@@ -162,7 +162,7 @@ class Batch_Generator:
         images = self.label_dict[filename].get_image(radar_product)
         # print(self.label_dict[filename].images[radar_product])
 
-        print(images.shape)
+        print(np.array(images).shape)
         if images != []:
             # filenames.append(filename)
 
