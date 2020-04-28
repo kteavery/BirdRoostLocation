@@ -222,7 +222,8 @@ class Batch_Generator:
 
                     mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
                     # print(radii)
-                    # print(mask_radii)
+                    print(mask_radii)
+                    print(thetas)
 
                     vconvert_to_cart = np.vectorize(convert_to_cart)
                     cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
