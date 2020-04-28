@@ -486,6 +486,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             else:
                 product_str = "Velocity"
 
+            config = tf.ConfigProto(
+                intra_op_parallelism_threads=1, allow_soft_placement=True
+            )
+            tf_session = tf.Session(config=config)
+            tf.compat.v1.keras.backend.set_session(tf_session)
+
             print(
                 settings.WORKING_DIRECTORY
                 + "/model/"
