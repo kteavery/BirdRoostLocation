@@ -504,7 +504,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + ".h5"
             )
             global graph
-            graph = tf.get_default_graph()
+            graph = tf.compat.v1.get_default_graph()
 
             predictions = []
             print(len(train))
