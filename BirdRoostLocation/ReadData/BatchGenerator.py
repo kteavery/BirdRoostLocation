@@ -300,6 +300,7 @@ class Batch_Generator:
                 )
 
         truth_shape = np.array(ground_truths).shape
+        print("truth shape: ")
         print(truth_shape)
 
         try:
