@@ -471,6 +471,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 problem,
             )
 
+            global model
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
                 lr=0.0001,
@@ -502,7 +503,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
-            model._make_predict_function()
+            global graph
+            graph = tf.compat.v1.get_default_graph()
 
             predictions = []
             print(len(train))
@@ -523,7 +525,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
 
                 print(train_batch.shape)
-                with tf.Graph().as_default():
+
+                with graph.as_default():
                     predictions.append(model.predict(train_batch))
 
             train_list.append(train)
