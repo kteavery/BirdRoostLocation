@@ -227,9 +227,9 @@ class Batch_Generator:
                     vconvert_to_cart = np.vectorize(convert_to_cart)
                     cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
-                    print(masks)
+                    print(np.array(masks).shape)
                     for k, mask in enumerate(masks):
-                        print(mask)
+                        print(np.array(mask).shape)
                         mask[
                             120 + int(round(list(cart_x)[k])),
                             120 - int(round(list(cart_y)[k])),
