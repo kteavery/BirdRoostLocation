@@ -9,6 +9,7 @@ from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
+import keras
 
 
 class Batch_Generator:
@@ -471,6 +472,13 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 problem,
             )
 
+            config = tf.compat.v1.ConfigProto(
+                intra_op_parallelism_threads=1, allow_soft_placement=True
+            )
+            tf_session = tf.compat.v1.Session(config=config)
+
+            keras.backend.set_session(tf_session)
+
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
                 lr=0.0001,
@@ -485,12 +493,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 product_str = "Reflectivity"
             else:
                 product_str = "Velocity"
-
-            config = tf.compat.v1.ConfigProto(
-                intra_op_parallelism_threads=1, allow_soft_placement=True
-            )
-            tf_session = tf.compat.v1.Session(config=config)
-            tf.compat.v1.keras.backend.set_session(tf_session)
 
             print(
                 settings.WORKING_DIRECTORY
@@ -510,27 +512,29 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
             model._make_predict_function()
 
-            predictions = []
-            print(len(train))
-            for i in range(0, len(train), batch_size):
-                train_batch = []
-                for j in range(0, batch_size):
-                    train_batch.append(train[i])
+            with tf_session.as_default():
+                with tf_session.graph.as_default():
+                    predictions = []
+                    print(len(train))
+                    for i in range(0, len(train), batch_size):
+                        train_batch = []
+                        for j in range(0, batch_size):
+                            train_batch.append(train[i])
 
-                train_batch = np.array(train_batch)
-                # train_batch = np.reshape(
-                #     train_batch,
-                #     (
-                #         train_batch.shape[3],
-                #         train_batch.shape[1],
-                #         train_batch.shape[2],
-                #         train_batch.shape[0],
-                #     ),
-                # )
+                        train_batch = np.array(train_batch)
+                        # train_batch = np.reshape(
+                        #     train_batch,
+                        #     (
+                        #         train_batch.shape[3],
+                        #         train_batch.shape[1],
+                        #         train_batch.shape[2],
+                        #         train_batch.shape[0],
+                        #     ),
+                        # )
 
-                print(train_batch.shape)
-                with tf.Graph().as_default():
-                    predictions.append(model.predict(train_batch))
+                        print(train_batch.shape)
+                        with tf.Graph().as_default():
+                            predictions.append(model.predict(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
