@@ -502,7 +502,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
-            graph = tf.get_default_graph()
+            model._make_predict_function()
 
             predictions = []
             print(len(train))
