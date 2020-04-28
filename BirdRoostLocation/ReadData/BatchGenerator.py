@@ -477,7 +477,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
             tf_session = tf.compat.v1.Session(config=config)
 
-            keras.backend.set_session(tf_session)
+            tf.compat.v1.keras.backend.set_session(tf_session)
 
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
@@ -512,29 +512,27 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
             model._make_predict_function()
 
-            with tf_session.as_default():
-                with tf_session.graph.as_default():
-                    predictions = []
-                    print(len(train))
-                    for i in range(0, len(train), batch_size):
-                        train_batch = []
-                        for j in range(0, batch_size):
-                            train_batch.append(train[i])
+            predictions = []
+            print(len(train))
+            for i in range(0, len(train), batch_size):
+                train_batch = []
+                for j in range(0, batch_size):
+                    train_batch.append(train[i])
 
-                        train_batch = np.array(train_batch)
-                        # train_batch = np.reshape(
-                        #     train_batch,
-                        #     (
-                        #         train_batch.shape[3],
-                        #         train_batch.shape[1],
-                        #         train_batch.shape[2],
-                        #         train_batch.shape[0],
-                        #     ),
-                        # )
-
-                        print(train_batch.shape)
-                        with tf.Graph().as_default():
-                            predictions.append(model.predict(train_batch))
+                train_batch = np.array(train_batch)
+                # train_batch = np.reshape(
+                #     train_batch,
+                #     (
+                #         train_batch.shape[3],
+                #         train_batch.shape[1],
+                #         train_batch.shape[2],
+                #         train_batch.shape[0],
+                #     ),
+                # )
+                with tf_session.as_default():
+                    print(train_batch.shape)
+                    with tf.Graph().as_default():
+                        predictions.append(model.predict(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
