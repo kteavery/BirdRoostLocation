@@ -486,7 +486,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             else:
                 product_str = "Velocity"
 
-            config = tf.ConfigProto(
+            config = tf.compat.v1.ConfigProto(
                 intra_op_parallelism_threads=1, allow_soft_placement=True
             )
             tf_session = tf.Session(config=config)
