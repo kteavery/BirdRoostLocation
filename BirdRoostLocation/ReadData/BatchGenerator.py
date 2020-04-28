@@ -190,7 +190,8 @@ class Batch_Generator:
                 thetas = []
                 # print(radii)
 
-                if np.nan in radii:
+                if np.isnan(radii).any():
+                    print("NOT NAN")
                     for i in range(len(images)):
                         thetas.append(
                             adjustTheta(
