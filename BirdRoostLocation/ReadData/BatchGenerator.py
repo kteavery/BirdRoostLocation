@@ -195,7 +195,7 @@ class Batch_Generator:
                 print("radii.shape")
                 print(radii.shape)
 
-                if math.nan in radii:
+                if np.isnan(np.sum(radii)):
                     print("NOT NAN")
                     print(radii)
                     for i in range(len(images)):
