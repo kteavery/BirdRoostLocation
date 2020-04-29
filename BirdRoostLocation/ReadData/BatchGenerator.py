@@ -246,9 +246,11 @@ class Batch_Generator:
                         cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                         for k, mask in enumerate(masks):
-                            print("CART_X, CART_Y, K")
+                            print("CART_X")
                             print(cart_x)
+                            print("CART_Y")
                             print(cart_y)
+                            print("K")
                             print(k)
                             mask[
                                 120 + int(round(list(cart_x)[k])),
@@ -273,6 +275,7 @@ class Batch_Generator:
                                 ground_truths = np.concatenate(
                                     (ground_truths, mask), axis=0
                                 )
+                            print("ground_truths")
                             print(ground_truths)
 
         return train_data, ground_truths
@@ -542,6 +545,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             model._make_predict_function()
 
             predictions = []
+            print("len(train)")
             print(len(train))
             for i in range(0, len(train), batch_size):
                 train_batch = []
@@ -558,7 +562,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 #         train_batch.shape[0],
                 #     ),
                 # )
-
+                print("train_batch.shape")
                 print(train_batch.shape)
                 with tf.Graph().as_default():
                     predictions.append(model.predict(train_batch))
@@ -568,6 +572,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             pred_list.append(predictions)
             file_list.append(filenames)
 
+            print("filenames, train_list, truth_list, pred_list, file_list")
             print(filenames)
             print(np.array(train_list).shape)
             print(np.array(truth_list).shape)
