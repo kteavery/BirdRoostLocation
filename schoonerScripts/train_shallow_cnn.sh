@@ -2,14 +2,14 @@
 #
 #SBATCH --job-name=train_cnn
 #SBATCH --ntasks=1
-#SBATCH -o train_shallow_%J.out
-#SBATCH -e train_shallow_%J.err
+#SBATCH -o train_unet_%J.out
+#SBATCH -e train_unet_%J.err
 #SBATCH --mail-user=katherine.avery@ou.edu
 #SBATCH --mail-type=ALL
-#SBATCH -p swat_plus
+#SBATCH -p idea
 #SBATCH -t 47:00:00
 #SBATCH --array=0-3
-#SBATCH --mem 120G
+#SBATCH --mem 32G
 
 # cd to directory where job was submitted from
 cd $SLURM_SUBMIT_DIR

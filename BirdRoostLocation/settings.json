@@ -1,10 +1,10 @@
 {
-  "cwd": "/datadrive/roost_data",
+  "cwd": "/condo/swatwork/keavery/masters_thesis/clean_images/",
   "label_csv": "ml_labels_polar.csv",
   "update_label_csv": "ml_labels_polar.csv",
   "nexrad_csv": "nexrad.csv",
   "ml_splits_csv": "ml_splits.csv",
   "prediction_csv": "true_predictions_2019-10-08 13:52:27.7995153995Velocity.csv",
   "subset_files_csv": "subset_files.csv",
-  "schooner": false
+  "schooner": true
 }

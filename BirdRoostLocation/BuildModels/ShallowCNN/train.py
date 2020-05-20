@@ -167,6 +167,7 @@ def train(
         x = None
         y = None
         while type(x) == type(None) and type(y) == type(None):
+            print(model_name)
             if model_name == utils.ML_Model.Shallow_CNN:
                 x, y, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
@@ -176,6 +177,8 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
+                y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
+                 
             if model_name == utils.ML_Model.Shallow_CNN_All:
                 all_product_batch = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
@@ -184,7 +187,7 @@ def train(
                     num_temporal_data=num_temporal_data,
                 )
                 # print(x)
-                print(y)
+                # print(y)
                 # x = np.reshape(x, (x.shape[1], x.shape[2]))
                 # print(x.shape)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
