@@ -33,8 +33,12 @@ class LossHistory(keras.callbacks.Callback):
         self.cosine = []
 
     def on_batch_end(self, batch, logs={}):
+        print(logs)
+        print(len(logs))
         self.mse.append(logs[0])
         self.mae.append(logs[1])
-        self.mape.append(logs[2])
-        self.cosine.append(logs[3])
+        if len(logs) >= 3:
+            self.mape.append(logs[2])
+        if len(logs) >= 4:
+            self.cosine.append(logs[3])
 

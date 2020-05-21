@@ -207,19 +207,36 @@ def train(
                     train_logs[1],
                 )
             )
-        else:
+        else:  
             train_history.on_batch_end(batch=(x, y), logs=train_logs)
+            print(train_logs)
+            print(type(train_logs))
+            print(train_logs[0])
+            print(train_logs[1])
 
-            print(
-                progress_string.format(
-                    utils.ML_Set.training.fullname,
-                    batch_no,
-                    train_logs[0],
-                    train_logs[1],
-                    train_logs[2],
-                    train_logs[3],
+            if len(train_logs) == 4:
+                print(
+                    progress_string.format(
+                        utils.ML_Set.training.fullname,
+                        batch_no,
+                        train_logs[0],
+                        train_logs[1],
+                        train_logs[2],
+                        train_logs[3],
+                    )
                 )
-            )
+            else:
+                print(
+                    progress_string.format(
+                        utils.ML_Set.training.fullname,
+                        batch_no,
+                        train_logs[0],
+                        train_logs[1],
+                        None,
+                        None,
+                    )
+                )
+
 
         # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 

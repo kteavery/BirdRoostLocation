@@ -39,7 +39,7 @@ class Batch_Generator:
         self.no_roost_sets_V06 = {}
         self.roost_sets_V06 = {}
         self.batch_size = default_batch_size
-        print("__init__")
+        #print("__init__")
         print(ml_split_csv)
         print(validate_k_index)
         print(test_k_index)
@@ -74,7 +74,7 @@ class Batch_Generator:
 
         all_files_dict = {}
         for i in range(len(all_files)):
-            all_files_dict[os.path.basename(all_files[i])[0:23]] = True
+            all_files_dict[os.path.basename(all_files[i])[2:25]] = True
             #print(all_files_dict)
             #print(os.path.basename(all_files[i])[0:23])
 
@@ -210,15 +210,16 @@ class Batch_Generator:
                         train_data = np.array(train_data)
                     else:
                         train_data = np.concatenate((train_data, np.array(images)), axis=0)
-                    print("train_data.shape - problem?")
-                    print(train_data.shape)
+                    
+                    #print("train_data.shape - problem?")
+                    #print(train_data.shape)
                 
                     radii = np.array([polar_radius] * np.array(images).shape[0])
                     thetas = []
-                    print("radii.shape")
-                    print(radii.shape)
+                    #print("radii.shape")
+                    #print(radii.shape)
 
-                    print("NOT NAN")
+                    #print("NOT NAN")
                     print(radii)
                     for i in range(len(images)):
                         thetas.append(
@@ -230,7 +231,7 @@ class Batch_Generator:
                         )
 
                     if model_type == "shallow_cnn":
-                        print("SHALLOW_CNN")
+                        #print("SHALLOW_CNN")
                         pairs = list(
                             zip(
                                 self.normalize(radii, 2, 0),
@@ -246,7 +247,7 @@ class Batch_Generator:
                                 (ground_truths, pairs), axis=0
                             )
                     else:  # unet
-                        print("UNET")
+                        # print("UNET")
                         # print("Roost Size: ")
 
                         masks = np.zeros((len(radii), 240, 240))
@@ -268,6 +269,7 @@ class Batch_Generator:
                         cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                         for k, mask in enumerate(masks):
+                            print(filename)
                             print("CART_X")
                             print(cart_x)
                             print("CART_Y")
@@ -278,17 +280,17 @@ class Batch_Generator:
                                 120 + int(round(list(cart_x)[k])),
                                 120 - int(round(list(cart_y)[k])),
                             ] = 1.0
-                            print("mask")
+                            #print("mask")
                             
                             color_pts = points_in_circle_np(
                                 mask_roost_size,
                                 x0=120 + int(round(list(cart_x)[k])),
                                 y0=120 - int(round(list(cart_y)[k])),
                             )
-                            print("color points")
+                            #print("color points")
                             for pt in color_pts:
                                 mask[pt[0], pt[1]] = 1.0
-                            print("append to ground truth")
+                            # print("append to ground truth")
                             # ground_truths = np.concatenate(
                             #     (ground_truths, mask), axis=0
                             # )
@@ -299,12 +301,13 @@ class Batch_Generator:
                                 ground_truths = np.concatenate(
                                     (ground_truths, mask), axis=0
                                 )
-                            print("ground_truths")
-                            print(ground_truths.shape)
-                            print("train_shape")
-                            print(train_data.shape)
-        print("train_data.shape")
-        print(train_data.shape)
+                            #print("ground_truths")
+                            #print(ground_truths.shape)
+                            #print("train_shape")
+                            #print(train_data.shape)
+        #print("train_data.shape")
+        train_data = np.array(train_data)
+        #print(train_data.shape)
         return train_data, ground_truths
 
     def single_product_batch_params(
