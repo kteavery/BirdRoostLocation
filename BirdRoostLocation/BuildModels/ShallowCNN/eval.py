@@ -48,6 +48,8 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         default_batch_size=5000,
     )
 
+    print("BATCH GENERATOR")
+
     x = None
     y = None
     while type(x) == type(None) and type(y) == type(None):
@@ -58,6 +60,9 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
             num_temporal_data=num_temporal_data,
             problem=problem,
         )
+        print(x)
+        print(y)
+        print(filenames)
     print("FILENAMES: ")
     print(filenames)
     print(len(filenames))

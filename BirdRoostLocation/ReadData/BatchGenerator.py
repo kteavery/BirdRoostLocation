@@ -9,7 +9,7 @@ from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
-
+import keras
 
 class Batch_Generator:
     """This class organized the machine learning labels and creates ML batches.
@@ -270,6 +270,10 @@ class Batch_Generator:
 
                         for k, mask in enumerate(masks):
                             print(filename)
+                            print("RADII")
+                            print(mask_radii)
+                            print("THETAS")
+                            print(thetas)
                             print("CART_X")
                             print(cart_x)
                             print("CART_Y")
@@ -327,9 +331,10 @@ class Batch_Generator:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
-                    for index in indices:
+                    for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
-                        #print(filename)
+                        print(len(indices))
+                        print(i)
                         train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                             self,
                             filename,
@@ -340,6 +345,8 @@ class Batch_Generator:
                             train_data,
                             ground_truths,
                         )
+                        print(np.array(train_data).shape)
+                        print(np.array(ground_truths).shape)
                         filenames.append(filename)
                     # print(filenames)
         else:
@@ -546,6 +553,13 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 problem,
             )
 
+            config = tf.compat.v1.ConfigProto(
+                intra_op_parallelism_threads=1,
+                allow_soft_placement=True
+            )
+            tf_session = tf.compat.v1.Session(config=config)
+            tf.compat.v1.keras.backend.set_session(tf_session)
+
             model = shallow_model.build_model(
                 inputDimensions=(240, 240, 3),
                 lr=0.0001,
@@ -577,7 +591,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
-            model._make_predict_function()
+            #model.compile(loss=keras.losses.categorical_crossentropy,
+            #    optimizer=keras.optimizers.adam(0.0001),
+            #    metrics=["accuracy"],
+            #)
+            #model._make_predict_function()
 
             predictions = []
             print("len(train)")
@@ -599,8 +617,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
                 print("train_batch.shape")
                 print(train_batch.shape)
-                with tf.Graph().as_default():
-                    predictions.append(model.predict(train_batch))
+                #with tf.Graph().as_default():
+                predictions.append(model.predict_proba(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
