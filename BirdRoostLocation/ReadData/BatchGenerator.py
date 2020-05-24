@@ -40,9 +40,9 @@ class Batch_Generator:
         self.roost_sets_V06 = {}
         self.batch_size = default_batch_size
         #print("__init__")
-        print(ml_split_csv)
-        print(validate_k_index)
-        print(test_k_index)
+        #print(ml_split_csv)
+        #print(validate_k_index)
+        #print(test_k_index)
         self.__set_ml_sets(ml_split_csv, validate_k_index, test_k_index)
 
     def __set_ml_sets(self, ml_split_csv, validate_k_index, test_k_index):
@@ -61,10 +61,10 @@ class Batch_Generator:
             test_k_index: The index of the test set.
         """
 
-        print(ml_split_csv)
+        #print(ml_split_csv)
         ml_split_pd = pandas.read_csv(ml_split_csv)
-        print("ml_split_pd.head()")
-        print(ml_split_pd.head())
+        #print("ml_split_pd.head()")
+        #print(ml_split_pd.head())
 
         # Remove files that weren't found
         all_files = utils.getListOfFilesInDirectory(self.root_dir + "data", ".png")
@@ -81,7 +81,7 @@ class Batch_Generator:
         for index, row in ml_split_pd.iterrows():
             if all_files_dict.get(row["AWS_file"]) is None:
                 ml_split_pd.drop(index, inplace=True)
-        print(ml_split_pd.head())
+        #print(ml_split_pd.head())
         # Sort into train, test, and validation sets
         print("LENGTHS OF NO ROOST/ROOST:")
         print(len(ml_split_pd[ml_split_pd.Roost != True]))
@@ -220,7 +220,7 @@ class Batch_Generator:
                     #print(radii.shape)
 
                     #print("NOT NAN")
-                    print(radii)
+                    #print(radii)
                     for i in range(len(images)):
                         thetas.append(
                             adjustTheta(
@@ -269,17 +269,17 @@ class Batch_Generator:
                         cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                         for k, mask in enumerate(masks):
-                            print(filename)
-                            print("RADII")
-                            print(mask_radii)
-                            print("THETAS")
-                            print(thetas)
-                            print("CART_X")
-                            print(cart_x)
-                            print("CART_Y")
-                            print(cart_y)
-                            print("K")
-                            print(k)
+                            #print(filename)
+                            #print("RADII")
+                            #print(mask_radii)
+                            #print("THETAS")
+                            #print(thetas)
+                            #print("CART_X")
+                            #print(cart_x)
+                            #print("CART_Y")
+                            #print(cart_y)
+                            #print("K")
+                            #print(k)
                             mask[
                                 120 + int(round(list(cart_x)[k])),
                                 120 - int(round(list(cart_y)[k])),
@@ -333,8 +333,8 @@ class Batch_Generator:
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
-                        print(len(indices))
-                        print(i)
+                        #print(len(indices))
+                        #print(i)
                         train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                             self,
                             filename,
@@ -345,8 +345,8 @@ class Batch_Generator:
                             train_data,
                             ground_truths,
                         )
-                        print(np.array(train_data).shape)
-                        print(np.array(ground_truths).shape)
+                        #print(np.array(train_data).shape)
+                        #print(np.array(ground_truths).shape)
                         filenames.append(filename)
                     # print(filenames)
         else:
@@ -363,8 +363,8 @@ class Batch_Generator:
                 )
 
         truth_shape = np.array(ground_truths).shape
-        print("truth shape: ")
-        print(truth_shape)
+        #print("truth shape: ")
+        #print(truth_shape)
 
         try:
             if problem == "detection":
@@ -374,8 +374,8 @@ class Batch_Generator:
 
             train_data_np = np.array(train_data)
             shape = train_data_np.shape
-            print("shape")
-            print(shape)
+            #print("shape")
+            #print(shape)
             train_data_np = train_data_np.reshape(
                 shape[0], shape[1], shape[2], shape[3]
             )

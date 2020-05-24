@@ -145,6 +145,9 @@ def train(
             #    coord_conv=coord_conv,
             #    problem=problem,
             # )
+    
+    print(checkpoint_path)
+    #model.load_weights(checkpoint_path + "Zdr.h5")
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
@@ -192,10 +195,10 @@ def train(
                 # print(x.shape)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
 
-        print(x.shape)
-        print(y.shape)
-        print(type(x))
-        print(type(y))
+        #print(x.shape)
+        #print(y.shape)
+        #print(type(x))
+        #print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
 
         if problem == "detection":
@@ -209,10 +212,10 @@ def train(
             )
         else:  
             train_history.on_batch_end(batch=(x, y), logs=train_logs)
-            print(train_logs)
-            print(type(train_logs))
-            print(train_logs[0])
-            print(train_logs[1])
+            #print(train_logs)
+            #print(type(train_logs))
+            #print(train_logs[0])
+            #print(train_logs[1])
 
             if len(train_logs) == 4:
                 print(
