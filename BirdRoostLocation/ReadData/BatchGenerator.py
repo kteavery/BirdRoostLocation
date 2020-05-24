@@ -9,7 +9,9 @@ from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
 import tensorflow as tf
+from keras.models import model_from_json
 import keras
+
 
 class Batch_Generator:
     """This class organized the machine learning labels and creates ML batches.
@@ -39,10 +41,10 @@ class Batch_Generator:
         self.no_roost_sets_V06 = {}
         self.roost_sets_V06 = {}
         self.batch_size = default_batch_size
-        #print("__init__")
-        #print(ml_split_csv)
-        #print(validate_k_index)
-        #print(test_k_index)
+        # print("__init__")
+        # print(ml_split_csv)
+        # print(validate_k_index)
+        # print(test_k_index)
         self.__set_ml_sets(ml_split_csv, validate_k_index, test_k_index)
 
     def __set_ml_sets(self, ml_split_csv, validate_k_index, test_k_index):
@@ -61,10 +63,10 @@ class Batch_Generator:
             test_k_index: The index of the test set.
         """
 
-        #print(ml_split_csv)
+        # print(ml_split_csv)
         ml_split_pd = pandas.read_csv(ml_split_csv)
-        #print("ml_split_pd.head()")
-        #print(ml_split_pd.head())
+        # print("ml_split_pd.head()")
+        # print(ml_split_pd.head())
 
         # Remove files that weren't found
         all_files = utils.getListOfFilesInDirectory(self.root_dir + "data", ".png")
@@ -75,13 +77,13 @@ class Batch_Generator:
         all_files_dict = {}
         for i in range(len(all_files)):
             all_files_dict[os.path.basename(all_files[i])[2:25]] = True
-            #print(all_files_dict)
-            #print(os.path.basename(all_files[i])[0:23])
+            # print(all_files_dict)
+            # print(os.path.basename(all_files[i])[0:23])
 
         for index, row in ml_split_pd.iterrows():
             if all_files_dict.get(row["AWS_file"]) is None:
                 ml_split_pd.drop(index, inplace=True)
-        #print(ml_split_pd.head())
+        # print(ml_split_pd.head())
         # Sort into train, test, and validation sets
         print("LENGTHS OF NO ROOST/ROOST:")
         print(len(ml_split_pd[ml_split_pd.Roost != True]))
@@ -161,26 +163,26 @@ class Batch_Generator:
         polar_theta = float(self.label_dict[filename].polar_theta)
         roost_size = float(self.label_dict[filename].radius)
         images = self.label_dict[filename].get_image(radar_product)
-        #print(self.label_dict[filename].images[radar_product])
-        #print(self.label_dict[filename])
-        #print(type(self.label_dict[filename]))
-        #print(filename)
-        #print(radar_product)
-        #print(self.label_dict[filename].get_image(radar_product))
+        # print(self.label_dict[filename].images[radar_product])
+        # print(self.label_dict[filename])
+        # print(type(self.label_dict[filename]))
+        # print(filename)
+        # print(radar_product)
+        # print(self.label_dict[filename].get_image(radar_product))
 
-        #print("np.array(images).shape")
-        #print(np.array(images).shape)
+        # print("np.array(images).shape")
+        # print(np.array(images).shape)
         if images != []:
             # filenames.append(filename)
 
-            #if np.array(train_data).size == 0:
+            # if np.array(train_data).size == 0:
             #    train_data = images
             #    train_data = np.array(train_data)
-            #else:
+            # else:
             #    train_data = np.concatenate((train_data, np.array(images)), axis=0)
 
-            #print("train_data.shape - problem?")
-            #print(train_data.shape)
+            # print("train_data.shape - problem?")
+            # print(train_data.shape)
 
             if problem == "detection":
                 if np.array(train_data).size == 0:
@@ -201,26 +203,28 @@ class Batch_Generator:
                         ),
                         axis=0,
                     )
-            else:  # localization       
+            else:  # localization
                 radii = np.array([polar_radius] * np.array(images).shape[0])
- 
+
                 if not np.isnan(np.sum(radii)):
                     if np.array(train_data).size == 0:
                         train_data = images
                         train_data = np.array(train_data)
                     else:
-                        train_data = np.concatenate((train_data, np.array(images)), axis=0)
-                    
-                    #print("train_data.shape - problem?")
-                    #print(train_data.shape)
-                
+                        train_data = np.concatenate(
+                            (train_data, np.array(images)), axis=0
+                        )
+
+                    # print("train_data.shape - problem?")
+                    # print(train_data.shape)
+
                     radii = np.array([polar_radius] * np.array(images).shape[0])
                     thetas = []
-                    #print("radii.shape")
-                    #print(radii.shape)
+                    # print("radii.shape")
+                    # print(radii.shape)
 
-                    #print("NOT NAN")
-                    #print(radii)
+                    # print("NOT NAN")
+                    # print(radii)
                     for i in range(len(images)):
                         thetas.append(
                             adjustTheta(
@@ -231,7 +235,7 @@ class Batch_Generator:
                         )
 
                     if model_type == "shallow_cnn":
-                        #print("SHALLOW_CNN")
+                        # print("SHALLOW_CNN")
                         pairs = list(
                             zip(
                                 self.normalize(radii, 2, 0),
@@ -269,29 +273,29 @@ class Batch_Generator:
                         cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
 
                         for k, mask in enumerate(masks):
-                            #print(filename)
-                            #print("RADII")
-                            #print(mask_radii)
-                            #print("THETAS")
-                            #print(thetas)
-                            #print("CART_X")
-                            #print(cart_x)
-                            #print("CART_Y")
-                            #print(cart_y)
-                            #print("K")
-                            #print(k)
+                            # print(filename)
+                            # print("RADII")
+                            # print(mask_radii)
+                            # print("THETAS")
+                            # print(thetas)
+                            # print("CART_X")
+                            # print(cart_x)
+                            # print("CART_Y")
+                            # print(cart_y)
+                            # print("K")
+                            # print(k)
                             mask[
                                 120 + int(round(list(cart_x)[k])),
                                 120 - int(round(list(cart_y)[k])),
                             ] = 1.0
-                            #print("mask")
-                            
+                            # print("mask")
+
                             color_pts = points_in_circle_np(
                                 mask_roost_size,
                                 x0=120 + int(round(list(cart_x)[k])),
                                 y0=120 - int(round(list(cart_y)[k])),
                             )
-                            #print("color points")
+                            # print("color points")
                             for pt in color_pts:
                                 mask[pt[0], pt[1]] = 1.0
                             # print("append to ground truth")
@@ -305,13 +309,13 @@ class Batch_Generator:
                                 ground_truths = np.concatenate(
                                     (ground_truths, mask), axis=0
                                 )
-                            #print("ground_truths")
-                            #print(ground_truths.shape)
-                            #print("train_shape")
-                            #print(train_data.shape)
-        #print("train_data.shape")
+                            # print("ground_truths")
+                            # print(ground_truths.shape)
+                            # print("train_shape")
+                            # print(train_data.shape)
+        # print("train_data.shape")
         train_data = np.array(train_data)
-        #print(train_data.shape)
+        # print(train_data.shape)
         return train_data, ground_truths
 
     def single_product_batch_params(
@@ -326,15 +330,15 @@ class Batch_Generator:
         model_type,
         problem,
     ):
-        #print(filenames)
+        # print(filenames)
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
-                        #print(len(indices))
-                        #print(i)
+                        # print(len(indices))
+                        # print(i)
                         train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                             self,
                             filename,
@@ -345,8 +349,8 @@ class Batch_Generator:
                             train_data,
                             ground_truths,
                         )
-                        #print(np.array(train_data).shape)
-                        #print(np.array(ground_truths).shape)
+                        # print(np.array(train_data).shape)
+                        # print(np.array(ground_truths).shape)
                         filenames.append(filename)
                     # print(filenames)
         else:
@@ -363,8 +367,8 @@ class Batch_Generator:
                 )
 
         truth_shape = np.array(ground_truths).shape
-        #print("truth shape: ")
-        #print(truth_shape)
+        # print("truth shape: ")
+        # print(truth_shape)
 
         try:
             if problem == "detection":
@@ -374,12 +378,12 @@ class Batch_Generator:
 
             train_data_np = np.array(train_data)
             shape = train_data_np.shape
-            #print("shape")
-            #print(shape)
+            # print("shape")
+            # print(shape)
             train_data_np = train_data_np.reshape(
                 shape[0], shape[1], shape[2], shape[3]
             )
-            
+
             return train_data_np, np.array(ground_truths), np.array(filenames)
         except IndexError as e:
             print(e)
@@ -554,18 +558,18 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
 
             config = tf.compat.v1.ConfigProto(
-                intra_op_parallelism_threads=1,
-                allow_soft_placement=True
+                intra_op_parallelism_threads=1, allow_soft_placement=True
             )
             tf_session = tf.compat.v1.Session(config=config)
             tf.compat.v1.keras.backend.set_session(tf_session)
 
-            model = shallow_model.build_model(
-                inputDimensions=(240, 240, 3),
-                lr=0.0001,
-                coord_conv=True,
-                problem=problem,
-            )
+            # model = shallow_model.build_model(
+            #     inputDimensions=(240, 240, 3),
+            #     lr=0.0001,
+            #     coord_conv=True,
+            #     problem=problem,
+            # )
+
             if str(radar_product) == "Radar_Products.cc":
                 product_str = "Rho_HV"
             elif str(radar_product) == "Radar_Products.diff_reflectivity":
@@ -574,6 +578,19 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 product_str = "Reflectivity"
             else:
                 product_str = "Velocity"
+
+            json_file = open(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".json",
+                "r",
+            )
+            loaded_model_json = json_file.read()
+            json_file.close()
+            model = model_from_json(loaded_model_json)
 
             print(
                 settings.WORKING_DIRECTORY
@@ -591,11 +608,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + str(product_str)
                 + ".h5"
             )
-            #model.compile(loss=keras.losses.categorical_crossentropy,
+            # model.compile(loss=keras.losses.categorical_crossentropy,
             #    optimizer=keras.optimizers.adam(0.0001),
             #    metrics=["accuracy"],
-            #)
-            #model._make_predict_function()
+            # )
+            # model._make_predict_function()
 
             predictions = []
             print("len(train)")
@@ -617,7 +634,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # )
                 print("train_batch.shape")
                 print(train_batch.shape)
-                #with tf.Graph().as_default():
+                # with tf.Graph().as_default():
                 predictions.append(model.predict_proba(train_batch))
 
             train_list.append(train)
