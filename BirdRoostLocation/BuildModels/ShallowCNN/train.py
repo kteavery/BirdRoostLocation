@@ -145,9 +145,9 @@ def train(
             #    coord_conv=coord_conv,
             #    problem=problem,
             # )
-    
+
     print(checkpoint_path)
-    #model.load_weights(checkpoint_path + "Zdr.h5")
+    # model.load_weights(checkpoint_path + "Zdr.h5")
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
@@ -181,7 +181,7 @@ def train(
                     problem=problem,
                 )
                 y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
-                 
+
             if model_name == utils.ML_Model.Shallow_CNN_All:
                 all_product_batch = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
@@ -195,10 +195,10 @@ def train(
                 # print(x.shape)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
 
-        #print(x.shape)
-        #print(y.shape)
-        #print(type(x))
-        #print(type(y))
+        # print(x.shape)
+        # print(y.shape)
+        # print(type(x))
+        # print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
 
         if problem == "detection":
@@ -210,12 +210,12 @@ def train(
                     train_logs[1],
                 )
             )
-        else:  
+        else:
             train_history.on_batch_end(batch=(x, y), logs=train_logs)
-            #print(train_logs)
-            #print(type(train_logs))
-            #print(train_logs[0])
-            #print(train_logs[1])
+            # print(train_logs)
+            # print(type(train_logs))
+            # print(train_logs[0])
+            # print(train_logs[1])
 
             if len(train_logs) == 4:
                 print(
@@ -239,7 +239,6 @@ def train(
                         None,
                     )
                 )
-
 
         # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
@@ -273,16 +272,28 @@ def train(
                 else:  # localization
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
-                    print(
-                        progress_string.format(
-                            utils.ML_Set.validation.fullname,
-                            batch_no,
-                            val_logs[0],
-                            val_logs[1],
-                            val_logs[2],
-                            val_logs[3],
+                    if len(val_logs) == 4:
+                        print(
+                            progress_string.format(
+                                utils.ML_Set.validation.fullname,
+                                batch_no,
+                                val_logs[0],
+                                val_logs[1],
+                                val_logs[2],
+                                val_logs[3],
+                            )
                         )
-                    )
+                    else:
+                        print(
+                            progress_string.format(
+                                utils.ML_Set.validation.fullname,
+                                batch_no,
+                                val_logs[0],
+                                val_logs[1],
+                                None,
+                                None,
+                            )
+                        )
                 x_, y_, x, y = [None] * 4
 
             except Exception as e:

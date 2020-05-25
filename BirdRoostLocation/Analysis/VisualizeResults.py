@@ -58,12 +58,12 @@ if __name__ == "__main__":
     fields = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
 
     visualizeResults(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_Reflectivity/KLIX20090712_104815_V03_Reflectivity.png",
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/24KEVX20130724_110326_V06_Reflectivity.png",
         # (math.radians(float(truth[1])), float(truth[0])), 231.3708697137605,-126.75404144046426
-        (math.radians(-2), 160),
-        # (math.radians(-178.98934224972638), 26.01614465210987),
+        # (math.radians(219.04207776024253), 0.10477419878244053 * 300),
+        (math.radians(0), 0),
         (0, 0),
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_Reflectivity/KLIX20090712_104815_V03_Reflectivity.png",
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/24KEVX20130724_110326_V06_Reflectivity.png",
     )
 
     # for i in range(len(df)):

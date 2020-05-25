@@ -565,7 +565,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
             # model = shallow_model.build_model(
             #     inputDimensions=(240, 240, 3),
-            #     lr=0.0001,
+            #     lr=0.00001,
             #     coord_conv=True,
             #     problem=problem,
             # )
@@ -609,7 +609,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 + ".h5"
             )
             # model.compile(loss=keras.losses.categorical_crossentropy,
-            #    optimizer=keras.optimizers.adam(0.0001),
+            #    optimizer=keras.optimizers.adam(0.00001),
             #    metrics=["accuracy"],
             # )
             # model._make_predict_function()

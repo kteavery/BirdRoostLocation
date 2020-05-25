@@ -15,7 +15,7 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
 
-def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection"):
+def build_model(inputDimensions, lr=0.00001, coord_conv=False, problem="detection"):
     inputs = Input(inputDimensions)
     conv1 = Conv2D(
         64, 3, activation="relu", padding="same", kernel_initializer="he_normal"
