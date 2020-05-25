@@ -180,7 +180,8 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
-                y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
+                if problem == "localization":
+                    y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
                  
             if model_name == utils.ML_Model.Shallow_CNN_All:
                 all_product_batch = batch_generator.get_batch(
