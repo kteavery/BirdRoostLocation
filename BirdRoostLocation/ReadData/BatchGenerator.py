@@ -238,8 +238,8 @@ class Batch_Generator:
                         # print("SHALLOW_CNN")
                         pairs = list(
                             zip(
-                                self.normalize(radii, 2, 0),
-                                self.normalize(thetas, 360, 0),
+                                normalize(radii, 2, 0),
+                                normalize(thetas, 360, 0),
                             )
                         )
                         pairs = [list(x) for x in pairs]
