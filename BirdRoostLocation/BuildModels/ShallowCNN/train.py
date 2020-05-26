@@ -147,7 +147,7 @@ def train(
             # )
 
     print(checkpoint_path)
-    # model.load_weights(checkpoint_path + "Zdr.h5")
+    #model.load_weights(checkpoint_path + "Zdr.h5")
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
