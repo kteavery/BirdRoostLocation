@@ -1,5 +1,5 @@
 {
-  "cwd": "/datadrive/roost_data/",
+  "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData",
   "label_csv": "ml_labels_polar.csv",
   "update_label_csv": "ml_labels_polar.csv",
   "nexrad_csv": "nexrad.csv",

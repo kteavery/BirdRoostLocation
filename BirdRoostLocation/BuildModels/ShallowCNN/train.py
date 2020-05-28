@@ -22,7 +22,7 @@ python train.py \
 --high_memory_mode=True
 """
 import argparse
-import os
+import os, csv
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation.BuildModels.ShallowCNN import unet as unet
 from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
@@ -88,6 +88,18 @@ def train(
     if not os.path.exists(checkpoint_path):
         os.makedirs(os.path.dirname(checkpoint_path))
 
+    with open(checkpoint_path + "train_log.csv", "w", newline="") as csvfile:
+        train_writer = csv.writer(
+            csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
+        )
+        train_writer.writerow("loss", "accuracy")
+
+    with open(checkpoint_path + "val_log.csv", "w", newline="") as csvfile:
+        val_writer = csv.writer(
+            csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
+        )
+        val_writer.writerow("loss", "accuracy")
+
     print("MODEL NAME")
     print(model_name)
     print(settings.ML_SPLITS_DATA)
@@ -139,15 +151,9 @@ def train(
                 optimizer=keras.optimizers.adam(lr),
                 metrics=["accuracy"],
             )
-            # model = shallow_model.build_model(
-            #    inputDimensions=(240, 240, 4),
-            #    lr=lr,
-            #    coord_conv=coord_conv,
-            #    problem=problem,
-            # )
 
     print(checkpoint_path)
-    #model.load_weights(checkpoint_path + "Zdr.h5")
+    # model.load_weights(checkpoint_path + "Zdr.h5")
 
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
@@ -203,6 +209,9 @@ def train(
         train_logs = model.train_on_batch(np.array(x), np.array(y))
 
         if problem == "detection":
+            with open("train_log.csv", "a") as csvfile:
+                csvfile.write(train_logs[0], train_logs[1])
+
             print(
                 progress_string.format(
                     utils.ML_Set.training.fullname,
@@ -219,6 +228,11 @@ def train(
             # print(train_logs[1])
 
             if len(train_logs) == 4:
+                with open("train_log.csv", "a") as csvfile:
+                    csvfile.write(
+                        train_logs[0], train_logs[1], train_logs[2], train_logs[3]
+                    )
+
                 print(
                     progress_string.format(
                         utils.ML_Set.training.fullname,
@@ -230,6 +244,9 @@ def train(
                     )
                 )
             else:
+                with open("train_log.csv", "a") as csvfile:
+                    csvfile.write(train_logs[0], train_logs[1])
+
                 print(
                     progress_string.format(
                         utils.ML_Set.training.fullname,
@@ -257,7 +274,7 @@ def train(
                     problem=problem,
                 )
                 y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
-                
+
                 # print(np.array(x_).shape)
                 # print(np.array(y_).shape)
 
@@ -266,6 +283,9 @@ def train(
                 # ml_utils.write_log(callback, val_names, val_logs, batch_no)
 
                 if problem == "detection":
+                    with open("val_log.csv", "a") as csvfile:
+                        csvfile.write(val_logs[0], val_logs[1])
+
                     print(
                         progress_string.format(
                             utils.ML_Set.validation.fullname,
@@ -281,6 +301,11 @@ def train(
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
                     if len(val_logs) == 4:
+                        with open("val_log.csv", "a") as csvfile:
+                            csvfile.write(
+                                val_logs[0], val_logs[1], val_logs[2], val_logs[3]
+                            )
+
                         print(
                             progress_string.format(
                                 utils.ML_Set.validation.fullname,
@@ -292,6 +317,9 @@ def train(
                             )
                         )
                     else:
+                        with open("val_log.csv", "a") as csvfile:
+                            csvfile.write(val_logs[0], val_logs[1])
+
                         print(
                             progress_string.format(
                                 utils.ML_Set.validation.fullname,
@@ -310,7 +338,7 @@ def train(
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
             # currentDT = datetime.datetime.now()
             model_json = model.to_json()
-            with open(checkpoint_path+"/"+save_file+".json", "w") as json_file:
+            with open(checkpoint_path + "/" + save_file + ".json", "w") as json_file:
                 json_file.write(model_json)
 
             model.save_weights(os.path.join(checkpoint_path, save_file.format("")))

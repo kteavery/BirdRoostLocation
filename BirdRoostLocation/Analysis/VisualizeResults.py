@@ -57,13 +57,15 @@ if __name__ == "__main__":
     print(df.head())
     fields = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
 
+    # for f in os.listdir("/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06"):
+    #     if f.endswith(".png"):
     visualizeResults(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/24KEVX20130724_110326_V06_Reflectivity.png",
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity_flip.png",
         # (math.radians(float(truth[1])), float(truth[0])), 231.3708697137605,-126.75404144046426
         # (math.radians(219.04207776024253), 0.10477419878244053 * 300),
-        (math.radians(0), 0),
+        (math.radians(320.95792223975747), 0.10477419878244053 * 300),
         (0, 0),
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/24KEVX20130724_110326_V06_Reflectivity.png",
+        "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity_flip.png",
     )
 
     # for i in range(len(df)):
