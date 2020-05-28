@@ -256,6 +256,10 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
+                y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
+                
+                # print(np.array(x_).shape)
+                # print(np.array(y_).shape)
 
                 val_logs = model.test_on_batch(x_, y_)
 
@@ -271,6 +275,9 @@ def train(
                         )
                     )
                 else:  # localization
+
+                    # print(np.array(x).shape)
+                    # print(np.array(y).shape)
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
                     if len(val_logs) == 4:

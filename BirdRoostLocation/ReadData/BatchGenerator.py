@@ -164,6 +164,7 @@ class Batch_Generator:
         roost_size = float(self.label_dict[filename].radius)
         images = self.label_dict[filename].get_image(radar_product)
         # print(self.label_dict[filename].images[radar_product])
+        # print(len(indices))
         # print(self.label_dict[filename])
         # print(type(self.label_dict[filename]))
         # print(filename)
