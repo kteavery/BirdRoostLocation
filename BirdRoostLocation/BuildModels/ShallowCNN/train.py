@@ -92,13 +92,13 @@ def train(
         train_writer = csv.writer(
             csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
         )
-        train_writer.writerow("loss", "accuracy")
+        train_writer.writerow(["loss", "accuracy"])
 
     with open(checkpoint_path + "val_log.csv", "w", newline="") as csvfile:
         val_writer = csv.writer(
             csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
         )
-        val_writer.writerow("loss", "accuracy")
+        val_writer.writerow(["loss", "accuracy"])
 
     print("MODEL NAME")
     print(model_name)
@@ -210,7 +210,10 @@ def train(
 
         if problem == "detection":
             with open("train_log.csv", "a") as csvfile:
-                csvfile.write(train_logs[0], train_logs[1])
+                train_writer = csv.writer(
+                    csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
+                )
+                train_writer.writerow([train_logs[0], train_logs[1]])
 
             print(
                 progress_string.format(
@@ -229,8 +232,11 @@ def train(
 
             if len(train_logs) == 4:
                 with open("train_log.csv", "a") as csvfile:
-                    csvfile.write(
-                        train_logs[0], train_logs[1], train_logs[2], train_logs[3]
+                    train_writer = csv.writer(
+                        csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
+                    )
+                    train_writer.writerow(
+                        [train_logs[0], train_logs[1], train_logs[2], train_logs[3]]
                     )
 
                 print(
@@ -245,7 +251,10 @@ def train(
                 )
             else:
                 with open("train_log.csv", "a") as csvfile:
-                    csvfile.write(train_logs[0], train_logs[1])
+                    train_writer = csv.writer(
+                        csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
+                    )
+                    train_writer.writerow([train_logs[0], train_logs[1]])
 
                 print(
                     progress_string.format(
@@ -284,7 +293,13 @@ def train(
 
                 if problem == "detection":
                     with open("val_log.csv", "a") as csvfile:
-                        csvfile.write(val_logs[0], val_logs[1])
+                        val_writer = csv.writer(
+                            csvfile,
+                            delimiter=" ",
+                            quotechar="|",
+                            quoting=csv.QUOTE_MINIMAL,
+                        )
+                        val_writer.writerow([val_logs[0], val_logs[1]])
 
                     print(
                         progress_string.format(
@@ -302,8 +317,14 @@ def train(
 
                     if len(val_logs) == 4:
                         with open("val_log.csv", "a") as csvfile:
-                            csvfile.write(
-                                val_logs[0], val_logs[1], val_logs[2], val_logs[3]
+                            val_writer = csv.writer(
+                                csvfile,
+                                delimiter=" ",
+                                quotechar="|",
+                                quoting=csv.QUOTE_MINIMAL,
+                            )
+                            val_writer.writerow(
+                                [val_logs[0], val_logs[1], val_logs[2], val_logs[3]]
                             )
 
                         print(
@@ -318,7 +339,13 @@ def train(
                         )
                     else:
                         with open("val_log.csv", "a") as csvfile:
-                            csvfile.write(val_logs[0], val_logs[1])
+                            val_writer = csv.writer(
+                                csvfile,
+                                delimiter=" ",
+                                quotechar="|",
+                                quoting=csv.QUOTE_MINIMAL,
+                            )
+                            val_writer.writerow([val_logs[0], val_logs[1]])
 
                         print(
                             progress_string.format(
