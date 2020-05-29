@@ -261,9 +261,12 @@ def train(
                 # print(x)
                 # print(y)
                 # x = np.reshape(x, (x.shape[1], x.shape[2]))
+                print("batch output")
+                print(img_list.shape)
                 print(x.shape)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
                 print(y.shape)
+                print(file_list.shape)
 
         # print(x.shape)
         # print(y.shape)
