@@ -539,7 +539,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         else:
             radar_products = utils.Legacy_radar_products
 
-        for j, radar_product in enumerate(radar_products):
+        for k, radar_product in enumerate(radar_products):
             print(radar_product)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
@@ -611,7 +611,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 print("train_batch.shape")
                 print(train_batch.shape)
-                predictions.append(loaded_models[j].predict_proba(train_batch))
+                predictions.append(loaded_models[k].predict_proba(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
