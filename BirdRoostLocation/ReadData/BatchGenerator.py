@@ -618,7 +618,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(np.array(pred_list).shape)
             # print(np.array(file_list).shape)
 
-        return train_list, truth_list, pred_list, file_list
+        return (
+            np.array(train_list),
+            np.array(truth_list),
+            np.array(pred_list),
+            np.array(file_list),
+        )
 
 
 def normalize(self, x, maxi, mini):
