@@ -205,7 +205,7 @@ def train(
             )
         else:
             model = Sequential()
-            model.add(Dense(16, input_shape=(240, 240, 3), activation="relu"))
+            model.add(Dense(16, input_shape=(1,), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
