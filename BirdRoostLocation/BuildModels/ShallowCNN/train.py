@@ -36,6 +36,7 @@ import warnings
 
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.models import model_from_json
 import keras
 
 import matplotlib.pyplot as plt
@@ -129,6 +130,59 @@ def train(
             )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
+        loaded_models = []
+
+        if dual_pol:
+            radar_products = [
+                utils.Radar_Products.cc,
+                utils.Radar_Products.diff_reflectivity,
+                utils.Radar_Products.reflectivity,
+                utils.Radar_Products.velocity,
+            ]
+        else:
+            radar_products = utils.Legacy_radar_products
+
+        for radar_product in radar_products:
+            if str(radar_product) == "Radar_Products.cc":
+                product_str = "Rho_HV"
+            elif str(radar_product) == "Radar_Products.diff_reflectivity":
+                product_str = "Zdr"
+            elif str(radar_product) == "Radar_Products.reflectivity":
+                product_str = "Reflectivity"
+            else:
+                product_str = "Velocity"
+
+            json_file = open(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".json",
+                "r",
+            )
+            loaded_model_json = json_file.read()
+            json_file.close()
+            model = model_from_json(loaded_model_json)
+
+            print(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+            model.load_weights(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+            loaded_models.append(model)
+
         print(settings.ML_SPLITS_DATA)
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
@@ -190,10 +244,11 @@ def train(
                     y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
 
             if model_name == utils.ML_Model.Shallow_CNN_All:
-                all_product_batch = batch_generator.get_batch(
+                img_list, y, x, file_list = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
                     radar_product=radar_product,
+                    loaded_models=loaded_models,
                     num_temporal_data=num_temporal_data,
                 )
                 # print(x)
@@ -216,7 +271,7 @@ def train(
                     csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                 )
                 train_writer.writerow([train_logs[0], train_logs[1]])
-            
+
             print(
                 progress_string.format(
                     utils.ML_Set.training.fullname,

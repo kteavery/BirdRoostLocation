@@ -238,10 +238,7 @@ class Batch_Generator:
                     if model_type == "shallow_cnn":
                         # print("SHALLOW_CNN")
                         pairs = list(
-                            zip(
-                                normalize(radii, 2, 0),
-                                normalize(thetas, 360, 0),
-                            )
+                            zip(normalize(radii, 2, 0), normalize(thetas, 360, 0))
                         )
                         pairs = [list(x) for x in pairs]
 
@@ -497,6 +494,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         dualPol,
         batch_size=8,
         radar_product=None,
+        loaded_models=None,
         num_temporal_data=0,
         model_type="shallow_cnn",
         problem="detection",
@@ -530,8 +528,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         pred_list = []
         file_list = []
 
-        # train_data_np, np.array(ground_truths), np.array(filenames)
-
         if dualPol:
             radar_products = [
                 utils.Radar_Products.cc,
@@ -543,7 +539,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         else:
             radar_products = utils.Legacy_radar_products
 
-        for radar_product in radar_products:
+        for j, radar_product in enumerate(radar_products):
             print(radar_product)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
@@ -564,56 +560,44 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             tf_session = tf.compat.v1.Session(config=config)
             tf.compat.v1.keras.backend.set_session(tf_session)
 
-            # model = shallow_model.build_model(
-            #     inputDimensions=(240, 240, 3),
-            #     lr=0.00001,
-            #     coord_conv=True,
-            #     problem=problem,
+            # if str(radar_product) == "Radar_Products.cc":
+            #     product_str = "Rho_HV"
+            # elif str(radar_product) == "Radar_Products.diff_reflectivity":
+            #     product_str = "Zdr"
+            # elif str(radar_product) == "Radar_Products.reflectivity":
+            #     product_str = "Reflectivity"
+            # else:
+            #     product_str = "Velocity"
+
+            # json_file = open(
+            #     settings.WORKING_DIRECTORY
+            #     + "model/"
+            #     + str(product_str)
+            #     + "/checkpoint/"
+            #     + str(product_str)
+            #     + ".json",
+            #     "r",
             # )
+            # loaded_model_json = json_file.read()
+            # json_file.close()
+            # model = model_from_json(loaded_model_json)
 
-            if str(radar_product) == "Radar_Products.cc":
-                product_str = "Rho_HV"
-            elif str(radar_product) == "Radar_Products.diff_reflectivity":
-                product_str = "Zdr"
-            elif str(radar_product) == "Radar_Products.reflectivity":
-                product_str = "Reflectivity"
-            else:
-                product_str = "Velocity"
-
-            json_file = open(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".json",
-                "r",
-            )
-            loaded_model_json = json_file.read()
-            json_file.close()
-            model = model_from_json(loaded_model_json)
-
-            print(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".h5"
-            )
-            model.load_weights(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".h5"
-            )
-            # model.compile(loss=keras.losses.categorical_crossentropy,
-            #    optimizer=keras.optimizers.adam(0.00001),
-            #    metrics=["accuracy"],
+            # print(
+            #     settings.WORKING_DIRECTORY
+            #     + "model/"
+            #     + str(product_str)
+            #     + "/checkpoint/"
+            #     + str(product_str)
+            #     + ".h5"
             # )
-            # model._make_predict_function()
+            # model.load_weights(
+            #     settings.WORKING_DIRECTORY
+            #     + "model/"
+            #     + str(product_str)
+            #     + "/checkpoint/"
+            #     + str(product_str)
+            #     + ".h5"
+            # )
 
             predictions = []
             print("len(train)")
@@ -624,18 +608,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     train_batch.append(train[i])
 
                 train_batch = np.array(train_batch)
-                # train_batch = np.reshape(
-                #     train_batch,
-                #     (
-                #         train_batch.shape[3],
-                #         train_batch.shape[1],
-                #         train_batch.shape[2],
-                #         train_batch.shape[0],
-                #     ),
-                # )
+
                 print("train_batch.shape")
                 print(train_batch.shape)
-                # with tf.Graph().as_default():
                 predictions.append(model.predict_proba(train_batch))
 
             train_list.append(train)
@@ -643,12 +618,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             pred_list.append(predictions)
             file_list.append(filenames)
 
-            print("filenames, train_list, truth_list, pred_list, file_list")
-            print(filenames)
-            print(np.array(train_list).shape)
-            print(np.array(truth_list).shape)
-            print(np.array(pred_list).shape)
-            print(np.array(file_list).shape)
+            # print("filenames, train_list, truth_list, pred_list, file_list")
+            # print(filenames)
+            # print(np.array(train_list).shape)
+            # print(np.array(truth_list).shape)
+            # print(np.array(pred_list).shape)
+            # print(np.array(file_list).shape)
 
         return train_list, truth_list, pred_list, file_list
 
