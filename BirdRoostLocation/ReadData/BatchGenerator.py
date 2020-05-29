@@ -611,7 +611,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 print("train_batch.shape")
                 print(train_batch.shape)
-                predictions.append(model.predict_proba(train_batch))
+                predictions.append(loaded_models[j].predict_proba(train_batch))
 
             train_list.append(train)
             truth_list.append(truth)
