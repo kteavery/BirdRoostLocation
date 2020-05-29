@@ -24,7 +24,17 @@ def visualizeResults(image, truth, prediction, path):
     # to see through
     ax = fig.add_subplot(111, polar=True, label="polar", zorder=1)
     ax.set_facecolor("None")
-    ax.scatter(truth[0], truth[1], c="black", marker="*", s=70.0)
+    # ax.scatter(truth[0], truth[1], c="black", marker="*", s=70.0)
+
+    circle = plt.Circle(
+        (truth[1] * math.cos(truth[0]), truth[1] * math.sin(truth[0])),
+        28.0,
+        transform=ax.transData._b,
+        color="black",
+        alpha=0.5,
+    )
+    ax.add_artist(circle)
+
     circle100 = plt.Circle(
         (0, 0), 100, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
@@ -37,7 +47,7 @@ def visualizeResults(image, truth, prediction, path):
         (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle300)
-    ax.scatter(prediction[0], prediction[1], c="black", marker="o")
+    # ax.scatter(prediction[0], prediction[1], c="black", marker="o")
     ax.axis("off")
     ax.set_rmax(300)
 
@@ -57,16 +67,100 @@ if __name__ == "__main__":
     print(df.head())
     fields = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
 
-    # for f in os.listdir("/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06"):
-    #     if f.endswith(".png"):
-    visualizeResults(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity_flip.png",
-        # (math.radians(float(truth[1])), float(truth[0])), 231.3708697137605,-126.75404144046426
-        # (math.radians(219.04207776024253), 0.10477419878244053 * 300),
-        (math.radians(320.95792223975747), 0.10477419878244053 * 300),
-        (0, 0),
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity_flip.png",
-    )
+    suffixes = [
+        "",
+        "_flip",
+        "_flip_noise",
+        "_noise",
+        "_45_noise",
+        "_45",
+        "_flip_45",
+        "_90_noise",
+        "_90",
+        "_flip_90",
+        "_135_noise",
+        "_135",
+        "_flip_135",
+        "_180_noise",
+        "_180",
+        "_flip_180",
+        "_225_noise",
+        "_225",
+        "_flip_225",
+        "_270_noise",
+        "_270",
+        "_flip_270",
+        "_315_noise",
+        "_315",
+        "_flip_315",
+    ]
+
+    KEVXradius = [
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+        0.10477419878244053,
+    ]
+    KEVXtheta = [
+        219.04207776024253,
+        320.95792223975747,
+        320.95792223975747,
+        219.04207776024253,
+        264.04207776024253,
+        264.04207776024253,
+        365.95792223975747,
+        309.04207776024253,
+        309.04207776024253,
+        410.95792223975747,
+        354.04207776024253,
+        354.04207776024253,
+        455.95792223975747,
+        399.04207776024253,
+        399.04207776024253,
+        500.95792223975747,
+        444.04207776024253,
+        444.04207776024253,
+        545.9579222397574,
+        489.04207776024253,
+        489.04207776024253,
+        590.9579222397574,
+        534.0420777602426,
+        534.0420777602426,
+        635.9579222397574,
+    ]
+
+    for i, suffix in enumerate(suffixes):
+        visualizeResults(
+            "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
+            + suffix
+            + ".png",
+            (math.radians(KEVXtheta[i]), KEVXradius[i] * 300),
+            (0, 0),
+            "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
+            + suffix
+            + ".png",
+        )
 
     # for i in range(len(df)):
     #     aws_file = df["AWS_file"].iloc[[i]]

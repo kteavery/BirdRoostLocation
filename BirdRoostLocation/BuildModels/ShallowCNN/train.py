@@ -201,12 +201,14 @@ def train(
                 # x = np.reshape(x, (x.shape[1], x.shape[2]))
                 # print(x.shape)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
+                print("model_name == utils.ML_Model.Shallow_CNN_All")
 
         # print(x.shape)
         # print(y.shape)
         # print(type(x))
         # print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
+        print(problem)
 
         if problem == "detection":
             with open("train_log.csv", "a") as csvfile:
