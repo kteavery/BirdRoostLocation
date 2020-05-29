@@ -518,8 +518,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 filenames is an array of filenames, corresponding to the
                 ground truth values.
         """
-        tf.compat.v1.disable_eager_execution()
-
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product=None
         )
@@ -553,12 +551,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 model_type,
                 problem,
             )
-
-            config = tf.compat.v1.ConfigProto(
-                intra_op_parallelism_threads=1, allow_soft_placement=True
-            )
-            tf_session = tf.compat.v1.Session(config=config)
-            tf.compat.v1.keras.backend.set_session(tf_session)
 
             # if str(radar_product) == "Radar_Products.cc":
             #     product_str = "Rho_HV"

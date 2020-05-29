@@ -130,6 +130,13 @@ def train(
             )
 
     elif model_name == utils.ML_Model.Shallow_CNN_All:
+        tf.compat.v1.disable_eager_execution()
+        config = tf.compat.v1.ConfigProto(
+            intra_op_parallelism_threads=1, allow_soft_placement=True
+        )
+        tf_session = tf.compat.v1.Session(config=config)
+        tf.compat.v1.keras.backend.set_session(tf_session)
+
         loaded_models = []
 
         if dual_pol:
