@@ -216,7 +216,7 @@ def train(
                     csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                 )
                 train_writer.writerow([train_logs[0], train_logs[1]])
-
+            
             print(
                 progress_string.format(
                     utils.ML_Set.training.fullname,
