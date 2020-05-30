@@ -263,9 +263,9 @@ def train(
                 # x = np.reshape(x, (x.shape[1], x.shape[2]))
                 print("batch output")
                 print(img_list.shape)
-                print(x.shape)
+                print(x)
                 # y = np.reshape(y, (y.shape[0], y.shape[1]))
-                print(y.shape)
+                print(y)
                 print(file_list.shape)
 
         # print(x.shape)
@@ -276,7 +276,7 @@ def train(
         print(problem)
 
         if problem == "detection":
-            with open("train_log.csv", "a") as csvfile:
+            with open(checkpoint_path + "train_log.csv", "a") as csvfile:
                 train_writer = csv.writer(
                     csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                 )
@@ -298,7 +298,7 @@ def train(
             # print(train_logs[1])
 
             if len(train_logs) == 4:
-                with open("train_log.csv", "a") as csvfile:
+                with open(checkpoint_path + "train_log.csv", "a") as csvfile:
                     train_writer = csv.writer(
                         csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                     )
@@ -317,7 +317,7 @@ def train(
                     )
                 )
             else:
-                with open("train_log.csv", "a") as csvfile:
+                with open(checkpoint_path + "train_log.csv", "a") as csvfile:
                     train_writer = csv.writer(
                         csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                     )
@@ -359,7 +359,7 @@ def train(
                 # ml_utils.write_log(callback, val_names, val_logs, batch_no)
 
                 if problem == "detection":
-                    with open("val_log.csv", "a") as csvfile:
+                    with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                         val_writer = csv.writer(
                             csvfile,
                             delimiter=" ",
@@ -383,7 +383,7 @@ def train(
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
                     if len(val_logs) == 4:
-                        with open("val_log.csv", "a") as csvfile:
+                        with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                             val_writer = csv.writer(
                                 csvfile,
                                 delimiter=" ",
@@ -405,7 +405,7 @@ def train(
                             )
                         )
                     else:
-                        with open("val_log.csv", "a") as csvfile:
+                        with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                             val_writer = csv.writer(
                                 csvfile,
                                 delimiter=" ",
