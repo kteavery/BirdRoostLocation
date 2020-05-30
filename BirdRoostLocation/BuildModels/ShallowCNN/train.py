@@ -216,17 +216,18 @@ def train(
     print(checkpoint_path)
     # model.load_weights(checkpoint_path + "Zdr.h5")
 
+    # Set up callback
+    train_history = ml_utils.LossHistory()
+    train_history.on_train_begin()
+    val_history = ml_utils.LossHistory()
+    val_history.on_train_begin()
+
     if problem == "detection":
         train_names = ["train_loss", "train_accuracy"]
         val_names = ["val_loss", "val_accuracy"]
 
         progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
     else:  # location "mae", "mape", "cosine"
-        # Set up callback
-        train_history = ml_utils.LossHistory()
-        train_history.on_train_begin()
-        val_history = ml_utils.LossHistory()
-        val_history.on_train_begin()
 
         train_names = ["train_mse", "train_mae", "train_mape", "train_cosine"]
         val_names = ["val_mse", "val_mae", "val_mape", "val_cosine"]
@@ -275,6 +276,8 @@ def train(
         train_logs = model.train_on_batch(np.array(x), np.array(y))
         print(problem)
 
+        train_history.on_batch_end(batch=(x, y), logs=train_logs)
+
         if problem == "detection":
             with open(checkpoint_path + "train_log.csv", "a") as csvfile:
                 train_writer = csv.writer(
@@ -291,7 +294,6 @@ def train(
                 )
             )
         else:
-            train_history.on_batch_end(batch=(x, y), logs=train_logs)
             # print(train_logs)
             # print(type(train_logs))
             # print(train_logs[0])
@@ -349,7 +351,11 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
-                y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
+
+                if problem == "localization":
+                    y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
+                else:
+                    y_ = np.reshape(y_, (x_.shape[0], 2))
 
                 # print(np.array(x_).shape)
                 # print(np.array(y_).shape)
