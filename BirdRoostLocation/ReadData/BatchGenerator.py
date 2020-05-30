@@ -163,9 +163,6 @@ class Batch_Generator:
         polar_theta = float(self.label_dict[filename].polar_theta)
         roost_size = float(self.label_dict[filename].radius)
         images = self.label_dict[filename].get_image(radar_product)
-        print(self.label_dict[filename])
-        print(float(self.label_dict[filename].polar_radius))
-        print(float(self.label_dict[filename].polar_theta))
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
         # print(self.label_dict[filename])
@@ -177,6 +174,9 @@ class Batch_Generator:
         # print("np.array(images).shape")
         # print(np.array(images).shape)
         if images != []:
+            print(self.label_dict[filename])
+            print(float(self.label_dict[filename].polar_radius))
+            print(float(self.label_dict[filename].polar_theta))
             # filenames.append(filename)
 
             # if np.array(train_data).size == 0:
