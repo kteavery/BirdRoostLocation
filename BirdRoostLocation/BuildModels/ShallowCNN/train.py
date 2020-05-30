@@ -388,6 +388,8 @@ def train(
                     # print(np.array(y).shape)
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
+                    print(val_logs)
+                    print(len(val_logs))
                     if len(val_logs) == 4:
                         with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                             val_writer = csv.writer(
