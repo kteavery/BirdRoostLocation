@@ -176,7 +176,7 @@ class Batch_Generator:
         # print("np.array(images).shape")
         # print(np.array(images).shape)
         if images != []:
-            print(self.label_dict[filename])
+            print(filename)
             print(float(self.label_dict[filename].polar_radius))
             print(float(self.label_dict[filename].polar_theta))
             # filenames.append(filename)
