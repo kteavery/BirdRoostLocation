@@ -104,24 +104,24 @@ class ML_Label:
         )
 
     def get_image(self, radar_product):
-        #print(self.high_memory_mode)
+        # print(self.high_memory_mode)
         if self.high_memory_mode:
             return self.images[radar_product]
         if isinstance(self.images[radar_product], (list,)):
             images = []
-            #print(self.images[radar_product])
+            # print(self.images[radar_product])
             for image in self.images[radar_product]:
-                #print(image)
-                #print(self.load_image(image))
+                # print(image)
+                # print(self.load_image(image))
                 if self.load_image(image) is not None:
-                    #print("self.images[radar_product], (list,)")
-                    #print(self.load_image(image))
-                    #print(image)
+                    # print("self.images[radar_product], (list,)")
+                    # print(self.load_image(image))
+                    # print(image)
                     images.append(self.load_image(image))
             return images
         else:
-            #print("else")
-            #print(self.images[radar_product])
+            # print("else")
+            # print(self.images[radar_product])
             return self.load_image(self.images[radar_product])
 
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
@@ -220,22 +220,6 @@ class ML_Label:
         h_mid = int(shape[1] / 2)
         img_rgb = img_rgb[w_mid - dim : w_mid + dim, h_mid - dim : h_mid + dim]
         return img_rgb
-
-
-class Temporal_ML_Label(ML_Label):
-    def __init__(self, file_name, pd_row, root_dir, high_memory_mode, label_dict):
-        if not (file_name in label_dict):
-            ML_Label.__init__(self, file_name, pd_row, root_dir, high_memory_mode)
-
-            # ast.literal_eval(pd_row['AWS_file'])
-            self.fileNames = pd_row["AWS_file"]
-
-            label_dict[file_name] = self
-            for name in self.fileNames:
-                Temporal_ML_Label(name, pd_row, root_dir, high_memory_mode, label_dict)
-
-    def __str__(self):
-        return ML_Label.__str__(self)
 
 
 class Color_ML_Label(ML_Label):

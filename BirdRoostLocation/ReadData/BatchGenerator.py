@@ -414,13 +414,13 @@ class Single_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
-        # print("ml_label_pd")
-        # print(ml_label_pd.head())
+        print("ml_label_pd")
+        print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
-            # print(self.label_dict[row["AWS_file"]])
+            print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
         self,
