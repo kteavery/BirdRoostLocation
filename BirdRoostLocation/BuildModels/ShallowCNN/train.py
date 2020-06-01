@@ -440,7 +440,7 @@ def train(
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
             # currentDT = datetime.datetime.now()
             model_json = model.to_json()
-            with open(checkpoint_path + "/" + save_file + ".json", "w") as json_file:
+            with open(checkpoint_path + "/" + save_file.format("") + ".json", "w") as json_file:
                 json_file.write(model_json)
 
             model.save_weights(os.path.join(checkpoint_path, save_file.format("")))
