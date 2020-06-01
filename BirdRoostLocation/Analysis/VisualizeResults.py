@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import math
+import math, sys
 import pandas
+from PIL import Image
 import pylab as pl
 import numpy as np
 import re
@@ -8,6 +9,37 @@ import csv, os
 import pyart
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation.PrepareData import VisualizeNexradData
+
+
+def points_in_circle_np(radius, y0=0, x0=0):
+    x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
+    y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
+    y, x = np.where((y_[:, np.newaxis] - y0) ** 2 + (x_ - x0) ** 2 <= radius ** 2)
+    for y, x in zip(y_[y], x_[x]):
+        yield y, x
+
+
+def visualizeMask(truth):
+    mask = np.zeros((240, 240))
+    mask_roost_size = (truth[1] / 300) * (240 / 2)
+
+    cartx = mask_roost_size * math.cos(truth[0])
+    carty = mask_roost_size * math.sin(truth[0])
+
+    mask[120 - int(round(carty)), 120 + int(round(cartx))] = 1.0
+
+    print(str(120 - int(round(carty))) + ", " + str(120 + int(round(cartx))))
+
+    color_pts = points_in_circle_np(
+        mask_roost_size, y0=120 - int(round(carty)), x0=120 + int(round(cartx))
+    )
+
+    for pt in color_pts:
+        mask[pt[0], pt[1]] = 1.0
+
+    np.set_printoptions(threshold=sys.maxsize)
+    img = Image.fromarray((mask * 255).astype("uint8"), "L")
+    img.show()
 
 
 def visualizeResults(image, truth, prediction, path):
@@ -151,6 +183,8 @@ if __name__ == "__main__":
     ]
 
     for i, suffix in enumerate(suffixes):
+        visualizeMask((math.radians(KEVXtheta[i]), KEVXradius[i] * 300))
+
         visualizeResults(
             "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
             + suffix
