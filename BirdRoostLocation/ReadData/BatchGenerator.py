@@ -286,15 +286,15 @@ class Batch_Generator:
                             # print("K")
                             # print(k)
                             mask[
-                                120 + int(round(list(cart_x)[k])),
                                 120 - int(round(list(cart_y)[k])),
+                                120 + int(round(list(cart_x)[k])),
                             ] = 1.0
                             # print("mask")
 
                             color_pts = points_in_circle_np(
                                 mask_roost_size,
-                                x0=120 + int(round(list(cart_x)[k])),
                                 y0=120 - int(round(list(cart_y)[k])),
+                                x0=120 + int(round(list(cart_x)[k])),
                             )
                             # print("color points")
                             for pt in color_pts:
@@ -662,18 +662,9 @@ def convert_to_cart(radius, theta):
     return radius * math.cos(theta), radius * math.sin(theta)
 
 
-def points_in_circle_np(radius, x0=0, y0=0):
-    # print("x0, y0: ")
-    # print(x0)
-    # print(y0)
-    # print(radius)
-    # print(x0 - radius - 1)
-    # print(x0 + radius + 1)
-    # print(y0 - radius - 1)
-    # print(y0 + radius + 1)
+def points_in_circle_np(radius, y0=0, x0=0):
     x_ = np.arange(x0 - radius - 1, x0 + radius + 1, dtype=int)
     y_ = np.arange(y0 - radius - 1, y0 + radius + 1, dtype=int)
-    x, y = np.where((x_[:, np.newaxis] - x0) ** 2 + (y_ - y0) ** 2 <= radius ** 2)
-    # x, y = np.where((np.hypot((x_-x0)[:,np.newaxis], y_-y0)<= radius)) # alternative implementation
-    for x, y in zip(x_[x], y_[y]):
-        yield x, y
+    y, x = np.where((y_[:, np.newaxis] - y0) ** 2 + (x_ - x0) ** 2 <= radius ** 2)
+    for y, x in zip(y_[y], x_[x]):
+        yield y, x
