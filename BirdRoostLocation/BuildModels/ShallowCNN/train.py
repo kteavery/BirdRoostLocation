@@ -163,7 +163,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/"
+                + "/checkpoint/0/"
                 + str(product_str)
                 + ".json",
                 "r",
@@ -176,7 +176,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/"
+                + "/checkpoint/0/"
                 + str(product_str)
                 + ".h5"
             )
@@ -184,7 +184,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/"
+                + "/checkpoint/0/"
                 + str(product_str)
                 + ".h5"
             )
@@ -205,7 +205,7 @@ def train(
             )
         else:
             model = Sequential()
-            model.add(Dense(16, input_shape=(2,), activation="relu"))
+            model.add(Dense(16, input_shape=(1,), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
@@ -261,16 +261,20 @@ def train(
                 )
                 # print(x)
                 # print(y)
-                # x = np.reshape(x, (x.shape[1], x.shape[2]))
+                #x = np.array(list(x))
                 # print("batch output")
                 # print(img_list.shape)
                 # print(x)
-                # y = np.reshape(y, (y.shape[0], y.shape[1]))
+                #y = np.array(list(y))
                 # print(y)
                 # print(file_list.shape)
-
-        # print(x.shape)
-        # print(y.shape)
+        
+        print(x)
+        print(y)
+        print(x.shape)
+        print(y.shape)
+        print(type(x[0][0][0]))
+        print(type(y[0][0][0]))
         # print(type(x))
         # print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
