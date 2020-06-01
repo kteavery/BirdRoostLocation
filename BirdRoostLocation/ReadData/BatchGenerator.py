@@ -42,7 +42,8 @@ class Batch_Generator:
         self.roost_sets_V06 = {}
         self.batch_size = default_batch_size
         # print("__init__")
-        # print(ml_split_csv)
+        print("ML LABEL CSV")
+        print(ml_label_csv)
         # print(validate_k_index)
         # print(test_k_index)
         self.__set_ml_sets(ml_split_csv, validate_k_index, test_k_index)
@@ -63,7 +64,8 @@ class Batch_Generator:
             test_k_index: The index of the test set.
         """
 
-        # print(ml_split_csv)
+        print("ML SPLIT CSV")
+        print(ml_split_csv)
         ml_split_pd = pandas.read_csv(ml_split_csv)
         # print("ml_split_pd.head()")
         # print(ml_split_pd.head())
