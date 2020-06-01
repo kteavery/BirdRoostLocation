@@ -414,13 +414,13 @@ class Single_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
-        # print("ml_label_pd")
-        # print(ml_label_pd.head())
+        #print("ml_label_pd")
+        #print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
             self.label_dict[row["AWS_file"]] = Labels.ML_Label(
                 row["AWS_file"], row, self.root_dir, high_memory_mode
             )
-            # print(self.label_dict[row["AWS_file"]])
+            #print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
         self,
@@ -597,8 +597,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # )
 
             predictions = []
-            print("len(train)")
-            print(len(train))
+            # print("len(train)")
+            # print(len(train))
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
@@ -606,22 +606,22 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 train_batch = np.array(train_batch)
 
-                print("train_batch.shape")
-                print(train_batch.shape)
+                # print("train_batch.shape")
+                # print(train_batch.shape)
                 pred = loaded_models[k].predict_proba(train_batch)
                 predictions.append(np.array([pred, 1 - pred]))
 
-            train_list.append(train)
-            truth_list.append(truth)
-            pred_list.append(predictions)
-            file_list.append(filenames)
+            train_list.append(np.array(train))
+            truth_list.append(np.array(truth))
+            pred_list.append(np.array(predictions))
+            file_list.append(np.array(filenames))
 
             # print("filenames, train_list, truth_list, pred_list, file_list")
             # print(filenames)
-            # print(np.array(train_list).shape)
-            # print(np.array(truth_list).shape)
-            # print(np.array(pred_list).shape)
-            # print(np.array(file_list).shape)
+            print(np.array(train_list).shape)
+            print(np.array(truth_list).shape)
+            print(np.array(pred_list).shape)
+            print(np.array(file_list).shape)
 
         return (
             np.array(train_list),
