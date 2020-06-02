@@ -205,7 +205,7 @@ def train(
             )
         else:
             model = Sequential()
-            model.add(Dense(16, input_shape=(4, 2, 8, 2), activation="relu"))
+            model.add(Dense(16, input_shape=(4, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
@@ -260,8 +260,7 @@ def train(
                     num_temporal_data=num_temporal_data,
                 )
                 x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2], x.shape[3]))
-                y = np.reshape(y, ())
-                # print(x)
+                print(x)
                 # print(y)
                 # x = np.array(list(x))
                 # print("batch output")
