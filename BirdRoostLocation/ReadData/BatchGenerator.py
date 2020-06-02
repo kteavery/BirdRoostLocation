@@ -598,7 +598,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(pred_list).shape)
             print(np.array(file_list).shape)
 
-        print(np.array(pred_list).shape)
         pred_list = np.reshape(
             pred_list,
             (
