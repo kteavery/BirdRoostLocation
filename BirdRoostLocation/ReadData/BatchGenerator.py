@@ -530,6 +530,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         truth_list = []
         pred_list = []
         file_list = []
+        print(filenames)
 
         if dualPol:
             radar_products = [
