@@ -597,12 +597,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             truth_list.append(np.array(truth))
             file_list.append(np.array(filenames))
 
+            print(np.array(truth_list).shape)
             predictions = np.reshape(
                 predictions,
-                (
-                    np.array(truth_list).shape[1],
-                    predictions.shape[0] / np.array(truth_list).shape[1],
-                ),
+                (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
             )
             # print(predictions)
             print(type(predictions))
