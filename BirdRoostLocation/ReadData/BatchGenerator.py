@@ -606,10 +606,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
             print("train_list, truth_list, pred_list, file_list")
             # print(filenames)
-            print(np.array(train_list).shape)
-            print(np.array(truth_list).shape)
-            print(np.array(pred_list).shape)
-            print(np.array(file_list).shape)
+
+        print(np.array(train_list).shape)
+        print(np.array(truth_list).shape)
+        print(np.array(pred_list).shape)
+        print(np.array(file_list).shape)
 
         return (
             np.array(train_list),
