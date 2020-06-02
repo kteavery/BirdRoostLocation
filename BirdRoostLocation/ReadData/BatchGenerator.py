@@ -590,7 +590,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
-            pred_list.append(np.array(predictions))
+            list(pred_list).append(np.array(predictions))
             file_list.append(np.array(filenames))
 
             print(np.array(pred_list).shape)
