@@ -604,7 +604,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     predictions,
                     (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
                 )
-            except ValueError as e:
+            except Exception as e:
                 print(e)
                 return None, None, None, None
             # print(predictions)
