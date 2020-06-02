@@ -599,10 +599,14 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             file_list.append(np.array(filenames))
 
             print(np.array(truth_list).shape)
-            predictions = np.reshape(
-                predictions,
-                (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
-            )
+            try:
+                predictions = np.reshape(
+                    predictions,
+                    (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
+                )
+            except ValueError as e:
+                print(e)
+                return None, None, None, None
             # print(predictions)
             # print(type(predictions))
             # print(type(predictions[0]))
