@@ -601,7 +601,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(pred_list.shape)
             pred_list = np.reshape(
                 pred_list,
-                (pred_list[0], pred_list[1], pred_list[2] * pred_list[3], pred_list[4]),
+                (
+                    pred_list.shape[0],
+                    pred_list.shape[1],
+                    pred_list.shape[2] * pred_list.shape[3],
+                    pred_list.shape[4],
+                ),
             )
 
             print("train_list, truth_list, pred_list, file_list")
