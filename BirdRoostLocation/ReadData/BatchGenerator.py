@@ -588,15 +588,15 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 pred = loaded_models[k].predict_proba(train_batch)
                 predictions.append(np.array([pred, 1 - pred]))
 
-                print(np.array(train_list).shape)
-                print(np.array(truth_list).shape)
-                print(np.array(pred_list).shape)
-                print(np.array(file_list).shape)
-
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
             pred_list.append(np.array(predictions))
             file_list.append(np.array(filenames))
+
+            print(np.array(train_list).shape)
+            print(np.array(truth_list).shape)
+            print(np.array(pred_list).shape)
+            print(np.array(file_list).shape)
 
         print(np.array(pred_list).shape)
         pred_list = np.reshape(
@@ -610,8 +610,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         )
 
         print("train_list, truth_list, pred_list, file_list")
-        # print(filenames)
-
         print(np.array(train_list).shape)
         print(np.array(truth_list).shape)
         print(np.array(pred_list).shape)
