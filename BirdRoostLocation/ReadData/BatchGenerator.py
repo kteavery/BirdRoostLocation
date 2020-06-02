@@ -375,6 +375,7 @@ class Batch_Generator:
                         model_type,
                         train_data,
                         ground_truths,
+                        images,
                     )
 
         truth_shape = np.array(ground_truths).shape
