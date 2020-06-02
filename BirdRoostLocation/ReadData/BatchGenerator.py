@@ -175,6 +175,8 @@ class Batch_Generator:
 
         # print("np.array(images).shape")
         # print(np.array(images).shape)
+        print("FILENAMES")
+        print(filenames)
         if images != []:
             print(filename)
             print(float(self.label_dict[filename].polar_radius))
