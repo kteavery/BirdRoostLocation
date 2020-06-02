@@ -593,10 +593,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             pred_list.append(np.array(predictions))
             file_list.append(np.array(filenames))
 
-            train_list = np.array(train_list).shape
-            truth_list = np.array(truth_list).shape
-            pred_list = np.array(pred_list).shape
-            file_list = np.array(file_list).shape
+            train_list = np.array(train_list)
+            truth_list = np.array(truth_list)
+            pred_list = np.array(pred_list)
+            file_list = np.array(file_list)
 
             print(pred_list.shape)
             pred_list = np.reshape(
