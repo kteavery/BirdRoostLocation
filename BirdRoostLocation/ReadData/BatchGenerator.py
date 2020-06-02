@@ -588,9 +588,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 pred = loaded_models[k].predict_proba(train_batch)
                 predictions.append(np.array([pred, 1 - pred]))
 
+            predictions = np.array(predictions)
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
-            pred_list.append(np.array(predictions))
+            pred_list.append(predictions)
             file_list.append(np.array(filenames))
 
             print(np.array(train_list).shape)
