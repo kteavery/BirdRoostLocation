@@ -259,8 +259,9 @@ def train(
                     loaded_models=loaded_models,
                     num_temporal_data=num_temporal_data,
                 )
-                x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2] * x.shape[3]))
-                y = np.reshape(y, (y.shape[1], y.shape[0], y.shape[2]))
+                if type(x) != None and type(y) != None:
+                    x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2] * x.shape[3]))
+                    y = np.reshape(y, (y.shape[1], y.shape[0], y.shape[2]))
                 # print(y)
                 # x = np.array(list(x))
                 # print("batch output")
