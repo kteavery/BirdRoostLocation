@@ -586,25 +586,31 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # print("train_batch.shape")
                 # print(train_batch.shape)
                 pred = loaded_models[k].predict_proba(train_batch)
-                if len(predictions) == 0:
-                    predictions = np.array([pred, 1 - pred])
-                    print(predictions.shape)
-                else:
-                    print(np.array([pred, 1 - pred]).shape)
-                    predictions = np.append(
-                        predictions, np.array([pred, 1 - pred]), axis=0
-                    )
+                # if len(predictions) == 0:
+                #     predictions = np.array([pred, 1 - pred])
+                #     print(predictions.shape)
+                # else:
+                # print(np.array([pred, 1 - pred]).shape)
+                predictions = np.append(predictions, np.array([pred, 1 - pred]))
 
-            print(predictions)
+            train_list.append(np.array(train))
+            truth_list.append(np.array(truth))
+            file_list.append(np.array(filenames))
+
+            predictions = np.reshape(
+                predictions,
+                (
+                    np.array(truth_list).shape[1],
+                    predictions.shape[0] / np.array(truth_list).shape[1],
+                ),
+            )
+            # print(predictions)
             print(type(predictions))
             print(type(predictions[0]))
             # predictions = np.array(predictions)
             print(predictions.shape)
 
-            train_list.append(np.array(train))
-            truth_list.append(np.array(truth))
             pred_list.append(predictions)
-            file_list.append(np.array(filenames))
 
             print(np.array(train_list).shape)
             print(np.array(truth_list).shape)
