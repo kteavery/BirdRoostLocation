@@ -575,11 +575,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(len(train))
             print(np.array(train).shape)
             print(batch_size)
-            for i in range(0, len(train) - 1, batch_size):
+            for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
                     print(str(i + j))
-                    train_batch.append(train[i + j])
+                    if (i + j) < 100:
+                        train_batch.append(train[i + j])
 
                 train_batch = np.array(train_batch)
 
