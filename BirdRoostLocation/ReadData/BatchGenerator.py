@@ -578,7 +578,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
-                    print(str(i + j))
                     if (i + j) < 100:
                         train_batch.append(train[i + j])
 
@@ -587,8 +586,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # print("train_batch.shape")
                 # print(train_batch.shape)
                 pred = loaded_models[k].predict_proba(train_batch)
-                print(pred)
                 predictions.append(np.array([pred, 1 - pred]))
+
+                print(np.array(train_list).shape)
+                print(np.array(truth_list).shape)
+                print(np.array(pred_list).shape)
+                print(np.array(file_list).shape)
 
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
