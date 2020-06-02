@@ -575,11 +575,23 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(len(train))
             print(np.array(train).shape)
             print(batch_size)
-            for i in range(0, len(train)):
-                pred = loaded_models[k].predict_proba(np.array([train[i]]))
+            for i in range(0, len(train), batch_size):
+                train_batch = []
+                for j in range(0, batch_size):
+                    train_batch.append(train[i])
+
+                train_batch = np.array(train_batch)
+
+                # print("train_batch.shape")
+                # print(train_batch.shape)
+                pred = loaded_models[k].predict_proba(train_batch)
                 print(pred)
                 predictions.append(np.array([pred, 1 - pred]))
 
+            pred_list = np.reshape(
+                pred_list,
+                (pred_list[0], pred_list[1], pred_list[2] * pred_list[3], pred_list[4]),
+            )
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
             pred_list.append(np.array(predictions))
