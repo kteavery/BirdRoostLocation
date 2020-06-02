@@ -571,8 +571,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(filenames)
 
             predictions = []
-            # print("len(train)")
-            # print(len(train))
+            print("len(train)")
+            print(len(train))
+            print(np.array(train).shape)
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
