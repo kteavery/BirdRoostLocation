@@ -530,7 +530,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         truth_list = []
         pred_list = []
         file_list = []
-        print(filenames)
 
         if dualPol:
             radar_products = [
@@ -545,6 +544,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
         for k, radar_product in enumerate(radar_products):
             print(radar_product)
+            print("BEFORE")
+            print(filenames)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
                 ground_truths,
@@ -557,45 +558,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 model_type,
                 problem,
             )
-
-            # if str(radar_product) == "Radar_Products.cc":
-            #     product_str = "Rho_HV"
-            # elif str(radar_product) == "Radar_Products.diff_reflectivity":
-            #     product_str = "Zdr"
-            # elif str(radar_product) == "Radar_Products.reflectivity":
-            #     product_str = "Reflectivity"
-            # else:
-            #     product_str = "Velocity"
-
-            # json_file = open(
-            #     settings.WORKING_DIRECTORY
-            #     + "model/"
-            #     + str(product_str)
-            #     + "/checkpoint/"
-            #     + str(product_str)
-            #     + ".json",
-            #     "r",
-            # )
-            # loaded_model_json = json_file.read()
-            # json_file.close()
-            # model = model_from_json(loaded_model_json)
-
-            # print(
-            #     settings.WORKING_DIRECTORY
-            #     + "model/"
-            #     + str(product_str)
-            #     + "/checkpoint/"
-            #     + str(product_str)
-            #     + ".h5"
-            # )
-            # model.load_weights(
-            #     settings.WORKING_DIRECTORY
-            #     + "model/"
-            #     + str(product_str)
-            #     + "/checkpoint/"
-            #     + str(product_str)
-            #     + ".h5"
-            # )
+            print("AFTER")
+            print(filenames)
 
             predictions = []
             # print("len(train)")
