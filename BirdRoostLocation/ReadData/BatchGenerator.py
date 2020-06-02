@@ -589,6 +589,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 predictions.append(np.array([pred, 1 - pred]))
 
             predictions = np.array(predictions)
+            print(predictions.shape)
+
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
             pred_list.append(predictions)
