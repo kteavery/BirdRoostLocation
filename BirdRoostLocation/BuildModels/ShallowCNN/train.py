@@ -205,7 +205,7 @@ def train(
             )
         else:
             model = Sequential()
-            model.add(Dense(16, input_shape=(1,), activation="relu"))
+            model.add(Dense(16, input_shape=(13, 2, 8, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
@@ -261,14 +261,14 @@ def train(
                 )
                 # print(x)
                 # print(y)
-                #x = np.array(list(x))
+                # x = np.array(list(x))
                 # print("batch output")
                 # print(img_list.shape)
                 # print(x)
-                #y = np.array(list(y))
+                # y = np.array(list(y))
                 # print(y)
                 # print(file_list.shape)
-        
+
         print(x)
         print(y)
         print(x.shape)
@@ -444,7 +444,9 @@ def train(
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
             # currentDT = datetime.datetime.now()
             model_json = model.to_json()
-            with open(checkpoint_path + "/" + save_file.format("") + ".json", "w") as json_file:
+            with open(
+                checkpoint_path + "/" + save_file.format("") + ".json", "w"
+            ) as json_file:
                 json_file.write(model_json)
 
             model.save_weights(os.path.join(checkpoint_path, save_file.format("")))
