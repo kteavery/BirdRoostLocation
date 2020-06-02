@@ -586,7 +586,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 # print("train_batch.shape")
                 # print(train_batch.shape)
                 pred = loaded_models[k].predict_proba(train_batch)
-                predictions = np.append(predictions, np.array([pred, 1 - pred]))
+                if len(predictions) == 0:
+                    predictions = np.array([pred, 1 - pred])
+                else:
+                    predictions = np.append(
+                        predictions, np.array([pred, 1 - pred]), axis=0
+                    )
 
             print(predictions)
             print(type(predictions))
