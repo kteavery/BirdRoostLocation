@@ -576,7 +576,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(train).shape)
             print(batch_size)
             for i in range(0, len(train)):
-                pred = loaded_models[k].predict_proba(train[i])
+                pred = loaded_models[k].predict_proba(np.array([train[i]]))
                 print(pred)
                 predictions.append(np.array([pred, 1 - pred]))
 
