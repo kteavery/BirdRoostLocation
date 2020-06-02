@@ -552,9 +552,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             radar_products = utils.Legacy_radar_products
 
         for k, radar_product in enumerate(radar_products):
-            print(radar_product)
-            print("BEFORE")
-            print(filenames)
+            # print(radar_product)
+            # print("BEFORE")
+            # print(filenames)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
                 ground_truths,
@@ -567,14 +567,14 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 model_type,
                 problem,
             )
-            print("AFTER")
-            print(filenames)
+            # print("AFTER")
+            # print(filenames)
 
             predictions = np.array([])
-            print("len(train)")
-            print(len(train))
+            # print("len(train)")
+            # print(len(train))
             print(np.array(train).shape)
-            print(batch_size)
+            # print(batch_size)
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
@@ -603,17 +603,17 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
             )
             # print(predictions)
-            print(type(predictions))
-            print(type(predictions[0]))
+            # print(type(predictions))
+            # print(type(predictions[0]))
             # predictions = np.array(predictions)
             print(predictions.shape)
 
             pred_list.append(predictions)
 
-            print(np.array(train_list).shape)
-            print(np.array(truth_list).shape)
-            print(np.array(pred_list).shape)
-            print(np.array(file_list).shape)
+            # print(np.array(train_list).shape)
+            # print(np.array(truth_list).shape)
+            # print(np.array(pred_list).shape)
+            # print(np.array(file_list).shape)
 
         print("train_list, truth_list, pred_list, file_list")
         print(np.array(train_list).shape)

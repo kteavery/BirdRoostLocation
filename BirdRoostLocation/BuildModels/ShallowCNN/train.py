@@ -277,7 +277,7 @@ def train(
         # print(type(x))
         # print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
-        print(problem)
+        # print(problem)
 
         train_history.on_batch_end(batch=(x, y), logs=train_logs)
 
