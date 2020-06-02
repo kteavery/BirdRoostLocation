@@ -319,9 +319,9 @@ class Batch_Generator:
                             # print(ground_truths.shape)
                             # print("train_shape")
                             # print(train_data.shape)
-        # print("train_data.shape")
+        print("train_data.shape")
         train_data = np.array(train_data)
-        # print(train_data.shape)
+        print(train_data.shape)
         return train_data, ground_truths
 
     def single_product_batch_params(
