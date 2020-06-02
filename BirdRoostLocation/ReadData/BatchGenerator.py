@@ -159,12 +159,13 @@ class Batch_Generator:
         model_type,
         train_data,
         ground_truths,
+        images,
     ):
         is_roost = int(self.label_dict[filename].is_roost)
         polar_radius = float(self.label_dict[filename].polar_radius)
         polar_theta = float(self.label_dict[filename].polar_theta)
         roost_size = float(self.label_dict[filename].radius)
-        images = self.label_dict[filename].get_image(radar_product)
+
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
         # print(self.label_dict[filename])
@@ -344,32 +345,37 @@ class Batch_Generator:
                         filename = ml_sets[ml_set][index]
                         # print(len(indices))
                         # print(i)
-                        train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
-                            self,
-                            filename,
-                            filenames,
-                            radar_product,
-                            problem,
-                            model_type,
-                            train_data,
-                            ground_truths,
-                        )
-                        # print(np.array(train_data).shape)
-                        # print(np.array(ground_truths).shape)
-                        filenames.append(filename)
+                        images = self.label_dict[filename].get_image(radar_product)
+                        if images != []:
+                            train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
+                                self,
+                                filename,
+                                filenames,
+                                radar_product,
+                                problem,
+                                model_type,
+                                train_data,
+                                ground_truths,
+                                images,
+                            )
+                            # print(np.array(train_data).shape)
+                            # print(np.array(ground_truths).shape)
+                            filenames.append(filename)
                     # print(filenames)
         else:
             for filename in filenames:
-                train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
-                    self,
-                    filename,
-                    filenames,
-                    radar_product,
-                    problem,
-                    model_type,
-                    train_data,
-                    ground_truths,
-                )
+                images = self.label_dict[filename].get_image(radar_product)
+                if images != []:
+                    train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
+                        self,
+                        filename,
+                        filenames,
+                        radar_product,
+                        problem,
+                        model_type,
+                        train_data,
+                        ground_truths,
+                    )
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
