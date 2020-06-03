@@ -360,7 +360,7 @@ def train(
                 if problem == "localization":
                     y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
                 else:  # detection
-                    if model == utils.ML_Model.Shallow_CNN_All:
+                    if model_name == utils.ML_Model.Shallow_CNN_All:
                         print("x_.shape")
                         x_ = np.reshape(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2] * x_.shape[3])
