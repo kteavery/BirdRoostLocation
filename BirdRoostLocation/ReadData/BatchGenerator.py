@@ -176,8 +176,8 @@ class Batch_Generator:
 
         # print("np.array(images).shape")
         # print(np.array(images).shape)
-        print("FILENAMES")
-        print(filenames)
+        # print("FILENAMES")
+        # print(filenames)
         if images != []:
             print(filename)
             print(float(self.label_dict[filename].polar_radius))
@@ -611,7 +611,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(type(predictions))
             # print(type(predictions[0]))
             # predictions = np.array(predictions)
-            print(predictions.shape)
+            # print(predictions.shape)
 
             pred_list.append(predictions)
 
@@ -620,11 +620,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(np.array(pred_list).shape)
             # print(np.array(file_list).shape)
 
-        print("train_list, truth_list, pred_list, file_list")
-        print(np.array(train_list).shape)
-        print(np.array(truth_list).shape)
-        print(np.array(pred_list).shape)
-        print(np.array(file_list).shape)
+        # print("train_list, truth_list, pred_list, file_list")
+        # print(np.array(train_list).shape)
+        # print(np.array(truth_list).shape)
+        # print(np.array(pred_list).shape)
+        # print(np.array(file_list).shape)
 
         return (
             np.array(train_list),
