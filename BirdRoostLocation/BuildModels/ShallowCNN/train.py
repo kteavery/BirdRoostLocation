@@ -361,17 +361,17 @@ def train(
                     y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
                 else:  # detection
                     if model == utils.ML_Model.Shallow_CNN_All:
+                        print("x_.shape")
                         x_ = np.reshape(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2] * x_.shape[3])
                         )
-                        print("x_.shape")
                         print(x_.shape)
-                        y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
                         print("y_.shape")
+                        y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
                         print(y_.shape)
                     else:
-                        y_ = np.reshape(y_, (x_.shape[0], 2))
                         print("y_.shape")
+                        y_ = np.reshape(y_, (x_.shape[0], 2))
                         print(y_.shape)
 
                 print("BEFORE model.test_on_batch")
