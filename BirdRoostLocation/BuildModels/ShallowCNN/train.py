@@ -343,26 +343,33 @@ def train(
         # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         # only print validation every once in a while
+        print("batch_no \% \eval_increment")
+        print(batch_no % eval_increment)
         if batch_no % eval_increment == 0:
             # currentDT = datetime.datetime.now()
             # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
-                x_, y_, _ = batch_generator.get_batch(
-                    ml_set=utils.ML_Set.validation,
+                _, y_, x_, _ = batch_generator.get_batch(
+                    ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
                     radar_product=radar_product,
+                    loaded_models=loaded_models,
                     num_temporal_data=num_temporal_data,
-                    model_type=model_type,
-                    problem=problem,
                 )
 
                 if problem == "localization":
                     y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
-                else:
-                    y_ = np.reshape(y_, (x_.shape[0], 2))
+                else:  # detection
+                    if model == utils.ML_Model.Shallow_CNN_All:
+                        x_ = np.reshape(
+                            x_, (x_.shape[1], x_.shape[0], x_.shape[2] * x_.shape[3])
+                        )
+                        y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
+                    else:
+                        y_ = np.reshape(y_, (x_.shape[0], 2))
 
-                # print(np.array(x_).shape)
-                # print(np.array(y_).shape)
+                print(np.array(x_).shape)
+                print(np.array(y_).shape)
 
                 val_logs = model.test_on_batch(x_, y_)
 
