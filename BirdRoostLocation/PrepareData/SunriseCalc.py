@@ -1,4 +1,5 @@
-"""Calculates sunrise for a given day in UTC.
+"""
+Calculates sunrise for a given day in UTC.
 
 The code in Sunrise class was modified from jebeaudet at https://github.com/
 # jebeaudet/SunriseSunsetCalculator/blob/master/sunrise_sunset.py

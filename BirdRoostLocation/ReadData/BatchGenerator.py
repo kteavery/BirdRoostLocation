@@ -573,7 +573,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             predictions = np.array([])
             # print("len(train)")
             # print(len(train))
-            print(np.array(train).shape)
+            # print(np.array(train).shape)
             # print(batch_size)
             for i in range(0, len(train), batch_size):
                 train_batch = []
@@ -583,8 +583,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 train_batch = np.array(train_batch)
 
-                print("train_batch.shape")
-                print(train_batch.shape)
+                # print("train_batch.shape")
+                # print(train_batch.shape)
                 if len(train_batch) > 0:
                     pred = loaded_models[k].predict_proba(train_batch)
                     # if len(predictions) == 0:
@@ -598,7 +598,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             truth_list.append(np.array(truth))
             file_list.append(np.array(filenames))
 
-            print(np.array(truth_list).shape)
+            # print(np.array(truth_list).shape)
             try:
                 predictions = np.reshape(
                     predictions,

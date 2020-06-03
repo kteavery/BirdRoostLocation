@@ -350,7 +350,7 @@ def train(
             # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
                 _, y_, x_, _ = batch_generator.get_batch(
-                    ml_set=utils.ML_Set.training,
+                    ml_set=utils.ML_Set.validation,
                     dualPol=dual_pol,
                     radar_product=radar_product,
                     loaded_models=loaded_models,
@@ -364,14 +364,19 @@ def train(
                         x_ = np.reshape(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2] * x_.shape[3])
                         )
+                        print("x_.shape")
+                        print(x_.shape)
                         y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
+                        print("y_.shape")
+                        print(y_.shape)
                     else:
                         y_ = np.reshape(y_, (x_.shape[0], 2))
+                        print("y_.shape")
+                        print(y_.shape)
 
-                print(np.array(x_).shape)
-                print(np.array(y_).shape)
-
+                print("BEFORE model.test_on_batch")
                 val_logs = model.test_on_batch(x_, y_)
+                print("AFTER model.test_on_batch")
 
                 # ml_utils.write_log(callback, val_names, val_logs, batch_no)
 
