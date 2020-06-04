@@ -164,15 +164,15 @@ class Batch_Generator:
         is_roost = int(self.label_dict[filename][0].is_roost)
         polar_radius = [
             float(self.label_dict[filename][i].polar_radius)
-            for i in range(self.label_dict[filename])
+            for i in range(len(self.label_dict[filename]))
         ]
         polar_theta = [
             float(self.label_dict[filename][i].polar_theta)
-            for i in range(self.label_dict[filename])
+            for i in range(len(self.label_dict[filename]))
         ]
         roost_size = [
             float(self.label_dict[filename][i].radius)
-            for i in range(self.label_dict[filename])
+            for i in range(len(self.label_dict[filename]))
         ]
 
         # print(self.label_dict[filename].images[radar_product])
