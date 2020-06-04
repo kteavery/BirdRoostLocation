@@ -439,20 +439,12 @@ class Single_Product_Batch_Generator(Batch_Generator):
 
             if row["AWS_file"] not in self.label_dict:
                 print("new")
-                self.label_dict[row["AWS_file"]] = [
-                    Labels.ML_Label(
-                        row["AWS_file"], row, self.root_dir, high_memory_mode
-                    )
-                ]
-            else:
-                print("duplicate")
-                self.label_dict[row["AWS_file"]] = self.label_dict[
-                    row["AWS_file"]
-                ].append(
-                    Labels.ML_Label(
-                        row["AWS_file"], row, self.root_dir, high_memory_mode
-                    )
-                )
+                self.label_dict[row["AWS_file"]] = []
+
+            self.label_dict[row["AWS_file"]].append(
+                Labels.ML_Label(row["AWS_file"], row, self.root_dir, high_memory_mode)
+            )
+
             # print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
