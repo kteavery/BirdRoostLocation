@@ -161,10 +161,19 @@ class Batch_Generator:
         ground_truths,
         images,
     ):
-        is_roost = int(self.label_dict[filename].is_roost)
-        polar_radius = float(self.label_dict[filename].polar_radius)
-        polar_theta = float(self.label_dict[filename].polar_theta)
-        roost_size = float(self.label_dict[filename].radius)
+        is_roost = int(self.label_dict[filename][0].is_roost)
+        polar_radius = [
+            float(self.label_dict[filename][i].polar_radius)
+            for i in self.label_dict[filename]
+        ]
+        polar_theta = [
+            float(self.label_dict[filename][i].polar_theta)
+            for i in self.label_dict[filename]
+        ]
+        roost_size = [
+            float(self.label_dict[filename][i].radius)
+            for i in self.label_dict[filename]
+        ]
 
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
@@ -180,8 +189,8 @@ class Batch_Generator:
         # print(filenames)
         if images != []:
             print(filename)
-            print(float(self.label_dict[filename].polar_radius))
-            print(float(self.label_dict[filename].polar_theta))
+            print(polar_radius)
+            print(polar_theta)
             # filenames.append(filename)
 
             # if np.array(train_data).size == 0:
@@ -239,7 +248,7 @@ class Batch_Generator:
                             adjustTheta(
                                 self,
                                 polar_theta,
-                                self.label_dict[filename].images[radar_product][i],
+                                self.label_dict[filename][0].images[radar_product][i],
                             )
                         )
 
@@ -342,9 +351,10 @@ class Batch_Generator:
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
+                        print(filename)
                         # print(len(indices))
                         # print(i)
-                        images = self.label_dict[filename].get_image(radar_product)
+                        images = self.label_dict[filename][0].get_image(radar_product)
                         if images != []:
                             train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                                 self,
@@ -363,7 +373,7 @@ class Batch_Generator:
                     # print(filenames)
         else:
             for filename in filenames:
-                images = self.label_dict[filename].get_image(radar_product)
+                images = self.label_dict[filename][0].get_image(radar_product)
                 if images != []:
                     train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                         self,
@@ -425,9 +435,22 @@ class Single_Product_Batch_Generator(Batch_Generator):
         # print("ml_label_pd")
         # print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
-            self.label_dict[row["AWS_file"]] = Labels.ML_Label(
-                row["AWS_file"], row, self.root_dir, high_memory_mode
-            )
+            if row["AWS_file"] not in self.label_dict:
+                self.label_dict[row["AWS_file"]] = [
+                    Labels.ML_Label(
+                        row["AWS_file"], row, self.root_dir, high_memory_mode
+                    )
+                ]
+            else:
+                print("duplicate")
+                print(row["AWS_file"])
+                self.label_dict[row["AWS_file"]] = self.label_dict[
+                    row["AWS_file"]
+                ].append(
+                    Labels.ML_Label(
+                        row["AWS_file"], row, self.root_dir, high_memory_mode
+                    )
+                )
             # print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
@@ -459,8 +482,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product
         )
-        print("FILENAMES")
-        print(filenames)
 
         return Batch_Generator.single_product_batch_params(
             self,
@@ -498,9 +519,22 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
         for _, row in ml_label_pd.iterrows():
-            self.label_dict[row["AWS_file"]] = Labels.ML_Label(
-                row["AWS_file"], row, self.root_dir, high_memory_mode
-            )
+            if row["AWS_file"] not in self.label_dict:
+                self.label_dict[row["AWS_file"]] = [
+                    Labels.ML_Label(
+                        row["AWS_file"], row, self.root_dir, high_memory_mode
+                    )
+                ]
+            else:
+                print("duplicate")
+                print(row["AWS_file"])
+                self.label_dict[row["AWS_file"]] = self.label_dict[
+                    row["AWS_file"]
+                ].append(
+                    Labels.ML_Label(
+                        row["AWS_file"], row, self.root_dir, high_memory_mode
+                    )
+                )
 
     # channels will be RGB values, first dimension will be radar products
     def get_batch(
