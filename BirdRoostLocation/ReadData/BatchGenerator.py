@@ -435,7 +435,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         # print("ml_label_pd")
         # print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
-            print(self.label_dict[row["AWS_file"]])
+            print(row["AWS_file"])
 
             if row["AWS_file"] not in self.label_dict:
                 print("new")
