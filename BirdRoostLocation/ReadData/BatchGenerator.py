@@ -222,112 +222,102 @@ class Batch_Generator:
                         axis=0,
                     )
             else:  # localization
-                radii = np.array([polar_radius] * np.array(images).shape[0])
+                all_radii = np.array([])
+                all_thetas = np.array([])
 
-                if not np.isnan(np.sum(radii)):
-                    if np.array(train_data).size == 0:
-                        train_data = images
-                        train_data = np.array(train_data)
-                    else:
-                        train_data = np.concatenate(
-                            (train_data, np.array(images)), axis=0
+                for k in range(len(polar_radius)):
+                    radii = np.array([polar_radius[k]] * np.array(images).shape[0])
+
+                    if not np.isnan(np.sum(radii)):
+                        mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
+
+                        if np.array(train_data).size == 0:
+                            train_data = images
+                            train_data = np.array(train_data)
+                        else:
+                            train_data = np.concatenate(
+                                (train_data, np.array(images)), axis=0
+                            )
+
+                        # print("train_data.shape - problem?")
+                        # print(train_data.shape)
+
+                        thetas = []
+                        # print("radii.shape")
+                        # print(radii.shape)
+
+                        # print("NOT NAN")
+                        # print(radii)
+                        for i in range(len(images)):
+                            thetas.append(
+                                adjustTheta(
+                                    self,
+                                    polar_theta[k],
+                                    self.label_dict[filename][0].images[radar_product][
+                                        i
+                                    ],
+                                )
+                            )
+
+                        all_radii = np.append(all_radii, np.array([mask_radii]))
+                        all_thetas = np.append(all_thetas, np.array([thetas]))
+
+                masks = np.zeros((len(all_radii[0]), 240, 240))
+                if type(roost_size) != float or math.isnan(roost_size):
+                    roost_size = 28.0
+                    # print(roost_size)
+                else:
+                    roost_size = roost_size / 1000  # convert to km
+                    # print(roost_size)
+
+                mask_roost_size = (roost_size / 300) * (240 / 2)
+
+                vconvert_to_cart = np.vectorize(convert_to_cart)
+                cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
+                print(cart_x.shape)
+                print(cart_y.shape)
+
+                for k, mask in enumerate(masks):
+                    # print(filename)
+                    # print("RADII")
+                    # print(mask_radii)
+                    # print("THETAS")
+                    # print(thetas)
+                    # print("CART_X")
+                    # print(cart_x)
+                    # print("CART_Y")
+                    # print(cart_y)
+                    # print("K")
+                    # print(k)
+                    for j, roost in enumerate(mask):
+                        mask[
+                            120 - int(round(cart_y[k][j])),
+                            120 + int(round(cart_x[k][j])),
+                        ] = 1.0
+                        # print("mask")
+
+                        color_pts = points_in_circle_np(
+                            mask_roost_size,
+                            y0=120 - int(round(cart_y[k][j])),
+                            x0=120 + int(round(cart_x[k][j])),
                         )
+                        # print("color points")
+                        for pt in color_pts:
+                            mask[pt[0], pt[1]] = 1.0
+                        # print("append to ground truth")
+                        # ground_truths = np.concatenate(
+                        #     (ground_truths, mask), axis=0
+                        # )
 
-                    # print("train_data.shape - problem?")
+                    if np.array(ground_truths).size == 0:
+                        ground_truths = mask
+                    else:
+                        ground_truths = np.concatenate((ground_truths, mask), axis=0)
+                    # print("ground_truths")
+                    # print(ground_truths.shape)
+                    # print("train_shape")
                     # print(train_data.shape)
 
-                    radii = np.array([polar_radius] * np.array(images).shape[0])
-                    thetas = []
-                    # print("radii.shape")
-                    # print(radii.shape)
-
-                    # print("NOT NAN")
-                    # print(radii)
-                    for i in range(len(images)):
-                        thetas.append(
-                            adjustTheta(
-                                self,
-                                polar_theta,
-                                self.label_dict[filename][0].images[radar_product][i],
-                            )
-                        )
-
-                    if model_type == "shallow_cnn":
-                        # print("SHALLOW_CNN")
-                        pairs = list(
-                            zip(normalize(radii, 2, 0), normalize(thetas, 360, 0))
-                        )
-                        pairs = [list(x) for x in pairs]
-
-                        if np.array(ground_truths).size == 0:
-                            ground_truths = pairs
-                        else:
-                            ground_truths = np.concatenate(
-                                (ground_truths, pairs), axis=0
-                            )
-                    else:  # unet
-                        # print("UNET")
-                        # print("Roost Size: ")
-
-                        masks = np.zeros((len(radii), 240, 240))
-                        if type(roost_size) != float or math.isnan(roost_size):
-                            roost_size = 28.0
-                            # print(roost_size)
-                        else:
-                            roost_size = roost_size / 1000  # convert to km
-                            # print(roost_size)
-
-                        mask_roost_size = (roost_size / 300) * (240 / 2)
-
-                        mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
-                        # print(radii)
-                        # print(mask_radii)
-                        # print(thetas)
-
-                        vconvert_to_cart = np.vectorize(convert_to_cart)
-                        cart_x, cart_y = vconvert_to_cart(mask_radii, thetas)
-
-                        for k, mask in enumerate(masks):
-                            # print(filename)
-                            # print("RADII")
-                            # print(mask_radii)
-                            # print("THETAS")
-                            # print(thetas)
-                            # print("CART_X")
-                            # print(cart_x)
-                            # print("CART_Y")
-                            # print(cart_y)
-                            # print("K")
-                            # print(k)
-                            mask[
-                                120 - int(round(list(cart_y)[k])),
-                                120 + int(round(list(cart_x)[k])),
-                            ] = 1.0
-                            # print("mask")
-
-                            color_pts = points_in_circle_np(
-                                mask_roost_size,
-                                y0=120 - int(round(list(cart_y)[k])),
-                                x0=120 + int(round(list(cart_x)[k])),
-                            )
-                            # print("color points")
-                            for pt in color_pts:
-                                mask[pt[0], pt[1]] = 1.0
-                            # print("append to ground truth")
-                            # ground_truths = np.concatenate(
-                            #     (ground_truths, mask), axis=0
-                            # )
-
-                            if np.array(ground_truths).size == 0:
-                                ground_truths = mask
-                            else:
-                                ground_truths = np.concatenate(
-                                    (ground_truths, mask), axis=0
-                                )
-                            # print("ground_truths")
-                            # print(ground_truths.shape)
-                            # print("train_shape")
-                            # print(train_data.shape)
         # print("train_data.shape")
         train_data = np.array(train_data)
         # print(train_data.shape)
