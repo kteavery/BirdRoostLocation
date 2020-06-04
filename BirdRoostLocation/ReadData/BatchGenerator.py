@@ -168,7 +168,7 @@ class Batch_Generator:
 
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
-        print(self.label_dict[filename])
+        # print(self.label_dict[filename])
         # print(type(self.label_dict[filename]))
         # print(filename)
         # print(radar_product)
@@ -179,7 +179,7 @@ class Batch_Generator:
         # print("FILENAMES")
         # print(filenames)
         if images != []:
-            (filename)
+            print(filename)
             print(float(self.label_dict[filename].polar_radius))
             print(float(self.label_dict[filename].polar_theta))
             # filenames.append(filename)
@@ -336,7 +336,6 @@ class Batch_Generator:
         model_type,
         problem,
     ):
-        # print(filenames)
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
@@ -460,6 +459,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
         ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
             self, ml_set, dualPol, radar_product
         )
+        print("FILENAMES")
+        print(filenames)
 
         return Batch_Generator.single_product_batch_params(
             self,
