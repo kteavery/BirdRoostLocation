@@ -152,7 +152,8 @@ def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
     # newLabels = processLabels(labels)
     # latLongLabels = convertLatLong(newLabels)
-    extendedLabels = copySameLabels(labels)
+    # extendedLabels = copySameLabels(labels)
+    extendedLabels = copy.deepcopy(labels)
     extendedLabels.to_csv(
         settings.WORKING_DIRECTORY + "/true_ml_relabels_polar_short.csv", index=False
     )

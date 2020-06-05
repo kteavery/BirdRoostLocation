@@ -266,6 +266,20 @@ class Batch_Generator:
 
                 print(len(self.label_dict[filename]))
                 print(str(len(all_radii) / len(self.label_dict[filename])))
+                all_radii = np.reshape(
+                    all_radii,
+                    (
+                        len(self.label_dict[filename]),
+                        len(all_radii) / len(self.label_dict[filename]),
+                    ),
+                )
+                all_theta = np.reshape(
+                    all_theta,
+                    (
+                        len(self.label_dict[filename]),
+                        len(all_theta) / len(self.label_dict[filename]),
+                    ),
+                )
                 print(all_radii.shape)
                 print(all_thetas.shape)
                 masks = np.zeros((len(all_radii[0]), 240, 240))
