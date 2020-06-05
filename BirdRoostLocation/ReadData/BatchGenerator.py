@@ -259,8 +259,8 @@ class Batch_Generator:
                                 )
                             )
 
-                        all_radii = np.append(all_radii, np.array([mask_radii], axis=0))
-                        all_thetas = np.append(all_thetas, np.array([thetas], axis=0))
+                        all_radii = np.append(all_radii, np.array([mask_radii]), axis=0)
+                        all_thetas = np.append(all_thetas, np.array([thetas]), axis=0)
 
                 print(all_radii.shape)
                 print(all_thetas.shape)
