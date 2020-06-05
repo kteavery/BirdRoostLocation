@@ -307,9 +307,9 @@ class Batch_Generator:
                     # print(cart_x)
                     # print("CART_Y")
                     # print(cart_y)
-                    # print("K")
-                    # print(k)
-                    for j, roost in enumerate(mask):
+                    print("K")
+                    print(k)
+                    for j in range(len(mask) - 1):
                         mask[
                             120 - int(round(cart_y[k][j])),
                             120 + int(round(cart_x[k][j])),
