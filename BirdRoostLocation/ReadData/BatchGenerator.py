@@ -280,8 +280,8 @@ class Batch_Generator:
                         int(len(all_thetas) / len(self.label_dict[filename])),
                     ),
                 )
-                print(all_radii.shape)
-                print(all_thetas.shape)
+                # print(all_radii.shape)
+                # print(all_thetas.shape)
                 masks = np.zeros((len(all_radii[0]), 240, 240))
                 if type(roost_size) != float or math.isnan(roost_size):
                     roost_size = 28.0
@@ -294,16 +294,16 @@ class Batch_Generator:
 
                 vconvert_to_cart = np.vectorize(convert_to_cart)
                 cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
-                print(cart_x.shape)
-                print(cart_y.shape)
+                # print(cart_x.shape)
+                # print(cart_y.shape)
 
                 for k in range(cart_x.shape[0]):
-                    print("masks.shape")
-                    print(masks.shape)
+                    # print("masks.shape")
+                    # print(masks.shape)
 
                     for j in range(cart_x.shape[1]):
-                        print(cart_y.shape)
-                        print(cart_x.shape)
+                        # print(cart_y.shape)
+                        # print(cart_x.shape)
                         masks[j][
                             120 - int(round(cart_y[k][j])),
                             120 + int(round(cart_x[k][j])),
@@ -322,16 +322,16 @@ class Batch_Generator:
                         #     (ground_truths, mask), axis=0
                         # )
 
-                print("masks.shape")
-                print(masks.shape)
-                if np.array(ground_truths).size == 0:
-                    ground_truths = masks
-                else:
-                    ground_truths = np.concatenate((ground_truths, masks), axis=0)
-                print("ground_truths")
-                print(ground_truths.shape)
-                print("train_shape")
-                print(train_data.shape)
+                    print("masks.shape")
+                    print(masks.shape)
+                    if np.array(ground_truths).size == 0:
+                        ground_truths = masks
+                    else:
+                        ground_truths = np.concatenate((ground_truths, masks), axis=0)
+                    print("ground_truths")
+                    print(ground_truths.shape)
+                    print("train_shape")
+                    print(train_data.shape)
 
         # print("train_data.shape")
         train_data = np.array(train_data)
