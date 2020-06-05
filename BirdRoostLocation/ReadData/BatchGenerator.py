@@ -307,6 +307,7 @@ class Batch_Generator:
                     # print(cart_x)
                     # print("CART_Y")
                     # print(cart_y)
+                    print(len(mask))
                     for j in range(len(mask) - 1):
                         print("J")
                         print(j)
