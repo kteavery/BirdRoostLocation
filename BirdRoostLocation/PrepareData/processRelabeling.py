@@ -20,10 +20,10 @@ def convertLatLong(labels):
         header=None,
     )
     for radar in nexrads["radar"]:
-        latPx = latLongLabels.loc[latLongLabels.filename.str.match(radar), "latitude"]
+        latPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"]
         latKm = (latPx - X) * (300 / (X * 2))
         # latKm = latPx * (300 / (X * 2))
-        longPx = latLongLabels.loc[latLongLabels.filename.str.match(radar), "longitude"]
+        longPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"]
         longKm = (longPx - Y) * (300 / (Y * 2))
         # longKm = longPx * (300 / (Y * 2))
 
@@ -52,10 +52,10 @@ def convertLatLong(labels):
             )
             print(newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item())
 
-        latLongLabels.loc[latLongLabels.filename.str.match(radar), "latitude"] = (
+        latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"] = (
             newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item()
         )
-        latLongLabels.loc[latLongLabels.filename.str.match(radar), "longitude"] = (
+        latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"] = (
             newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item()
         )
 
@@ -102,35 +102,35 @@ def processLabels(labels):
     """
 
     print(labels.head())
-    falses = labels.groupby(["flag"]).get_group(False)
-    trues = labels.groupby(["flag"]).get_group(True)
+    # falses = labels.groupby(["Roost"]).get_group(False)
+    trues = labels.groupby(["Roost"]).get_group(True)
 
     # print(falses.head())
 
-    newLabels = falses.groupby(falses["filename"].str[:12]).apply(combineN)
+    newLabels = trues.groupby(trues["AWS_file"].str[:12]).apply(combineN)
     # print(newLabels)
 
     return newLabels
 
 
 def copySameLabels(labels):
-    labelDF = copy.deepcopy(labels[["filename", "latitude", "longitude", "flag"]])
+    labelDF = copy.deepcopy(labels)
     print(len(labelDF))
     timestamps = pd.read_csv(settings.WORKING_DIRECTORY + "/true_ml_labels_polar.csv")[
         "AWS_file"
     ]
 
     for index, label in labels[
-        ["filename", "latitude", "longitude", "flag"]
+        ["AWS_file", "latitude", "longitude", "Roost"]
     ].iterrows():
         sharedStamps = timestamps[
-            timestamps.str.contains(label["filename"][0:10])
+            timestamps.str.contains(label["AWS_file"][0:10])
         ].to_frame()
 
         sharedStamps.columns = ["AWS_file"]
         sharedStamps["latitude"] = label["latitude"]
         sharedStamps["longitude"] = label["longitude"]
-        sharedStamps["flag"] = label["flag"]
+        sharedStamps["Roost"] = label["Roost"]
         # print(type(sharedStamps))
         # labelDF.append(sharedStamps, ignore_index=True)
         labelDF = pd.concat([labelDF, sharedStamps], axis=0, sort=True)
@@ -140,12 +140,12 @@ def copySameLabels(labels):
 
 
 def main():
-    labels = pd.read_csv(settings.WORKING_DIRECTORY + "/all_true_data/output.csv")
+    labels = pd.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
     newLabels = processLabels(labels)
     latLongLabels = convertLatLong(newLabels)
     extendedLabels = copySameLabels(latLongLabels)
-    extendedLabels[["AWS_file", "latitude", "longitude", "flag"]].to_csv(
-        settings.WORKING_DIRECTORY + "/processed_relabels.csv", index=False
+    extendedLabels.to_csv(
+        settings.WORKING_DIRECTORY + "/true_ml_relabels_polar_short.csv", index=False
     )
 
 

@@ -191,8 +191,8 @@ class Batch_Generator:
         # print(filenames)
         if images != []:
             print(filename)
-            # print(polar_radius)
-            # print(polar_theta)
+            print(polar_radius)
+            print(polar_theta)
             # filenames.append(filename)
 
             # if np.array(train_data).size == 0:
@@ -261,9 +261,11 @@ class Batch_Generator:
                                 )
                             )
 
-                        all_radii = np.append(all_radii, mask_radii, axis=0)
-                        all_thetas = np.append(all_thetas, thetas, axis=0)
+                        all_radii = np.append(all_radii, np.array(mask_radii), axis=1)
+                        all_thetas = np.append(all_thetas, np.array(thetas), axis=1)
 
+                print(len(self.label_dict[filename]))
+                print(str(len(all_radii) / len(self.label_dict[filename])))
                 print(all_radii.shape)
                 print(all_thetas.shape)
                 masks = np.zeros((len(all_radii[0]), 240, 240))
