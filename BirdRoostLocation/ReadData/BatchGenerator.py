@@ -270,14 +270,14 @@ class Batch_Generator:
                     all_radii,
                     (
                         len(self.label_dict[filename]),
-                        len(all_radii) / len(self.label_dict[filename]),
+                        int(len(all_radii) / len(self.label_dict[filename])),
                     ),
                 )
                 all_theta = np.reshape(
                     all_theta,
                     (
                         len(self.label_dict[filename]),
-                        len(all_theta) / len(self.label_dict[filename]),
+                        int(len(all_theta) / len(self.label_dict[filename])),
                     ),
                 )
                 print(all_radii.shape)
