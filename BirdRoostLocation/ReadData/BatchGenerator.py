@@ -259,9 +259,11 @@ class Batch_Generator:
                                 )
                             )
 
-                        all_radii = np.append(all_radii, np.array([mask_radii]))
-                        all_thetas = np.append(all_thetas, np.array([thetas]))
+                        all_radii = np.append(all_radii, np.array([mask_radii], axis=0))
+                        all_thetas = np.append(all_thetas, np.array([thetas], axis=0))
 
+                print(all_radii.shape)
+                print(all_thetas.shape)
                 masks = np.zeros((len(all_radii[0]), 240, 240))
                 if type(roost_size) != float or math.isnan(roost_size):
                     roost_size = 28.0
