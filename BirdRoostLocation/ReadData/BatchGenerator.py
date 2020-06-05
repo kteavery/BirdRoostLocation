@@ -307,12 +307,15 @@ class Batch_Generator:
                     # print(cart_x)
                     # print("CART_Y")
                     # print(cart_y)
+                    print("len(masks)")
+                    print(len(masks))
+
                     for j in range(cart_x.shape[1]):
                         print("J")
                         print(j)
                         print(cart_y.shape)
                         print(cart_x.shape)
-                        masks[k][
+                        masks[j][
                             120 - int(round(cart_y[k][j])),
                             120 + int(round(cart_x[k][j])),
                         ] = 1.0
@@ -324,17 +327,17 @@ class Batch_Generator:
                         )
                         # print("color points")
                         for pt in color_pts:
-                            masks[k][pt[0], pt[1]] = 1.0
+                            masks[j][pt[0], pt[1]] = 1.0
                         # print("append to ground truth")
                         # ground_truths = np.concatenate(
                         #     (ground_truths, mask), axis=0
                         # )
 
                     if np.array(ground_truths).size == 0:
-                        ground_truths = masks[k]
+                        ground_truths = masks[j]
                     else:
                         ground_truths = np.concatenate(
-                            (ground_truths, masks[k]), axis=0
+                            (ground_truths, masks[j]), axis=0
                         )
                     # print("ground_truths")
                     # print(ground_truths.shape)
