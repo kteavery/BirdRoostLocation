@@ -297,7 +297,7 @@ class Batch_Generator:
                 print(cart_x.shape)
                 print(cart_y.shape)
 
-                for k in range(len(cart_x.shape[0])):
+                for k in range(cart_x.shape[0]):
                     # print(filename)
                     # print("RADII")
                     # print(mask_radii)
@@ -308,7 +308,7 @@ class Batch_Generator:
                     # print("CART_Y")
                     # print(cart_y)
                     print(len(masks[k]))
-                    for j in range(len(cart_x.shape[1])):
+                    for j in range(cart_x.shape[1]):
                         print("J")
                         print(j)
                         print(cart_y.shape)
