@@ -297,7 +297,7 @@ class Batch_Generator:
                 print(cart_x.shape)
                 print(cart_y.shape)
 
-                for k, mask in enumerate(masks):
+                for k in range(len(cart_x.shape[0])):
                     # print(filename)
                     # print("RADII")
                     # print(mask_radii)
@@ -307,17 +307,16 @@ class Batch_Generator:
                     # print(cart_x)
                     # print("CART_Y")
                     # print(cart_y)
-                    print(len(mask))
-                    for j in range(len(mask) - 1):
+                    print(len(masks[k]))
+                    for j in range(len(cart_x.shape[1])):
                         print("J")
                         print(j)
                         print(cart_y.shape)
                         print(cart_x.shape)
-                        mask[
+                        masks[k][
                             120 - int(round(cart_y[k][j])),
                             120 + int(round(cart_x[k][j])),
                         ] = 1.0
-                        # print("mask")
 
                         color_pts = points_in_circle_np(
                             mask_roost_size,
@@ -326,16 +325,18 @@ class Batch_Generator:
                         )
                         # print("color points")
                         for pt in color_pts:
-                            mask[pt[0], pt[1]] = 1.0
+                            masks[k][pt[0], pt[1]] = 1.0
                         # print("append to ground truth")
                         # ground_truths = np.concatenate(
                         #     (ground_truths, mask), axis=0
                         # )
 
                     if np.array(ground_truths).size == 0:
-                        ground_truths = mask
+                        ground_truths = masks[k]
                     else:
-                        ground_truths = np.concatenate((ground_truths, mask), axis=0)
+                        ground_truths = np.concatenate(
+                            (ground_truths, masks[k]), axis=0
+                        )
                     # print("ground_truths")
                     # print(ground_truths.shape)
                     # print("train_shape")
