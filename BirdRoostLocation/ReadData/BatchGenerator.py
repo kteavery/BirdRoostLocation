@@ -174,6 +174,8 @@ class Batch_Generator:
             float(self.label_dict[filename][i].radius)
             for i in range(len(self.label_dict[filename]))
         ]
+        print("len(self.label_dict[filename])")
+        print(len(self.label_dict[filename]))
 
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
@@ -189,8 +191,8 @@ class Batch_Generator:
         # print(filenames)
         if images != []:
             print(filename)
-            print(polar_radius)
-            print(polar_theta)
+            # print(polar_radius)
+            # print(polar_theta)
             # filenames.append(filename)
 
             # if np.array(train_data).size == 0:
@@ -259,8 +261,8 @@ class Batch_Generator:
                                 )
                             )
 
-                        all_radii = np.append(all_radii, np.array([mask_radii]), axis=0)
-                        all_thetas = np.append(all_thetas, np.array([thetas]), axis=0)
+                        all_radii = np.append(all_radii, mask_radii, axis=0)
+                        all_thetas = np.append(all_thetas, thetas, axis=0)
 
                 print(all_radii.shape)
                 print(all_thetas.shape)
