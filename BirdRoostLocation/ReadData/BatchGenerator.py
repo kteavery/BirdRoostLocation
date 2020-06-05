@@ -339,10 +339,10 @@ class Batch_Generator:
                         ground_truths = np.concatenate(
                             (ground_truths, masks[j]), axis=0
                         )
-                    # print("ground_truths")
-                    # print(ground_truths.shape)
-                    # print("train_shape")
-                    # print(train_data.shape)
+                    print("ground_truths")
+                    print(ground_truths.shape)
+                    print("train_shape")
+                    print(train_data.shape)
 
         # print("train_data.shape")
         train_data = np.array(train_data)

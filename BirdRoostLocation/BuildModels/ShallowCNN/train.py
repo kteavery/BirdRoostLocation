@@ -248,6 +248,9 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
+                print("X and Y shapes")
+                print(x.shape)
+                print(y.shape)
                 if problem == "localization":
                     y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
 
