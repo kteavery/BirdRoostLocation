@@ -12,56 +12,56 @@ KMLAT = 110.574  # km = 1 degree latitude
 MULTLONG = 111.320  # multiplier
 
 
-def convertLatLong(labels):
-    latLongLabels = copy.deepcopy(labels)
-    nexrads = pd.read_csv(
-        settings.WORKING_DIRECTORY + "/nexrad.csv",
-        names=["radar", "latitude", "longitude"],
-        header=None,
-    )
-    for radar in nexrads["radar"]:
-        latPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"]
-        latKm = (latPx - X) * (300 / (X * 2))
-        # latKm = latPx * (300 / (X * 2))
-        longPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"]
-        longKm = (longPx - Y) * (300 / (Y * 2))
-        # longKm = longPx * (300 / (Y * 2))
+# def convertLatLong(labels):
+#     latLongLabels = copy.deepcopy(labels)
+#     nexrads = pd.read_csv(
+#         settings.WORKING_DIRECTORY + "/nexrad.csv",
+#         names=["radar", "latitude", "longitude"],
+#         header=None,
+#     )
+#     for radar in nexrads["radar"]:
+#         latPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"]
+#         latKm = (latPx - X) * (300 / (X * 2))
+#         # latKm = latPx * (300 / (X * 2))
+#         longPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"]
+#         longKm = (longPx - Y) * (300 / (Y * 2))
+#         # longKm = longPx * (300 / (Y * 2))
 
-        newLat = latKm * (1 / KMLAT)
-        newLong = longKm * (1 / (MULTLONG * (newLat * (math.pi / 180)).apply(math.cos)))
+#         newLat = latKm * (1 / KMLAT)
+#         newLong = longKm * (1 / (MULTLONG * (newLat * (math.pi / 180)).apply(math.cos)))
 
-        if radar == "KFSD":
-            print("latPx")
-            print(latPx)
-            print(300 / (Y * 2))
-            # print("latKm")
-            # print(latKm)
-            print("longPx")
-            print(longPx)
-            print(300 / (Y * 2))
-            # print("longKm")
-            # print(longKm)
-            print("newLat")
-            print(newLat)
-            print("newLong")
-            print(newLong)
-            print("newLat + nexrads.loc[nexrads['radar'] == radar]['latitude'].item()")
-            print(newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item())
-            print(
-                "newLong + nexrads.loc[nexrads['radar'] == radar]['longitude'].item()"
-            )
-            print(newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item())
+#         if radar == "KFSD":
+#             print("latPx")
+#             print(latPx)
+#             print(300 / (Y * 2))
+#             # print("latKm")
+#             # print(latKm)
+#             print("longPx")
+#             print(longPx)
+#             print(300 / (Y * 2))
+#             # print("longKm")
+#             # print(longKm)
+#             print("newLat")
+#             print(newLat)
+#             print("newLong")
+#             print(newLong)
+#             print("newLat + nexrads.loc[nexrads['radar'] == radar]['latitude'].item()")
+#             print(newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item())
+#             print(
+#                 "newLong + nexrads.loc[nexrads['radar'] == radar]['longitude'].item()"
+#             )
+#             print(newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item())
 
-        latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"] = (
-            newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item()
-        )
-        latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"] = (
-            newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item()
-        )
+#         latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"] = (
+#             newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item()
+#         )
+#         latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"] = (
+#             newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item()
+#         )
 
-    # print(latLongLabels)
+# # print(latLongLabels)
 
-    return latLongLabels
+# return latLongLabels
 
 
 def combineN(inputDF):
@@ -78,8 +78,8 @@ def combineN(inputDF):
                 < N
             ):
                 try:
-                    # print(str(df["latitude"][i]) + ", " + str(df["longitude"][i]))
-                    # print(str(df["latitude"][j]) + ", " + str(df["longitude"][j]))
+                    print(str(df["latitude"][i]) + ", " + str(df["longitude"][i]))
+                    print(str(df["latitude"][j]) + ", " + str(df["longitude"][j]))
                     lat = (df["latitude"][i] + df["latitude"][j]) / 2
                     long = (df["longitude"][i] + df["longitude"][j]) / 2
                     df["latitude"][i] = lat
@@ -120,9 +120,7 @@ def copySameLabels(labels):
         "AWS_file"
     ]
 
-    for index, label in labels[
-        ["AWS_file", "latitude", "longitude", "Roost"]
-    ].iterrows():
+    for index, label in labels.iterrows():
         sharedStamps = timestamps[
             timestamps.str.contains(label["AWS_file"][0:10])
         ].to_frame()
@@ -131,6 +129,17 @@ def copySameLabels(labels):
         sharedStamps["latitude"] = label["latitude"]
         sharedStamps["longitude"] = label["longitude"]
         sharedStamps["Roost"] = label["Roost"]
+        sharedStamps["label_origin"] = label["label_origin"]
+        sharedStamps["nexrad_lat"] = label["nexrad_lat"]
+        sharedStamps["nexrad_lon"] = label["nexrad_lon"]
+        sharedStamps["polar_radius"] = label["polar_radius"]
+        sharedStamps["polar_theta"] = label["polar_theta"]
+        sharedStamps["radar"] = label["radar"]
+        sharedStamps["radius"] = label["radius"]
+        sharedStamps["roost_id"] = label["roost_id"]
+        sharedStamps["roost_time"] = label["roost_time"]
+        sharedStamps["sunrise_time"] = label["sunrise_time"]
+
         # print(type(sharedStamps))
         # labelDF.append(sharedStamps, ignore_index=True)
         labelDF = pd.concat([labelDF, sharedStamps], axis=0, sort=True)
@@ -141,9 +150,9 @@ def copySameLabels(labels):
 
 def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
-    newLabels = processLabels(labels)
-    latLongLabels = convertLatLong(newLabels)
-    extendedLabels = copySameLabels(latLongLabels)
+    # newLabels = processLabels(labels)
+    # latLongLabels = convertLatLong(newLabels)
+    extendedLabels = copySameLabels(labels)
     extendedLabels.to_csv(
         settings.WORKING_DIRECTORY + "/true_ml_relabels_polar_short.csv", index=False
     )

@@ -261,8 +261,8 @@ class Batch_Generator:
                                 )
                             )
 
-                        all_radii = np.append(all_radii, np.array(mask_radii), axis=1)
-                        all_thetas = np.append(all_thetas, np.array(thetas), axis=1)
+                        all_radii = np.append(all_radii, np.array(mask_radii))
+                        all_thetas = np.append(all_thetas, np.array(thetas))
 
                 print(len(self.label_dict[filename]))
                 print(str(len(all_radii) / len(self.label_dict[filename])))
