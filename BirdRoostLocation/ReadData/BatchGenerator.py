@@ -307,9 +307,11 @@ class Batch_Generator:
                     # print(cart_x)
                     # print("CART_Y")
                     # print(cart_y)
-                    print("K")
-                    print(k)
                     for j in range(len(mask) - 1):
+                        print("J")
+                        print(j)
+                        print(cart_y.shape)
+                        print(cart_x.shape)
                         mask[
                             120 - int(round(cart_y[k][j])),
                             120 + int(round(cart_x[k][j])),
