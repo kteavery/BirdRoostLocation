@@ -298,21 +298,10 @@ class Batch_Generator:
                 print(cart_y.shape)
 
                 for k in range(cart_x.shape[0]):
-                    # print(filename)
-                    # print("RADII")
-                    # print(mask_radii)
-                    # print("THETAS")
-                    # print(thetas)
-                    # print("CART_X")
-                    # print(cart_x)
-                    # print("CART_Y")
-                    # print(cart_y)
-                    print("len(masks)")
-                    print(len(masks))
+                    print("masks.shape")
+                    print(masks.shape)
 
                     for j in range(cart_x.shape[1]):
-                        print("J")
-                        print(j)
                         print(cart_y.shape)
                         print(cart_x.shape)
                         masks[j][
@@ -333,16 +322,16 @@ class Batch_Generator:
                         #     (ground_truths, mask), axis=0
                         # )
 
-                    if np.array(ground_truths).size == 0:
-                        ground_truths = masks[j]
-                    else:
-                        ground_truths = np.concatenate(
-                            (ground_truths, masks[j]), axis=0
-                        )
-                    print("ground_truths")
-                    print(ground_truths.shape)
-                    print("train_shape")
-                    print(train_data.shape)
+                print("masks.shape")
+                print(masks.shape)
+                if np.array(ground_truths).size == 0:
+                    ground_truths = masks
+                else:
+                    ground_truths = np.concatenate((ground_truths, masks), axis=0)
+                print("ground_truths")
+                print(ground_truths.shape)
+                print("train_shape")
+                print(train_data.shape)
 
         # print("train_data.shape")
         train_data = np.array(train_data)
