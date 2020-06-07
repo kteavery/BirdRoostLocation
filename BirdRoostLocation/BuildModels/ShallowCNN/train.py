@@ -163,7 +163,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/0/"
+                + "/0/checkpoint/"
                 + str(product_str)
                 + ".json",
                 "r",
@@ -176,7 +176,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/0/"
+                + "/0/checkpoint/"
                 + str(product_str)
                 + ".h5"
             )
@@ -184,7 +184,7 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/checkpoint/0/"
+                + "/0/checkpoint/"
                 + str(product_str)
                 + ".h5"
             )
