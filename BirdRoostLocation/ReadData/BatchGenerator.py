@@ -377,8 +377,11 @@ class Batch_Generator:
                             filenames.append(filename)
                     # print(filenames)
         else:
+            extended_filenames = []
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
+                print("LEN IMAGES")
+                print(len(images))
                 if images != []:
                     train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                         self,
@@ -391,6 +394,7 @@ class Batch_Generator:
                         ground_truths,
                         images,
                     )
+                    extended_filenames.append(np.array([filename] * len(images)))
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
@@ -404,13 +408,15 @@ class Batch_Generator:
 
             train_data_np = np.array(train_data)
             shape = train_data_np.shape
-            # print("shape")
-            # print(shape)
             train_data_np = train_data_np.reshape(
                 shape[0], shape[1], shape[2], shape[3]
             )
 
-            return train_data_np, np.array(ground_truths), np.array(filenames)
+            print("RETURN SHAPES")
+            print(train_data_np.shape)
+            print(ground_truths.shape)
+            print(np.array(extended_filenames).shape)
+            return train_data_np, np.array(ground_truths), np.array(extended_filenames)
         except IndexError as e:
             print(e)
             return None, None, None
