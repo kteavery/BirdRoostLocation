@@ -165,7 +165,7 @@ def train(
                 + "model/"
                 + str(product_str)
                 + "/"
-                + loadfile
+                + str(loadfile)
                 + "/checkpoint/"
                 + str(product_str)
                 + ".json",
@@ -180,7 +180,7 @@ def train(
                 + "model/"
                 + str(product_str)
                 + "/"
-                + loadfile
+                + str(loadfile)
                 + "/checkpoint/"
                 + str(product_str)
                 + ".h5"
@@ -190,7 +190,7 @@ def train(
                 + "model/"
                 + str(product_str)
                 + "/"
-                + loadfile
+                + str(loadfile)
                 + "/checkpoint/"
                 + str(product_str)
                 + ".h5"
@@ -673,7 +673,7 @@ if __name__ == "__main__":
             """,
     )
     parser.add_argument(
-        "-l",
+        "-lf",
         "--loadfile",
         type=int,
         default=0,
