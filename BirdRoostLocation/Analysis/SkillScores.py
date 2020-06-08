@@ -59,7 +59,9 @@ def get_skill_scores_regression(predictions, truths, cutoff):
     truths = truths[~np.isnan(truths)]
 
     for prediction, truth in zip(predictions, truths):
-        diff = abs(prediction[0] - truth[0])
+        print(prediction)
+        print(truth)
+        diff = abs(prediction - truth)
         if diff < cutoff:
             T += 1
         elif diff >= cutoff:
@@ -68,7 +70,7 @@ def get_skill_scores_regression(predictions, truths, cutoff):
     ACC = T / (T + F)
 
     return ACC
-    
+
 
 def print_skill_scores(ACC, TPR, TNR, ROC_AUC):
     print("\tACC", ACC)
