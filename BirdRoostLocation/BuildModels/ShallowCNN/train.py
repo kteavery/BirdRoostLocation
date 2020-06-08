@@ -60,6 +60,7 @@ def train(
     num_temporal_data=0,
     coord_conv=True,
     problem="detection",
+    loadfile=0,
 ):
     """Train the shallow CNN model on a single radar product.
 
@@ -163,7 +164,9 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/0/checkpoint/"
+                + "/"
+                + loadfile
+                + "/checkpoint/"
                 + str(product_str)
                 + ".json",
                 "r",
@@ -176,7 +179,9 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/0/checkpoint/"
+                + "/"
+                + loadfile
+                + "/checkpoint/"
                 + str(product_str)
                 + ".h5"
             )
@@ -184,7 +189,9 @@ def train(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + str(product_str)
-                + "/0/checkpoint/"
+                + "/"
+                + loadfile
+                + "/checkpoint/"
                 + str(product_str)
                 + ".h5"
             )
@@ -527,6 +534,7 @@ def main(results):
         num_temporal_data=results.num_temporal_data,
         coord_conv=results.coord_conv,
         problem=results.problem,
+        loadfile=results.loadfile,
     )
 
 
@@ -662,6 +670,15 @@ if __name__ == "__main__":
         default="detection",
         help="""
             Type of problem to solve. Either 'detection' or 'localization'.
+            """,
+    )
+    parser.add_argument(
+        "-l",
+        "--loadfile",
+        type=int,
+        default=0,
+        help="""
+            which file to load for aggregates
             """,
     )
     results = parser.parse_args()

@@ -527,9 +527,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             else:
                 print("duplicate")
                 print(row["AWS_file"])
-                self.label_dict[row["AWS_file"]] = self.label_dict[
-                    row["AWS_file"]
-                ].append(
+                self.label_dict[row["AWS_file"]].append(
                     Labels.ML_Label(
                         row["AWS_file"], row, self.root_dir, high_memory_mode
                     )
