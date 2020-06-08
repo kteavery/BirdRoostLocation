@@ -74,11 +74,13 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     predictions = model.predict(x)
 
-    ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
-    print("ACC_RAD: " + str(ACC_RAD))
+    # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
+    # print("ACC_RAD: " + str(ACC_RAD))
 
-    ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
-    print("ACC_THETA: " + str(ACC_THETA))
+    # ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
+    # print("ACC_THETA: " + str(ACC_THETA))
+
+    ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
     print("PREDICTIONS")
     print(len(predictions))
@@ -89,7 +91,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
-        for i in range(len(predictions) - 1):
+        for i in range(len(predictions)):
             print("len(filenames)")
             print(len(filenames))
             writer.writerow([filenames[i], y[i], predictions[i]])
