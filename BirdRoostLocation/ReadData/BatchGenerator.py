@@ -350,6 +350,7 @@ class Batch_Generator:
         model_type,
         problem,
     ):
+        extended_filenames = []
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
@@ -374,10 +375,11 @@ class Batch_Generator:
                             )
                             # print(np.array(train_data).shape)
                             # print(np.array(ground_truths).shape)
-                            filenames.append(filename)
+                            extended_filenames.append(
+                                np.array([filename] * len(images))
+                            )
                     # print(filenames)
         else:
-            extended_filenames = []
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
                 print("LEN IMAGES")
