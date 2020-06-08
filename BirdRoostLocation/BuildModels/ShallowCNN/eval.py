@@ -45,7 +45,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         ml_split_csv=settings.ML_SPLITS_DATA,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=8,
+        default_batch_size=200,
     )
 
     print("BATCH GENERATOR")
@@ -90,6 +90,8 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
     with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
         for i in range(len(predictions) - 1):
+            print("len(filenames)")
+            print(len(filenames))
             writer.writerow([filenames[i], y[i], predictions[i]])
 
     if problem == "detection":
