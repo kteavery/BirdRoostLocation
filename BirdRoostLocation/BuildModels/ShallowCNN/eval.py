@@ -45,7 +45,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         ml_split_csv=settings.ML_SPLITS_DATA,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=5000,
+        default_batch_size=8,
     )
 
     print("BATCH GENERATOR")
@@ -60,8 +60,8 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
             num_temporal_data=num_temporal_data,
             problem=problem,
         )
-        print(x)
-        print(y)
+        print(x.shape)
+        print(y.shape)
         print(filenames)
     print("FILENAMES: ")
     print(filenames)
