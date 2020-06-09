@@ -86,9 +86,12 @@ def eval(
                 loaded_models=loaded_models,
                 num_temporal_data=num_temporal_data,
             )
-        print(x.shape)
-        print(y.shape)
-        print(filenames.shape)
+            try:
+                print(x.shape)
+                print(y.shape)
+                print(filenames.shape)
+            except AttributeError as e:
+                print(e)
 
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
