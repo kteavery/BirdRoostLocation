@@ -414,8 +414,7 @@ class Batch_Generator:
                 shape[0], shape[1], shape[2], shape[3]
             )
             extended_filenames = np.array(extended_filenames).reshape(
-                np.array(extended_filenames).shape[0]
-                * np.array(extended_filenames).shape[1]
+                np.array(extended_filenames).shape[0] * np.array(extended_filenames).shape[1]
             )
 
             print("RETURN SHAPES")
