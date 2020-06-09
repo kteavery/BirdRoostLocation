@@ -350,7 +350,7 @@ class Batch_Generator:
         model_type,
         problem,
     ):
-        extended_filenames = []
+        extended_filenames = np.array([])
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
@@ -375,8 +375,8 @@ class Batch_Generator:
                             )
                             # print(np.array(train_data).shape)
                             # print(np.array(ground_truths).shape)
-                            extended_filenames.append(
-                                np.array([filename] * len(images))
+                            extended_filenames = np.append(
+                                extended_filenames, np.array([filename] * len(images))
                             )
                     # print(filenames)
         else:
@@ -396,7 +396,9 @@ class Batch_Generator:
                         ground_truths,
                         images,
                     )
-                    extended_filenames.append(np.array([filename] * len(images)))
+                    extended_filenames = np.append(
+                        extended_filenames, np.array([filename] * len(images))
+                    )
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
@@ -413,14 +415,11 @@ class Batch_Generator:
             train_data_np = train_data_np.reshape(
                 shape[0], shape[1], shape[2], shape[3]
             )
-            extended_filenames = np.array(extended_filenames).reshape(
-                np.array(extended_filenames).shape[0] * np.array(extended_filenames).shape[1]
-            )
 
             print("RETURN SHAPES")
             print(train_data_np.shape)
             print(ground_truths.shape)
-            print(np.array(extended_filenames).shape)
+            print(extended_filenames.shape)
             return train_data_np, np.array(ground_truths), np.array(extended_filenames)
         except IndexError as e:
             print(e)
