@@ -60,9 +60,12 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
             num_temporal_data=num_temporal_data,
             problem=problem,
         )
-        print(x.shape)
-        print(y.shape)
-        print(filenames.shape)
+        try:
+            print(x.shape)
+            print(y.shape)
+            print(filenames.shape)
+        except AttributeError as e:
+            print(e)
 
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
