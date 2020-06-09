@@ -62,7 +62,7 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
         )
         print(x.shape)
         print(y.shape)
-        print(filenames)
+        print(filenames.shape)
 
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
@@ -81,18 +81,16 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
 
     print("PREDICTIONS")
     print(len(predictions))
-    # print(predictions)
     print("GROUND TRUTH")
     print(len(y))
+    print("FILENAMES")
+    print(len(filenames))
 
     SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
-    # print(y)
 
     with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
         for i in range(len(predictions)):
-            # print("len(filenames)")
-            # print(len(filenames))
             writer.writerow([filenames[i], y[i], predictions[i]])
 
     if problem == "detection":
