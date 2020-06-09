@@ -27,9 +27,19 @@ from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
+from keras.models import model_from_json
 
 
-def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, problem):
+def eval(
+    log_path,
+    radar_product,
+    coord_conv,
+    dual_pol,
+    num_temporal_data,
+    problem,
+    model_name,
+    loadfile=None,
+):
     """Evaluate the shallow CNN model trained on a single radar product.
 
         Args:
@@ -40,26 +50,42 @@ def eval(log_path, radar_product, coord_conv, dual_pol, num_temporal_data, probl
     """
     model_file = os.path.splitext(ntpath.basename(log_path))[0]
 
-    batch_generator = BatchGenerator.Single_Product_Batch_Generator(
-        ml_label_csv=settings.LABEL_CSV,
-        ml_split_csv=settings.ML_SPLITS_DATA,
-        validate_k_index=3,
-        test_k_index=4,
-        default_batch_size=200,
-    )
-
-    print("BATCH GENERATOR")
+    if model_name == utils.ML_Model.Shallow_CNN:
+        batch_generator = BatchGenerator.Single_Product_Batch_Generator(
+            ml_label_csv=settings.LABEL_CSV,
+            ml_split_csv=settings.ML_SPLITS_DATA,
+            validate_k_index=3,
+            test_k_index=4,
+            default_batch_size=200,
+        )
+    else:
+        batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
+            ml_label_csv=settings.LABEL_CSV,
+            ml_split_csv=settings.ML_SPLITS_DATA,
+            high_memory_mode=True,
+        )
 
     x = None
     y = None
     while type(x) == type(None) and type(y) == type(None):
-        x, y, filenames = batch_generator.get_batch(
-            utils.ML_Set.testing,
-            dualPol=dual_pol,
-            radar_product=radar_product,
-            num_temporal_data=num_temporal_data,
-            problem=problem,
-        )
+        if model_name == utils.ML_Model.Shallow_CNN:
+            x, y, filenames = batch_generator.get_batch(
+                utils.ML_Set.testing,
+                dualPol=dual_pol,
+                radar_product=radar_product,
+                num_temporal_data=num_temporal_data,
+                problem=problem,
+            )
+        else:
+            loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
+
+            _, y, x, filenames = batch_generator.get_batch(
+                ml_set=utils.ML_Set.training,
+                dualPol=dual_pol,
+                radar_product=radar_product,
+                loaded_models=loaded_models,
+                num_temporal_data=num_temporal_data,
+            )
         print(x.shape)
         print(y.shape)
         print(filenames.shape)

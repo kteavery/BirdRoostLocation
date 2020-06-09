@@ -138,64 +138,7 @@ def train(
         tf_session = tf.compat.v1.Session(config=config)
         tf.compat.v1.keras.backend.set_session(tf_session)
 
-        loaded_models = []
-
-        if dual_pol:
-            radar_products = [
-                utils.Radar_Products.cc,
-                utils.Radar_Products.diff_reflectivity,
-                utils.Radar_Products.reflectivity,
-                utils.Radar_Products.velocity,
-            ]
-        else:
-            radar_products = utils.Legacy_radar_products
-
-        for radar_product in radar_products:
-            if str(radar_product) == "Radar_Products.cc":
-                product_str = "Rho_HV"
-            elif str(radar_product) == "Radar_Products.diff_reflectivity":
-                product_str = "Zdr"
-            elif str(radar_product) == "Radar_Products.reflectivity":
-                product_str = "Reflectivity"
-            else:
-                product_str = "Velocity"
-
-            json_file = open(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/"
-                + str(loadfile)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".json",
-                "r",
-            )
-            loaded_model_json = json_file.read()
-            json_file.close()
-            model = model_from_json(loaded_model_json)
-
-            print(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/"
-                + str(loadfile)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".h5"
-            )
-            model.load_weights(
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + str(product_str)
-                + "/"
-                + str(loadfile)
-                + "/checkpoint/"
-                + str(product_str)
-                + ".h5"
-            )
-            loaded_models.append(model)
+        loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
 
         print(settings.ML_SPLITS_DATA)
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(

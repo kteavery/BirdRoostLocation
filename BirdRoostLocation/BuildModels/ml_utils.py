@@ -1,11 +1,77 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import keras
+from keras.models import model_from_json
+from BirdRoostLocation import utils
+import BirdRoostLocation.LoadSettings as settings
 
 KERAS_SAVE_FILE = "{}{}.h5"
 LOG_PATH = "model/{}/{}/"
 LOG_PATH_TIME = "model/{}/{}/{}/"
 CHECKPOINT_DIR = "/checkpoint/"
+
+
+def load_all_models(dual_pol, loadfile):
+    loaded_models = []
+
+    if dual_pol:
+        radar_products = [
+            utils.Radar_Products.cc,
+            utils.Radar_Products.diff_reflectivity,
+            utils.Radar_Products.reflectivity,
+            utils.Radar_Products.velocity,
+        ]
+    else:
+        radar_products = utils.Legacy_radar_products
+
+    for radar_product in radar_products:
+        if str(radar_product) == "Radar_Products.cc":
+            product_str = "Rho_HV"
+        elif str(radar_product) == "Radar_Products.diff_reflectivity":
+            product_str = "Zdr"
+        elif str(radar_product) == "Radar_Products.reflectivity":
+            product_str = "Reflectivity"
+        else:
+            product_str = "Velocity"
+
+        json_file = open(
+            settings.WORKING_DIRECTORY
+            + "model/"
+            + str(product_str)
+            + "/"
+            + str(loadfile)
+            + "/checkpoint/"
+            + str(product_str)
+            + ".json",
+            "r",
+        )
+        loaded_model_json = json_file.read()
+        json_file.close()
+        model = model_from_json(loaded_model_json)
+
+        print(
+            settings.WORKING_DIRECTORY
+            + "model/"
+            + str(product_str)
+            + "/"
+            + str(loadfile)
+            + "/checkpoint/"
+            + str(product_str)
+            + ".h5"
+        )
+        model.load_weights(
+            settings.WORKING_DIRECTORY
+            + "model/"
+            + str(product_str)
+            + "/"
+            + str(loadfile)
+            + "/checkpoint/"
+            + str(product_str)
+            + ".h5"
+        )
+        loaded_models.append(model)
+
+    return loaded_models
 
 
 def create_plots(train, val, save_path):
@@ -41,4 +107,3 @@ class LossHistory(keras.callbacks.Callback):
             self.mape.append(logs[2])
         if len(logs) >= 4:
             self.cosine.append(logs[3])
-
