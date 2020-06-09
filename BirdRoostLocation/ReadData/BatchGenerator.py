@@ -413,6 +413,9 @@ class Batch_Generator:
             train_data_np = train_data_np.reshape(
                 shape[0], shape[1], shape[2], shape[3]
             )
+            extended_filenames = extended_filenames.reshape(
+                extended_filenames.shape[0] * extended_filenames.shape[1]
+            )
 
             print("RETURN SHAPES")
             print(train_data_np.shape)
