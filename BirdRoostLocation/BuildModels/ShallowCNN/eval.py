@@ -155,6 +155,8 @@ def main(results):
         problem=results.problem,
         dual_pol=results.dual_pol,
         num_temporal_data=results.num_temporal_data,
+        model_name=results.model,
+        loadfile=results.loadfile,
     )
 
 
@@ -221,6 +223,27 @@ if __name__ == "__main__":
             This field will only be used if model = 1 
             True if model is training on dual polarization radar data, false if 
             the model is training on legacy data.
+            """,
+    )
+    parser.add_argument(
+        "-m",
+        "--model",
+        type=int,
+        default=0,
+        help="""
+            Use an integer to select a model from the following list:
+                0 : Shallow CNN
+                1 : Shallow CNN, all radar products
+                2 : Shallow CNN, temporal model
+            """,
+    )
+    parser.add_argument(
+        "-lf",
+        "--loadfile",
+        type=int,
+        default=0,
+        help="""
+            which file to load for aggregates
             """,
     )
     results = parser.parse_args()
