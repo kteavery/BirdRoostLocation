@@ -59,6 +59,7 @@ def eval(
             default_batch_size=200,
         )
     else:
+        print("MULTIPLE PRODUCT BATCH GENERATOR")
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
@@ -77,8 +78,10 @@ def eval(
                 problem=problem,
             )
         else:
+            print("LOADED MODELS")
             loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
 
+            print("BEFORE GET BATCH")
             _, y, x, filenames = batch_generator.get_batch(
                 ml_set=utils.ML_Set.training,
                 dualPol=dual_pol,
@@ -86,6 +89,8 @@ def eval(
                 loaded_models=loaded_models,
                 num_temporal_data=num_temporal_data,
             )
+            print("AFTER GET BATCH")
+
         try:
             print(x.shape)
             print(y.shape)
@@ -234,7 +239,6 @@ if __name__ == "__main__":
             Use an integer to select a model from the following list:
                 0 : Shallow CNN
                 1 : Shallow CNN, all radar products
-                2 : Shallow CNN, temporal model
             """,
     )
     parser.add_argument(
