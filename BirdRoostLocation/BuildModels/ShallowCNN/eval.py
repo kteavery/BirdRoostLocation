@@ -159,14 +159,6 @@ def main(results):
     print(log_path)
 
     model = utils.ML_Model(results.model)
-    if results.model == 1:
-        log_path = ml_utils.LOG_PATH.format(model.fullname, str(results.dual_pol))
-    elif results.model == 0:
-        log_path = ml_utils.LOG_PATH.format(model.fullname, radar_product.fullname)
-    else:
-        log_path = ml_utils.LOG_PATH_TIME.format(
-            model.fullname, results.num_temporal_data * 2 + 1, radar_product.fullname
-        )
 
     eval(
         log_path=log_path,
@@ -175,7 +167,7 @@ def main(results):
         problem=results.problem,
         dual_pol=results.dual_pol,
         num_temporal_data=results.num_temporal_data,
-        model_name=results.model,
+        model_name=model,
         loadfile=results.loadfile,
     )
 
