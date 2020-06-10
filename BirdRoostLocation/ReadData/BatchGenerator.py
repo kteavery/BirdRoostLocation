@@ -531,8 +531,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         print("after Batch_Generator.__init__")
+        print(ml_label_csv)
 
         ml_label_pd = pandas.read_csv(ml_label_csv)
+        print(ml_label_pd.shape)
         for _, row in ml_label_pd.iterrows():
             if row["AWS_file"] not in self.label_dict:
                 self.label_dict[row["AWS_file"]] = [
