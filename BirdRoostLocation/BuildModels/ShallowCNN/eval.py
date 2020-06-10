@@ -59,12 +59,13 @@ def eval(
             default_batch_size=200,
         )
     else:
-        print("MULTIPLE PRODUCT BATCH GENERATOR")
+        print("BEFORE MULTIPLE PRODUCT BATCH GENERATOR")
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=True,
         )
+        print("AFTER MULTIPLE PRODUCT BATCH GENERATOR")
 
     x = None
     y = None

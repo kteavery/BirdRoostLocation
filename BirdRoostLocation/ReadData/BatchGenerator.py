@@ -98,6 +98,7 @@ class Batch_Generator:
             validate_k_index,
             test_k_index,
         )
+        print("AFTER self.__set_ml_sets_helper - NO ROOST")
         self.__set_ml_sets_helper(
             self.roost_sets,
             self.roost_sets_V06,
@@ -105,6 +106,7 @@ class Batch_Generator:
             validate_k_index,
             test_k_index,
         )
+        print("AFTER self.__set_ml_sets_helper - ROOST")
 
     def __set_ml_sets_helper(self, ml_sets, ml_sets_V06, ml_split_pd, val_k, test_k):
         no_val_pd = ml_split_pd[ml_split_pd.split_index != val_k]
@@ -526,6 +528,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             default_batch_size,
             root_dir,
         )
+        print("after Batch_Generator.__init__")
+
         ml_label_pd = pandas.read_csv(ml_label_csv)
         for _, row in ml_label_pd.iterrows():
             if row["AWS_file"] not in self.label_dict:
