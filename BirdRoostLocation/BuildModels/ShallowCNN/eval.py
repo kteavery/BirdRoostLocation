@@ -121,7 +121,9 @@ def eval(
         writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
         writer.writerow([ACC, TPR, TNR, ROC_AUC])
 
-    with open("true_predictions_" + model_file + ".csv", mode="w") as predict_file:
+    with open(
+        "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
+    ) as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
         for i in range(len(predictions)):
             writer.writerow([filenames[i], y[i], predictions[i]])
