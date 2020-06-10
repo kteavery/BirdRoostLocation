@@ -52,7 +52,7 @@ def train(
     eval_increment=5,
     num_iterations=2500,
     checkpoint_frequency=100,
-    lr=0.0001,
+    lr=0.00001,
     model_name=utils.ML_Model.Shallow_CNN,
     model_type="shallow_cnn",
     dual_pol=True,

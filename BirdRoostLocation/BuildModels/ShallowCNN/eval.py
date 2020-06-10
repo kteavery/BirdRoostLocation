@@ -28,6 +28,9 @@ from BirdRoostLocation.BuildModels import ml_utils
 from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
 from keras.models import model_from_json
+from keras.models import Sequential
+from keras.layers import Dense
+import keras
 
 
 def eval(
@@ -39,6 +42,7 @@ def eval(
     problem,
     model_name,
     loadfile=None,
+    lr=0.00001,
 ):
     """Evaluate the shallow CNN model trained on a single radar product.
 
@@ -75,9 +79,20 @@ def eval(
         except AttributeError as e:
             print(e)
 
-    model = ml_model.build_model(
-        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
-    )
+    if model_name == utils.ML_Model.Shallow_CNN:
+        model = ml_model.build_model(
+            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+        )
+    else:
+        model = Sequential()
+        model.add(Dense(256, input_shape=(4, 4), activation="relu"))
+        model.add(Dense(2, activation="softmax"))
+        model.compile(
+            loss=keras.losses.categorical_crossentropy,
+            optimizer=keras.optimizers.adam(lr),
+            metrics=["accuracy"],
+        )
+
     model.load_weights(log_path)
 
     predictions = model.predict(x)

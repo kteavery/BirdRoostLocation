@@ -76,7 +76,7 @@ def roc_curve_from_csv(curves):
     ground_truths = []
 
     for curve in curves:
-        df = pandas.read_csv(settings.WORKING_DIRECTORY + "/" + )
+        df = pandas.read_csv(settings.WORKING_DIRECTORY + "/true_predictions_" + curve +".csv", names=["filenames", "truth", "predictions"])
 
         print(df.head())
         truth = ......
