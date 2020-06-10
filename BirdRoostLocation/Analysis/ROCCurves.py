@@ -76,11 +76,14 @@ def roc_curve_from_csv(curves):
     ground_truths = []
 
     for curve in curves:
-        df = pandas.read_csv(settings.WORKING_DIRECTORY + "/true_predictions_" + curve +".csv", names=["filenames", "truth", "predictions"])
+        df = pandas.read_csv(
+            settings.WORKING_DIRECTORY + "/true_predictions_" + curve + ".csv",
+            names=["filenames", "truth", "predictions"],
+        )
 
         print(df.head())
-        truth = ......
-        prediction = ......
+        truth = df["truth"]
+        prediction = df["predictions"]
 
         # ACC, TPR, TNR, ROC_AUC = get_skill_scores(prediction, truth)
 

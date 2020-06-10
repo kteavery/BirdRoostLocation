@@ -83,6 +83,10 @@ def eval(
         model = ml_model.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
         )
+
+        model.load_weights(log_path)
+        predictions = model.predict(x)
+
     else:
         model = Sequential()
         model.add(Dense(256, input_shape=(4, 4), activation="relu"))
@@ -93,9 +97,8 @@ def eval(
             metrics=["accuracy"],
         )
 
-    model.load_weights(log_path)
-
-    predictions = model.predict(x)
+        model.load_weights(log_path)
+        predictions = model.predict(x)  ####
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
@@ -154,6 +157,17 @@ def main(results):
         log_path = results.log_path
 
     print(log_path)
+
+    model = utils.ML_Model(results.model)
+    if results.model == 1:
+        log_path = ml_utils.LOG_PATH.format(model.fullname, str(results.dual_pol))
+    elif results.model == 0:
+        log_path = ml_utils.LOG_PATH.format(model.fullname, radar_product.fullname)
+    else:
+        log_path = ml_utils.LOG_PATH_TIME.format(
+            model.fullname, results.num_temporal_data * 2 + 1, radar_product.fullname
+        )
+
     eval(
         log_path=log_path,
         radar_product=radar_product,
@@ -185,7 +199,7 @@ if __name__ == "__main__":
         "-l",
         "--log_path",
         type=str,
-        default="Velocity/{/}.h5",
+        default="Velocity.h5",
         help="""
         Optionally input the location of the save file where the default is
         model/radar_product/radar_product.h5
