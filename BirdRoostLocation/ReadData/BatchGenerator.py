@@ -91,6 +91,7 @@ class Batch_Generator:
         print(len(ml_split_pd[ml_split_pd.Roost != True]))
         print(len(ml_split_pd[ml_split_pd.Roost]))
 
+        print("BEFORE self.__set_ml_sets_helper - NO ROOST")
         self.__set_ml_sets_helper(
             self.no_roost_sets,
             self.no_roost_sets_V06,
@@ -119,6 +120,7 @@ class Batch_Generator:
         ml_sets[utils.ML_Set.testing] = list(
             ml_split_pd[ml_split_pd.split_index == test_k]["AWS_file"]
         )
+        print("ml_sets[utils.ML_Set....]")
 
         for key in list(ml_sets.keys()):
             ml_sets_V06[key] = []
