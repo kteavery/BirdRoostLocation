@@ -20,6 +20,7 @@ import os
 import numpy as np
 import csv
 import ntpath
+import pandas as pd
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.LoadSettings as settings
@@ -98,7 +99,19 @@ def eval(
         )
 
         model.load_weights(log_path)
-        predictions = model.predict(x)  ####
+
+        all_fields = []
+        for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
+            field_preds = pd.read_csv(
+                "true_predictions_" + field + str(loadfile) + ".csv",
+                names=["filenames", "truth", "predictions"],
+            )["predictions"]
+            field_preds = field_preds.to_numpy()
+            all_fields.append(field_preds)
+
+        all_fields = np.array(all_fields)
+
+        predictions = model.predict(all_fields)  ####
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
