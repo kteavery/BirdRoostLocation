@@ -120,7 +120,6 @@ def eval(
                 + str(loadfile)
                 + "/checkpoint/"
                 + field
-                + str(loadfile)
                 + ".h5",
                 coord_conv,
                 problem,
