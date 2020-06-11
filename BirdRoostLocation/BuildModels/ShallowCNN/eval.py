@@ -170,14 +170,15 @@ def eval(
         for i in range(len(predictions)):
             writer.writerow([filenames[i], y[i][0], predictions[i][0]])
 
-    if problem == "detection":
-        loss, acc = model.evaluate(x, y)
-        print("LOSS, ACC: ")
-        print(loss, acc)
-    else:
-        loss, mae, mape, cosine = model.evaluate(x, y)
-        print("LOSS, MAE, MAPE, COSINE: ")
-        print(loss, mae, mape, cosine)
+    if model_name == utils.ML_Model.Shallow_CNN:
+        if problem == "detection":
+            loss, acc = model.evaluate(x, y)
+            print("LOSS, ACC: ")
+            print(loss, acc)
+        else:
+            loss, mae, mape, cosine = model.evaluate(x, y)
+            print("LOSS, MAE, MAPE, COSINE: ")
+            print(loss, mae, mape, cosine)
 
 
 def main(results):
