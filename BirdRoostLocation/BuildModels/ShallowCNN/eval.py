@@ -101,7 +101,8 @@ def eval(
 
         model.load_weights(log_path)
 
-        all_fields = np.array([])
+        all_fields = []
+        smallest = 100000
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
@@ -112,12 +113,18 @@ def eval(
             field_preds = field_preds.to_numpy()
             field_preds = np.array([np.array([x, 1.0 - x]) for x in field_preds])
             print(field_preds.shape)
-            all_fields = np.append(all_fields, field_preds)
+            all_fields.append(field_preds)
+            if field_preds.shape[0] < smallest:
+                smallest = field_preds.shape[0]
 
-        all_fields = np.reshape(all_fields, (4, len(field_preds), 2))
-        print(all_fields.shape)
+        all_preds = np.array([])
+        for field in all_fields:
+            np.append(all_preds, field[0:smallest])
+        all_preds = np.reshape(all_preds, (4, len(field_preds), 2))
 
-        predictions = model.predict(all_fields)  ####
+        print(all_preds.shape)
+
+        predictions = model.predict(all_preds)  ####
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
