@@ -101,7 +101,7 @@ def eval(
 
         model.load_weights(log_path)
 
-        all_fields = []
+        all_fields = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
@@ -112,9 +112,9 @@ def eval(
             field_preds = field_preds.to_numpy()
             field_preds = np.array([np.array([x, 1.0 - x]) for x in field_preds])
             print(field_preds.shape)
-            all_fields.append(field_preds)
+            all_fields = np.append(all_fields, field_preds)
 
-        all_fields = np.array(all_fields)
+        all_fields = np.reshape(all_fields, (4, len(field_preds), 2))
         print(all_fields.shape)
 
         predictions = model.predict(all_fields)  ####
