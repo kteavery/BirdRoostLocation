@@ -56,6 +56,7 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
         )
 
     plt.plot([0, 1], [0, 1], "k--", lw=2)
+    plt.savefig(save_file)
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.yticks(fontsize=13.5)
