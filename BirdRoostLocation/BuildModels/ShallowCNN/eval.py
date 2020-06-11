@@ -106,7 +106,7 @@ def eval(
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
-                converters={"predictions": literal_eval},
+                converters={"predictions": lambda x: x.strip("[]").split(" ")},
             )["predictions"]
             print(field_preds.head())
             field_preds = field_preds.apply(np.array)
