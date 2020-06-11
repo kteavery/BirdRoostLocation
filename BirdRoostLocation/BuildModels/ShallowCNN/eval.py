@@ -21,6 +21,7 @@ import numpy as np
 import csv
 import ntpath
 import pandas as pd
+from ast import literal_eval
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.LoadSettings as settings
@@ -105,6 +106,7 @@ def eval(
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
+                converters={"predictions": literal_eval},
             )["predictions"]
             print(field_preds.head())
             field_preds = field_preds.apply(np.array)
