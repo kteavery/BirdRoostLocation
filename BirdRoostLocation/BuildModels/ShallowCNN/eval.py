@@ -142,7 +142,7 @@ def eval(
             final_preds = np.append(final_preds, all_fields[i][0:smallest])
             final_ys = np.append(final_ys, all_ys[i][0:smallest])
         final_preds = np.reshape(final_preds, (smallest, 4, 4))
-        final_ys = np.reshape(final_preds, (smallest, 4, 4))
+        final_ys = np.reshape(final_ys, (smallest, 4, 4))
 
         print(final_preds.shape)
 
