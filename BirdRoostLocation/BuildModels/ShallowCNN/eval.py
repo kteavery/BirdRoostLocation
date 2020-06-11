@@ -112,6 +112,7 @@ def eval(
             )["predictions"]
 
             print(field_preds.head())
+            print(type(field_preds[0]))
             field_preds = field_preds.astype(float)
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
