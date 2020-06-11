@@ -118,68 +118,8 @@ def roc_curve_from_csv(curves):
     )
 
 
-def run_with_example_data():
-    y_score = np.array(
-        [
-            [
-                0.91,
-                0.81,
-                0.71,
-                0.61,
-                0.551,
-                0.541,
-                0.531,
-                0.521,
-                0.51,
-                0.5051,
-                0.45,
-                0.38,
-                0.38,
-                0.37,
-                0.316,
-                0.315,
-                0.314,
-                0.313,
-                0.310,
-                0.11,
-            ],
-            [
-                0.95,
-                0.9,
-                0.75,
-                0.6,
-                0.56,
-                0.54,
-                0.53,
-                0.52,
-                0.51,
-                0.505,
-                0.4,
-                0.39,
-                0.38,
-                0.37,
-                0.36,
-                0.30,
-                0.34,
-                0.30,
-                0.30,
-                0.1,
-            ],
-        ]
-    )
-    y_test = np.array(
-        [
-            [1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
-            [1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0],
-        ]
-    )
-    y_class = ["example_1", "example_2"]
-
-    create_roc_curve(y_pred=y_score, y_test=y_test, y_label=y_class)
-
-
 def main():
-    curves["Reflectivity", "Velocity", "Rho_HV", "Zdr", "Aggregate"]
+    curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
     roc_curve_from_csv(curves)
 
 
