@@ -65,7 +65,6 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     else:
         plt.title("Detection - ROC curve", fontsize=14.5)
     plt.legend(loc="lower right", fontsize=11)
-    plt.tight_layout()
     if save_file is not None:
         plt.savefig(save_file)
     plt.show()
