@@ -128,7 +128,7 @@ def eval(
         for field in all_fields:
             print(field.shape)
             all_preds = np.append(all_preds, field[0:smallest])
-        all_preds = np.reshape(all_preds, (4, smallest, 2))
+        all_preds = np.reshape(all_preds, (smallest, 4, 4))
 
         print(all_preds.shape)
 
