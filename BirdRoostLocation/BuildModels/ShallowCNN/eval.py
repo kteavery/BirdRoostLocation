@@ -137,7 +137,6 @@ def eval(
 
         print(len(all_fields))
         for i in range(len(all_fields)):
-            print(field.shape)
             final_preds = np.append(final_preds, all_fields[i][0:smallest])
             final_ys = np.append(final_ys, all_ys[i][0:smallest])
         final_preds = np.reshape(final_preds, (smallest, 4, 4))
