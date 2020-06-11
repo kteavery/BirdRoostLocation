@@ -108,7 +108,10 @@ def eval(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
             )
-            field_preds = field_preds.loc[field_preds["filenames"].isin(filenames)]
+            for filename in filenames:
+                field_preds = field_preds.loc[field_preds["filenames"] == filename]
+                if field_preds.empty:
+                    filenames = np.delete(filenames, np.where(filenames == filename))
             field_preds = field_preds["predictions"]
 
             print(field_preds.head())
@@ -128,16 +131,16 @@ def eval(
             #     smallest = field_preds.shape[0]
 
         # print(smallest)
-        all_preds = np.array([])
+        # all_preds = np.array([])
         print(len(all_fields))
         # for field in all_fields:
         #     print(field.shape)
         #     all_preds = np.append(all_preds, field[0:smallest])
-        all_preds = np.reshape(all_preds, (len(all_fields), 4, 4))
+        all_fields = np.reshape(all_fields, (all_fields.shape[1], 4, 4))
 
-        print(all_preds.shape)
+        print(all_fields.shape)
 
-        predictions = model.predict(all_preds)
+        predictions = model.predict(all_fields)
         print(y.shape)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
