@@ -537,14 +537,14 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         print(ml_label_pd.shape)
         for _, row in ml_label_pd.iterrows():
             if row["AWS_file"] not in self.label_dict:
-                print("new")
+                # print("new")
                 self.label_dict[row["AWS_file"]] = [
                     Labels.ML_Label(
                         row["AWS_file"], row, self.root_dir, high_memory_mode
                     )
                 ]
             else:
-                print("duplicate")
+                # print("duplicate")
                 # print(row["AWS_file"])
                 self.label_dict[row["AWS_file"]].append(
                     Labels.ML_Label(

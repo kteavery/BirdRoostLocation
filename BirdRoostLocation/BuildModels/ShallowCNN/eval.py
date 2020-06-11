@@ -111,7 +111,12 @@ def eval(
 
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
-            field_preds = np.array([np.array([x, 1.0 - x]) for x in field_preds])
+            field_preds = np.array(
+                [
+                    np.array([np.array([x, 1.0 - x]), np.array([1.0 - x, x])])
+                    for x in field_preds
+                ]
+            )
             print(field_preds.shape)
             all_fields.append(field_preds)
             if field_preds.shape[0] < smallest:
