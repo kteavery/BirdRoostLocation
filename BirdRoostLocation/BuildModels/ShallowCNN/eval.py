@@ -89,6 +89,8 @@ def eval(
         model.load_weights(log_path)
         predictions = model.predict(x)
 
+        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+
     else:
         model = Sequential()
         model.add(Dense(256, input_shape=(4, 4), activation="relu"))
@@ -140,19 +142,20 @@ def eval(
             final_preds = np.append(final_preds, all_fields[i][0:smallest])
             final_ys = np.append(final_ys, all_ys[i][0:smallest])
         final_preds = np.reshape(final_preds, (smallest, 4, 4))
+        final_ys = np.reshape(final_preds, (smallest, 4, 4))
 
         print(final_preds.shape)
 
         predictions = model.predict(final_preds)
-        print(y.shape)
+        print(final_ys.shape)
+
+        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, final_ys)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
 
     # ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
     # print("ACC_THETA: " + str(ACC_THETA))
-
-    ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
     print("PREDICTIONS")
     print(len(predictions))
