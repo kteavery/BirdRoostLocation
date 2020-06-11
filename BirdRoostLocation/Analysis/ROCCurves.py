@@ -79,7 +79,7 @@ def roc_curve_from_csv(curves):
         for curve in curves:
             df = pandas.read_csv(
                 settings.WORKING_DIRECTORY
-                + "/true_predictions_"
+                + "true_predictions_"
                 + curve
                 + str(i)
                 + ".csv",
