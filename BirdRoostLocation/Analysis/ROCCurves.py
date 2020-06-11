@@ -38,6 +38,8 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
         y_label: Label for each ROC curve
     """
     # Plot all ROC curves
+    print(fpr.shape)
+    print(tpr.shape)
 
     markers = ["P", "<", "8", "d"]
     plt.figure(figsize=(5, 5))
