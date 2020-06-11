@@ -644,6 +644,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     # else:
                     # print(np.array([pred, 1 - pred]).shape)
                     predictions = np.append(predictions, np.array([pred, 1 - pred]))
+                    print("predictions.shape")
+                    print(predictions.shape)
 
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
@@ -655,6 +657,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     predictions,
                     (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
                 )
+                print(predictions.shape)
+                print(predictions)
             except Exception as e:
                 print(e)
                 return None, None, None, None
