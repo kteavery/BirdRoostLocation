@@ -106,12 +106,12 @@ def eval(
 
         smallest = 100000
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
-            field_preds = pd.read_csv(
+            field_csv = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
             )
-            field_preds = field_preds["predictions"]
-            field_ys = field_preds["truth"]
+            field_preds = field_csv["predictions"]
+            field_ys = field_csv["truth"]
 
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
