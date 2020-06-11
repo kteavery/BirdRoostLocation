@@ -35,6 +35,17 @@ from keras.layers import Dense
 import keras
 
 
+def field_predict(x, log_path, coord_conv, problem):
+    model = ml_model.build_model(
+        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+    )
+
+    model.load_weights(log_path)
+    predictions = model.predict(x)
+
+    return predictions
+
+
 def eval(
     log_path,
     radar_product,
@@ -82,14 +93,7 @@ def eval(
             print(e)
 
     if model_name == utils.ML_Model.Shallow_CNN:
-        model = ml_model.build_model(
-            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
-        )
-
-        model.load_weights(log_path)
-        predictions = model.predict(x)
-
-        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+        predictions = field_predict(x, log_path, coord_conv, problem)
 
     else:
         model = Sequential()
@@ -103,53 +107,43 @@ def eval(
 
         model.load_weights(log_path)
 
-        all_fields = []
-        all_ys = []
-
-        smallest = 100000
+        field_preds = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
-            field_csv = pd.read_csv(
-                "true_predictions_" + field + str(loadfile) + ".csv",
-                names=["filenames", "truth", "predictions"],
+            preds = field_predict(
+                x,
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + field
+                + "/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + field
+                + ".h5",
+                coord_conv,
+                problem,
             )
-            field_preds = field_csv["predictions"]
-            field_ys = field_csv["truth"]
+            print(preds.shape)
 
-            print(field_preds.head())
-            field_preds = field_preds.to_numpy()
-            field_preds = np.array(
-                [
-                    np.array([np.array([x, 1.0 - x]), np.array([1.0 - x, x])])
-                    for x in field_preds
-                ]
+            field_preds = np.append(
+                field_preds,
+                field_predict(
+                    x,
+                    settings.WORKING_DIRECTORY
+                    + "model/"
+                    + field
+                    + "/"
+                    + str(loadfile)
+                    + "/checkpoint/"
+                    + field
+                    + ".h5",
+                    coord_conv,
+                    problem,
+                ),
             )
-            y = np.array(
-                [np.array([np.array([k, 1.0 - k]), np.array([1.0 - k, k])]) for k in y]
-            )
-            print(field_preds.shape)
-            all_fields.append(field_preds)
-            all_ys.append(field_ys)
 
-            if field_preds.shape[0] < smallest:
-                smallest = field_preds.shape[0]
+        field_preds = np.reshape(field_preds, (preds.shape[0], 4, 4))
 
-        print(smallest)
-        final_preds = np.array([])
-        final_ys = np.array([])
-
-        print(len(all_fields))
-        for i in range(len(all_fields)):
-            final_preds = np.append(final_preds, all_fields[i][0:smallest])
-            final_ys = np.append(final_ys, all_ys[i][0:smallest])
-        final_preds = np.reshape(final_preds, (smallest, 4, 4))
-        final_ys = np.reshape(final_ys, (smallest, 4, 4))
-
-        print(final_preds.shape)
-
-        predictions = model.predict(final_preds)
-        print(final_ys.shape)
-
-        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, final_ys)
+    ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
