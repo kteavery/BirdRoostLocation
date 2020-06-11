@@ -106,16 +106,12 @@ def eval(
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
-                converters={
-                    "predictions": lambda x: x.strip("[]").split(" ")  # .remove(" ")
-                },
             )["predictions"]
 
             print(field_preds.head())
-            print(type(field_preds[0]))
-            field_preds = field_preds.astype(float)
-            print(field_preds.head())
             field_preds = field_preds.to_numpy()
+            field_preds = np.array([np.array([x, 1.0 - x]) for x in field_preds])
+            print(field_preds[0:10])
             all_fields.append(field_preds)
 
         all_fields = np.array(all_fields)
