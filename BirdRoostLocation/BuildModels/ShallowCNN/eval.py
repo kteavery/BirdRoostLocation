@@ -112,6 +112,9 @@ def eval(
             all_fields.append(field_preds)
 
         all_fields = np.array(all_fields)
+        print(type(all_fields))
+        print(type(all_fields[0]))
+        print(all_fields[0])
 
         predictions = model.predict(all_fields)  ####
 
