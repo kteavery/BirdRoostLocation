@@ -110,6 +110,7 @@ def eval(
         field_ys = np.array([])
         field_preds = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
+            print(field)
             preds = field_predict(
                 x,
                 settings.WORKING_DIRECTORY
@@ -119,7 +120,8 @@ def eval(
                 + str(loadfile)
                 + "/checkpoint/"
                 + field
-                + ".h5",
+                + str(loadfile)
+                + +".h5",
                 coord_conv,
                 problem,
             )

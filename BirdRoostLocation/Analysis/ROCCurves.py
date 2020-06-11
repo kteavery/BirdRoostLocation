@@ -75,31 +75,36 @@ def roc_curve_from_csv(curves):
     y_predicted_values = []
     ground_truths = []
 
-    for curve in curves:
-        df = pandas.read_csv(
-            settings.WORKING_DIRECTORY + "/true_predictions_" + curve + ".csv",
-            names=["filenames", "truth", "predictions"],
-        )
+    for i in range(0, 5):
+        for curve in curves:
+            df = pandas.read_csv(
+                settings.WORKING_DIRECTORY
+                + "/true_predictions_"
+                + curve
+                + str(i)
+                + ".csv",
+                names=["filenames", "truth", "predictions"],
+            )
 
-        print(df.head())
-        truth = df["truth"]
-        prediction = df["predictions"]
+            print(df.head())
+            truth = df["truth"]
+            prediction = df["predictions"]
 
-        # ACC, TPR, TNR, ROC_AUC = get_skill_scores(prediction, truth)
+            # ACC, TPR, TNR, ROC_AUC = get_skill_scores(prediction, truth)
 
-        print(curve)
-        print(prediction.shape)
-        print(truth.shape)
-        print(prediction)
+            print(curve)
+            print(prediction.shape)
+            print(truth.shape)
+            print(prediction)
 
-        prediction = prediction[~np.isnan(prediction)]
+            prediction = prediction[~np.isnan(prediction)]
 
-        truth = truth[~np.isnan(truth)]
-        print(prediction.shape)
-        print(truth.shape)
+            truth = truth[~np.isnan(truth)]
+            print(prediction.shape)
+            print(truth.shape)
 
-        y_predicted_values.append(prediction)
-        ground_truths.append(truth)
+            y_predicted_values.append(prediction)
+            ground_truths.append(truth)
 
     y_predicted_values = np.array(y_predicted_values)
     ground_truths = np.array(ground_truths)
