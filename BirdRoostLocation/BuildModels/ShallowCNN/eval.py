@@ -154,7 +154,7 @@ def eval(
     ) as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
         for i in range(len(predictions)):
-            writer.writerow([filenames[i], y[i], predictions[i]])
+            writer.writerow([filenames[i], y[i][0], predictions[i][0]])
 
     if problem == "detection":
         loss, acc = model.evaluate(x, y)
