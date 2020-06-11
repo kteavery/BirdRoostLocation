@@ -125,15 +125,8 @@ def eval(
                 problem,
             )
 
-            preds = np.array(
-                [
-                    np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])])
-                    for j in preds
-                ]
-            )
-            field_y = np.array(
-                [np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])]) for j in y]
-            )
+            preds = np.array([np.array([j, 1.0 - j]) for j in preds])
+            field_y = np.array([np.array([j, 1.0 - j]) for j in y])
 
             print(preds.shape)
             print(field_y.shape)
