@@ -107,7 +107,7 @@ def eval(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
                 converters={
-                    "predictions": lambda x: x.strip("[]").split("\s").remove("")
+                    "predictions": lambda x: x.strip("[]").split(" ").remove(" ")
                 },
             )["predictions"]
 
