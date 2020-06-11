@@ -114,7 +114,7 @@ def roc_curve_from_csv(curves):
         y_predicted_values,
         curves,
         title="Detection ROC Curve",
-        save_file="detection_roc.png",
+        save_file=settings.WORKING_DIRECTORY + "detection_roc.png",
     )
 
 
