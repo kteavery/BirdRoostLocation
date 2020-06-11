@@ -107,6 +107,7 @@ def eval(
 
         model.load_weights(log_path)
 
+        field_ys = np.array([])
         field_preds = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             preds = field_predict(
@@ -122,37 +123,27 @@ def eval(
                 coord_conv,
                 problem,
             )
-            print(preds.shape)
 
-            field_preds = np.append(
-                field_preds,
-                field_predict(
-                    x,
-                    settings.WORKING_DIRECTORY
-                    + "model/"
-                    + field
-                    + "/"
-                    + str(loadfile)
-                    + "/checkpoint/"
-                    + field
-                    + ".h5",
-                    coord_conv,
-                    problem,
-                ),
+            preds = np.array(
+                [
+                    np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])])
+                    for j in preds
+                ]
             )
-        field_preds = np.array(
-            [
-                np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])])
-                for j in field_preds
-            ]
-        )
-        y = np.array(
-            [np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])]) for j in y]
-        )
+            field_y = np.array(
+                [np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])]) for j in y]
+            )
+
+            print(preds.shape)
+            print(field_y.shape)
+
+            field_preds = np.append(field_preds, preds)
+            field_ys = np.append(field_ys, field_y)
+
         print(field_preds.shape)
-        print(y.shape)
+        print(field_ys.shape)
         field_preds = np.reshape(field_preds, (preds.shape[0], 4, 4))
-        y = np.reshape(y, (preds.shape[0], 4, 4))
+        y = np.reshape(field_ys, (preds.shape[0], 4, 4))
 
     ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
