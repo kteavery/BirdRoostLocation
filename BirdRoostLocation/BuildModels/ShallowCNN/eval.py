@@ -117,9 +117,12 @@ def eval(
             if field_preds.shape[0] < smallest:
                 smallest = field_preds.shape[0]
 
+        print(smallest)
         all_preds = np.array([])
+        print(len(all_fields))
         for field in all_fields:
-            np.append(all_preds, field[0:smallest])
+            print(field.shape)
+            all_preds = np.append(all_preds, field[0:smallest])
         all_preds = np.reshape(all_preds, (4, len(field_preds), 2))
 
         print(all_preds.shape)
