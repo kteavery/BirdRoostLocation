@@ -108,7 +108,7 @@ def eval(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
             )
-            field_preds = field_preds.loc[field_preds["column_name"].isin(filenames)]
+            field_preds = field_preds.loc[field_preds["filenames"].isin(filenames)]
             field_preds = field_preds["predictions"]
 
             print(field_preds.head())
@@ -120,10 +120,7 @@ def eval(
                 ]
             )
             y = np.array(
-                [
-                    np.array([np.array([k, 1.0 - k]), np.array([1.0 - k, k])])
-                    for k in y
-                ]
+                [np.array([np.array([k, 1.0 - k]), np.array([1.0 - k, k])]) for k in y]
             )
             print(field_preds.shape)
             all_fields.append(field_preds)
