@@ -106,7 +106,7 @@ def eval(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
             )["predictions"]
-            print(field.head())
+            print(field_preds.head())
             field_preds = field_preds.apply(np.array)
             field_preds = field_preds.to_numpy()
             all_fields.append(field_preds)
