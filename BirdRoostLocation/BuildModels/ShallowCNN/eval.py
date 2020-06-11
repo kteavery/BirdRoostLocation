@@ -140,8 +140,19 @@ def eval(
                     problem,
                 ),
             )
-
+        field_preds = np.array(
+            [
+                np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])])
+                for j in field_preds
+            ]
+        )
+        y = np.array(
+            [np.array([np.array([j, 1.0 - j]), np.array([1.0 - j, j])]) for j in y]
+        )
+        print(field_preds.shape)
+        print(y.shape)
         field_preds = np.reshape(field_preds, (preds.shape[0], 4, 4))
+        y = np.reshape(y, (preds.shape[0], 4, 4))
 
     ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
