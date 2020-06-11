@@ -102,17 +102,16 @@ def eval(
         model.load_weights(log_path)
 
         all_fields = []
-        # smallest = 100000
+        all_ys = []
+
+        smallest = 100000
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
             )
-            for filename in filenames:
-                field_preds = field_preds.loc[field_preds["filenames"] == filename]
-                if field_preds.empty:
-                    filenames = np.delete(filenames, np.where(filenames == filename))
             field_preds = field_preds["predictions"]
+            field_ys = field_preds["truth"]
 
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
@@ -127,20 +126,25 @@ def eval(
             )
             print(field_preds.shape)
             all_fields.append(field_preds)
-            # if field_preds.shape[0] < smallest:
-            #     smallest = field_preds.shape[0]
+            all_ys.append(field_ys)
 
-        # print(smallest)
-        # all_preds = np.array([])
+            if field_preds.shape[0] < smallest:
+                smallest = field_preds.shape[0]
+
+        print(smallest)
+        final_preds = np.array([])
+        final_ys = np.array([])
+
         print(len(all_fields))
-        # for field in all_fields:
-        #     print(field.shape)
-        #     all_preds = np.append(all_preds, field[0:smallest])
-        all_fields = np.reshape(all_fields, (all_fields.shape[1], 4, 4))
+        for i in range(len(all_fields)):
+            print(field.shape)
+            final_preds = np.append(final_preds, all_fields[i][0:smallest])
+            final_ys = np.append(final_ys, all_ys[i][0:smallest])
+        final_preds = np.reshape(final_preds, (smallest, 4, 4))
 
-        print(all_fields.shape)
+        print(final_preds.shape)
 
-        predictions = model.predict(all_fields)
+        predictions = model.predict(final_preds)
         print(y.shape)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
