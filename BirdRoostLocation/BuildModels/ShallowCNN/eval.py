@@ -102,12 +102,14 @@ def eval(
         model.load_weights(log_path)
 
         all_fields = []
-        smallest = 100000
+        # smallest = 100000
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             field_preds = pd.read_csv(
                 "true_predictions_" + field + str(loadfile) + ".csv",
                 names=["filenames", "truth", "predictions"],
-            )["predictions"]
+            )
+            field_preds = field_preds.loc[field_preds["column_name"].isin(filenames)]
+            field_preds = field_preds["predictions"]
 
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
@@ -117,22 +119,29 @@ def eval(
                     for x in field_preds
                 ]
             )
+            y = np.array(
+                [
+                    np.array([np.array([k, 1.0 - k]), np.array([1.0 - k, k])])
+                    for k in y
+                ]
+            )
             print(field_preds.shape)
             all_fields.append(field_preds)
-            if field_preds.shape[0] < smallest:
-                smallest = field_preds.shape[0]
+            # if field_preds.shape[0] < smallest:
+            #     smallest = field_preds.shape[0]
 
-        print(smallest)
+        # print(smallest)
         all_preds = np.array([])
         print(len(all_fields))
-        for field in all_fields:
-            print(field.shape)
-            all_preds = np.append(all_preds, field[0:smallest])
-        all_preds = np.reshape(all_preds, (smallest, 4, 4))
+        # for field in all_fields:
+        #     print(field.shape)
+        #     all_preds = np.append(all_preds, field[0:smallest])
+        all_preds = np.reshape(all_preds, (len(all_fields), 4, 4))
 
         print(all_preds.shape)
 
-        predictions = model.predict(all_preds)  ####
+        predictions = model.predict(all_preds)
+        print(y.shape)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
