@@ -111,13 +111,11 @@ def eval(
             print(field_preds.head())
             field_preds = field_preds.to_numpy()
             field_preds = np.array([np.array([x, 1.0 - x]) for x in field_preds])
-            print(field_preds[0:10])
+            print(field_preds.shape)
             all_fields.append(field_preds)
 
         all_fields = np.array(all_fields)
-        print(type(all_fields))
-        print(type(all_fields[0]))
-        print(all_fields[0])
+        print(all_fields.shape)
 
         predictions = model.predict(all_fields)  ####
 
