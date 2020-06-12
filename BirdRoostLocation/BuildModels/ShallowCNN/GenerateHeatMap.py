@@ -53,7 +53,7 @@ def create_heatmaps(log_path, radar_product, epoch=""):
     batch_generator = BatchGenerator.Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
-        default_batch_size=8,
+        default_batch_size=settings.DEFAULT_BATCH_SIZE,
     )
 
     save_file = ml_utils.KERAS_SAVE_FILE.format(radar_product.fullname, "{}")

@@ -31,7 +31,7 @@ class Batch_Generator:
         ml_split_csv,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=8,
+        default_batch_size=settings.DEFAULT_BATCH_SIZE,
         root_dir=utils.RADAR_IMAGE_DIR,
     ):
         self.label_dict = {}
@@ -525,7 +525,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         ml_split_csv,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=8,
+        default_batch_size=settings.DEFAULT_BATCH_SIZE,
         root_dir=utils.RADAR_IMAGE_DIR,
         high_memory_mode=False,
     ):
@@ -565,7 +565,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         self,
         ml_set,
         dualPol,
-        batch_size=8,
+        batch_size=settings.DEFAULT_BATCH_SIZE,
         radar_product=None,
         loaded_models=None,
         num_temporal_data=0,
