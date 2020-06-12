@@ -302,8 +302,9 @@ class Batch_Generator:
 
                 vconvert_to_cart = np.vectorize(convert_to_cart)
                 cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
-                # print(cart_x.shape)
-                # print(cart_y.shape)
+                print("cart shapes")
+                print(cart_x.shape)
+                print(cart_y.shape)
 
                 for k in range(cart_x.shape[0]):
                     # print("masks.shape")
@@ -323,6 +324,9 @@ class Batch_Generator:
                             x0=120 + int(round(cart_x[k][j])),
                         )
                         # print("color points")
+                        print("masks.shape")
+                        print(masks.shape)
+                        print(j)
                         for pt in color_pts:
                             masks[j][pt[0], pt[1]] = 1.0
                         # print("append to ground truth")
