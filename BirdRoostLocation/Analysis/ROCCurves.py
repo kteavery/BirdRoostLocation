@@ -24,6 +24,9 @@ def create_roc_curve(y_test, y_pred, y_label, title=None, save_file=None):
         print(i, y_test[i].shape)
         print(i, y_pred[i].shape)
         fpr[i], tpr[i], _ = roc_curve(y_test[i], y_pred[i])
+        # if np.isnan(np.array(fpr[i])).any():
+        #     fpr[i] = [1.0] * len(fpr[i])
+        #     fpr[i] = np.array(fpr[i])
         roc_auc[i] = auc(fpr[i], tpr[i])
 
     roc_plot(fpr, tpr, roc_auc, y_label, title, save_file)
@@ -38,25 +41,27 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
         y_label: Label for each ROC curve
     """
     # Plot all ROC curves
-    print(fpr)
-    print(tpr)
 
     markers = ["P", "<", "8", "d"]
     plt.figure(figsize=(5, 5))
+    print(tpr[2])
+    print(fpr[2])
 
     for i, label in zip(range(len(y_label)), y_label):
+        print(i)
+        print(label)
         plt.plot(
             fpr[i],
             tpr[i],
             lw=1.5,
             marker=markers[i],
             markersize=7,
-            markevery=0.08,
+            markevery=0.06,
             label="{0} (AUC = {1:0.2f})".format(label, roc_auc[i]),
         )
+        plt.show()
 
     plt.plot([0, 1], [0, 1], "k--", lw=2)
-    plt.savefig(save_file)
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.yticks(fontsize=13.5)
@@ -68,8 +73,8 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     else:
         plt.title("Detection - ROC curve", fontsize=14.5)
     plt.legend(loc="lower right", fontsize=11)
-    if save_file is not None:
-        plt.savefig(save_file)
+    # if save_file is not None:
+    #     plt.savefig(save_file)
     plt.show()
 
 
@@ -88,7 +93,7 @@ def roc_curve_from_csv(curves):
                 names=["filenames", "truth", "predictions"],
             )
 
-            print(df.head())
+            # print(df.head())
             truth = df["truth"]
             prediction = df["predictions"]
 
@@ -107,9 +112,15 @@ def roc_curve_from_csv(curves):
 
             y_predicted_values.append(prediction)
             ground_truths.append(truth)
+            print("APPENDED")
+            print(np.array(y_predicted_values).shape)
+            print(np.array(ground_truths).shape)
 
     y_predicted_values = np.array(y_predicted_values)
     ground_truths = np.array(ground_truths)
+    print(y_predicted_values.shape)
+    print(ground_truths.shape)
+    # print(ground_truths)
 
     create_roc_curve(
         ground_truths,
