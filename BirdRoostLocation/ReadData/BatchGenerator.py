@@ -288,8 +288,9 @@ class Batch_Generator:
                         int(len(all_thetas) / len(self.label_dict[filename])),
                     ),
                 )
-                # print(all_radii.shape)
-                # print(all_thetas.shape)
+                print("ALL RADII, ALL THETAS")
+                print(all_radii.shape)
+                print(all_thetas.shape)
                 masks = np.zeros((len(all_radii[0]), 240, 240))
                 if type(roost_size) != float or math.isnan(roost_size):
                     roost_size = 28.0
