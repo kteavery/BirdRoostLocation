@@ -198,6 +198,8 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
+                print(x)
+                print(y)
                 if type(x) != type(None) and type(y) != type(None):
                     print("X and Y shapes")
                     print(x.shape)
