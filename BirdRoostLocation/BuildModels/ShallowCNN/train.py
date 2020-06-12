@@ -198,10 +198,11 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
-                print("X and Y shapes")
-                print(x.shape)
-                print(y.shape)
-                if problem == "localization":
+                if type(x) != type(None) and type(y) != type(None):
+                    print("X and Y shapes")
+                    print(x.shape)
+                    print(y.shape)
+                if problem == "localization" and type(y) != type(None):
                     y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
 
             if model_name == utils.ML_Model.Shallow_CNN_All:
