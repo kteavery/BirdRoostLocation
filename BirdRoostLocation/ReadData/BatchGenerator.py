@@ -195,8 +195,12 @@ class Batch_Generator:
         # print(filenames)
         if images != []:
             print(filename)
+            len(self.label_dict[filename])
             print(polar_radius)
             print(polar_theta)
+            print(polar_radius[0])
+            print(polar_theta[0])
+
             # filenames.append(filename)
 
             # if np.array(train_data).size == 0:
