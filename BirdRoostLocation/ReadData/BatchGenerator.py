@@ -329,7 +329,10 @@ class Batch_Generator:
                         print(masks.shape)
                         print(j)
                         for pt in color_pts:
-                            masks[j][pt[0], pt[1]] = 1.0
+                            try:
+                                masks[j][pt[0], pt[1]] = 1.0
+                            except IndexError as e:
+                                print(e)
                         # print("append to ground truth")
                         # ground_truths = np.concatenate(
                         #     (ground_truths, mask), axis=0
