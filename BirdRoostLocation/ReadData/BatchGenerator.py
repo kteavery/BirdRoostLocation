@@ -483,8 +483,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 Labels.ML_Label(row["AWS_file"], row, self.root_dir, high_memory_mode)
             )
 
-            print('self.label_dict[row["AWS_file"]]')
-            print(self.label_dict[row["AWS_file"]])
+            # print('self.label_dict[row["AWS_file"]]')
+            # print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
         self,
