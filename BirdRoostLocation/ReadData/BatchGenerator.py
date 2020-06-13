@@ -248,6 +248,8 @@ class Batch_Generator:
                             train_data = np.concatenate(
                                 (train_data, np.array(images)), axis=0
                             )
+                        print("add images to train_data")
+                        print(train_data.shape)
 
                         # print("train_data.shape - problem?")
                         # print(train_data.shape)
@@ -325,9 +327,9 @@ class Batch_Generator:
                             x0=120 + int(round(cart_x[k][j])),
                         )
                         # print("color points")
-                        print("masks.shape")
-                        print(masks.shape)
-                        print(j)
+                        # print("masks.shape")
+                        # print(masks.shape)
+                        # print(j)
                         for pt in color_pts:
                             try:
                                 masks[j][pt[0], pt[1]] = 1.0
@@ -389,11 +391,16 @@ class Batch_Generator:
                                 ground_truths,
                                 images,
                             )
-                            # print(np.array(train_data).shape)
-                            # print(np.array(ground_truths).shape)
+                            print(
+                                "train data shape, ground truth shape, len images, filename"
+                            )
+                            print(np.array(train_data).shape)
+                            print(np.array(ground_truths).shape)
                             extended_filenames = np.append(
                                 extended_filenames, np.array([filename] * len(images))
                             )
+                            print(len(images))
+                            print([filename])
                     # print(filenames)
         else:
             for filename in filenames:
@@ -476,7 +483,8 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 Labels.ML_Label(row["AWS_file"], row, self.root_dir, high_memory_mode)
             )
 
-            # print(self.label_dict[row["AWS_file"]])
+            print("self.label_dict[row["AWS_file"]]")
+            print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
         self,
