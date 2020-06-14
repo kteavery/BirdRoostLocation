@@ -85,8 +85,8 @@ def combineN(inputDF):
                     df["latitude"][i] = lat
                     df["longitude"][i] = long
                     df = df.drop(j)
-                except KeyError:
-                    continue
+                except KeyError as e:
+                    print(e)
     # print(inputDF.head())
     # print(df.head())
 
@@ -107,8 +107,9 @@ def processLabels(labels):
 
     # print(falses.head())
 
-    newLabels = trues.groupby(trues["AWS_file"].str[:12]).apply(combineN)
-    # print(newLabels)
+    # newLabels = trues.groupby(trues["AWS_file"].str[:12]).apply(combineN)
+    newLabels = combineN(trues)
+    print(newLabels.head())
 
     return newLabels
 
@@ -150,6 +151,7 @@ def copySameLabels(labels):
 
 def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
+    lables = labels.sort_values(by=["AWS_file"])
     # newLabels = processLabels(labels)
     # latLongLabels = convertLatLong(newLabels)
     # extendedLabels = copySameLabels(labels)

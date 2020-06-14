@@ -178,8 +178,8 @@ class Batch_Generator:
             float(self.label_dict[filename][i].radius)
             for i in range(len(self.label_dict[filename]))
         ]
-        print("len(self.label_dict[filename])")
-        print(len(self.label_dict[filename]))
+        # print("len(self.label_dict[filename])")
+        # print(len(self.label_dict[filename]))
 
         # print(self.label_dict[filename].images[radar_product])
         # print(len(indices))
@@ -328,7 +328,7 @@ class Batch_Generator:
                             #     (ground_truths, mask), axis=0
                             # )
                         except IndexError as e:
-                            print(e)
+                            pass
 
                 if np.array(train_data).size == 0:
                     train_data = images
@@ -389,16 +389,14 @@ class Batch_Generator:
                                 ground_truths,
                                 images,
                             )
-                            print(
-                                "train data shape, ground truth shape, len images, filename"
-                            )
+                            print("train data shape, ground truth shape, len images")
                             print(np.array(train_data).shape)
                             print(np.array(ground_truths).shape)
                             extended_filenames = np.append(
                                 extended_filenames, np.array([filename] * len(images))
                             )
                             print(len(images))
-                            print([filename])
+                            # print([filename])
                     # print(filenames)
         else:
             for filename in filenames:
@@ -675,8 +673,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     predictions,
                     (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
                 )
+                print("predictions shape")
                 print(predictions.shape)
-                print(predictions)
+                # print(predictions)
             except Exception as e:
                 print(e)
                 return None, None, None, None
