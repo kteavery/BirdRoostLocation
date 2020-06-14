@@ -241,16 +241,6 @@ class Batch_Generator:
                     if not np.isnan(np.sum(radii)):
                         mask_radii = [(radius / 300) * (240 / 2) for radius in radii]
 
-                        if np.array(train_data).size == 0:
-                            train_data = images
-                            train_data = np.array(train_data)
-                        else:
-                            train_data = np.concatenate(
-                                (train_data, np.array(images)), axis=0
-                            )
-                        print("add images to train_data")
-                        print(train_data.shape)
-
                         # print("train_data.shape - problem?")
                         # print(train_data.shape)
 
@@ -340,16 +330,24 @@ class Batch_Generator:
                         #     (ground_truths, mask), axis=0
                         # )
 
-                    print("masks.shape")
-                    print(masks.shape)
-                    if np.array(ground_truths).size == 0:
-                        ground_truths = masks
-                    else:
-                        ground_truths = np.concatenate((ground_truths, masks), axis=0)
-                    print("ground_truths")
-                    print(ground_truths.shape)
-                    print("train_shape")
-                    print(train_data.shape)
+                if np.array(train_data).size == 0:
+                    train_data = images
+                    train_data = np.array(train_data)
+                else:
+                    train_data = np.concatenate((train_data, np.array(images)), axis=0)
+                print("add images to train_data")
+                print(train_data.shape)
+
+                print("masks.shape")
+                print(masks.shape)
+                if np.array(ground_truths).size == 0:
+                    ground_truths = masks
+                else:
+                    ground_truths = np.concatenate((ground_truths, masks), axis=0)
+                print("ground_truths")
+                print(ground_truths.shape)
+                print("train_shape")
+                print(train_data.shape)
 
         # print("train_data.shape")
         train_data = np.array(train_data)
