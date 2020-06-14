@@ -304,31 +304,31 @@ class Batch_Generator:
                     # print(masks.shape)
 
                     for j in range(cart_x.shape[1]):
-                        # print(cart_y.shape)
-                        # print(cart_x.shape)
-                        masks[j][
-                            120 - int(round(cart_y[k][j])),
-                            120 + int(round(cart_x[k][j])),
-                        ] = 1.0
+                        try:
+                            # print(cart_y.shape)
+                            # print(cart_x.shape)
+                            masks[j][
+                                120 - int(round(cart_y[k][j])),
+                                120 + int(round(cart_x[k][j])),
+                            ] = 1.0
 
-                        color_pts = points_in_circle_np(
-                            mask_roost_size,
-                            y0=120 - int(round(cart_y[k][j])),
-                            x0=120 + int(round(cart_x[k][j])),
-                        )
-                        # print("color points")
-                        # print("masks.shape")
-                        # print(masks.shape)
-                        # print(j)
-                        for pt in color_pts:
-                            try:
+                            color_pts = points_in_circle_np(
+                                mask_roost_size,
+                                y0=120 - int(round(cart_y[k][j])),
+                                x0=120 + int(round(cart_x[k][j])),
+                            )
+                            # print("color points")
+                            # print("masks.shape")
+                            # print(masks.shape)
+                            # print(j)
+                            for pt in color_pts:
                                 masks[j][pt[0], pt[1]] = 1.0
-                            except IndexError as e:
-                                print(e)
-                        # print("append to ground truth")
-                        # ground_truths = np.concatenate(
-                        #     (ground_truths, mask), axis=0
-                        # )
+                            # print("append to ground truth")
+                            # ground_truths = np.concatenate(
+                            #     (ground_truths, mask), axis=0
+                            # )
+                        except IndexError as e:
+                            print(e)
 
                 if np.array(train_data).size == 0:
                     train_data = images
