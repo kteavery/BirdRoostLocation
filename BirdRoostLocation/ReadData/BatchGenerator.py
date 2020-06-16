@@ -678,7 +678,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             try:
                 predictions = np.reshape(
                     predictions,
-                    (np.array(truth_list).shape[1], np.array(truth_list).shape[2], 2),
+                    (np.array(truth_list).shape[1], np.array(truth_list).shape[2]),
                 )
                 print("predictions shape")
                 print(predictions.shape)
