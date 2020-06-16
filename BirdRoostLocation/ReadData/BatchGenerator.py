@@ -610,16 +610,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         pred_list = []
         file_list = []
 
-        if dualPol:
-            radar_products = [
-                utils.Radar_Products.cc,
-                utils.Radar_Products.diff_reflectivity,
-                utils.Radar_Products.reflectivity,
-                utils.Radar_Products.velocity,
-            ]
-
-        else:
-            radar_products = utils.Legacy_radar_products
+        radar_products = [
+            utils.Radar_Products.cc,
+            utils.Radar_Products.diff_reflectivity,
+            utils.Radar_Products.reflectivity,
+            utils.Radar_Products.velocity,
+        ]
 
         for k, radar_product in enumerate(radar_products):
             print(radar_product)
@@ -653,8 +649,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 train_batch = np.array(train_batch)
 
-                print("train_batch.shape")
-                print(train_batch.shape)
+                # print("train_batch.shape")
+                # print(train_batch.shape)
                 if len(train_batch) > 0:
                     pred = loaded_models[k].predict_proba(train_batch)
                     # if len(predictions) == 0:
@@ -677,8 +673,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(np.array(truth_list).shape)
             try:
                 predictions = np.reshape(
-                    predictions,
-                    (np.array(truth_list).shape[1], np.array(truth_list).shape[2]),
+                    predictions, (np.array(truth_list).shape[1], 2)
                 )
                 print("predictions shape")
                 print(predictions.shape)
@@ -693,6 +688,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(predictions.shape)
 
             pred_list.append(predictions)
+            print("len of pred_list")
+            print(len(pred_list))
 
             # print(np.array(train_list).shape)
             # print(np.array(truth_list).shape)
