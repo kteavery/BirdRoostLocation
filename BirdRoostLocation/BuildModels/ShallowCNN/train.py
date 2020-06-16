@@ -259,8 +259,8 @@ def train(
                 )
             )
         else:
-            # print(train_logs)
-            # print(type(train_logs))
+            print(train_logs)
+            print(type(train_logs))
             # print(train_logs[0])
             # print(train_logs[1])
 
@@ -309,27 +309,27 @@ def train(
         if batch_no % eval_increment == 0:
             # currentDT = datetime.datetime.now()
             # model.save_weights(log_path + "weights" + save_file.format(""))
-
-            if model_name == utils.ML_Model.Shallow_CNN_All:
-                print("before batch gen")
-                _, y_, x_, _ = batch_generator.get_batch(
-                    ml_set=utils.ML_Set.validation,
-                    dualPol=dual_pol,
-                    radar_product=radar_product,
-                    loaded_models=loaded_models,
-                    num_temporal_data=num_temporal_data,
-                )
-                print("batch gen created")
-            else:
-                x_, y_, _ = batch_generator.get_batch(
-                    ml_set=utils.ML_Set.validation,
-                    dualPol=dual_pol,
-                    radar_product=radar_product,
-                    num_temporal_data=num_temporal_data,
-                    model_type=model_type,
-                    problem=problem,
-                )
             try:
+                if model_name == utils.ML_Model.Shallow_CNN_All:
+                    print("before batch gen")
+                    _, y_, x_, _ = batch_generator.get_batch(
+                        ml_set=utils.ML_Set.validation,
+                        dualPol=dual_pol,
+                        radar_product=radar_product,
+                        loaded_models=loaded_models,
+                        num_temporal_data=num_temporal_data,
+                    )
+                    print("batch gen created")
+                else:
+                    x_, y_, _ = batch_generator.get_batch(
+                        ml_set=utils.ML_Set.validation,
+                        dualPol=dual_pol,
+                        radar_product=radar_product,
+                        num_temporal_data=num_temporal_data,
+                        model_type=model_type,
+                        problem=problem,
+                    )
+
                 if problem == "localization":
                     y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
                 else:  # detection
@@ -378,8 +378,8 @@ def train(
                     # print(np.array(y).shape)
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
-                    # print(val_logs)
-                    # print(len(val_logs))
+                    print(val_logs)
+                    print(len(val_logs))
                     if len(val_logs) == 4:
                         with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                             val_writer = csv.writer(
@@ -423,6 +423,7 @@ def train(
                             )
                         )
                 x_, y_, x, y = [None] * 4
+                print("completed validation")
 
             except Exception as e:
                 print(e)
