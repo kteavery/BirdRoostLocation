@@ -21,21 +21,26 @@ def points_in_circle_np(radius, y0=0, x0=0):
 
 def visualizeMask(truth):
     mask = np.zeros((240, 240))
-    mask_roost_size = (truth[1] / 300) * (240 / 2)
 
-    cartx = mask_roost_size * math.cos(truth[0])
-    carty = mask_roost_size * math.sin(truth[0])
+    for roost in truth:
+        try:
+            mask_roost_size = (roost[1] / 300) * (240 / 2)
 
-    mask[120 - int(round(carty)), 120 + int(round(cartx))] = 1.0
+            cartx = mask_roost_size * math.cos(roost[0])
+            carty = mask_roost_size * math.sin(roost[0])
 
-    print(str(120 - int(round(carty))) + ", " + str(120 + int(round(cartx))))
+            mask[120 - int(round(carty)), 120 + int(round(cartx))] = 1.0
 
-    color_pts = points_in_circle_np(
-        mask_roost_size, y0=120 - int(round(carty)), x0=120 + int(round(cartx))
-    )
+            print(str(120 - int(round(carty))) + ", " + str(120 + int(round(cartx))))
 
-    for pt in color_pts:
-        mask[pt[0], pt[1]] = 1.0
+            color_pts = points_in_circle_np(
+                28.0, y0=120 - int(round(carty)), x0=120 + int(round(cartx))
+            )
+
+            for pt in color_pts:
+                mask[pt[0], pt[1]] = 1.0
+        except IndexError as e:
+            pass
 
     np.set_printoptions(threshold=sys.maxsize)
     img = Image.fromarray((mask * 255).astype("uint8"), "L")
@@ -127,113 +132,67 @@ if __name__ == "__main__":
         "_flip_315",
     ]
 
-    KEVXradius = [
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-        0.10477419878244053,
-    ]
-    KEVXtheta = [
-        219.04207776024253,
-        320.95792223975747,
-        320.95792223975747,
-        219.04207776024253,
-        264.04207776024253,
-        264.04207776024253,
-        365.95792223975747,
-        309.04207776024253,
-        309.04207776024253,
-        410.95792223975747,
-        354.04207776024253,
-        354.04207776024253,
-        455.95792223975747,
-        399.04207776024253,
-        399.04207776024253,
-        500.95792223975747,
-        444.04207776024253,
-        444.04207776024253,
-        545.9579222397574,
-        489.04207776024253,
-        489.04207776024253,
-        590.9579222397574,
-        534.0420777602426,
-        534.0420777602426,
-        635.9579222397574,
-    ]
+    # KEVXtheta = [
+    #     219.04207776024253,
+    #     320.95792223975747,
+    #     320.95792223975747,
+    #     219.04207776024253,
+    #     264.04207776024253,
+    #     264.04207776024253,
+    #     365.95792223975747,
+    #     309.04207776024253,
+    #     309.04207776024253,
+    #     410.95792223975747,
+    #     354.04207776024253,
+    #     354.04207776024253,
+    #     455.95792223975747,
+    #     399.04207776024253,
+    #     399.04207776024253,
+    #     500.95792223975747,
+    #     444.04207776024253,
+    #     444.04207776024253,
+    #     545.9579222397574,
+    #     489.04207776024253,
+    #     489.04207776024253,
+    #     590.9579222397574,
+    #     534.0420777602426,
+    #     534.0420777602426,
+    #     635.9579222397574,
+    # ]
 
-    for i, suffix in enumerate(suffixes):
-        visualizeMask((math.radians(KEVXtheta[i]), KEVXradius[i] * 300))
+    # KEVXradius = [0.10477419878244053] * len(KEVXradius)
 
-        visualizeResults(
-            "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
-            + suffix
-            + ".png",
-            (math.radians(KEVXtheta[i]), KEVXradius[i] * 300),
-            (0, 0),
-            "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
-            + suffix
-            + ".png",
-        )
+    # labels = pandas.read_csv(
+    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar_short.csv"
+    # )
+    # KEVXrows = labels.loc[labels["AWS_file"] == "KEVX20130724_110326_V06"]
+    # points = [
+    #     (math.radians(float(row["polar_theta"])), float(row["polar_radius"]))
+    #     for index, row in KEVXrows.iterrows()
+    # ]
 
-    # for i in range(len(df)):
-    #     aws_file = df["AWS_file"].iloc[[i]]
-    #     theta = df["polar_theta"].iloc[[i]]
-    #     radius = df["polar_radius"].iloc[[i]]
+    # for i, suffix in enumerate(suffixes):
+    visualizeMask(
+        [
+            (math.radians(-170.64540477317283), 117.24481269235102),
+            (math.radians(22.59922891088621), 45.08385832876151),
+            (math.radians(-117.54880097214688), 209.08349349634045),
+            (math.radians(27.962537078732918), 77.59194126687083),
+            (math.radians(69.36764465370331), 44.429575689160735),
+            (math.radians(24.688976464036585), 62.21669720022375),
+            (math.radians(-167.3837851418881), 111.04753441365965),
+            (math.radians(-131.0324743950738), 135.50595496468856),
+            (math.radians(-146.13241503834084), 84.09156632237392),
+        ]
+    )
 
-    #     for field in fields:
-    #         full_path = (
-    #             "/Users/Kate/workspace/BirdRoostLocation/MLData/highlights/Roost_"
-    #             + field
-    #             + "/"
-    #             # + aws_file[i][10:12]
-    #             + aws_file[i]
-    #             + "_"
-    #             + field
-    #             + ".png"
-    #         )
-    #         save_path = (
-    #             "/Users/Kate/workspace/BirdRoostLocation/MLData/all_true_data/Roost_"
-    #             + field
-    #             + "/"
-    #             # + aws_file[i][10:12]
-    #             + aws_file[i]
-    #             + "_"
-    #             + field
-    #             + ".png"
-    #         )
-    #         try:
-    #             print(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
-    #             print((math.radians(theta[i] + 180), radius[i]))
-    #             print((theta[i], radius[i]))
-    #             print(full_path)
-    #             if os.path.isfile(full_path):
-    #                 visualizeResults(
-    #                     full_path,
-    #                     # (math.radians(float(truth[1])), float(truth[0])),
-    #                     (math.radians(theta[i] + 180), radius[i]),
-    #                     (math.radians(theta[i]), radius[i]),
-    #                     save_path,
-    #                 )
-    #         except:
-    #             print(aws_file[i] + " was passed")
+    # visualizeResults(
+    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
+    #     + suffix
+    #     + ".png",
+    #     (math.radians(points[i]), points[i]),
+    #     (0, 0),
+    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
+    #     + suffix
+    #     + ".png",
+    # )
