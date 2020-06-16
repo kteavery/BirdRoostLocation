@@ -658,7 +658,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     #     print(predictions.shape)
                     # else:
                     # print(np.array([pred, 1 - pred]).shape)
-                    print(np.array(pred).shape)
+                    # print(np.array(pred).shape)
                     # pred_shape = pred.shape
                     # predictions = np.append(predictions, np.array([pred, 1 - pred]))
                     # predictions = np.reshape(predictions, (pred_shape[0], 2))
