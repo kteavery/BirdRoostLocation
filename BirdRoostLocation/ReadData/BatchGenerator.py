@@ -196,10 +196,10 @@ class Batch_Generator:
         if images != []:
             print(filename)
             len(self.label_dict[filename])
-            print(polar_radius)
-            print(polar_theta)
-            print(polar_radius[0])
-            print(polar_theta[0])
+            # print(polar_radius)
+            # print(polar_theta)
+            # print(polar_radius[0])
+            # print(polar_theta[0])
 
             # filenames.append(filename)
 
@@ -231,6 +231,9 @@ class Batch_Generator:
                         ),
                         axis=0,
                     )
+                print("ground truths shape")
+                print(np.array(ground_truths).shape)
+
             else:  # localization
                 all_radii = np.array([])
                 all_thetas = np.array([])
@@ -349,9 +352,9 @@ class Batch_Generator:
                 print("train_shape")
                 print(train_data.shape)
 
-        # print("train_data.shape")
+        print("train_data.shape")
         train_data = np.array(train_data)
-        # print(train_data.shape)
+        print(train_data.shape)
         return train_data, ground_truths
 
     def single_product_batch_params(
@@ -395,14 +398,14 @@ class Batch_Generator:
                             extended_filenames = np.append(
                                 extended_filenames, np.array([filename] * len(images))
                             )
-                            print(len(images))
+                            # print(len(images))
                             # print([filename])
                     # print(filenames)
         else:
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
-                print("LEN IMAGES")
-                print(len(images))
+                # print("LEN IMAGES")
+                # print(len(images))
                 if images != []:
                     train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                         self,
