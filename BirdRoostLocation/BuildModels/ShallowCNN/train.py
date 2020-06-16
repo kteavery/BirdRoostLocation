@@ -311,6 +311,7 @@ def train(
             # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
                 if model_name == utils.ML_Model.Shallow_CNN_All:
+                    print("before batch gen")
                     _, y_, x_, _ = batch_generator.get_batch(
                         ml_set=utils.ML_Set.validation,
                         dualPol=dual_pol,
@@ -318,6 +319,7 @@ def train(
                         loaded_models=loaded_models,
                         num_temporal_data=num_temporal_data,
                     )
+                    print("batch gen created")
                 else:
                     x_, y_, _ = batch_generator.get_batch(
                         ml_set=utils.ML_Set.validation,
@@ -332,25 +334,27 @@ def train(
                     y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
                 else:  # detection
                     if model_name == utils.ML_Model.Shallow_CNN_All:
-                        # print("x_.shape")
+                        print("x_.shape")
                         x_ = np.reshape(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2] * x_.shape[3])
                         )
-                        # print(x_.shape)
-                        # print("y_.shape")
+                        print(x_.shape)
+                        print("y_.shape")
                         y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
-                        # print(y_.shape)
+                        print(y_.shape)
                     else:
                         # print("y_.shape")
                         y_ = np.reshape(y_, (x_.shape[0], 2))
                         # print(y_.shape)
 
-                # print("BEFORE model.test_on_batch")
+                print("BEFORE model.test_on_batch")
                 val_logs = model.test_on_batch(x_, y_)
-                # print("AFTER model.test_on_batch")
+                print("AFTER model.test_on_batch")
 
                 # ml_utils.write_log(callback, val_names, val_logs, batch_no)
 
+                print("problem == detection")
+                print(problem)
                 if problem == "detection":
                     with open(checkpoint_path + "val_log.csv", "a") as csvfile:
                         val_writer = csv.writer(

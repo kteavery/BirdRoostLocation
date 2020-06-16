@@ -167,6 +167,9 @@ def eval(
         "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
     ) as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
+        print(np.array(filenames).shape)
+        print(np.array(y).shape)
+        print(np.array(predictions).shape)
         for i in range(len(predictions)):
             writer.writerow([filenames[i], y[i][0], predictions[i][0]])
 
