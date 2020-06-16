@@ -418,9 +418,9 @@ class Batch_Generator:
                         ground_truths,
                         images,
                     )
-                    extended_filenames = np.append(
-                        extended_filenames, np.array([filename] * len(images))
-                    )
+
+                    ### !!!!
+                    extended_filenames = np.append(extended_filenames, filename)
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
