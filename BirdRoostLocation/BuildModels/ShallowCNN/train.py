@@ -157,7 +157,7 @@ def train(
         else:
             print("creating model")
             model = Sequential()
-            model.add(Dense(256, input_shape=(4, 4), activation="relu"))
+            model.add(Dense(256, input_shape=(4, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
@@ -218,7 +218,7 @@ def train(
                 if type(x) != type(None) and type(y) != type(None):
                     print(x.shape)
                     print(y.shape)
-                    x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2] * x.shape[3]))
+                    x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2]))
                     y = np.reshape(y, (y.shape[1], y.shape[0], y.shape[2]))
                     print("train.py - x and y shapes")
                     print(x.shape)
