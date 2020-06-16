@@ -662,7 +662,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     #     print(predictions.shape)
                     # else:
                     # print(np.array([pred, 1 - pred]).shape)
+                    pred_len = len(predictions)
                     predictions = np.append(predictions, np.array([pred, 1 - pred]))
+                    np.reshape(predictions, (pred_len, 2))
                     print("predictions.shape")
                     print(predictions.shape)
 
