@@ -622,9 +622,9 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             radar_products = utils.Legacy_radar_products
 
         for k, radar_product in enumerate(radar_products):
-            # print(radar_product)
-            # print("BEFORE")
-            # print(filenames)
+            print(radar_product)
+            print("BEFORE")
+            print(filenames)
             train, truth, filenames = Batch_Generator.single_product_batch_params(
                 self,
                 ground_truths,
@@ -667,8 +667,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     # predictions = np.append(predictions, np.array([pred, 1 - pred]))
                     # predictions = np.reshape(predictions, (pred_shape[0], 2))
                     predictions = np.append(predictions, np.array(pred))
-                    print("predictions.shape")
-                    print(predictions.shape)
+                    # print("predictions.shape")
+                    # print(predictions.shape)
 
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
@@ -699,11 +699,11 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             # print(np.array(pred_list).shape)
             # print(np.array(file_list).shape)
 
-        # print("train_list, truth_list, pred_list, file_list")
-        # print(np.array(train_list).shape)
-        # print(np.array(truth_list).shape)
-        # print(np.array(pred_list).shape)
-        # print(np.array(file_list).shape)
+        print("train_list, truth_list, pred_list, file_list")
+        print(np.array(train_list).shape)
+        print(np.array(truth_list).shape)
+        print(np.array(pred_list).shape)
+        print(np.array(file_list).shape)
 
         return (
             np.array(train_list),
