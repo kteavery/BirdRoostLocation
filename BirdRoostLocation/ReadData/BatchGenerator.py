@@ -397,7 +397,14 @@ class Batch_Generator:
                             print(np.array(ground_truths).shape)
 
                             #### !!!!
-                            extended_filenames = np.append(extended_filenames, filename)
+                            if model_type == "shallow_cnn":
+                                extended_filenames = np.append(
+                                    extended_filenames, filename
+                                )
+                            else:  # unet
+                                extended_filenames = np.append(
+                                    extended_filenames, [filename] * len(train_data)
+                                )
                             # print(len(images))
                             # print([filename])
                     # print(filenames)
@@ -420,7 +427,12 @@ class Batch_Generator:
                     )
 
                     ### !!!!
-                    extended_filenames = np.append(extended_filenames, filename)
+                    if model_type == "shallow_cnn":
+                        extended_filenames = np.append(extended_filenames, filename)
+                    else:  # unet
+                        extended_filenames = np.append(
+                            extended_filenames, [filename] * len(train_data)
+                        )
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
