@@ -195,7 +195,7 @@ class Batch_Generator:
         # print(filenames)
         if images != []:
             print(filename)
-            len(self.label_dict[filename])
+            print(len(self.label_dict[filename]))
             # print(polar_radius)
             # print(polar_theta)
             # print(polar_radius[0])
@@ -395,9 +395,9 @@ class Batch_Generator:
                             print("train data shape, ground truth shape, len images")
                             print(np.array(train_data).shape)
                             print(np.array(ground_truths).shape)
-                            extended_filenames = np.append(
-                                extended_filenames, np.array([filename] * len(images))
-                            )
+
+                            #### !!!!
+                            extended_filenames = np.append(extended_filenames, filename)
                             # print(len(images))
                             # print([filename])
                     # print(filenames)
