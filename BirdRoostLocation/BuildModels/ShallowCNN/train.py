@@ -146,6 +146,7 @@ def train(
             ml_split_csv=settings.ML_SPLITS_DATA,
             high_memory_mode=high_memory_mode,
         )
+
         if model_type == "unet":
             model = unet.build_model(
                 inputDimensions=(240, 240, 1),
@@ -154,6 +155,7 @@ def train(
                 problem=problem,
             )
         else:
+            print("creating model")
             model = Sequential()
             model.add(Dense(256, input_shape=(4, 4), activation="relu"))
             model.add(Dense(2, activation="softmax"))
