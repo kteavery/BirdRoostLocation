@@ -35,17 +35,6 @@ from keras.layers import Dense
 import keras
 
 
-def field_predict(x, log_path, coord_conv, problem):
-    model = ml_model.build_model(
-        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
-    )
-
-    model.load_weights(log_path)
-    predictions = model.predict(x)
-
-    return predictions
-
-
 def eval(
     log_path,
     radar_product,
@@ -93,7 +82,12 @@ def eval(
             print(e)
 
     if model_name == utils.ML_Model.Shallow_CNN:
-        predictions = field_predict(x, log_path, coord_conv, problem)
+        model = ml_model.build_model(
+            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+        )
+
+        model.load_weights(log_path)
+        predictions = model.predict(x)
 
     else:
         model = Sequential()
@@ -111,8 +105,7 @@ def eval(
         field_preds = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             print(field)
-            preds = field_predict(
-                x,
+            model.load_weights(
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + field
@@ -120,10 +113,9 @@ def eval(
                 + str(loadfile)
                 + "/checkpoint/"
                 + field
-                + ".h5",
-                coord_conv,
-                problem,
+                + ".h5"
             )
+            preds = model.predict(x)
 
             preds = np.array([np.array([j, 1.0 - j]) for j in preds])
             field_y = np.array([np.array([j, 1.0 - j]) for j in y])
