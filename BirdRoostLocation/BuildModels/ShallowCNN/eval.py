@@ -35,6 +35,17 @@ from keras.layers import Dense
 import keras
 
 
+def field_predict(x, log_path, coord_conv, problem):
+    model = ml_model.build_model(
+        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+    )
+
+    model.load_weights(log_path)
+    predictions = model.predict(x)
+
+    return predictions
+
+
 def eval(
     log_path,
     radar_product,
@@ -82,30 +93,26 @@ def eval(
             print(e)
 
     if model_name == utils.ML_Model.Shallow_CNN:
-        model = ml_model.build_model(
-            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
-        )
-
-        model.load_weights(log_path)
-        predictions = model.predict(x)
+        predictions = field_predict(x, log_path, coord_conv, problem)
 
     else:
-        model = Sequential()
-        model.add(Dense(256, input_shape=(4, 2), activation="relu"))
-        model.add(Dense(2, activation="softmax"))
-        model.compile(
+        agg_model = Sequential()
+        agg_model.add(Dense(256, input_shape=(4, 2), activation="relu"))
+        agg_model.add(Dense(2, activation="softmax"))
+        agg_model.compile(
             loss=keras.losses.categorical_crossentropy,
             optimizer=keras.optimizers.adam(lr),
             metrics=["accuracy"],
         )
 
-        model.load_weights(log_path)
+        agg_model.load_weights(log_path)
 
         field_ys = np.array([])
         field_preds = np.array([])
         for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
             print(field)
-            model.load_weights(
+            preds = field_predict(
+                x,
                 settings.WORKING_DIRECTORY
                 + "model/"
                 + field
@@ -113,9 +120,10 @@ def eval(
                 + str(loadfile)
                 + "/checkpoint/"
                 + field
-                + ".h5"
+                + ".h5",
+                coord_conv,
+                problem,
             )
-            preds = model.predict(x)
 
             preds = np.array([np.array([j, 1.0 - j]) for j in preds])
             field_y = np.array([np.array([j, 1.0 - j]) for j in y])
