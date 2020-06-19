@@ -136,7 +136,8 @@ def eval(
 
         print(field_preds.shape)
         print(field_ys.shape)
-        predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+        predictions = agg_model.predict(np.reshape(field_preds, (preds.shape[0], 4, 4)))
+        # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
         y = np.reshape(field_ys, (preds.shape[0], 4, 4))
 
     ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
