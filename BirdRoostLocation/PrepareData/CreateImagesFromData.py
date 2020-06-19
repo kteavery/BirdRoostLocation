@@ -74,8 +74,8 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
                 ],
             )
 
-        file.close() 
-        
+        file.close()
+
         saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
 
 
@@ -175,7 +175,7 @@ def main(results):
         saveDir=utils.RADAR_IMAGE_DIR,
         radarFilePath="radarfiles/",
     )
-    """aws_files = []
+    aws_files = []
     for file in glob.glob(utils.RADAR_IMAGE_DIR + "/2019radarfiles/" + "*.gz"):
         if file[-6:-3] != "MDM" and not os.path.isfile(
             utils.RADAR_IMAGE_DIR + "/2019images/" + file[-26:-3] + ".png"
@@ -186,14 +186,14 @@ def main(results):
     # print(aws_files)
     print(len(aws_files))
 
-    createWithoutCSV(
-        fileNames=aws_files,
-        saveDir=utils.RADAR_IMAGE_DIR,
-        radarFilePath="2019radarfiles/",
-    )"""
+    # createWithoutCSV(
+    #     fileNames=aws_files,
+    #     saveDir=utils.RADAR_IMAGE_DIR,
+    #     radarFilePath="2019radarfiles/",
+    # )
     try:
         createWithoutCSV(
-            fileNames=aws_files[748:],
+            fileNames=aws_files,
             saveDir=utils.RADAR_IMAGE_DIR,
             radarFilePath="2019radarfiles/",
         )

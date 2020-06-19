@@ -12,7 +12,7 @@ import BirdRoostLocation.PrepareData.PyartConfig as pyart_config
 vel = pyart_config.DEFAULT_FIELD_LIMITS.get("velocity")
 
 plot_dict = {
-    utils.Radar_Products.reflectivity: [-30, 75, "pyart_NWSRef"],
+    utils.Radar_Products.reflectivity: [-10, 30, "pyart_NWSRef"],
     utils.Radar_Products.velocity: [vel()[0], vel()[1], "pyart_BuDRd18"],
     utils.Radar_Products.diff_reflectivity: [-1, 8, "pyart_RefDiff"],
     utils.Radar_Products.cc: [0.5, 1.05, "pyart_RefDiff"],
