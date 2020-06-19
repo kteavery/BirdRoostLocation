@@ -125,20 +125,21 @@ def eval(
                 problem,
             )
 
-            preds = np.array([np.array([j, 1.0 - j]) for j in preds])
-            field_y = np.array([np.array([j, 1.0 - j]) for j in y])
+            preds_corr = np.array([np.array([j, 1.0 - j]) for j in preds])
+            field_y_corr = np.array([np.array([j, 1.0 - j]) for j in y])
 
-            print(preds.shape)
-            print(field_y.shape)
+            print(preds_corr[0])
+            print(preds_corr.shape)
+            print(field_y_corr.shape)
 
             field_preds = np.append(field_preds, preds)
-            field_ys = np.append(field_ys, field_y)
+            field_ys = np.append(field_ys, y)
 
         print(field_preds.shape)
         print(field_ys.shape)
-        predictions = agg_model.predict(np.reshape(field_preds, (preds.shape[0], 4, 4)))
+        predictions = agg_model.predict(np.reshape(field_preds, (preds.shape[0], 4, 2)))
         # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-        y = np.reshape(field_ys, (preds.shape[0], 4, 4))
+        y = np.reshape(field_ys, (preds.shape[0], 4, 2))
 
     ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
