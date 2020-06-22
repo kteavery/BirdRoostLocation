@@ -132,6 +132,9 @@ def eval(
             print(preds_corr.shape)
             print(field_y_corr.shape)
 
+            print(field_preds.shape)
+            print(field_ys.shape)
+
             field_preds = np.append(field_preds, preds)
             field_ys = np.append(field_ys, y)
 

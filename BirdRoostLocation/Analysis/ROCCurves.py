@@ -28,6 +28,8 @@ def create_roc_curve(y_test, y_pred, y_label, title=None, save_file=None):
         #     fpr[i] = [1.0] * len(fpr[i])
         #     fpr[i] = np.array(fpr[i])
         roc_auc[i] = auc(fpr[i], tpr[i])
+        print("AUC: ")
+        print(roc_auc[i])
 
     roc_plot(fpr, tpr, roc_auc, y_label, title, save_file)
 
