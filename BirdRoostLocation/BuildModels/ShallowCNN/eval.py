@@ -109,7 +109,7 @@ def eval(
 
         field_ys = np.array([])
         field_preds = np.array([])
-        for field in ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]:
+        for i, field in enumerate(["Reflectivity", "Velocity", "Rho_HV", "Zdr"]):
             print(field)
             preds = field_predict(
                 x,
@@ -129,14 +129,14 @@ def eval(
             field_y_corr = np.array([np.array([j, 1.0 - j]) for j in y])
 
             print(preds_corr[0])
-            print(preds_corr.shape)
-            print(field_y_corr.shape)
+            print(preds.shape)
+            print(y.shape)
 
             print(field_preds.shape)
             print(field_ys.shape)
 
-            field_preds = np.append(field_preds, preds)
-            field_ys = np.append(field_ys, y)
+            field_preds = np.append(field_preds, preds, axis=0)
+            field_ys = np.append(field_ys, y, axis=0)
 
         print(field_preds.shape)
         print(field_ys.shape)

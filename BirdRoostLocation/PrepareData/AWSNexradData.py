@@ -77,13 +77,17 @@ def getFileNamesFromBucket(bucket, bucketName):
 def getFileNamesBetweenTwoTimes(files, datetime1, datetime2):
     filtered = []
     for file in files:
-        hour = file[29:31]
-        minute = file[31:33]
-        fileDatetime = datetime.datetime(
-            datetime1.year, datetime1.month, datetime1.day, int(hour), int(minute)
-        )
-        if datetime1 < fileDatetime < datetime2:
-            filtered.append(file)
+        if file.endswith(b".gz"):
+            print(file)
+            hour = file[29:31]
+            minute = file[31:33]
+            print(hour)
+            print(minute)
+            fileDatetime = datetime.datetime(
+                datetime1.year, datetime1.month, datetime1.day, int(hour), int(minute)
+            )
+            if datetime1 < fileDatetime < datetime2:
+                filtered.append(file)
 
     return filtered
 

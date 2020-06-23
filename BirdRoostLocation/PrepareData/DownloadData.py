@@ -96,26 +96,20 @@ def downloadDataFromLabels(results):
     downloadRadarsFromList(fileNames, savepath, f"error_{results.radar}.txt")
 
 
-def download2019Data(results):
-    savepath = "2019radarfiles/"
+def downloadSpecificData(results, locations, savepath, year):
     fileList = []
     conn = AWSNexradData.ConnectToAWS()
     bucket = AWSNexradData.GetNexradBucket(conn)
 
     # get june 15 - august 31
-    locations = {
-        "KIND": [39.707_496_200_000_01, -86.280_367_500_000_03],
-        "KIWX": [41.358_635_6, -85.700_048_8],
-        "KVWX": [38.260_390_1, -87.724_655_3],
-    }
     days = {6: list(range(15, 31)), 7: list(range(1, 32)), 8: list(range(1, 32))}
     for radar in locations.keys():
         for month in days.keys():
             for day in days[month]:
                 # get 1.5 hours before sunrise to 0.5 hours after sunrise
-                bucketName = AWSNexradData.getBucketName(2019, month, day, radar)
+                bucketName = AWSNexradData.getBucketName(year, month, day, radar)
                 sunrise = SunriseCalc.calculate_sunrise(
-                    2019, month, day, locations[radar][0], locations[radar][1]
+                    year, month, day, locations[radar][0], locations[radar][1]
                 )
                 beforeSunrise = sunrise - datetime.timedelta(hours=1, minutes=30)
                 afterSunrise = sunrise + datetime.timedelta(minutes=30)
@@ -149,4 +143,17 @@ if __name__ == "__main__":
         help=""" A 4 letter key of a USA NEXRAD radar. Example: KLIX""",
     )
     results = parser.parse_args()
-    download2019Data(results)
+
+    locations = {
+        "KIND": [39.707_496_200_000_01, -86.280_367_500_000_03],
+        "KIWX": [41.358_635_6, -85.700_048_8],
+        "KVWX": [38.260_390_1, -87.724_655_3],
+    }
+    savepath = "2019radarfiles/"
+
+    # downloadSpecificData(
+    #     results=results, locations=locations, savepath=savepath, year=2019
+    # )
+    downloadSpecificData(
+        results, {"KGRK": [30.721_763_7, -97.382_962_7]}, "KGRKradarfiles/", 2014
+    )
