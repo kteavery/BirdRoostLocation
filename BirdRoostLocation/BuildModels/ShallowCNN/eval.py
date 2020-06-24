@@ -107,16 +107,15 @@ def eval(
 
                     data = pd.read_csv(
                         settings.WORKING_DIRECTORY
-                        + "model/"
+                        + "true_predictions_"
                         + field
-                        + "/"
                         + str(loadfile)
-                        + "/checkpoint/val_log.csv",
+                        + ".csv",
                         names=["filename", "label", "prediction"],
                         dtype={"filename": str, "label": float, "prediction": float},
                     )
                     print(data.head())
-                    filtered_data = data.loc[df["filename"].isin(filenames)]
+                    filtered_data = data.loc[data["filename"].isin(filenames)]
                     print(filtered_data.head())
                     y = filtered_data["label"].to_numpy()
                     preds = filtered_data["prediction"].to_numpy()
