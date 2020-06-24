@@ -161,14 +161,16 @@ def eval(
                 )
                 agg_model.load_weights(log_path)
 
+                print(field_preds.shape)
+                print(field_ys.shape)
+                predictions = agg_model.predict(
+                    np.reshape(field_preds, (preds.shape[0], 4, 2))
+                )
+                # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+                y = np.reshape(field_ys, (preds.shape[0], 4, 2))
+
         except AttributeError as e:
             print(e)
-
-        print(field_preds.shape)
-        print(field_ys.shape)
-        predictions = agg_model.predict(np.reshape(field_preds, (preds.shape[0], 4, 2)))
-        # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-        y = np.reshape(field_ys, (preds.shape[0], 4, 2))
 
     ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
 
