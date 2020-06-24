@@ -376,6 +376,7 @@ class Batch_Generator:
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
+                        print("filename: ")
                         print(filename)
                         # print(len(indices))
                         # print(i)
@@ -397,20 +398,22 @@ class Batch_Generator:
                             print(np.array(ground_truths).shape)
 
                         #### !!!!
+                        print("add " + filename)
                         if model_type == "shallow_cnn":
                             extended_filenames = np.append(extended_filenames, filename)
                         else:  # unet
                             extended_filenames = np.append(
                                 extended_filenames, [filename] * len(train_data)
                             )
+                        print(len(extended_filenames))
                         # print(len(images))
                         # print([filename])
                     # print(filenames)
         else:
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
-                # print("LEN IMAGES")
-                # print(len(images))
+                print("LEN IMAGES")
+                print(len(images))
                 if images != []:
                     train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                         self,
@@ -425,12 +428,14 @@ class Batch_Generator:
                     )
 
                 ### !!!!
+                print("add " + filename)
                 if model_type == "shallow_cnn":
                     extended_filenames = np.append(extended_filenames, filename)
                 else:  # unet
                     extended_filenames = np.append(
                         extended_filenames, [filename] * len(train_data)
                     )
+                print(len(extended_filenames))
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
