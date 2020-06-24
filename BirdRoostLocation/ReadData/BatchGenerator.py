@@ -396,17 +396,15 @@ class Batch_Generator:
                             print(np.array(train_data).shape)
                             print(np.array(ground_truths).shape)
 
-                            #### !!!!
-                            if model_type == "shallow_cnn":
-                                extended_filenames = np.append(
-                                    extended_filenames, filename
-                                )
-                            else:  # unet
-                                extended_filenames = np.append(
-                                    extended_filenames, [filename] * len(train_data)
-                                )
-                            # print(len(images))
-                            # print([filename])
+                        #### !!!!
+                        if model_type == "shallow_cnn":
+                            extended_filenames = np.append(extended_filenames, filename)
+                        else:  # unet
+                            extended_filenames = np.append(
+                                extended_filenames, [filename] * len(train_data)
+                            )
+                        # print(len(images))
+                        # print([filename])
                     # print(filenames)
         else:
             for filename in filenames:
@@ -426,13 +424,13 @@ class Batch_Generator:
                         images,
                     )
 
-                    ### !!!!
-                    if model_type == "shallow_cnn":
-                        extended_filenames = np.append(extended_filenames, filename)
-                    else:  # unet
-                        extended_filenames = np.append(
-                            extended_filenames, [filename] * len(train_data)
-                        )
+                ### !!!!
+                if model_type == "shallow_cnn":
+                    extended_filenames = np.append(extended_filenames, filename)
+                else:  # unet
+                    extended_filenames = np.append(
+                        extended_filenames, [filename] * len(train_data)
+                    )
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")

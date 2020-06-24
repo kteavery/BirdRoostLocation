@@ -193,7 +193,7 @@ def eval(
         "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
     ) as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
-        filenames = [[a] * 25 for a in filenames]
+        # filenames = [[a] * 25 for a in filenames]
         print(np.array(filenames).shape)
         print(np.array(y).shape)
         print(np.array(predictions).shape)
