@@ -139,6 +139,9 @@ def eval(
             print(field_preds.shape)
             print(field_ys.shape)
 
+            print("prelim skill scores")
+            print(SkillScores.get_skill_scores(preds, y))
+
             if field_preds.size == 0:
                 field_preds = preds
                 field_ys = y
