@@ -90,13 +90,68 @@ def eval(
             print(x.shape)
             print(y.shape)
             print(filenames.shape)
+
+            if model_name == utils.ML_Model.Shallow_CNN:
+                predictions = field_predict(x, log_path, coord_conv, problem)
+
+            else:
+                field_ys = np.array([])
+                field_preds = np.array([])
+                for i, field in enumerate(
+                    ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
+                ):
+                    print(field)
+                    print(log_path)
+                    print(
+                        settings.WORKING_DIRECTORY
+                        + "model/"
+                        + field
+                        + "/"
+                        + str(loadfile)
+                        + "/checkpoint/"
+                        + field
+                        + ".h5"
+                    )
+                    preds = field_predict(
+                        x,
+                        settings.WORKING_DIRECTORY
+                        + "model/"
+                        + field
+                        + "/"
+                        + str(loadfile)
+                        + "/checkpoint/"
+                        + field
+                        + ".h5",
+                        coord_conv,
+                        problem,
+                    )
+
+                    preds_corr = np.array([np.array([j, 1.0 - j]) for j in preds])
+                    field_y_corr = np.array([np.array([j, 1.0 - j]) for j in y])
+
+                    print(preds_corr[0])
+                    print(preds.shape)
+                    print(y.shape)
+
+                    print(preds.shape)
+                    print(y.shape)
+
+                    print(field_preds.shape)
+                    print(field_ys.shape)
+
+                    print("prelim skill scores")
+                    print(SkillScores.get_skill_scores(preds, y))
+
+                    if field_preds.size == 0:
+                        field_preds = preds
+                        field_ys = y
+                    else:
+                        field_preds = np.concatenate((field_preds, preds))
+                        field_ys = np.concatenate((field_ys, y))
+
         except AttributeError as e:
             print(e)
 
-    if model_name == utils.ML_Model.Shallow_CNN:
-        predictions = field_predict(x, log_path, coord_conv, problem)
-
-    else:
         agg_model = Sequential()
         agg_model.add(Dense(256, input_shape=(4, 2), activation="relu"))
         agg_model.add(Dense(2, activation="softmax"))
@@ -105,49 +160,7 @@ def eval(
             optimizer=keras.optimizers.adam(lr),
             metrics=["accuracy"],
         )
-
         agg_model.load_weights(log_path)
-
-        field_ys = np.array([])
-        field_preds = np.array([])
-        for i, field in enumerate(["Reflectivity", "Velocity", "Rho_HV", "Zdr"]):
-            print(field)
-            preds = field_predict(
-                x,
-                settings.WORKING_DIRECTORY
-                + "model/"
-                + field
-                + "/"
-                + str(loadfile)
-                + "/checkpoint/"
-                + field
-                + ".h5",
-                coord_conv,
-                problem,
-            )
-
-            preds_corr = np.array([np.array([j, 1.0 - j]) for j in preds])
-            field_y_corr = np.array([np.array([j, 1.0 - j]) for j in y])
-
-            print(preds_corr[0])
-            print(preds.shape)
-            print(y.shape)
-
-            print(preds.shape)
-            print(y.shape)
-
-            print(field_preds.shape)
-            print(field_ys.shape)
-
-            print("prelim skill scores")
-            print(SkillScores.get_skill_scores(preds, y))
-
-            if field_preds.size == 0:
-                field_preds = preds
-                field_ys = y
-            else:
-                field_preds = np.concatenate((field_preds, preds))
-                field_ys = np.concatenate((field_ys, y))
 
         print(field_preds.shape)
         print(field_ys.shape)
