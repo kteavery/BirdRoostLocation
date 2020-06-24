@@ -104,36 +104,22 @@ def eval(
                 ):
                     print(field)
                     print(log_path)
-                    print(
+
+                    data = pd.read_csv(
                         settings.WORKING_DIRECTORY
                         + "model/"
                         + field
                         + "/"
                         + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5"
+                        + "/checkpoint/val_log.csv",
+                        names=["filename", "label", "prediction"],
+                        dtype={"filename": str, "label": float, "prediction": float},
                     )
-                    preds = field_predict(
-                        x,
-                        settings.WORKING_DIRECTORY
-                        + "model/"
-                        + field
-                        + "/"
-                        + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5",
-                        coord_conv,
-                        problem,
-                    )
-
-                    preds_corr = np.array([np.array([j, 1.0 - j]) for j in preds])
-                    field_y_corr = np.array([np.array([j, 1.0 - j]) for j in y])
-
-                    print(preds_corr[0])
-                    print(preds.shape)
-                    print(y.shape)
+                    print(data.head())
+                    filtered_data = data.loc[df["filename"].isin(filenames)]
+                    print(filtered_data.head())
+                    y = filtered_data["label"].to_numpy()
+                    preds = filtered_data["prediction"].to_numpy()
 
                     print(preds.shape)
                     print(y.shape)
