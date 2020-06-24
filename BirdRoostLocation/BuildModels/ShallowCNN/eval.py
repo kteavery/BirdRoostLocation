@@ -90,6 +90,7 @@ def eval(
             print(x.shape)
             print(y.shape)
             print(filenames.shape)
+            print(model_name)
 
             if model_name == utils.ML_Model.Shallow_CNN:
                 predictions = field_predict(x, log_path, coord_conv, problem)
