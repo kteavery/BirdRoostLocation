@@ -129,6 +129,9 @@ def eval(
                     print("prelim skill scores")
                     print(SkillScores.get_skill_scores(preds, y))
 
+                    preds = np.array([np.array([a, 1.0 - a]) for a in preds])
+                    y = np.array([np.array([a, 1.0 - a]) for a in y])
+
                     if field_preds.size == 0:
                         field_preds = preds
                         field_ys = y
@@ -190,6 +193,7 @@ def eval(
         "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
     ) as predict_file:
         writer = csv.writer(predict_file, delimiter=",")
+        filenames = [[a] * 25 for a in filenames]
         print(np.array(filenames).shape)
         print(np.array(y).shape)
         print(np.array(predictions).shape)
