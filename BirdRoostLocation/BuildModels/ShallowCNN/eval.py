@@ -36,6 +36,7 @@ import keras
 
 
 def field_predict(x, log_path, coord_conv, problem):
+    print("shallow cnn model field prediction")
     model = ml_model.build_model(
         inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
     )
@@ -150,18 +151,18 @@ def eval(
                         field_preds = np.concatenate((field_preds, preds))
                         field_ys = np.concatenate((field_ys, y))
 
+                agg_model = Sequential()
+                agg_model.add(Dense(256, input_shape=(4, 2), activation="relu"))
+                agg_model.add(Dense(2, activation="softmax"))
+                agg_model.compile(
+                    loss=keras.losses.categorical_crossentropy,
+                    optimizer=keras.optimizers.adam(lr),
+                    metrics=["accuracy"],
+                )
+                agg_model.load_weights(log_path)
+
         except AttributeError as e:
             print(e)
-
-        agg_model = Sequential()
-        agg_model.add(Dense(256, input_shape=(4, 2), activation="relu"))
-        agg_model.add(Dense(2, activation="softmax"))
-        agg_model.compile(
-            loss=keras.losses.categorical_crossentropy,
-            optimizer=keras.optimizers.adam(lr),
-            metrics=["accuracy"],
-        )
-        agg_model.load_weights(log_path)
 
         print(field_preds.shape)
         print(field_ys.shape)
