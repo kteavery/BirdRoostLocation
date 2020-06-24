@@ -429,7 +429,10 @@ class Batch_Generator:
 
                 ### !!!!
                 print("add " + filename)
-                if model_type == "shallow_cnn":
+                if (
+                    model_type == "shallow_cnn"
+                    and model_name == utils.ML_Model.Shallow_CNN_All
+                ):
                     extended_filenames = np.append(extended_filenames, filename)
                 else:  # unet
                     extended_filenames = np.append(
