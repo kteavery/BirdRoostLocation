@@ -86,6 +86,7 @@ def eval(
         )
 
         try:
+            print("X, Y, Filenames: ")
             print(x.shape)
             print(y.shape)
             print(filenames.shape)
@@ -132,11 +133,18 @@ def eval(
             print(preds.shape)
             print(y.shape)
 
+            print(preds.shape)
+            print(y.shape)
+
             print(field_preds.shape)
             print(field_ys.shape)
 
-            field_preds = np.append(field_preds, preds, axis=0)
-            field_ys = np.append(field_ys, y, axis=0)
+            if field_preds.size == 0:
+                field_preds = preds
+                field_ys = y
+            else:
+                field_preds = np.concatenate((field_preds, preds))
+                field_ys = np.concatenate((field_ys, y))
 
         print(field_preds.shape)
         print(field_ys.shape)
@@ -151,6 +159,11 @@ def eval(
 
     # ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
     # print("ACC_THETA: " + str(ACC_THETA))
+
+    all_files = []
+    for file in filenames:
+        all_files.append([file] * 25)
+    filenames = np.array(all_files)
 
     print("PREDICTIONS")
     print(len(predictions))

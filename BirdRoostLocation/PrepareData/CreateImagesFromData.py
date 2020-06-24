@@ -37,46 +37,55 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
     labelDF = pandas.read_csv(settings.WORKING_DIRECTORY + "/" + settings.LABEL_CSV)
 
     for f in fileNames:
+        try:
+            root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
+            name = f.replace(".gz", "")
 
-        root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
-        name = f.replace(".gz", "")
-
-        # print("SAVEDIR: ")
-        # print(saveDir)
-        imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
-        imgPath = os.path.join(
-            imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")), name + ".png"
-        )
-        print("IMGPATH:")
-        print(imgPath)
-
-        file = open(os.path.join(root, name), "r")
-        if not os.path.exists(os.path.dirname(imgPath)):
-            os.makedirs(os.path.dirname(imgPath))
-
-        rad = pyart.io.read_nexrad_archive(file.name)
-
-        dualPol = int(name[-1:]) >= 6
-
-        label_row = labelDF.loc[labelDF["AWS_file"] == f]
-        for i in range(len(label_row)):
-            lat = float(label_row["lat"].iloc[[i]])
-            lon = float(label_row["lon"].iloc[[i]])
-            # print(float(label_row["nexrad_lat"].iloc[[i]]))
-            # print(float(label_row["nexrad_lon"].iloc[[i]]))
-            VisualizeNexradData.visualizeRadarData(
-                rad,
-                imgPath[:-4] + ".png",
-                dualPol,
-                nexrads=[
-                    float(label_row["nexrad_lat"].iloc[[i]]),
-                    float(label_row["nexrad_lon"].iloc[[i]]),
-                ],
+            # print("SAVEDIR: ")
+            # print(saveDir)
+            imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
+            imgPath = os.path.join(
+                imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")),
+                name + ".png",
             )
+            print("IMGPATH:")
+            print(imgPath)
 
-        file.close()
+            file = open(
+                os.path.join(
+                    "/Users/Kate/workspace/BirdRoostLocation/MLData/KGRKradarfiles",
+                    name,
+                ),
+                "r",
+            )
+            if not os.path.exists(os.path.dirname(imgPath)):
+                os.makedirs(os.path.dirname(imgPath))
 
-        saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
+            rad = pyart.io.read_nexrad_archive(file.name)
+
+            dualPol = int(name[-1:]) >= 6
+
+            label_row = labelDF.loc[labelDF["AWS_file"] == f]
+            for i in range(len(label_row)):
+                lat = float(label_row["lat"].iloc[[i]])
+                lon = float(label_row["lon"].iloc[[i]])
+                # print(float(label_row["nexrad_lat"].iloc[[i]]))
+                # print(float(label_row["nexrad_lon"].iloc[[i]]))
+                VisualizeNexradData.visualizeRadarData(
+                    rad,
+                    imgPath[:-4] + ".png",
+                    dualPol,
+                    nexrads=[
+                        float(label_row["nexrad_lat"].iloc[[i]]),
+                        float(label_row["nexrad_lon"].iloc[[i]]),
+                    ],
+                )
+
+            file.close()
+
+            saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name)
+        except FileNotFoundError as e:
+            pass
 
 
 def createWithoutCSV(fileNames, saveDir, radarFilePath):
@@ -84,11 +93,11 @@ def createWithoutCSV(fileNames, saveDir, radarFilePath):
         # root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
         name = f.replace(".gz", "")
 
-        # print("SAVEDIR: ")
-        # print(saveDir)
-        imgPath = os.path.join(saveDir, "2019images", name + ".png")
-        # print("IMGPATH:")
-        # print(imgPath)
+        print("SAVEDIR: ")
+        print(saveDir)
+        imgPath = os.path.join(saveDir, "KGRKimages", name + ".png")
+        print("IMGPATH:")
+        print(imgPath)
 
         file = open(os.path.join(radarFilePath, name + ".gz"), "r")
         if not os.path.exists(os.path.dirname(imgPath)):
@@ -110,7 +119,7 @@ def createWithoutCSV(fileNames, saveDir, radarFilePath):
             nexrads=[float(nexrad_row["lat"]), float(nexrad_row["lon"])],
         )
 
-        saveAndSplitImages(saveDir + "2019images/", saveDir, dualPol, imgPath, name)
+        saveAndSplitImages(saveDir + "KGRKimages/", saveDir, dualPol, imgPath, name)
 
 
 def saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name):
@@ -176,9 +185,9 @@ def main(results):
         radarFilePath="radarfiles/",
     )
     aws_files = []
-    for file in glob.glob(utils.RADAR_IMAGE_DIR + "/2019radarfiles/" + "*.gz"):
+    for file in glob.glob(utils.RADAR_IMAGE_DIR + "/KGRKradarfiles/" + "*.gz"):
         if file[-6:-3] != "MDM" and not os.path.isfile(
-            utils.RADAR_IMAGE_DIR + "/2019images/" + file[-26:-3] + ".png"
+            utils.RADAR_IMAGE_DIR + "/KGRKimages/" + file[-26:-3] + ".png"
         ):
             aws_files.append(os.path.basename(file)[0:23])
         # else:
@@ -195,7 +204,7 @@ def main(results):
         createWithoutCSV(
             fileNames=aws_files,
             saveDir=utils.RADAR_IMAGE_DIR,
-            radarFilePath="2019radarfiles/",
+            radarFilePath="KGRKradarfiles/",
         )
     except Exception as e:
         print(e)

@@ -6,13 +6,24 @@ from mpl_toolkits.basemap import Basemap
 import os
 from PIL import Image
 import math
+import matplotlib
 
 import BirdRoostLocation.PrepareData.PyartConfig as pyart_config
 
 vel = pyart_config.DEFAULT_FIELD_LIMITS.get("velocity")
 
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
+    "",
+    [
+        (0.0, "blue"),
+        (float(3 / 40), "lime"),
+        (float(17 / 40), "green"),
+        (float(25 / 40), "yellow"),
+        (1.0, "orange"),
+    ],
+)
 plot_dict = {
-    utils.Radar_Products.reflectivity: [-10, 30, "pyart_NWSRef"],
+    utils.Radar_Products.reflectivity: [-10, 30, cmap],
     utils.Radar_Products.velocity: [vel()[0], vel()[1], "pyart_BuDRd18"],
     utils.Radar_Products.diff_reflectivity: [-1, 8, "pyart_RefDiff"],
     utils.Radar_Products.cc: [0.5, 1.05, "pyart_RefDiff"],

@@ -126,7 +126,7 @@ def downloadSpecificData(results, locations, savepath, year):
         shutil.copy(fileObject.name, utils.RADAR_IMAGE_DIR + "/" + savepath)
         os.rename(
             utils.RADAR_IMAGE_DIR + "/" + savepath + os.path.basename(fileObject.name),
-            utils.RADAR_IMAGE_DIR + "/" + savepath + file.decode("utf-8")[16:] + ".gz",
+            utils.RADAR_IMAGE_DIR + "/" + savepath + file.decode("utf-8")[16:],
         )
 
     conn.close()
