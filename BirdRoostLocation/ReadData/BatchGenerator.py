@@ -368,6 +368,7 @@ class Batch_Generator:
         radar_product,
         model_type,
         problem,
+        model_name,
     ):
         extended_filenames = np.array([])
         if filenames == []:
@@ -511,6 +512,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         self,
         ml_set,
         dualPol,
+        model_name=utils.ML_Model.Shallow_CNN,
         radar_product=None,
         num_temporal_data=0,
         model_type="shallow_cnn",
@@ -548,6 +550,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
             radar_product,
             model_type,
             problem,
+            model_name,
         )
 
 
