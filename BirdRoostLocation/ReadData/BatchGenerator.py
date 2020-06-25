@@ -330,8 +330,8 @@ class Batch_Generator:
                             # ground_truths = np.concatenate(
                             #     (ground_truths, mask), axis=0
                             # )
-                        except IndexError as e:
-                            pass
+                except IndexError as e:
+                    pass
 
                 if np.array(train_data).size == 0:
                     train_data = images
