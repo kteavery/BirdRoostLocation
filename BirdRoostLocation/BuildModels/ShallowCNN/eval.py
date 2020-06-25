@@ -131,13 +131,16 @@ def eval(
                         #     filtered_data, on="filename", how="inner", rsuffix=field
                         # )
                         filtered_data.columns = [
-                            "filename" + field,
-                            "label" + field,
+                            "filename",
+                            "label",
                             "prediction" + field,
                         ]
                         combined_data = pd.concat(
                             [combined_data, filtered_data], axis=1, join="inner"
                         )
+                        combined_data = combined_data.loc[
+                            :, ~combined_data.columns.duplicated()
+                        ]
 
                     print(combined_data.head())
 
