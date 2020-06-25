@@ -67,6 +67,7 @@ def eval(
                 should be a value of type utils.Radar_Products.
     """
     model_file = os.path.splitext(ntpath.basename(log_path))[0]
+    loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
     batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
