@@ -517,6 +517,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         num_temporal_data=0,
         model_type="shallow_cnn",
         problem="detection",
+        is_eval=False,
     ):
         """Get a batch of data for machine learning. As a default, a batch
         contains data from a single radar product.
@@ -550,6 +551,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
             radar_product,
             model_type,
             problem,
+            is_eval,
         )
 
 
