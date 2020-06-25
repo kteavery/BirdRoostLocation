@@ -44,7 +44,7 @@ def field_predict(x, log_path, coord_conv, problem):
     model.load_weights(log_path)
     predictions = model.predict(x)
 
-    return predictions
+    return predictions, model
 
 
 def eval(
@@ -95,7 +95,7 @@ def eval(
             print(model_name)
 
             if model_name == utils.ML_Model.Shallow_CNN:
-                predictions = field_predict(x, log_path, coord_conv, problem)
+                predictions, model = field_predict(x, log_path, coord_conv, problem)
 
             else:
                 field_ys = np.array([])
@@ -140,19 +140,19 @@ def eval(
                         field_preds = np.concatenate((field_preds, preds))
                         field_ys = np.concatenate((field_ys, y))
 
-                agg_model = Sequential()
-                agg_model.add(Dense(256, input_shape=(4, 2), activation="relu"))
-                agg_model.add(Dense(2, activation="softmax"))
-                agg_model.compile(
+                model = Sequential()
+                model.add(Dense(256, input_shape=(4, 2), activation="relu"))
+                model.add(Dense(2, activation="softmax"))
+                model.compile(
                     loss=keras.losses.categorical_crossentropy,
                     optimizer=keras.optimizers.adam(lr),
                     metrics=["accuracy"],
                 )
-                agg_model.load_weights(log_path)
+                model.load_weights(log_path)
 
                 print(field_preds.shape)
                 print(field_ys.shape)
-                predictions = agg_model.predict(
+                predictions = model.predict(
                     np.reshape(field_preds, (preds.shape[0], 4, 2))
                 )
                 # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))

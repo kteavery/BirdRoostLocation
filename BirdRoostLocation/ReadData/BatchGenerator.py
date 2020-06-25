@@ -403,9 +403,11 @@ class Batch_Generator:
                         print("add " + filename)
                         if model_type == "shallow_cnn" and is_eval == False:
                             extended_filenames = np.append(extended_filenames, filename)
-                        else:  # unet
+                        else:
                             extended_filenames = np.append(
-                                extended_filenames, [filename] * len(train_data)
+                                extended_filenames,
+                                [filename]
+                                * (len(train_data) - len(extended_filenames)),
                             )
                         print(len(extended_filenames))
                         print(len(train_data))
@@ -435,9 +437,10 @@ class Batch_Generator:
                 print("add " + filename)
                 if model_type == "shallow_cnn" and is_eval == False:
                     extended_filenames = np.append(extended_filenames, filename)
-                else:  # unet
+                else:
                     extended_filenames = np.append(
-                        extended_filenames, [filename] * len(train_data)
+                        extended_filenames,
+                        [filename] * (len(train_data) - len(extended_filenames)),
                     )
                 print(len(extended_filenames))
                 print(len(train_data))
