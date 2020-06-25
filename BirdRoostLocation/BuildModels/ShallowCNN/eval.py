@@ -117,18 +117,21 @@ def eval(
                     )
                     print(data.head())
                     filtered_data = data.loc[data["filename"].isin(filenames)]
-                    filtered_data["filename"] = filtered_data["filename"].astype(str)
-                    filtered_data["label"] = filtered_data["label"].astype(float)
-                    filtered_data["prediction"] = filtered_data["prediction"].astype(
-                        float
-                    )
+                    # filtered_data["filename"] = filtered_data["filename"].astype(str)
+                    # filtered_data["label"] = filtered_data["label"].astype(float)
+                    # filtered_data["prediction"] = filtered_data["prediction"].astype(
+                    #     float
+                    # )
                     print(filtered_data.head())
 
                     if combined_data.empty:
                         combined_data = filtered_data
                     else:
-                        combined_data.join(
-                            filtered_data, on="filename", how="inner", rsuffix=field
+                        # combined_data.join(
+                        #     filtered_data, on="filename", how="inner", rsuffix=field
+                        # )
+                        combined_data = pd.concat(
+                            [combined_data, filtered_data], axis=1, join="inner"
                         )
 
                     print(combined_data.head())
