@@ -296,7 +296,7 @@ class Batch_Generator:
 
                 mask_roost_size = (roost_size / 300) * (240 / 2)
 
-                vconvert_to_cart = np.vectorize(convert_to_cart)
+                vconvert_to_cart = np.vectorize(convert_to_cart, otypes=[float])
                 try:
                     cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
                 except ValueError as e:
