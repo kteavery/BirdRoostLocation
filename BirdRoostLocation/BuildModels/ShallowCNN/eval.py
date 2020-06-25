@@ -67,25 +67,31 @@ def eval(
                 should be a value of type utils.Radar_Products.
     """
     model_file = os.path.splitext(ntpath.basename(log_path))[0]
-    batch_generator = BatchGenerator.Single_Product_Batch_Generator(
+    batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
-        validate_k_index=3,
-        test_k_index=4,
+        high_memory_mode=high_memory_mode,
         default_batch_size=200,
     )
 
     x = None
     y = None
     while type(x) == type(None) and type(y) == type(None):
-        x, y, filenames = batch_generator.get_batch(
-            utils.ML_Set.testing,
+        img_list, y, x, filenames = batch_generator.get_batch(
+            ml_set=utils.ML_Set.testing,
             dualPol=dual_pol,
             radar_product=radar_product,
+            loaded_models=loaded_models,
             num_temporal_data=num_temporal_data,
-            problem=problem,
-            is_eval=True,
         )
+        # x, y, filenames = batch_generator.get_batch(
+        #     utils.ML_Set.testing,
+        #     dualPol=dual_pol,
+        #     radar_product=radar_product,
+        #     num_temporal_data=num_temporal_data,
+        #     problem=problem,
+        #     is_eval=True,
+        # )
 
         try:
             print("X, Y, Filenames: ")
