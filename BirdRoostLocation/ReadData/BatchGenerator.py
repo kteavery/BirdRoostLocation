@@ -296,18 +296,18 @@ class Batch_Generator:
 
                 mask_roost_size = (roost_size / 300) * (240 / 2)
 
-                try:
-                    vconvert_to_cart = np.vectorize(convert_to_cart)
-                    cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
-                    print("cart shapes")
-                    print(cart_x.shape)
-                    print(cart_y.shape)
+                vconvert_to_cart = np.vectorize(convert_to_cart)
+                cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
+                print("cart shapes")
+                print(cart_x.shape)
+                print(cart_y.shape)
 
-                    for k in range(cart_x.shape[0]):
-                        # print("masks.shape")
-                        # print(masks.shape)
+                for k in range(cart_x.shape[0]):
+                    # print("masks.shape")
+                    # print(masks.shape)
 
-                        for j in range(cart_x.shape[1]):
+                    for j in range(cart_x.shape[1]):
+                        try:
                             # print(cart_y.shape)
                             # print(cart_x.shape)
                             masks[j][
@@ -330,8 +330,8 @@ class Batch_Generator:
                             # ground_truths = np.concatenate(
                             #     (ground_truths, mask), axis=0
                             # )
-                except Exception as e:
-                    pass
+                        except IndexError as e:
+                            pass
 
                 if np.array(train_data).size == 0:
                     train_data = images
@@ -368,7 +368,7 @@ class Batch_Generator:
         radar_product,
         model_type,
         problem,
-        is_eval,
+        is_eval=False,
     ):
         extended_filenames = np.array([])
         if filenames == []:
@@ -399,18 +399,14 @@ class Batch_Generator:
                             print(np.array(ground_truths).shape)
 
                         #### !!!!
-                        print(is_eval)
                         print("add " + filename)
-                        if model_type == "shallow_cnn" and is_eval == False:
+                        if model_type == "shallow_cnn":
                             extended_filenames = np.append(extended_filenames, filename)
-                        else:
+                        else:  # unet
                             extended_filenames = np.append(
-                                extended_filenames,
-                                [filename]
-                                * (len(train_data) - len(extended_filenames)),
+                                extended_filenames, [filename] * len(train_data)
                             )
                         print(len(extended_filenames))
-                        print(len(train_data))
                         # print(len(images))
                         # print([filename])
                     # print(filenames)
@@ -433,17 +429,18 @@ class Batch_Generator:
                     )
 
                 ### !!!!
-                print(is_eval)
                 print("add " + filename)
-                if model_type == "shallow_cnn" and is_eval == False:
+                if model_type == "shallow_cnn" and is_eval=False:
                     extended_filenames = np.append(extended_filenames, filename)
+                elif model_type == "unet":  # unet
+                    extended_filenames = np.append(
+                        extended_filenames, [filename] * len(train_data)
+                    )
                 else:
                     extended_filenames = np.append(
-                        extended_filenames,
-                        [filename] * (len(train_data) - len(extended_filenames)),
+                        extended_filenames, [filename] * (len(train_data) - len(extended_filenames))
                     )
                 print(len(extended_filenames))
-                print(len(train_data))
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
@@ -512,7 +509,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
         self,
         ml_set,
         dualPol,
-        is_eval=False,
         radar_product=None,
         num_temporal_data=0,
         model_type="shallow_cnn",
@@ -550,7 +546,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
             radar_product,
             model_type,
             problem,
-            is_eval,
         )
 
 
