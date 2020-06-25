@@ -398,6 +398,7 @@ class Batch_Generator:
                             print(np.array(ground_truths).shape)
 
                         #### !!!!
+                        print(model_name)
                         print("add " + filename)
                         if model_type == "shallow_cnn":
                             extended_filenames = np.append(extended_filenames, filename)
@@ -406,6 +407,7 @@ class Batch_Generator:
                                 extended_filenames, [filename] * len(train_data)
                             )
                         print(len(extended_filenames))
+                        print(len(train_data))
                         # print(len(images))
                         # print([filename])
                     # print(filenames)
