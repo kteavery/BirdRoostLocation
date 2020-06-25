@@ -296,18 +296,18 @@ class Batch_Generator:
 
                 mask_roost_size = (roost_size / 300) * (240 / 2)
 
-                vconvert_to_cart = np.vectorize(convert_to_cart)
-                cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
-                print("cart shapes")
-                print(cart_x.shape)
-                print(cart_y.shape)
+                try:
+                    vconvert_to_cart = np.vectorize(convert_to_cart)
+                    cart_x, cart_y = vconvert_to_cart(all_radii, all_thetas)
+                    print("cart shapes")
+                    print(cart_x.shape)
+                    print(cart_y.shape)
 
-                for k in range(cart_x.shape[0]):
-                    # print("masks.shape")
-                    # print(masks.shape)
+                    for k in range(cart_x.shape[0]):
+                        # print("masks.shape")
+                        # print(masks.shape)
 
-                    for j in range(cart_x.shape[1]):
-                        try:
+                        for j in range(cart_x.shape[1]):
                             # print(cart_y.shape)
                             # print(cart_x.shape)
                             masks[j][

@@ -72,7 +72,7 @@ def eval(
         ml_split_csv=settings.ML_SPLITS_DATA,
         validate_k_index=3,
         test_k_index=4,
-        default_batch_size=200,
+        default_batch_size=1000,
     )
 
     x = None
