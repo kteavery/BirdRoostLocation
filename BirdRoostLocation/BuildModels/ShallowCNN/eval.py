@@ -130,6 +130,11 @@ def eval(
                         # combined_data.join(
                         #     filtered_data, on="filename", how="inner", rsuffix=field
                         # )
+                        filtered_data.columns = [
+                            "filename" + field,
+                            "label" + field,
+                            "prediction" + field,
+                        ]
                         combined_data = pd.concat(
                             [combined_data, filtered_data], axis=1, join="inner"
                         )
