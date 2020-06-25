@@ -368,7 +368,7 @@ class Batch_Generator:
         radar_product,
         model_type,
         problem,
-        model_name,
+        is_eval,
     ):
         extended_filenames = np.array([])
         if filenames == []:
@@ -399,12 +399,9 @@ class Batch_Generator:
                             print(np.array(ground_truths).shape)
 
                         #### !!!!
-                        print(model_name)
+                        print(is_eval)
                         print("add " + filename)
-                        if (
-                            model_type == "shallow_cnn"
-                            and model_name == utils.ML_Model.Shallow_CNN
-                        ):
+                        if model_type == "shallow_cnn" and is_eval == False:
                             extended_filenames = np.append(extended_filenames, filename)
                         else:  # unet
                             extended_filenames = np.append(
@@ -434,12 +431,9 @@ class Batch_Generator:
                     )
 
                 ### !!!!
-                print(model_name)
+                print(is_eval)
                 print("add " + filename)
-                if (
-                    model_type == "shallow_cnn"
-                    and model_name == utils.ML_Model.Shallow_CNN
-                ):
+                if model_type == "shallow_cnn" and is_eval == False:
                     extended_filenames = np.append(extended_filenames, filename)
                 else:  # unet
                     extended_filenames = np.append(
@@ -515,7 +509,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         self,
         ml_set,
         dualPol,
-        model_name=utils.ML_Model.Shallow_CNN,
+        is_eval=False,
         radar_product=None,
         num_temporal_data=0,
         model_type="shallow_cnn",
@@ -553,7 +547,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
             radar_product,
             model_type,
             problem,
-            model_name,
+            is_eval,
         )
 
 

@@ -84,7 +84,7 @@ def eval(
             radar_product=radar_product,
             num_temporal_data=num_temporal_data,
             problem=problem,
-            model_name=model_name,
+            is_eval=True,
         )
 
         try:
