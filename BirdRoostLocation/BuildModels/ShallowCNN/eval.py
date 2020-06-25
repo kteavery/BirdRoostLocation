@@ -67,31 +67,25 @@ def eval(
                 should be a value of type utils.Radar_Products.
     """
     model_file = os.path.splitext(ntpath.basename(log_path))[0]
-    loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
-    batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
+    batch_generator = BatchGenerator.Single_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
+        validate_k_index=3,
+        test_k_index=4,
         default_batch_size=200,
     )
 
     x = None
     y = None
     while type(x) == type(None) and type(y) == type(None):
-        img_list, y, x, filenames = batch_generator.get_batch(
-            ml_set=utils.ML_Set.testing,
+        x, y, filenames = batch_generator.get_batch(
+            utils.ML_Set.testing,
             dualPol=dual_pol,
             radar_product=radar_product,
-            loaded_models=loaded_models,
             num_temporal_data=num_temporal_data,
+            problem=problem,
+            is_eval=True,
         )
-        # x, y, filenames = batch_generator.get_batch(
-        #     utils.ML_Set.testing,
-        #     dualPol=dual_pol,
-        #     radar_product=radar_product,
-        #     num_temporal_data=num_temporal_data,
-        #     problem=problem,
-        #     is_eval=True,
-        # )
 
         try:
             print("X, Y, Filenames: ")
@@ -108,7 +102,7 @@ def eval(
                 field_preds = np.array([])
                 combined_data = pd.DataFrame()
                 for i, field in enumerate(
-                    ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
+                    ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
                 ):
                     print(field)
 
