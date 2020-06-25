@@ -100,74 +100,100 @@ def eval(
             else:
                 field_ys = np.array([])
                 field_preds = np.array([])
-                combined_data = pd.DataFrame()
+
                 for i, field in enumerate(
                     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
                 ):
-                    print(field)
-
-                    data = pd.read_csv(
+                    preds, model = field_predict(
+                        x,
                         settings.WORKING_DIRECTORY
-                        + "true_predictions_"
+                        + "model/"
                         + field
+                        + "/"
                         + str(loadfile)
-                        + ".csv",
-                        names=["filename", "label", "prediction"],
-                        dtype={"filename": str, "label": float, "prediction": float},
+                        + "/"
+                        + field
+                        + ".h5",
+                        coord_conv,
+                        problem,
                     )
-                    print(data.head())
-                    filtered_data = data.loc[data["filename"].isin(filenames)]
-                    # filtered_data["filename"] = filtered_data["filename"].astype(str)
-                    # filtered_data["label"] = filtered_data["label"].astype(float)
-                    # filtered_data["prediction"] = filtered_data["prediction"].astype(
-                    #     float
-                    # )
-                    print(filtered_data.head())
-                    filtered_data.columns = ["filename", "label", "prediction" + field]
+                    print(SkillScores.get_skill_scores(preds, y))
 
-                    if combined_data.empty:
-                        combined_data = filtered_data
+                    if field_preds.size == 0:
+                        field_preds = preds
+                        field_ys = y
                     else:
-                        # combined_data.join(
-                        #     filtered_data, on="filename", how="inner", rsuffix=field
-                        # )
-                        combined_data = pd.concat(
-                            [combined_data, filtered_data], axis=1, join="inner"
-                        )
-                        print(combined_data.head())
-                        combined_data = combined_data.loc[
-                            :, ~combined_data.columns.duplicated()
-                        ]
+                        field_preds = np.concatenate((field_preds, preds), axis=0)
+                        field_ys = np.concatenate((field_ys, y), axis=0)
 
-                    print(combined_data.head())
+                # combined_data = pd.DataFrame()
+                # for i, field in enumerate(
+                #     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
+                # ):
+                #     print(field)
 
-                    # y = filtered_data["label"].to_numpy()
-                    # preds = filtered_data["prediction"].to_numpy()
+                #     data = pd.read_csv(
+                #         settings.WORKING_DIRECTORY
+                #         + "true_predictions_"
+                #         + field
+                #         + str(loadfile)
+                #         + ".csv",
+                #         names=["filename", "label", "prediction"],
+                #         dtype={"filename": str, "label": float, "prediction": float},
+                #     )
+                #     print(data.head())
+                #     filtered_data = data.loc[data["filename"].isin(filenames)]
+                #     # filtered_data["filename"] = filtered_data["filename"].astype(str)
+                #     # filtered_data["label"] = filtered_data["label"].astype(float)
+                #     # filtered_data["prediction"] = filtered_data["prediction"].astype(
+                #     #     float
+                #     # )
+                #     print(filtered_data.head())
+                #     filtered_data.columns = ["filename", "label", "prediction" + field]
 
-                    # print(preds.shape)
-                    # print(y.shape)
+                #     if combined_data.empty:
+                #         combined_data = filtered_data
+                #     else:
+                #         # combined_data.join(
+                #         #     filtered_data, on="filename", how="inner", rsuffix=field
+                #         # )
+                #         combined_data = pd.concat(
+                #             [combined_data, filtered_data], axis=1, join="inner"
+                #         )
+                #         print(combined_data.head())
+                #         combined_data = combined_data.loc[
+                #             :, ~combined_data.columns.duplicated()
+                #         ]
 
-                    # print(field_preds.shape)
-                    # print(field_ys.shape)
+                #  print(combined_data.head())
 
-                    # print("prelim skill scores")
-                    # print(SkillScores.get_skill_scores(preds, y))
+                # y = filtered_data["label"].to_numpy()
+                # preds = filtered_data["prediction"].to_numpy()
 
-                    # preds = np.array([np.array([a, 1.0 - a]) for a in preds])
-                    # y = np.array([np.array([a, 1.0 - a]) for a in y])
-                    # print("preds, y")
-                    # print(preds.shape)
-                    # print(y.shape)
+                # print(preds.shape)
+                # print(y.shape)
 
-                    # if field_preds.size == 0:
-                    #     field_preds = preds
-                    #     field_ys = y
-                    # else:
-                    #     field_preds = np.concatenate((field_preds, preds), axis=0)
-                    #     field_ys = np.concatenate((field_ys, y), axis=0)
+                # print(field_preds.shape)
+                # print(field_ys.shape)
 
-                field_ys = combined_data["label"].to_numpy()
-                field_preds = combined_data.filter(regex="prediction").to_numpy()
+                # print("prelim skill scores")
+                # print(SkillScores.get_skill_scores(preds, y))
+
+                # preds = np.array([np.array([a, 1.0 - a]) for a in preds])
+                # y = np.array([np.array([a, 1.0 - a]) for a in y])
+                # print("preds, y")
+                # print(preds.shape)
+                # print(y.shape)
+
+                # if field_preds.size == 0:
+                #     field_preds = preds
+                #     field_ys = y
+                # else:
+                #     field_preds = np.concatenate((field_preds, preds), axis=0)
+                #     field_ys = np.concatenate((field_ys, y), axis=0)
+
+                # field_ys = combined_data["label"].to_numpy()
+                # field_preds = combined_data.filter(regex="prediction").to_numpy()
 
                 model = Sequential()
                 model.add(Dense(256, input_shape=(4, 2), activation="relu"))
@@ -181,7 +207,9 @@ def eval(
 
                 print(field_preds.shape)
                 print(field_ys.shape)
-                predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
+                predictions = model.predict(
+                    np.reshape(field_preds, (preds.shape[0], 4, 2))
+                )
                 # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                 y = np.reshape(field_ys, (-1, 4, 2))
 
