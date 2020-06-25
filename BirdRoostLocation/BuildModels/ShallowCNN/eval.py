@@ -70,7 +70,6 @@ def eval(
     batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
         ml_label_csv=settings.LABEL_CSV,
         ml_split_csv=settings.ML_SPLITS_DATA,
-        high_memory_mode=high_memory_mode,
         default_batch_size=200,
     )
 
