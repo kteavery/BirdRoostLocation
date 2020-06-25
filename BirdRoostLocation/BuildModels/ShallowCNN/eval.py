@@ -117,6 +117,11 @@ def eval(
                     )
                     print(data.head())
                     filtered_data = data.loc[data["filename"].isin(filenames)]
+                    filtered_data["filename"] = filtered_data["filename"].astype(str)
+                    filtered_data["label"] = filtered_data["label"].astype(float)
+                    filtered_data["prediction"] = filtered_data["prediction"].astype(
+                        float
+                    )
                     print(filtered_data.head())
 
                     if combined_data.empty:
