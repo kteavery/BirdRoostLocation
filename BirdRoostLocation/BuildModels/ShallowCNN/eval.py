@@ -123,6 +123,7 @@ def eval(
                     #     float
                     # )
                     print(filtered_data.head())
+                    filtered_data.columns = ["filename", "label", "prediction" + field]
 
                     if combined_data.empty:
                         combined_data = filtered_data
@@ -130,14 +131,10 @@ def eval(
                         # combined_data.join(
                         #     filtered_data, on="filename", how="inner", rsuffix=field
                         # )
-                        filtered_data.columns = [
-                            "filename",
-                            "label",
-                            "prediction" + field,
-                        ]
                         combined_data = pd.concat(
                             [combined_data, filtered_data], axis=1, join="inner"
                         )
+                        print(combined_data.head())
                         combined_data = combined_data.loc[
                             :, ~combined_data.columns.duplicated()
                         ]
