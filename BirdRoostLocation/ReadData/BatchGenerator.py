@@ -523,6 +523,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         num_temporal_data=0,
         model_type="shallow_cnn",
         problem="detection",
+        filenames=[],
         is_eval=False,
     ):
         """Get a batch of data for machine learning. As a default, a batch
@@ -542,9 +543,14 @@ class Single_Product_Batch_Generator(Batch_Generator):
                 filenames is an array of filenames, corresponding to the
                 ground truth values.
         """
-        ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
-            self, ml_set, dualPol, radar_product
-        )
+        if len(filenames) == 0:
+            ground_truths, train_data, filenames, roost_sets, no_roost_sets = Batch_Generator.get_batch(
+                self, ml_set, dualPol, radar_product
+            )
+        else:
+            ground_truths, train_data, _, roost_sets, no_roost_sets = Batch_Generator.get_batch(
+                self, ml_set, dualPol, radar_product
+            )
 
         return Batch_Generator.single_product_batch_params(
             self,

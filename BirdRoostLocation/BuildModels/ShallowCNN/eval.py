@@ -78,28 +78,22 @@ def eval(
     x = None
     y = None
     while type(x) == type(None) and type(y) == type(None):
-        x, y, filenames = batch_generator.get_batch(
-            utils.ML_Set.testing,
-            dualPol=dual_pol,
-            radar_product=radar_product,
-            num_temporal_data=num_temporal_data,
-            problem=problem,
-            is_eval=True,
-        )
-
         try:
-            print("X, Y, Filenames: ")
-            print(x.shape)
-            print(y.shape)
-            print(filenames.shape)
-            print(model_name)
-
             if model_name == utils.ML_Model.Shallow_CNN:
+                x, y, filenames = batch_generator.get_batch(
+                    utils.ML_Set.testing,
+                    dualPol=dual_pol,
+                    radar_product=radar_product,
+                    num_temporal_data=num_temporal_data,
+                    problem=problem,
+                    is_eval=True,
+                )
                 predictions, model = field_predict(x, log_path, coord_conv, problem)
 
             else:
                 field_ys = np.array([])
                 field_preds = np.array([])
+                filenames = []
 
                 for i, field in enumerate(
                     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
@@ -114,6 +108,30 @@ def eval(
                         + field
                         + ".h5"
                     )
+                    if field == "Rho_HV":
+                        radar_product = utils.Radar_Products.cc
+                    elif field == "Zdr":
+                        radar_product = utils.Radar_Products.diff_reflectivity
+                    elif field == "Reflectivity":
+                        radar_product = utils.Radar_Products.reflectivity
+                    else:
+                        radar_product = utils.Radar_Prodcuts.velocity
+
+                    x, y, filenames = batch_generator.get_batch(
+                        utils.ML_Set.testing,
+                        dualPol=dual_pol,
+                        radar_product=radar_product,
+                        num_temporal_data=num_temporal_data,
+                        problem=problem,
+                        filenames=filenames,
+                        is_eval=True,
+                    )
+
+                    print("X, Y, Filenames: ")
+                    print(x.shape)
+                    print(y.shape)
+                    print(filenames.shape)
+                    print(model_name)
 
                     preds, model = field_predict(
                         x,
