@@ -104,6 +104,17 @@ def eval(
                 for i, field in enumerate(
                     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
                 ):
+                    print(
+                        settings.WORKING_DIRECTORY
+                        + "model/"
+                        + field
+                        + "/"
+                        + str(loadfile)
+                        + "/checkpoint/"
+                        + field
+                        + ".h5"
+                    )
+
                     preds, model = field_predict(
                         x,
                         settings.WORKING_DIRECTORY
