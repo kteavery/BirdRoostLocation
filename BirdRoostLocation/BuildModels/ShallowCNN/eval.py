@@ -149,10 +149,8 @@ def eval(
                     print(SkillScores.get_skill_scores(preds, y))
 
                     if field_preds.size == 0:
-                        field_preds = np.reshape(
-                            preds, (preds.shape[0], preds.shape[1], 1)
-                        )
-                        field_ys = np.reshape(y, (y.shape[0], y.shape[1], 1))
+                        field_preds = preds
+                        field_ys = y
                     else:
                         field_preds = np.concatenate((field_preds, preds), axis=0)
                         field_ys = np.concatenate((field_ys, y), axis=0)
