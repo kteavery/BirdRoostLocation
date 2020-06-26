@@ -115,7 +115,7 @@ def eval(
                     elif field == "Reflectivity":
                         radar_product = utils.Radar_Products.reflectivity
                     else:
-                        radar_product = utils.Radar_Prodcuts.velocity
+                        radar_product = utils.Radar_Products.velocity
 
                     x, y, filenames = batch_generator.get_batch(
                         utils.ML_Set.testing,
