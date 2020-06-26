@@ -382,48 +382,54 @@ class Batch_Generator:
                         filename = ml_sets[ml_set][index]
                         print("filename: ")
                         print(filename)
-                        # print(len(indices))
-                        # print(i)
-                        images = self.label_dict[filename][0].get_image(radar_product)
-                        if images != []:
-                            train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
-                                self,
-                                filename,
-                                filenames,
-                                radar_product,
-                                problem,
-                                model_type,
-                                train_data,
-                                ground_truths,
-                                images,
+                        if filename not in extended_filenames:
+                            # print(len(indices))
+                            # print(i)
+                            images = self.label_dict[filename][0].get_image(
+                                radar_product
                             )
-                            print("train data shape, ground truth shape, len images")
-                            print(np.array(train_data).shape)
-                            print(np.array(ground_truths).shape)
+                            if images != []:
+                                train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
+                                    self,
+                                    filename,
+                                    filenames,
+                                    radar_product,
+                                    problem,
+                                    model_type,
+                                    train_data,
+                                    ground_truths,
+                                    images,
+                                )
+                                print(
+                                    "train data shape, ground truth shape, len images"
+                                )
+                                print(np.array(train_data).shape)
+                                print(np.array(ground_truths).shape)
 
-                        #### !!!!
-                        print("add " + filename)
-                        if model_type == "shallow_cnn" and is_eval == False:
-                            extended_filenames = np.append(extended_filenames, filename)
-                        elif model_type == "shallow_cnn" and is_eval == True:
-                            extended_filenames = np.append(
-                                extended_filenames,
-                                [filename]
-                                * (len(train_data) - len(extended_filenames)),
-                            )
-                        else:  # unet
-                            extended_filenames = np.append(
-                                extended_filenames, [filename] * len(train_data)
-                            )
-                        print(len(extended_filenames))
-                        # print(len(images))
-                        # print([filename])
-                    # print(filenames)
+                            #### !!!!
+                            print("add " + filename)
+                            if model_type == "shallow_cnn" and is_eval == False:
+                                extended_filenames = np.append(
+                                    extended_filenames, filename
+                                )
+                            elif model_type == "shallow_cnn" and is_eval == True:
+                                extended_filenames = np.append(
+                                    extended_filenames,
+                                    [filename]
+                                    * (len(train_data) - len(extended_filenames)),
+                                )
+                            else:  # unet
+                                extended_filenames = np.append(
+                                    extended_filenames, [filename] * len(train_data)
+                                )
+                            print(len(extended_filenames))
+                            # print(len(images))
+                            # print([filename])
         else:
+            print("len of filenames")
+            print(len(filenames))
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
-                print("LEN IMAGES")
-                print(len(images))
                 if images != []:
                     train_data, ground_truths = Batch_Generator.single_product_batch_param_helper(
                         self,
