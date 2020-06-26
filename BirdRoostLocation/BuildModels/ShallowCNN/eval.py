@@ -123,7 +123,7 @@ def eval(
                         radar_product=radar_product,
                         num_temporal_data=num_temporal_data,
                         problem=problem,
-                        filenames=filenames,
+                        filenames=np.array(set(filenames)),
                         is_eval=True,
                     )
 
