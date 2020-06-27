@@ -214,6 +214,8 @@ def train(
                     radar_product=radar_product,
                     loaded_models=loaded_models,
                     num_temporal_data=num_temporal_data,
+                    model_type=model_type,
+                    problem=problem,
                 )
                 if type(x) != type(None) and type(y) != type(None):
                     print(x.shape)
