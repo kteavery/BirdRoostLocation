@@ -44,7 +44,8 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     """
     # Plot all ROC curves
 
-    markers = ["P", "<", "8", "d"]
+    markers = ["P", "<", "8", "d", "."]
+    # markers = ["P", "<", "8", "d"]
     plt.figure(figsize=(5, 5))
     print(tpr[2])
     print(fpr[2])
@@ -52,16 +53,27 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     for i, label in zip(range(len(y_label)), y_label):
         print(i)
         print(label)
-        plt.plot(
-            fpr[i],
-            tpr[i],
-            lw=1.5,
-            marker=markers[i],
-            markersize=7,
-            markevery=0.06,
-            label="{0} (AUC = {1:0.2f})".format(label, roc_auc[i]),
-        )
-        plt.show()
+        if label == "agg":
+            plt.plot(
+                fpr[i],
+                tpr[i],
+                lw=1.5,
+                marker=markers[i],
+                markersize=7,
+                markevery=0.06,
+                label="{0} (AUC = {1:0.2f})".format("Aggregate", roc_auc[i]),
+            )
+        else:
+            plt.plot(
+                fpr[i],
+                tpr[i],
+                lw=1.5,
+                marker=markers[i],
+                markersize=7,
+                markevery=0.06,
+                label="{0} (AUC = {1:0.2f})".format(label, roc_auc[i]),
+            )
+        # plt.show()
 
     plt.plot([0, 1], [0, 1], "k--", lw=2)
     plt.xlim([0.0, 1.0])
@@ -84,7 +96,7 @@ def roc_curve_from_csv(curves):
     y_predicted_values = []
     ground_truths = []
 
-    for i in range(0, 5):
+    for i in range(0, 4):
         for curve in curves:
             df = pandas.read_csv(
                 settings.WORKING_DIRECTORY
@@ -102,6 +114,8 @@ def roc_curve_from_csv(curves):
             # ACC, TPR, TNR, ROC_AUC = get_skill_scores(prediction, truth)
 
             print(curve)
+            prediction = np.array(prediction).astype(np.float)
+            truth = np.array(truth).astype(np.float)
             print(prediction.shape)
             print(truth.shape)
             print(prediction)
@@ -134,7 +148,8 @@ def roc_curve_from_csv(curves):
 
 
 def main():
-    curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
+    curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr", "agg"]
+    # curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
     roc_curve_from_csv(curves)
 
 
