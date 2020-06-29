@@ -180,8 +180,8 @@ def train(
         val_names = ["val_loss", "val_accuracy"]
 
         progress_string = "{} Epoch: {} Loss: {} Accuracy {}"
-    else:  # location "mae", "mape", "cosine"
 
+    else:  # location "mae", "mape", "cosine"
         train_names = ["train_mse", "train_mae", "train_mape", "train_cosine"]
         val_names = ["val_mse", "val_mae", "val_mape", "val_cosine"]
 
@@ -212,7 +212,6 @@ def train(
                 img_list, y, x, file_list = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
-                    radar_product=radar_product,
                     loaded_models=loaded_models,
                     num_temporal_data=num_temporal_data,
                     model_type=model_type,
