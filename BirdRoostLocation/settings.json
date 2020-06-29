@@ -1,9 +1,9 @@
 {
-  "cwd": "/Users/Kate/workspace/BirdRoostLocation/MLData/",
-  "label_csv": "ml_labels_polar.csv",
-  "update_label_csv": "ml_labels_polar.csv",
+  "cwd": "/datadrive/roost_data/",
+  "label_csv": "true_ml_relabels_polar.csv",
+  "update_label_csv": "true_ml_relabels_polar.csv",
   "nexrad_csv": "nexrad.csv",
-  "ml_splits_csv": "ml_splits.csv",
+  "ml_splits_csv": "true_ml_splits.csv",
   "prediction_csv": "true_predictions_2019-10-08 13:52:27.7995153995Velocity.csv",
   "subset_files_csv": "subset_files.csv",
   "schooner": false
