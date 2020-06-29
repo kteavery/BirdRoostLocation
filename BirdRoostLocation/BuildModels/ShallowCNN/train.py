@@ -148,6 +148,7 @@ def train(
         )
 
         if model_type == "unet":
+            print("creating model")
             model = unet.build_model(
                 inputDimensions=(240, 240, 1),
                 lr=lr,
@@ -155,7 +156,6 @@ def train(
                 problem=problem,
             )
         else:
-            print("creating model")
             model = Sequential()
             model.add(Dense(256, input_shape=(4, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
@@ -165,6 +165,7 @@ def train(
                 metrics=["accuracy"],
             )
 
+    print("checkpoint path: ")
     print(checkpoint_path)
     # model.load_weights(checkpoint_path + "Zdr.h5")
 
@@ -190,7 +191,7 @@ def train(
         x = None
         y = None
         while type(x) == type(None) and type(y) == type(None):
-            # print(model_name)
+            print(model_name)
             if model_name == utils.ML_Model.Shallow_CNN:
                 x, y, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,

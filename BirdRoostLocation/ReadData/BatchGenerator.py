@@ -420,7 +420,9 @@ class Batch_Generator:
                                 )
                             else:  # unet
                                 extended_filenames = np.append(
-                                    extended_filenames, [filename] * len(train_data)
+                                    extended_filenames,
+                                    [filename]
+                                    * (len(train_data) - len(extended_filenames)),
                                 )
                             print(len(extended_filenames))
                             # print(len(images))
