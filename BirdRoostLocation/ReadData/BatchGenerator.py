@@ -325,22 +325,23 @@ class Batch_Generator:
                                 )
 
                             #### !!!!
-                            if model_type == "shallow_cnn" and is_eval == False:
+                            if is_eval == False:
                                 extended_filenames = np.append(
                                     extended_filenames, filename
                                 )
-                            elif model_type == "shallow_cnn" and is_eval == True:
+                            else:
+                                # elif is_eval == True:
                                 extended_filenames = np.append(
                                     extended_filenames,
                                     [filename]
                                     * (len(train_data) - len(extended_filenames)),
                                 )
-                            else:  # unet
-                                extended_filenames = np.append(
-                                    extended_filenames,
-                                    [filename]
-                                    * (len(train_data) - len(extended_filenames)),
-                                )
+                            # else:  # unet
+                            #     extended_filenames = np.append(
+                            #         extended_filenames,
+                            #         [filename]
+                            #         * (len(train_data) - len(extended_filenames)),
+                            #     )
                             # print(len(images))
                             # print([filename])
         else:
@@ -360,18 +361,19 @@ class Batch_Generator:
                     )
 
                 ### !!!!
-                if model_type == "shallow_cnn" and is_eval == False:
+                if is_eval == False:
                     extended_filenames = np.append(extended_filenames, filename)
-                elif model_type == "shallow_cnn" and is_eval == True:
+                else:
+                    # elif is_eval == True:
                     extended_filenames = np.append(
                         extended_filenames,
                         [filename] * (len(train_data) - len(extended_filenames)),
                     )
-                else:  # unet
-                    extended_filenames = np.append(
-                        extended_filenames,
-                        [filename] * (len(train_data) - len(extended_filenames)),
-                    )
+                # else:  # unet
+                #     extended_filenames = np.append(
+                #         extended_filenames,
+                #         [filename] * (len(train_data) - len(extended_filenames)),
+                #     )
 
         truth_shape = np.array(ground_truths).shape
         # print("truth shape: ")
@@ -602,8 +604,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(filenames).shape)
 
             predictions = np.array([])
-            print("batch size")
-            print(batch_size)
+            # print("batch size")
+            # print(batch_size)
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
