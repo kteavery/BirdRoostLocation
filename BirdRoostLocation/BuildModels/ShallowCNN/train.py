@@ -35,7 +35,7 @@ import datetime
 import warnings
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Conv2D
 from keras.models import model_from_json
 import keras
 
