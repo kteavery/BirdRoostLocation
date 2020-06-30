@@ -11,7 +11,7 @@ LOG_PATH_TIME = "model/{}/{}/{}/"
 CHECKPOINT_DIR = "/checkpoint/"
 
 
-def load_all_models(dual_pol, loadfile):
+def load_all_models(dual_pol, loadfile, problem="detection"):
     loaded_models = []
 
     if dual_pol:
@@ -34,41 +34,78 @@ def load_all_models(dual_pol, loadfile):
         else:
             product_str = "Velocity"
 
-        json_file = open(
-            settings.WORKING_DIRECTORY
-            + "model/"
-            + str(product_str)
-            + "/"
-            + str(loadfile)
-            + "/checkpoint/"
-            + str(product_str)
-            + ".json",
-            "r",
-        )
+        if problem == "detection":
+            json_file = open(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".json",
+                "r",
+            )
+        else:
+            json_file = open(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/unet/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".json",
+                "r",
+            )
+
         loaded_model_json = json_file.read()
         json_file.close()
         model = model_from_json(loaded_model_json)
 
-        print(
-            settings.WORKING_DIRECTORY
-            + "model/"
-            + str(product_str)
-            + "/"
-            + str(loadfile)
-            + "/checkpoint/"
-            + str(product_str)
-            + ".h5"
-        )
-        model.load_weights(
-            settings.WORKING_DIRECTORY
-            + "model/"
-            + str(product_str)
-            + "/"
-            + str(loadfile)
-            + "/checkpoint/"
-            + str(product_str)
-            + ".h5"
-        )
+        if problem == "detection":
+            print(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+            model.load_weights(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+        else:
+            print(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/unet/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+            model.load_weights(
+                settings.WORKING_DIRECTORY
+                + "model/"
+                + str(product_str)
+                + "/unet/"
+                + str(loadfile)
+                + "/checkpoint/"
+                + str(product_str)
+                + ".h5"
+            )
+
         loaded_models.append(model)
 
     return loaded_models

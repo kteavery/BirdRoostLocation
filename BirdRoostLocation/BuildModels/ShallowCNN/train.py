@@ -138,7 +138,9 @@ def train(
         tf_session = tf.compat.v1.Session(config=config)
         tf.compat.v1.keras.backend.set_session(tf_session)
 
-        loaded_models = ml_utils.load_all_models(dual_pol, loadfile)
+        loaded_models = ml_utils.load_all_models(
+            dual_pol, loadfile, problem="localization"
+        )
 
         print(settings.ML_SPLITS_DATA)
         batch_generator = BatchGenerator.Multiple_Product_Batch_Generator(
