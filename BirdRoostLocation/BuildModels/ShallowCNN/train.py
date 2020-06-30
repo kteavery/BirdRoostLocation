@@ -365,8 +365,12 @@ def train(
                     if model_name == utils.ML_Model.Shallow_CNN_All:
                         print(x_.shape)
                         print(y_.shape)
-                        x_ = np.reshape(x_, (x_.shape[1], x_.shape[0], x_.shape[2]))
-                        y_ = np.reshape(y_, (y_.shape[1], y_.shape[0], y_.shape[2]))
+                        x_ = np.reshape(
+                            x_, (x_.shape[1], x_.shape[0], x_.shape[2], x_.shape[3])
+                        )
+                        y_ = np.reshape(
+                            y_, (y_.shape[1], y_.shape[0], y_.shape[2], y_.shape[3])
+                        )
                         print("train.py - x and y shapes")
                         print(x_.shape)
                         print(y_.shape)
