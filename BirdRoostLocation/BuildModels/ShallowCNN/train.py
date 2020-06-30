@@ -345,9 +345,10 @@ def train(
                     _, y_, x_, _ = batch_generator.get_batch(
                         ml_set=utils.ML_Set.validation,
                         dualPol=dual_pol,
-                        radar_product=radar_product,
                         loaded_models=loaded_models,
                         num_temporal_data=num_temporal_data,
+                        model_type=model_type,
+                        problem=problem,
                     )
                     print("batch gen created")
                 else:
