@@ -220,8 +220,16 @@ def train(
                 if type(x) != type(None) and type(y) != type(None):
                     print(x.shape)
                     print(y.shape)
-                    x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2]))
-                    y = np.reshape(y, (y.shape[1], y.shape[0], y.shape[2]))
+                    if problem == "detection":
+                        x = np.reshape(x, (x.shape[1], x.shape[0], x.shape[2]))
+                        y = np.reshape(y, (y.shape[1], y.shape[0], y.shape[2]))
+                    else:
+                        x = np.reshape(
+                            x, (x.shape[1], x.shape[0], x.shape[2], x.shape[3])
+                        )
+                        y = np.reshape(
+                            y, (y.shape[1], y.shape[0], y.shape[2], y.shape[3])
+                        )
                     print("train.py - x and y shapes")
                     print(x.shape)
                     print(y.shape)

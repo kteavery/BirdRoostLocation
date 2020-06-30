@@ -628,8 +628,8 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     # predictions = np.append(predictions, np.array([pred, 1 - pred]))
                     # predictions = np.reshape(predictions, (pred_shape[0], 2))
                     predictions = np.append(predictions, np.array(pred))
-                    # print("predictions.shape")
-                    # print(predictions.shape)
+                    print("predictions.shape")
+                    print(predictions.shape)
 
             train_list.append(np.array(train))
             truth_list.append(np.array(truth))
@@ -641,8 +641,17 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(truth_list).shape)
             print("file_list.shape")
             print(np.array(file_list).shape)
+            print("predictions.shape")
+            print(np.array(predictions).shape)
             # try:
-            predictions = np.reshape(predictions, (np.array(truth_list).shape[1], 2))
+            if problem == "detection":
+                predictions = np.reshape(
+                    predictions, (np.array(truth_list).shape[1], 2)
+                )
+            else:
+                predictions = np.reshape(
+                    predictions, (np.array(truth_list).shape[1], 240, 240)
+                )
             # except Exception as e:
             #     print(e)
             #     return None, None, None, None
