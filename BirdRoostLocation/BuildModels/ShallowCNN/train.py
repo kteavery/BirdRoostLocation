@@ -160,20 +160,21 @@ def train(
             model = Sequential()
             model.add(
                 Conv2D(
-                    256,
-                    3,
+                    1056,
+                    1,
                     activation="relu",
                     padding="same",
                     kernel_initializer="he_normal",
                     input_shape=(4, 240, 240),
                 )
             )
-            model.add(Conv2D(1, 1, activation="sigmoid"))
+            model.add(Conv2D(240, 1, activation="sigmoid"))
             model.compile(
                 loss=keras.losses.categorical_crossentropy,
                 optimizer=keras.optimizers.adam(lr),
                 metrics=["accuracy"],
             )
+            print(model.summary())
         else:
             model = Sequential()
             model.add(Dense(256, input_shape=(4, 2), activation="relu"))
