@@ -632,13 +632,15 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(truth_list).shape)
             print("file_list.shape")
             print(np.array(file_list).shape)
-            try:
-                predictions = np.reshape(
-                    predictions, (np.array(truth_list).shape[1], 2)
-                )
-            except Exception as e:
-                print(e)
-                return None, None, None, None
+            print(train_list)
+            print(truth_list)
+            print(file_list)
+            # try:
+            predictions = np.reshape(predictions, (np.array(truth_list).shape[1], 2))
+            # except Exception as e:
+            #     print(e)
+            #     return None, None, None, None
+
             # print(predictions)
             # print(type(predictions))
             # print(type(predictions[0]))
