@@ -569,10 +569,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         file_list = []
 
         radar_products = [
-            utils.Radar_Products.reflectivity,
-            utils.Radar_Products.velocity,
             utils.Radar_Products.cc,
             utils.Radar_Products.diff_reflectivity,
+            utils.Radar_Products.reflectivity,
+            utils.Radar_Products.velocity,
         ]
 
         for k, product in enumerate(radar_products):
@@ -593,6 +593,13 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             )
             print("AFTER")
             print(len(filenames))
+
+            print("train.shape")
+            print(np.array(train).shape)
+            print("truth.shape")
+            print(np.array(truth).shape)
+            print("filenames.shape")
+            print(np.array(filenames).shape)
 
             predictions = np.array([])
             print("batch size")
@@ -632,9 +639,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(truth_list).shape)
             print("file_list.shape")
             print(np.array(file_list).shape)
-            print(train_list)
-            print(truth_list)
-            print(file_list)
             # try:
             predictions = np.reshape(predictions, (np.array(truth_list).shape[1], 2))
             # except Exception as e:
