@@ -643,6 +643,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(file_list).shape)
             print("predictions.shape")
             print(np.array(predictions).shape)
+            print(predictions)
             # try:
             if problem == "detection":
                 predictions = np.reshape(
