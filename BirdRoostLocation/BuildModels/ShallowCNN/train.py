@@ -152,7 +152,7 @@ def train(
         if model_type == "unet":
             print("creating model")
             model = unet.build_model(
-                inputDimensions=(240, 240, 1),
+                inputDimensions=(4, 240, 240),
                 lr=lr,
                 coord_conv=coord_conv,
                 problem=problem,
