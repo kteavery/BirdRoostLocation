@@ -151,11 +151,28 @@ def train(
 
         if model_type == "unet":
             print("creating model")
-            model = unet.build_model(
-                inputDimensions=(4, 240, 240),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
+            # model = unet.build_model(
+            #     inputDimensions=(4, 240, 240),
+            #     lr=lr,
+            #     coord_conv=coord_conv,
+            #     problem=problem,
+            # )
+            model = Sequential()
+            model.add(
+                Conv2D(
+                    256,
+                    3,
+                    activation="relu",
+                    padding="same",
+                    kernel_initializer="he_normal",
+                    input_shape=(4, 240, 240),
+                )
+            )
+            model.add(Conv2D(1, 1, activation="sigmoid"))
+            model.compile(
+                loss=keras.losses.categorical_crossentropy,
+                optimizer=keras.optimizers.adam(lr),
+                metrics=["accuracy"],
             )
         else:
             model = Sequential()
