@@ -37,7 +37,6 @@ import keras
 
 
 def field_predict(x, log_path, coord_conv, problem):
-    print("shallow cnn model field prediction")
     if problem == "detection":
         model = ml_model.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
@@ -152,7 +151,10 @@ def eval(
                         coord_conv,
                         problem,
                     )
-                    print(SkillScores.get_skill_scores(preds, y))
+                    if problem == "detection":
+                        print(SkillScores.get_skill_scores(preds, y))
+                    else:
+                        print(SkillScores.get_skill_scores_regression(preds, y, 10))
 
                     if field_preds.size == 0:
                         field_preds = preds
@@ -184,7 +186,10 @@ def eval(
         except AttributeError as e:
             print(e)
 
-    ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+    if problem == "detection":
+        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+    else:
+        ACC = SkillScores.get_skill_scores_regression(predictions, y, 10)
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
@@ -230,6 +235,8 @@ def eval(
             print("LOSS, ACC: ")
             print(loss, acc)
         else:
+            print(x.shape)
+            print(y.shape)
             loss, mae, mape, cosine = model.evaluate(x, y)
             print("LOSS, MAE, MAPE, COSINE: ")
             print(loss, mae, mape, cosine)
