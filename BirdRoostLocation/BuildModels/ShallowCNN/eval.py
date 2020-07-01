@@ -41,13 +41,17 @@ def field_predict(x, log_path, coord_conv, problem):
         model = ml_model.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
         )
+        model.load_weights(log_path)
+        predictions = model.predict(x)
     else:
         model = unet.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
         )
-
-    model.load_weights(log_path)
-    predictions = model.predict(x)
+        model.load_weights(log_path)
+        predictions = np.array([])
+        for example in x:
+            predictions = np.append(predictions, model.predict(example))
+            predictions = np.reshape(predictions, (-1, 240, 240))
 
     return predictions, model
 
@@ -82,6 +86,7 @@ def eval(
 
     x = None
     y = None
+    print("batch generator created")
     while type(x) == type(None) and type(y) == type(None):
         try:
             if model_name == utils.ML_Model.Shallow_CNN:
@@ -93,6 +98,10 @@ def eval(
                     problem=problem,
                     is_eval=True,
                 )
+                print("x, y, filenames")
+                print(x.shape)
+                print(y.shape)
+                print(filenames.shape)
                 predictions, model = field_predict(x, log_path, coord_conv, problem)
 
             else:
@@ -220,16 +229,19 @@ def eval(
         writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
         writer.writerow([ACC, TPR, TNR, ROC_AUC])
 
-    with open(
-        "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
-    ) as predict_file:
-        writer = csv.writer(predict_file, delimiter=",")
-        # filenames = [[a] * 25 for a in filenames]
-        print(np.array(filenames).shape)
-        print(np.array(y).shape)
-        print(np.array(predictions).shape)
-        for i in range(len(predictions)):
-            writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+    if problem == "detection":
+        with open(
+            "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
+        ) as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            # filenames = [[a] * 25 for a in filenames]
+            print(np.array(filenames).shape)
+            print(np.array(y).shape)
+            print(np.array(predictions).shape)
+            for i in range(len(predictions)):
+                writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+    else:
+        continue
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
