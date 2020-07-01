@@ -154,7 +154,7 @@ def eval(
                     if problem == "detection":
                         print(SkillScores.get_skill_scores(preds, y))
                     else:
-                        print(SkillScores.get_skill_scores_regression(preds, y, 10))
+                        print(SkillScores.get_skill_scores_localization(preds, y))
 
                     if field_preds.size == 0:
                         field_preds = preds
@@ -189,7 +189,9 @@ def eval(
     if problem == "detection":
         ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
     else:
-        ACC = SkillScores.get_skill_scores_regression(predictions, y, 10)
+        ACC, TPR, TNR, ROC_AUC, dice = SkillScores.get_skill_scores_localization(
+            predictions, y, 10
+        )
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
     # print("ACC_RAD: " + str(ACC_RAD))
@@ -209,7 +211,7 @@ def eval(
     print("FILENAMES")
     print(len(filenames))
 
-    SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+    SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
     with open(
         "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
