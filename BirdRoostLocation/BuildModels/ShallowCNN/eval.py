@@ -190,7 +190,7 @@ def eval(
         ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
     else:
         ACC, TPR, TNR, ROC_AUC, dice = SkillScores.get_skill_scores_localization(
-            predictions, y, 10
+            predictions, y
         )
 
     # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
