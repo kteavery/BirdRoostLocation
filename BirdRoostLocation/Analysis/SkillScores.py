@@ -78,8 +78,8 @@ def get_skill_scores_localization(predictions, truths):
     FN = 0.0
     TN = 0.0
 
-    predictions = predictions[~np.isnan(predictions)]
-    truths = truths[~np.isnan(truths)]
+    # predictions = predictions[~np.isnan(predictions)]
+    # truths = truths[~np.isnan(truths)]
 
     for prediction, truth in zip(predictions, truths):
         print(prediction.shape)

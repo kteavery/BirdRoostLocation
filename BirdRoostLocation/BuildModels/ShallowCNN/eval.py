@@ -204,6 +204,9 @@ def eval(
     if problem == "detection":
         ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
     else:
+        print("predictions, y")
+        print(predictions.shape)
+        print(y.shape)
         ACC, TPR, TNR, ROC_AUC, dice = SkillScores.get_skill_scores_localization(
             predictions, y
         )
