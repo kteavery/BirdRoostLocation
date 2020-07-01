@@ -50,7 +50,9 @@ def field_predict(x, log_path, coord_conv, problem):
         model.load_weights(log_path)
         predictions = np.array([])
         for example in x:
-            predictions = np.append(predictions, model.predict(example))
+            predictions = np.append(
+                predictions, model.predict(np.reshape(example, (1, 240, 240, 3)))
+            )
             predictions = np.reshape(predictions, (-1, 240, 240))
 
     return predictions, model
