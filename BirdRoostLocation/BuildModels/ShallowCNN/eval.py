@@ -53,7 +53,10 @@ def field_predict(x, log_path, coord_conv, problem):
             predictions = np.append(
                 predictions, model.predict(np.reshape(example, (1, 240, 240, 3)))
             )
+            print("predictions.shape")
+            print(predictions.shape)
             predictions = np.reshape(predictions, (-1, 240, 240))
+            print(predictions.shape)
 
     return predictions, model
 
@@ -100,11 +103,12 @@ def eval(
                     problem=problem,
                     is_eval=True,
                 )
-                print("x, y, filenames")
+                print("x, y, filenames, predictions")
                 print(x.shape)
                 print(y.shape)
                 print(filenames.shape)
                 predictions, model = field_predict(x, log_path, coord_conv, problem)
+                print(predictions.shape)
 
             else:
                 field_ys = np.array([])
