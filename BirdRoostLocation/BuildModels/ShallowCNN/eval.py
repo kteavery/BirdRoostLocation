@@ -24,6 +24,7 @@ import pandas as pd
 from ast import literal_eval
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
+import BirdRoostLocation.BuildModels.ShallowCNN.unet as unet
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
@@ -37,9 +38,14 @@ import keras
 
 def field_predict(x, log_path, coord_conv, problem):
     print("shallow cnn model field prediction")
-    model = ml_model.build_model(
-        inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
-    )
+    if problem == "detection":
+        model = ml_model.build_model(
+            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+        )
+    else:
+        model = unet.build_model(
+            inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
+        )
 
     model.load_weights(log_path)
     predictions = model.predict(x)
