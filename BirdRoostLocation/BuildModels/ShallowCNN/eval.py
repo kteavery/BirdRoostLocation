@@ -241,7 +241,9 @@ def eval(
             for i in range(len(predictions)):
                 writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
     else:
-        continue
+        for i in range(len(filenames)):
+            np.save("/localization_preds/" + filenames[i] + ".png", predictions[i])
+            np.save("/localization_truth/" + filenames[i] + ".png", y[i])
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
