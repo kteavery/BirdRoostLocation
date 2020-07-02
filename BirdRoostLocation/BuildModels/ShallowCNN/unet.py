@@ -13,6 +13,17 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
 
+def dice_coef(y_true, y_pred, smooth=1):
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    intersection = K.sum(y_true_f * y_pred_f)
+    return (2.0 * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+
+
+def dice_coef_loss(y_true, y_pred):
+    return 1 - dice_coef(y_true, y_pred)
+
+
 def build_model(inputDimensions, lr=0.00001, coord_conv=False, problem="detection"):
     inputs = Input(inputDimensions)
     conv1 = Conv2D(
@@ -104,7 +115,7 @@ def build_model(inputDimensions, lr=0.00001, coord_conv=False, problem="detectio
 
     model = Model(input=inputs, output=conv10)
 
-    model.compile(optimizer=Adam(lr), loss="mse", metrics=["accuracy"])
+    model.compile(optimizer=Adam(lr), loss=dice_coef_loss, metrics=[dice_coef])
 
     model.summary()
 
