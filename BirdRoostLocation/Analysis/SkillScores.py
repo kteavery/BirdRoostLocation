@@ -57,6 +57,8 @@ def get_skill_scores_localization(predictions, truths):
     FN = 0.0
     TN = 0.0
     dice_list = []
+    tpr = []
+    fpr = []
 
     # predictions = predictions[~np.isnan(predictions)]
     # truths = truths[~np.isnan(truths)]
@@ -79,10 +81,18 @@ def get_skill_scores_localization(predictions, truths):
         false_pos = np.logical_and(prediction, disjoint)
         false_neg = np.logical_xor(disjoint, false_pos)
 
-        TP += np.count_nonzero(true_pos == True) / 57600
-        TN += np.count_nonzero(true_neg == True) / 57600
-        FP += np.count_nonzero(false_pos == True) / 57600
-        FN += np.count_nonzero(false_neg == True) / 57600
+        tp = np.count_nonzero(true_pos == True) / 57600
+        tn = np.count_nonzero(true_neg == True) / 57600
+        fp = np.count_nonzero(false_pos == True) / 57600
+        fn = np.count_nonzero(false_neg == True) / 57600
+
+        fpr.append(fp / (fp + tn))
+        tpr.append(tp / (tp + fn))
+
+        TP += tp
+        TN += tn
+        FP += fp
+        FN += fn
 
     ACC = (TP + TN) / (TP + FP + FN + TN)
     if (TP + FN) > 0:
@@ -94,8 +104,7 @@ def get_skill_scores_localization(predictions, truths):
     else:
         TNR = 0
     # fpr, tpr, _ = roc_curve(truths, predictions)
-    # ROC_AUC = auc(FP / (FP + TN), TPR)
-    ROC_AUC = 0
+    ROC_AUC = auc(np.array(fpr), np.array(tpr))
 
     return ACC, TPR, TNR, ROC_AUC, np.mean(np.array(dice_list))
 
