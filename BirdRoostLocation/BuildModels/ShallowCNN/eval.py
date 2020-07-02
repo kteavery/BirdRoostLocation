@@ -223,11 +223,11 @@ def eval(
     filenames = np.array(all_files)
 
     print("PREDICTIONS")
-    print(len(predictions))
+    print(predictions.shape)
     print("GROUND TRUTH")
-    print(len(y))
+    print(y.shape)
     print("FILENAMES")
-    print(len(filenames))
+    print(filenames.shape)
 
     SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
@@ -251,8 +251,8 @@ def eval(
                 writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
     else:
         for i in range(len(filenames)):
-            np.save("/localization_preds/" + filenames[i] + ".png", predictions[i])
-            np.save("/localization_truth/" + filenames[i] + ".png", y[i])
+            np.save("/localization_preds/" + filenames[i][0] + ".png", predictions[i])
+            np.save("/localization_truth/" + filenames[i][0] + ".png", y[i])
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
