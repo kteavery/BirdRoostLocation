@@ -62,6 +62,8 @@ def get_skill_scores_localization(predictions, truths):
 
     # predictions = predictions[~np.isnan(predictions)]
     # truths = truths[~np.isnan(truths)]
+    predictions = np.round(predictions)
+    truths = np.round(truths)
 
     for prediction, truth in zip(predictions, truths):
 
