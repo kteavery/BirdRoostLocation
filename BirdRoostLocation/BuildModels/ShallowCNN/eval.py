@@ -34,6 +34,7 @@ from keras.models import model_from_json
 from keras.models import Sequential
 from keras.layers import Dense
 import keras
+from PIL import Image
 
 
 def field_predict(x, log_path, coord_conv, problem):
@@ -251,8 +252,10 @@ def eval(
                 writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
     else:
         for i in range(len(filenames)):
-            np.save("/localization_preds/" + filenames[i][0] + ".png", predictions[i])
-            np.save("/localization_truth/" + filenames[i][0] + ".png", y[i])
+            im = Image.fromarray(predictions[i])
+            im.save("/localization_preds/" + filenames[i][0] + ".png")
+            im2 = Image.fromarray(y[i])
+            im2.save("/localization_truth/" + filenames[i][0] + ".png")
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
