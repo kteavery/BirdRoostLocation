@@ -207,7 +207,7 @@ def eval(
         print("predictions, y")
         print(predictions.shape)
         print(y.shape)
-        ACC, TPR, TNR, ROC_AUC, dice = SkillScores.get_skill_scores_localization(
+        ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr = SkillScores.get_skill_scores_localization(
             predictions, y
         )
 
