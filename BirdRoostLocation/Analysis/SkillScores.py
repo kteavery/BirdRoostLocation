@@ -51,32 +51,12 @@ def get_skill_scores(predictions, truths):
     return ACC, TPR, TNR, ROC_AUC
 
 
-# def get_skill_scores_regression(predictions, truths, cutoff):
-#     T = 0.0
-#     F = 0.0
-
-#     predictions = predictions[~np.isnan(predictions)]
-#     truths = truths[~np.isnan(truths)]
-
-#     for prediction, truth in zip(predictions, truths):
-#         print(prediction)
-#         print(truth)
-#         diff = abs(prediction - truth)
-#         if diff < cutoff:
-#             T += 1
-#         elif diff >= cutoff:
-#             F += 1
-
-#     ACC = T / (T + F)
-
-#     return ACC
-
-
 def get_skill_scores_localization(predictions, truths):
     TP = 0.0
     FP = 0.0
     FN = 0.0
     TN = 0.0
+    dice_list = []
 
     # predictions = predictions[~np.isnan(predictions)]
     # truths = truths[~np.isnan(truths)]
@@ -89,7 +69,8 @@ def get_skill_scores_localization(predictions, truths):
         disjoint = np.not_equal(prediction, truth)
 
         len_overlap = np.count_nonzero(overlap == True)
-        dice = len_overlap / 57600  # 240*240=57600
+        dice = len_overlap / 57600  # 240*240 = 57600
+        dice_list.append(dice)
         print(dice)
 
         true_pos = np.logical_and(prediction, overlap)
@@ -112,10 +93,10 @@ def get_skill_scores_localization(predictions, truths):
         TNR = (TN) / (TN + FP)
     else:
         TNR = 0
-    fpr, tpr, _ = roc_curve(truths, predictions)
-    ROC_AUC = auc(fpr, tpr)
+    # fpr, tpr, _ = roc_curve(truths, predictions)
+    ROC_AUC = auc(FP / (FP + TN), TPR)
 
-    return ACC, TPR, TNR, ROC_AUC, dice
+    return ACC, TPR, TNR, ROC_AUC, np.mean(np.array(dice_list))
 
 
 def print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice=None):
