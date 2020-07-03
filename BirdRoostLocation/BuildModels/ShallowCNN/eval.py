@@ -49,6 +49,7 @@ def field_predict(x, log_path, coord_conv, problem):
         model = unet.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
         )
+        print(log_path)
         model.load_weights(log_path)
         predictions = np.array([])
         for example in x:
