@@ -276,9 +276,9 @@ def eval(
         else:
             print(x.shape)
             print(y.shape)
-            loss, mae, mape, cosine = model.evaluate(x, y)
-            print("LOSS, MAE, MAPE, COSINE: ")
-            print(loss, mae, mape, cosine)
+            loss, metric = model.evaluate(x, y)
+            print("LOSS, METRIC: ")
+            print(loss, metric)
 
 
 def main(results):
