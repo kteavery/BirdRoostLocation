@@ -195,6 +195,16 @@ def eval(
                         optimizer=keras.optimizers.adam(lr),
                         metrics=["accuracy"],
                     )
+
+                    model.load_weights(log_path)
+                    print(field_preds.shape)
+                    print(field_ys.shape)
+                    predictions = model.predict(
+                        np.reshape(field_preds, (preds.shape[0], 4, 2))
+                    )
+                    # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+                    y = np.reshape(field_ys, (-1, 4, 2))
+
                 else:
                     model = Sequential()
                     model.add(
@@ -214,15 +224,14 @@ def eval(
                         optimizer=keras.optimizers.adam(lr),
                     )
 
-                model.load_weights(log_path)
-
-                print(field_preds.shape)
-                print(field_ys.shape)
-                predictions = model.predict(
-                    np.reshape(field_preds, (preds.shape[0], 4, 2))
-                )
-                # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                y = np.reshape(field_ys, (-1, 4, 2))
+                    model.load_weights(log_path)
+                    print(field_preds.shape)
+                    print(field_ys.shape)
+                    predictions = model.predict(
+                        np.reshape(field_preds, (preds.shape[0], 240, 240))
+                    )
+                    # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+                    y = np.reshape(field_ys, (-1, 240, 240))
 
         except AttributeError as e:
             print(e)
