@@ -32,7 +32,7 @@ from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
 from keras.models import model_from_json
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Conv2D
 import keras
 from PIL import Image
 import matplotlib
