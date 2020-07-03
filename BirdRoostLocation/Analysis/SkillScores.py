@@ -76,8 +76,8 @@ def get_skill_scores_localization(predictions, truths):
         print(dice)
 
         true_pos = np.logical_and(prediction, overlap)
-        print(prediction[0])
-        print(overlap[0])
+        # print(prediction[0])
+        # print(overlap[0])
         true_neg = np.logical_xor(overlap, true_pos)
 
         false_pos = np.logical_and(prediction, disjoint)

@@ -186,14 +186,33 @@ def eval(
                     print(field_preds.shape)
                     print(field_ys.shape)
 
-                model = Sequential()
-                model.add(Dense(256, input_shape=(4, 2), activation="relu"))
-                model.add(Dense(2, activation="softmax"))
-                model.compile(
-                    loss=keras.losses.categorical_crossentropy,
-                    optimizer=keras.optimizers.adam(lr),
-                    metrics=["accuracy"],
-                )
+                if problem == "detection":
+                    model = Sequential()
+                    model.add(Dense(256, input_shape=(4, 2), activation="relu"))
+                    model.add(Dense(2, activation="softmax"))
+                    model.compile(
+                        loss=keras.losses.categorical_crossentropy,
+                        optimizer=keras.optimizers.adam(lr),
+                        metrics=["accuracy"],
+                    )
+                else: 
+                    model = Sequential()
+                    model.add(
+                        Conv2D(
+                            1056,
+                            1,
+                            activation="relu",
+                            padding="same",
+                            kernel_initializer="he_normal",
+                            input_shape=(4, 240, 240),
+                        )
+                    )
+                    model.add(Conv2D(240, 1, activation="sigmoid"))
+                    model.compile(
+                        loss=unet.dice_coef_loss, metrics=[unet.dice_coef]
+                        optimizer=keras.optimizers.adam(lr),
+                    )
+
                 model.load_weights(log_path)
 
                 print(field_preds.shape)

@@ -170,9 +170,8 @@ def train(
             )
             model.add(Conv2D(240, 1, activation="sigmoid"))
             model.compile(
-                loss=keras.losses.categorical_crossentropy,
+                loss=unet.dice_coef_loss, metrics=[unet.dice_coef]
                 optimizer=keras.optimizers.adam(lr),
-                metrics=["accuracy"],
             )
             print(model.summary())
         else:
