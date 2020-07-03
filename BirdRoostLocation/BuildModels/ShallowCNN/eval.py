@@ -195,7 +195,7 @@ def eval(
                         optimizer=keras.optimizers.adam(lr),
                         metrics=["accuracy"],
                     )
-                else: 
+                else:
                     model = Sequential()
                     model.add(
                         Conv2D(
@@ -209,7 +209,8 @@ def eval(
                     )
                     model.add(Conv2D(240, 1, activation="sigmoid"))
                     model.compile(
-                        loss=unet.dice_coef_loss, metrics=[unet.dice_coef]
+                        loss=unet.dice_coef_loss,
+                        metrics=[unet.dice_coef],
                         optimizer=keras.optimizers.adam(lr),
                     )
 
