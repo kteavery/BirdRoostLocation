@@ -254,10 +254,18 @@ def eval(
     else:
         for i in range(len(filenames)):
             matplotlib.image.imsave(
-                "/localization_preds/" + filenames[i][0] + ".png", predictions[i]
+                settings.WORKING_DIRECTORY
+                + "/localization_preds/"
+                + filenames[i][0]
+                + ".png",
+                predictions[i],
             )
             matplotlib.image.imsave(
-                "/localization_truth/" + filenames[i][0] + ".png", y[i]
+                settings.WORKING_DIRECTORY
+                + "/localization_truth/"
+                + filenames[i][0]
+                + ".png",
+                y[i],
             )
 
     if model_name == utils.ML_Model.Shallow_CNN:
