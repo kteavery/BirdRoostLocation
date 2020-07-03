@@ -121,16 +121,6 @@ def eval(
                 for i, field in enumerate(
                     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
                 ):
-                    print(
-                        settings.WORKING_DIRECTORY
-                        + "model/"
-                        + field
-                        + "/"
-                        + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5"
-                    )
                     if field == "Rho_HV":
                         radar_product = utils.Radar_Products.cc
                     elif field == "Zdr":
@@ -156,22 +146,35 @@ def eval(
                     print(filenames.shape)
                     print(model_name)
 
-                    preds, model = field_predict(
-                        x,
-                        settings.WORKING_DIRECTORY
-                        + "model/"
-                        + field
-                        + "/"
-                        + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5",
-                        coord_conv,
-                        problem,
-                    )
                     if problem == "detection":
+                        preds, model = field_predict(
+                            x,
+                            settings.WORKING_DIRECTORY
+                            + "model/"
+                            + field
+                            + "/"
+                            + str(loadfile)
+                            + "/checkpoint/"
+                            + field
+                            + ".h5",
+                            coord_conv,
+                            problem,
+                        )
                         print(SkillScores.get_skill_scores(preds, y))
                     else:
+                        preds, model = field_predict(
+                            x,
+                            settings.WORKING_DIRECTORY
+                            + "model/"
+                            + field
+                            + "/unet/"
+                            + str(loadfile)
+                            + "/checkpoint/"
+                            + field
+                            + ".h5",
+                            coord_conv,
+                            problem,
+                        )
                         print(SkillScores.get_skill_scores_localization(preds, y))
 
                     if field_preds.size == 0:
