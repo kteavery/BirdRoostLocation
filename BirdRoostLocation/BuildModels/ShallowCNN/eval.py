@@ -286,13 +286,14 @@ def eval(
     else:
         print(filenames.shape)
         print(y.shape)
+        print(predictions.shape)
         for i in range(len(filenames)):
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
                 + "localization_preds/"
                 + filenames[i][0]
                 + ".png",
-                predictions[i][0],
+                predictions[i],
             )
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
