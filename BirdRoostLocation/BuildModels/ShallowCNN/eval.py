@@ -199,9 +199,7 @@ def eval(
                     model.load_weights(log_path)
                     print(field_preds.shape)
                     print(field_ys.shape)
-                    predictions = model.predict(
-                        np.reshape(field_preds, (preds.shape[0], 4, 2))
-                    )
+                    predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     y = np.reshape(field_ys, (-1, 4, 2))
 
@@ -227,9 +225,7 @@ def eval(
                     model.load_weights(log_path)
                     print(field_preds.shape)
                     print(field_ys.shape)
-                    predictions = model.predict(
-                        np.reshape(field_preds, (preds.shape[0], 240, 240))
-                    )
+                    predictions = model.predict(np.reshape(field_preds, (-1, 240, 240)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     y = np.reshape(field_ys, (-1, 240, 240))
 
