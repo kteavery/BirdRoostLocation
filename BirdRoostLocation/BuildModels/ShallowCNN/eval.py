@@ -287,11 +287,11 @@ def eval(
         print(filenames.shape)
         print(y.shape)
         print(predictions.shape)
-        predictions = np.shape(
+        predictions = np.reshape(
             predictions,
             (predictions.shape[0], predictions.shape[1], predictions.shape[2], 1),
         )
-        y = np.shape(y, (y.shape[0], y.shape[1], y.shape[2], 1))
+        y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], 1))
         for i in range(len(filenames)):
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
