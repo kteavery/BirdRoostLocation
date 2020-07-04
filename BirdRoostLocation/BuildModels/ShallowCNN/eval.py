@@ -221,6 +221,7 @@ def eval(
                         metrics=[unet.dice_coef],
                         optimizer=keras.optimizers.adam(lr),
                     )
+                    print(log_path)
 
                     model.load_weights(log_path)
                     print(field_preds.shape)
