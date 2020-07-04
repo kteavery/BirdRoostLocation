@@ -283,20 +283,22 @@ def eval(
             for i in range(len(predictions)):
                 writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
     else:
+        print(filenames.shape)
+        print(y.shape)
         for i in range(len(filenames)):
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
                 + "localization_preds/"
                 + filenames[i][0]
                 + ".png",
-                predictions[i],
+                predictions[i][0],
             )
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
                 + "localization_truth/"
                 + filenames[i][0]
                 + ".png",
-                y[i],
+                y[i][0],
             )
 
     if model_name == utils.ML_Model.Shallow_CNN:
