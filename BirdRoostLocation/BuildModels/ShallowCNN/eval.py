@@ -263,7 +263,10 @@ def eval(
     print("FILENAMES")
     print(filenames.shape)
 
-    SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
+    if problem == "detection":
+        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+    else:
+        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
     with open(
         "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
