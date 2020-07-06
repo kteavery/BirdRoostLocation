@@ -268,12 +268,20 @@ def eval(
     else:
         SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
-    with open(
-        "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
-    ) as predict_file:
-        writer = csv.writer(predict_file, delimiter=",")
-        writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
-        writer.writerow([ACC, TPR, TNR, ROC_AUC])
+    if problem == "detection":
+        with open(
+            "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
+        ) as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC])
+    else:
+        with open(
+            "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
+        ) as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice])
 
     if problem == "detection":
         with open(
