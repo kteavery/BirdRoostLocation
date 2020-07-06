@@ -115,7 +115,7 @@ def build_model(inputDimensions, lr=0.00001, coord_conv=False, problem="detectio
 
     conv10 = Conv2D(1, 1, activation="sigmoid")(conv9)
 
-    model = Model(input=inputs, output=conv10)
+    model = Model(inputs, conv10)
 
     model.compile(optimizer=Adam(lr), loss=dice_coef_loss, metrics=[dice_coef])
 

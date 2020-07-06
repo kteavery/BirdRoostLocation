@@ -45,6 +45,18 @@ import numpy as np
 
 warnings.simplefilter("ignore")
 
+def dice_coef(y_true, y_pred, smooth=1):
+    y_true_f = keras.backend.flatten(y_true)
+    y_pred_f = keras.backend.flatten(y_pred)
+    intersection = keras.backend.sum(y_true_f * y_pred_f)
+    return (2.0 * intersection + smooth) / (
+        keras.backend.sum(y_true_f) + keras.backend.sum(y_pred_f) + smooth
+    )
+
+
+def dice_coef_loss(y_true, y_pred):
+    return 1 - dice_coef(y_true, y_pred)
+
 
 def train(
     log_path,
@@ -170,9 +182,9 @@ def train(
             )
             model.add(Conv2D(240, 1, activation="sigmoid"))
             model.compile(
-                loss=keras.losses.categorical_crossentropy,
-                optimizer=keras.optimizers.adam(lr),
-                metrics=["accuracy"],
+                loss=dice_coef_loss,
+                optimizer=keras.optimizers.Adam(lr),
+                metrics=[dice_coef],
             )
             print(model.summary())
         else:
@@ -180,9 +192,8 @@ def train(
             model.add(Dense(256, input_shape=(4, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
-                loss=keras.losses.categorical_crossentropy,
-                optimizer=keras.optimizers.adam(lr),
-                metrics=["accuracy"],
+                optimizer=keras.optimizers.Adam(lr),
+                loss=keras.losses.categorical_crossentropy, metrics=["accuracy"],
             )
 
     print("checkpoint path: ")
