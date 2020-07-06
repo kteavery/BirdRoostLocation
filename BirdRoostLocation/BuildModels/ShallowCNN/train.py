@@ -181,11 +181,7 @@ def train(
                 )
             )
             model.add(Conv2D(240, 1, activation="sigmoid"))
-            model.compile(
-                loss=dice_coef_loss,
-                optimizer=keras.optimizers.Adam(lr),
-                metrics=[dice_coef],
-            )
+            model.compile(optimizer=Adam(lr), loss=dice_coef_loss, metrics=[dice_coef])
             print(model.summary())
         else:
             model = Sequential()

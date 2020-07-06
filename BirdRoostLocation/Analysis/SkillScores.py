@@ -76,8 +76,8 @@ def get_skill_scores_localization(predictions, truths):
         print(dice)
 
         true_pos = np.logical_and(prediction, overlap)
-        print(prediction[0])
-        print(overlap[0])
+        # print(prediction[0])
+        # print(overlap[0])
         true_neg = np.logical_xor(overlap, true_pos)
 
         false_pos = np.logical_and(prediction, disjoint)
@@ -108,8 +108,11 @@ def get_skill_scores_localization(predictions, truths):
     else:
         TNR = 0
     # fpr, tpr, _ = roc_curve(truths, predictions)
-    # ROC_AUC = auc(np.array(fpr), np.array(tpr))
-    ROC_AUC = 0.0
+    try:
+        ROC_AUC = auc(np.sort(np.array(fpr)[::-1]), np.sort(np.array(tpr)[::-1]))
+    except Exception as e:
+        print(e)
+        ROC_AUC = 0.0
 
     return ACC, TPR, TNR, ROC_AUC, np.mean(np.array(dice_list)), fpr, tpr
 

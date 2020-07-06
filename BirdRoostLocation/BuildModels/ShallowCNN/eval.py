@@ -32,8 +32,10 @@ from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
 from keras.models import model_from_json
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Conv2D
 import keras
+from PIL import Image
+import matplotlib
 
 
 def field_predict(x, log_path, coord_conv, problem):
@@ -47,6 +49,7 @@ def field_predict(x, log_path, coord_conv, problem):
         model = unet.build_model(
             inputDimensions=(240, 240, 3), coord_conv=coord_conv, problem=problem
         )
+        print(log_path)
         model.load_weights(log_path)
         predictions = np.array([])
         for example in x:
@@ -118,16 +121,6 @@ def eval(
                 for i, field in enumerate(
                     ["Zdr", "Rho_HV", "Velocity", "Reflectivity"]
                 ):
-                    print(
-                        settings.WORKING_DIRECTORY
-                        + "model/"
-                        + field
-                        + "/"
-                        + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5"
-                    )
                     if field == "Rho_HV":
                         radar_product = utils.Radar_Products.cc
                     elif field == "Zdr":
@@ -153,22 +146,35 @@ def eval(
                     print(filenames.shape)
                     print(model_name)
 
-                    preds, model = field_predict(
-                        x,
-                        settings.WORKING_DIRECTORY
-                        + "model/"
-                        + field
-                        + "/"
-                        + str(loadfile)
-                        + "/checkpoint/"
-                        + field
-                        + ".h5",
-                        coord_conv,
-                        problem,
-                    )
                     if problem == "detection":
+                        preds, model = field_predict(
+                            x,
+                            settings.WORKING_DIRECTORY
+                            + "model/"
+                            + field
+                            + "/"
+                            + str(loadfile)
+                            + "/checkpoint/"
+                            + field
+                            + ".h5",
+                            coord_conv,
+                            problem,
+                        )
                         print(SkillScores.get_skill_scores(preds, y))
                     else:
+                        preds, model = field_predict(
+                            x,
+                            settings.WORKING_DIRECTORY
+                            + "model/"
+                            + field
+                            + "/unet/"
+                            + str(loadfile)
+                            + "/checkpoint/"
+                            + field
+                            + ".h5",
+                            coord_conv,
+                            problem,
+                        )
                         print(SkillScores.get_skill_scores_localization(preds, y))
 
                     if field_preds.size == 0:
@@ -180,23 +186,51 @@ def eval(
                     print(field_preds.shape)
                     print(field_ys.shape)
 
-                model = Sequential()
-                model.add(Dense(256, input_shape=(4, 2), activation="relu"))
-                model.add(Dense(2, activation="softmax"))
-                model.compile(
-                    loss=keras.losses.categorical_crossentropy,
-                    optimizer=keras.optimizers.adam(lr),
-                    metrics=["accuracy"],
-                )
-                model.load_weights(log_path)
+                if problem == "detection":
+                    model = Sequential()
+                    model.add(Dense(256, input_shape=(4, 2), activation="relu"))
+                    model.add(Dense(2, activation="softmax"))
+                    model.compile(
+                        loss=keras.losses.categorical_crossentropy,
+                        optimizer=keras.optimizers.adam(lr),
+                        metrics=["accuracy"],
+                    )
 
-                print(field_preds.shape)
-                print(field_ys.shape)
-                predictions = model.predict(
-                    np.reshape(field_preds, (preds.shape[0], 4, 2))
-                )
-                # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                y = np.reshape(field_ys, (-1, 4, 2))
+                    model.load_weights(log_path)
+                    print(field_preds.shape)
+                    print(field_ys.shape)
+                    predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
+                    # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+                    y = np.reshape(field_ys, (-1, 4, 2))
+
+                else:
+                    model = Sequential()
+                    model.add(
+                        Conv2D(
+                            1056,
+                            1,
+                            activation="relu",
+                            padding="same",
+                            kernel_initializer="he_normal",
+                            input_shape=(4, 240, 240),
+                        )
+                    )
+                    model.add(Conv2D(240, 1, activation="sigmoid"))
+                    model.compile(
+                        loss=unet.dice_coef_loss,
+                        metrics=[unet.dice_coef],
+                        optimizer=keras.optimizers.adam(lr),
+                    )
+                    print(log_path)
+
+                    model.load_weights(log_path)
+                    print(field_preds.shape)
+                    print(field_ys.shape)
+                    predictions = model.predict(
+                        np.reshape(field_preds, (-1, 4, 240, 240))
+                    )
+                    # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
+                    y = np.reshape(field_ys, (-1, 4, 240, 240))
 
         except AttributeError as e:
             print(e)
@@ -223,20 +257,31 @@ def eval(
     filenames = np.array(all_files)
 
     print("PREDICTIONS")
-    print(len(predictions))
+    print(predictions.shape)
     print("GROUND TRUTH")
-    print(len(y))
+    print(y.shape)
     print("FILENAMES")
-    print(len(filenames))
+    print(filenames.shape)
 
-    SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
+    if problem == "detection":
+        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+    else:
+        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
-    with open(
-        "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
-    ) as predict_file:
-        writer = csv.writer(predict_file, delimiter=",")
-        writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
-        writer.writerow([ACC, TPR, TNR, ROC_AUC])
+    if problem == "detection":
+        with open(
+            "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
+        ) as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC])
+    else:
+        with open(
+            "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
+        ) as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice])
 
     if problem == "detection":
         with open(
@@ -250,9 +295,33 @@ def eval(
             for i in range(len(predictions)):
                 writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
     else:
+        print(filenames.shape)
+        print(y.shape)
+        print(predictions.shape)
+        predictions = np.reshape(
+            predictions,
+            (predictions.shape[0], predictions.shape[1], predictions.shape[2], 1),
+        )
+        y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], 1))
         for i in range(len(filenames)):
-            np.save("/localization_preds/" + filenames[i] + ".png", predictions[i])
-            np.save("/localization_truth/" + filenames[i] + ".png", y[i])
+            matplotlib.image.imsave(
+                settings.WORKING_DIRECTORY
+                + "localization_preds_"
+                + model_file
+                + "/"
+                + filenames[i][0]
+                + ".png",
+                predictions[i][0],
+            )
+            matplotlib.image.imsave(
+                settings.WORKING_DIRECTORY
+                + "localization_truth_"
+                + model_file
+                + "/"
+                + filenames[i][0]
+                + ".png",
+                y[i][0],
+            )
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
@@ -262,9 +331,9 @@ def eval(
         else:
             print(x.shape)
             print(y.shape)
-            loss, mae, mape, cosine = model.evaluate(x, y)
-            print("LOSS, MAE, MAPE, COSINE: ")
-            print(loss, mae, mape, cosine)
+            loss, metric = model.evaluate(x, y)
+            print("LOSS, METRIC: ")
+            print(loss, metric)
 
 
 def main(results):
