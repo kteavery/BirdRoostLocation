@@ -109,7 +109,7 @@ def get_skill_scores_localization(predictions, truths):
         TNR = 0
     # fpr, tpr, _ = roc_curve(truths, predictions)
     try:
-        ROC_AUC = auc(np.sort(np.array(fpr)), np.sort(np.array(tpr)))
+        ROC_AUC = auc(np.sort(np.array(fpr)[::-1]), np.sort(np.array(tpr)[::-1]))
     except Exception as e:
         print(e)
         ROC_AUC = 0.0
