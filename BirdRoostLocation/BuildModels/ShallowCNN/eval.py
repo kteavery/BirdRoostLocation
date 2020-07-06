@@ -280,8 +280,8 @@ def eval(
             "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
         ) as predict_file:
             writer = csv.writer(predict_file, delimiter=",")
-            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice"])
-            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice])
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice", "fpr", "tpr"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr])
 
     if problem == "detection":
         with open(
@@ -309,18 +309,18 @@ def eval(
                 + "localization_preds_"
                 + model_file
                 + "/"
-                + filenames[i][0]
+                + filenames[i]
                 + ".png",
-                predictions[i][0],
+                predictions[i],
             )
             matplotlib.image.imsave(
                 settings.WORKING_DIRECTORY
                 + "localization_truth_"
                 + model_file
                 + "/"
-                + filenames[i][0]
+                + filenames[i]
                 + ".png",
-                y[i][0],
+                y[i],
             )
 
     if model_name == utils.ML_Model.Shallow_CNN:
