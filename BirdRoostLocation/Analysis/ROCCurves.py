@@ -96,7 +96,7 @@ def roc_curve_from_csv(curves):
     y_predicted_values = []
     ground_truths = []
 
-    for i in range(0, 4):
+    for i in range(0, 1):
         for curve in curves:
             df = pandas.read_csv(
                 settings.WORKING_DIRECTORY
@@ -134,6 +134,7 @@ def roc_curve_from_csv(curves):
 
     y_predicted_values = np.array(y_predicted_values)
     ground_truths = np.array(ground_truths)
+    print("shapes")
     print(y_predicted_values.shape)
     print(ground_truths.shape)
     # print(ground_truths)
