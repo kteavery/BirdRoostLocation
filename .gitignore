@@ -3,6 +3,8 @@
 .control/
 .idea/*
 .nfs/*
+*.deb*
+*.pub
 *.gz
 *.netcdf
 *.pyc

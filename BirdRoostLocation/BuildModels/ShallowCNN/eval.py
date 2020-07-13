@@ -20,8 +20,10 @@ import os
 import numpy as np
 import csv
 import ntpath
+import cv2
 import pandas as pd
 from ast import literal_eval
+import glob
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.BuildModels.ShallowCNN.unet as unet
@@ -74,6 +76,7 @@ def eval(
     model_name,
     loadfile=None,
     lr=0.00001,
+    unlabeled="",
 ):
     """Evaluate the shallow CNN model trained on a single radar product.
 
@@ -98,14 +101,24 @@ def eval(
     while type(x) == type(None) and type(y) == type(None):
         try:
             if model_name == utils.ML_Model.Shallow_CNN:
-                x, y, filenames = batch_generator.get_batch(
-                    utils.ML_Set.testing,
-                    dualPol=dual_pol,
-                    radar_product=radar_product,
-                    num_temporal_data=num_temporal_data,
-                    problem=problem,
-                    is_eval=True,
-                )
+                if unlabeled == "":
+                    x, y, filenames = batch_generator.get_batch(
+                        utils.ML_Set.testing,
+                        dualPol=dual_pol,
+                        radar_product=radar_product,
+                        num_temporal_data=num_temporal_data,
+                        problem=problem,
+                        is_eval=True,
+                    )
+                else:
+                    y = None
+
+                    filelist = glob.glob(unlabeled + "/*.png")
+                    x = np.array([np.array(Image.open(fname)) for fname in filelist])
+                    filenames = np.array(
+                        [os.path.splitext(fname)[0] for fname in filelist]
+                    )
+
                 print("x, y, filenames, predictions")
                 print(x.shape)
                 print(y.shape)
@@ -227,10 +240,10 @@ def eval(
                     print(field_preds.shape)
                     print(field_ys.shape)
                     predictions = model.predict(
-                        np.reshape(field_preds, (-1, 4, 240, 240))
+                        np.reshape(field_preds, (-1, 4, 240, 240, 1))
                     )
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                    y = np.reshape(field_ys, (-1, 4, 240, 240))
+                    y = np.reshape(field_ys, (-1, 4, 240, 240, 1))
 
         except AttributeError as e:
             print(e)
@@ -280,8 +293,8 @@ def eval(
             "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
         ) as predict_file:
             writer = csv.writer(predict_file, delimiter=",")
-            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice"])
-            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice])
+            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice", "fpr", "tpr"])
+            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr])
 
     if problem == "detection":
         with open(
@@ -298,30 +311,56 @@ def eval(
         print(filenames.shape)
         print(y.shape)
         print(predictions.shape)
-        predictions = np.reshape(
-            predictions,
-            (predictions.shape[0], predictions.shape[1], predictions.shape[2], 1),
-        )
-        y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], 1))
+        if model_name == utils.ML_Model.Shallow_CNN_All:
+            predictions = np.reshape(
+                predictions,
+                (
+                    predictions.shape[0],
+                    predictions.shape[1],
+                    predictions.shape[2],
+                    predictions.shape[3],
+                    1,
+                ),
+            )
+            y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], y.shape[3], 1))
+
         for i in range(len(filenames)):
-            matplotlib.image.imsave(
+            cv2.imwrite(
                 settings.WORKING_DIRECTORY
                 + "localization_preds_"
                 + model_file
                 + "/"
-                + filenames[i][0]
+                + filenames[i]
                 + ".png",
-                predictions[i][0],
+                predictions[i],
             )
-            matplotlib.image.imsave(
+            cv2.imwrite(
                 settings.WORKING_DIRECTORY
                 + "localization_truth_"
                 + model_file
                 + "/"
-                + filenames[i][0]
+                + filenames[i]
                 + ".png",
-                y[i][0],
+                y[i],
             )
+            # matplotlib.image.imsave(
+            #     settings.WORKING_DIRECTORY
+            #     + "localization_preds_"
+            #     + model_file
+            #     + "/"
+            #     + filenames[i]
+            #     + ".png",
+            #     predictions[i],
+            # )
+            # matplotlib.image.imsave(
+            #     settings.WORKING_DIRECTORY
+            #     + "localization_truth_"
+            #     + model_file
+            #     + "/"
+            #     + filenames[i]
+            #     + ".png",
+            #     y[i],
+            # )
 
     if model_name == utils.ML_Model.Shallow_CNN:
         if problem == "detection":
@@ -364,6 +403,7 @@ def main(results):
         num_temporal_data=results.num_temporal_data,
         model_name=model,
         loadfile=results.loadfile,
+        unlabeled=results.unlabeled,
     )
 
 
@@ -451,6 +491,15 @@ if __name__ == "__main__":
         help="""
             which file to load for aggregates
             """,
+    )
+    parser.add_argument(
+        "-ul",
+        "--unlabeled",
+        type=str,
+        default="",
+        help="""
+        path to unlabeled dataset (optional)
+        """,
     )
     results = parser.parse_args()
     main(results)

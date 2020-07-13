@@ -299,15 +299,21 @@ class Batch_Generator:
         is_eval=False,
     ):
         extended_filenames = np.array([])
+        #print(roost_sets)
+        #print(no_roost_sets)
+        print("FILENAMES")
+        print(filenames)
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
+                    print(indices)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
+                        print(filename)
                         if filename not in extended_filenames:
-                            # print(len(indices))
-                            # print(i)
+                            print(len(indices))
+                            print(i)
                             images = self.label_dict[filename][0].get_image(
                                 radar_product
                             )
@@ -376,8 +382,8 @@ class Batch_Generator:
                 #     )
 
         truth_shape = np.array(ground_truths).shape
-        # print("truth shape: ")
-        # print(truth_shape)
+        print("truth shape: ")
+        print(truth_shape)
 
         try:
             if problem == "detection":
