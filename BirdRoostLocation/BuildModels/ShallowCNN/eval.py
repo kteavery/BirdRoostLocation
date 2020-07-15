@@ -102,6 +102,8 @@ def eval(
     while type(x) == type(None) and type(y) == type(None):
         try:
             if model_name == utils.ML_Model.Shallow_CNN:
+                print("unlabeled")
+                print(unlabeled)
                 if unlabeled == "":
                     x, y, filenames = batch_generator.get_batch(
                         utils.ML_Set.testing,
@@ -119,7 +121,7 @@ def eval(
                     #x = np.array([Image.fromarray(img).convert('RGB') for img in x])
                     x = x[:,5:245, 5:245]
                     filenames = np.array(
-                        [os.path.splitext(fname)[0] for fname in filelist]
+                        [os.path.splitext(os.path.basename(fname))[0] for fname in filelist]
                     )
 
                 print("x, y, filenames, predictions")
@@ -284,6 +286,8 @@ def eval(
     if problem == "detection":
         SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
     else:
+        print("unlabeled")
+        print(unlabeled)
         if unlabeled == "":
             SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
@@ -333,17 +337,31 @@ def eval(
                 y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], y.shape[3], 1))
 
         for i in range(len(filenames)):
-            print(filenames.shape)
-            print(predictions.shape)
-            cv2.imwrite(
-                settings.WORKING_DIRECTORY
-                + "localization_preds_"
-                + model_file
-                + "/"
-                + filenames[i][0]
-                + ".png",
-                predictions[i],
-            )
+            #print(filenames.shape)
+            #print(predictions.shape)
+            #print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
+            if unlabeled == "":
+                cv2.imwrite(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png",
+                    predictions[i],
+                )
+            else:
+                cv2.imwrite(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_2019_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png",
+                    predictions[i],
+                )
+
+            #print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
             if unlabeled == "":
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
