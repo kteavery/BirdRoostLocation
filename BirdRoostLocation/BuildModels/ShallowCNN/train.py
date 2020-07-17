@@ -35,8 +35,9 @@ import datetime
 import warnings
 
 from keras.models import Sequential
-from keras.layers import Dense, Conv2D
+from keras.layers import Input, Dense, Conv2D
 from keras.models import model_from_json
+from keras import Model
 import keras
 
 import matplotlib.pyplot as plt
@@ -155,13 +156,14 @@ def train(
             inputs = Input((4, 240, 240))
             conv1 = Conv2D(
                 1056,
-                1,
+                3,
+                data_format="channels_first",
                 activation="relu",
                 padding="same",
                 kernel_initializer="he_normal",
             )(inputs)
-            conv10 = Conv2D(1, 1, activation="sigmoid")(conv9)
-            model = Model(inputs, conv10)
+            conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(conv1)
+            model = Model(inputs, conv2)
             model.compile(
                 optimizer=keras.optimizers.adam(lr),
                 loss=unet.dice_coef_loss,
@@ -241,27 +243,12 @@ def train(
                         x = np.reshape(
                             x, (x.shape[1], x.shape[0], x.shape[2], x.shape[3])
                         )
-                        y = np.reshape(
-                            y, (y.shape[1], y.shape[0], y.shape[2], y.shape[3])
-                        )
+                        y = y[0]
+                        #y = np.reshape(
+                        #    y, (y.shape[1], y.shape[0], y.shape[2], y.shape[3])
+                        #)
                     print("train.py - x and y shapes")
                     print(x.shape)
-                    print(y.shape)
-                # print(y)
-                # x = np.array(list(x))
-                # print("batch output")
-                # print(img_list.shape)
-                # print(x)
-                # y = np.array(list(y))
-                # print(y)
-                # print(file_list.shape)
-
-        # print(x)
-        # print(y)
-        # print(x.shape)
-        # print(y.shape)
-        # print(type(x))
-        # print(type(y))
         train_logs = model.train_on_batch(np.array(x), np.array(y))
         # print(problem)
 
@@ -325,14 +312,9 @@ def train(
                     )
                 )
 
-        # ml_utils.write_log(callback, train_names, train_logs, batch_no)
 
         # only print validation every once in a while
-        # print("batch_no \% \eval_increment")
-        # print(batch_no % eval_increment)
         if batch_no % eval_increment == 0:
-            # currentDT = datetime.datetime.now()
-            # model.save_weights(log_path + "weights" + save_file.format(""))
             try:
                 if model_name == utils.ML_Model.Shallow_CNN_All:
                     print("before batch gen")
@@ -362,9 +344,10 @@ def train(
                         x_ = np.reshape(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2], x_.shape[3])
                         )
-                        y_ = np.reshape(
-                            y_, (y_.shape[1], y_.shape[0], y_.shape[2], y_.shape[3])
-                        )
+                        y_ = y_[0]
+                        #y_ = np.reshape(
+                        #    y_, (y_.shape[1], y_.shape[0], y_.shape[2], y_.shape[3])
+                        #)
                         print("train.py - x and y shapes")
                         print(x_.shape)
                         print(y_.shape)
