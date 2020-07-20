@@ -117,16 +117,24 @@ def eval(
                     y = None
 
                     filelist = glob.glob(unlabeled + "/*.png")
-                    x = np.array([np.array(Image.open(fname).convert('RGB')) for fname in filelist])
-                    #x = np.array([Image.fromarray(img).convert('RGB') for img in x])
-                    x = x[:,5:245, 5:245]
+                    x = np.array(
+                        [
+                            np.array(Image.open(fname).convert("RGB"))
+                            for fname in filelist
+                        ]
+                    )
+                    # x = np.array([Image.fromarray(img).convert('RGB') for img in x])
+                    x = x[:, 5:245, 5:245]
                     filenames = np.array(
-                        [os.path.splitext(os.path.basename(fname))[0] for fname in filelist]
+                        [
+                            os.path.splitext(os.path.basename(fname))[0]
+                            for fname in filelist
+                        ]
                     )
 
                 print("x, y, filenames, predictions")
                 print(x.shape)
-                #print(y.shape)
+                # print(y.shape)
                 print(filenames.shape)
                 predictions, model = field_predict(x, log_path, coord_conv, problem)
                 print(predictions.shape)
@@ -219,7 +227,8 @@ def eval(
                     print(field_ys.shape)
                     predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                    y = np.reshape(field_ys, (-1, 4, 2))
+                    if unlabeled == "":
+                        y = np.reshape(field_ys, (-1, 4, 2))
 
                 else:
                     model = Sequential()
@@ -243,10 +252,8 @@ def eval(
 
                     model.load_weights(log_path)
                     print(field_preds.shape)
-                    #print(field_ys.shape)
-                    predictions = model.predict(
-                        np.reshape(field_preds, (-1, 240, 240))
-                    )
+                    # print(field_ys.shape)
+                    predictions = model.predict(np.reshape(field_preds, (-1, 240, 240)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     if unlabeled == "":
                         y = np.reshape(field_ys, (-1, 240, 240))
@@ -254,22 +261,16 @@ def eval(
         except AttributeError as e:
             print(e)
 
-    if problem == "detection":
-        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
-    else:
-        if unlabeled == "":
+    if unlabeled == "":
+        if problem == "detection":
+            ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+        else:
             print("predictions, y")
             print(predictions.shape)
             print(y.shape)
             ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr = SkillScores.get_skill_scores_localization(
                 predictions, y
             )
-
-    # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
-    # print("ACC_RAD: " + str(ACC_RAD))
-
-    # ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
-    # print("ACC_THETA: " + str(ACC_THETA))
 
     all_files = []
     for file in filenames:
@@ -278,49 +279,59 @@ def eval(
 
     print("PREDICTIONS")
     print(predictions.shape)
-    #print("GROUND TRUTH")
-    #print(y.shape)
+    # print("GROUND TRUTH")
+    # print(y.shape)
     print("FILENAMES")
     print(filenames.shape)
 
-    if problem == "detection":
-        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
-    else:
-        print("unlabeled")
-        print(unlabeled)
-        if unlabeled == "":
+    print("unlabeled")
+    print(unlabeled)
+    if unlabeled == "":
+        if problem == "detection":
+            SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+        else:
             SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
 
-    if problem == "detection":
-        with open(
-            "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
-        ) as predict_file:
-            writer = csv.writer(predict_file, delimiter=",")
-            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
-            writer.writerow([ACC, TPR, TNR, ROC_AUC])
-    else:
-        if unlabeled == "":
+    if unlabeled == "":
+        if problem == "detection":
             with open(
-                "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
+                "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
+                writer.writerow([ACC, TPR, TNR, ROC_AUC])
+        else:
+            with open(
+                "skill_scores_localization_" + model_file + str(loadfile) + ".csv",
+                mode="w",
             ) as predict_file:
                 writer = csv.writer(predict_file, delimiter=",")
                 writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice", "fpr", "tpr"])
                 writer.writerow([ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr])
 
     if problem == "detection":
-        with open(
-            "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
-        ) as predict_file:
-            writer = csv.writer(predict_file, delimiter=",")
-            # filenames = [[a] * 25 for a in filenames]
-            print(np.array(filenames).shape)
-            print(np.array(y).shape)
-            print(np.array(predictions).shape)
-            for i in range(len(predictions)):
-                writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+        if unlabeled == "":
+            with open(
+                "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                print(np.array(filenames).shape)
+                print(np.array(y).shape)
+                print(np.array(predictions).shape)
+                for i in range(len(predictions)):
+                    writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+        else:
+            with open(
+                "true_predictions_2019_" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                print(np.array(filenames).shape)
+                print(np.array(predictions).shape)
+                for i in range(len(predictions)):
+                    writer.writerow([filenames[i][0], predictions[i][0]])
     else:
         print(filenames.shape)
-        #print(y.shape)
+        # print(y.shape)
         print(predictions.shape)
         if model_name == utils.ML_Model.Shallow_CNN_All:
             predictions = np.reshape(
@@ -337,9 +348,6 @@ def eval(
                 y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], y.shape[3], 1))
 
         for i in range(len(filenames)):
-            #print(filenames.shape)
-            #print(predictions.shape)
-            #print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
             if unlabeled == "":
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
@@ -361,7 +369,7 @@ def eval(
                     predictions[i],
                 )
 
-            #print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
+            # print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
             if unlabeled == "":
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
@@ -372,37 +380,18 @@ def eval(
                     + ".png",
                     y[i],
                 )
-            # matplotlib.image.imsave(
-            #     settings.WORKING_DIRECTORY
-            #     + "localization_preds_"
-            #     + model_file
-            #     + "/"
-            #     + filenames[i]
-            #     + ".png",
-            #     predictions[i],
-            # )
-            # matplotlib.image.imsave(
-            #     settings.WORKING_DIRECTORY
-            #     + "localization_truth_"
-            #     + model_file
-            #     + "/"
-            #     + filenames[i]
-            #     + ".png",
-            #     y[i],
-            # )
 
-    if model_name == utils.ML_Model.Shallow_CNN:
+    if model_name == utils.ML_Model.Shallow_CNN and unlabeled == "":
         if problem == "detection":
             loss, acc = model.evaluate(x, y)
             print("LOSS, ACC: ")
             print(loss, acc)
         else:
-            if unlabeled == "":
-                print(x.shape)
-                print(y.shape)
-                loss, metric = model.evaluate(x, y)
-                print("LOSS, METRIC: ")
-                print(loss, metric)
+            print(x.shape)
+            print(y.shape)
+            loss, metric = model.evaluate(x, y)
+            print("LOSS, METRIC: ")
+            print(loss, metric)
 
 
 def main(results):
