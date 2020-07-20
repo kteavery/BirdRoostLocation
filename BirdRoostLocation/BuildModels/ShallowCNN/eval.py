@@ -369,7 +369,6 @@ def eval(
                     predictions[i],
                 )
 
-            # print(settings.WORKING_DIRECTORY+ "localization_preds_"+ model_file+ "/"+ filenames[i][0]+ ".png",predictions[i])
             if unlabeled == "":
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
