@@ -24,6 +24,7 @@ import cv2
 import pandas as pd
 from ast import literal_eval
 import glob
+from PIL import Image
 
 import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
 import BirdRoostLocation.BuildModels.ShallowCNN.unet as unet
@@ -34,7 +35,8 @@ from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
 from keras.models import model_from_json
 from keras.models import Sequential
-from keras.layers import Dense, Conv2D
+from keras.layers import Input, Dense, Conv2D
+from keras import Model
 import keras
 from PIL import Image
 import matplotlib
@@ -101,6 +103,8 @@ def eval(
     while type(x) == type(None) and type(y) == type(None):
         try:
             if model_name == utils.ML_Model.Shallow_CNN:
+                print("unlabeled")
+                print(unlabeled)
                 if unlabeled == "":
                     x, y, filenames = batch_generator.get_batch(
                         utils.ML_Set.testing,
@@ -114,14 +118,24 @@ def eval(
                     y = None
 
                     filelist = glob.glob(unlabeled + "/*.png")
-                    x = np.array([np.array(Image.open(fname)) for fname in filelist])
+                    x = np.array(
+                        [
+                            np.array(Image.open(fname).convert("RGB"))
+                            for fname in filelist
+                        ]
+                    )
+                    # x = np.array([Image.fromarray(img).convert('RGB') for img in x])
+                    x = x[:, 5:245, 5:245]
                     filenames = np.array(
-                        [os.path.splitext(fname)[0] for fname in filelist]
+                        [
+                            os.path.splitext(os.path.basename(fname))[0]
+                            for fname in filelist
+                        ]
                     )
 
                 print("x, y, filenames, predictions")
                 print(x.shape)
-                print(y.shape)
+                # print(y.shape)
                 print(filenames.shape)
                 predictions, model = field_predict(x, log_path, coord_conv, problem)
                 print(predictions.shape)
@@ -214,55 +228,50 @@ def eval(
                     print(field_ys.shape)
                     predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                    y = np.reshape(field_ys, (-1, 4, 2))
+                    if unlabeled == "":
+                        y = np.reshape(field_ys, (-1, 4, 2))
 
                 else:
-                    model = Sequential()
-                    model.add(
-                        Conv2D(
-                            1056,
-                            1,
-                            activation="relu",
-                            padding="same",
-                            kernel_initializer="he_normal",
-                            input_shape=(4, 240, 240),
-                        )
-                    )
-                    model.add(Conv2D(240, 1, activation="sigmoid"))
+                    inputs = Input((4, 240, 240))
+                    conv1 = Conv2D(
+                        1056,
+                        3,
+                        data_format="channels_first",
+                        activation="relu",
+                        padding="same",
+                        kernel_initializer="he_normal",
+                    )(inputs)
+                    conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(conv1)
+                    model = Model(inputs, conv2)
                     model.compile(
+                        optimizer=keras.optimizers.adam(lr),
                         loss=unet.dice_coef_loss,
                         metrics=[unet.dice_coef],
-                        optimizer=keras.optimizers.adam(lr),
                     )
+                    
                     print(log_path)
 
                     model.load_weights(log_path)
                     print(field_preds.shape)
-                    print(field_ys.shape)
-                    predictions = model.predict(
-                        np.reshape(field_preds, (-1, 4, 240, 240, 1))
-                    )
+                    # print(field_ys.shape)
+                    predictions = model.predict(np.reshape(field_preds, (-1,4,240, 240)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
-                    y = np.reshape(field_ys, (-1, 4, 240, 240, 1))
+                    if unlabeled == "":
+                        y = np.reshape(field_ys, (-1,4,240, 240))
 
         except AttributeError as e:
             print(e)
 
-    if problem == "detection":
-        ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
-    else:
-        print("predictions, y")
-        print(predictions.shape)
-        print(y.shape)
-        ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr = SkillScores.get_skill_scores_localization(
-            predictions, y
-        )
-
-    # ACC_RAD = SkillScores.get_skill_scores_regression(predictions[:, 0], y[:, 0], 0.1)
-    # print("ACC_RAD: " + str(ACC_RAD))
-
-    # ACC_THETA = SkillScores.get_skill_scores_regression(predictions[:, 1], y[:, 1], 0.1)
-    # print("ACC_THETA: " + str(ACC_THETA))
+    if unlabeled == "":
+        if problem == "detection":
+            ACC, TPR, TNR, ROC_AUC = SkillScores.get_skill_scores(predictions, y)
+        else:
+            print("predictions, y")
+            print(predictions.shape)
+            print(y.shape)
+            ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr = SkillScores.get_skill_scores_localization(
+                predictions, y
+            )
 
     all_files = []
     for file in filenames:
@@ -271,98 +280,110 @@ def eval(
 
     print("PREDICTIONS")
     print(predictions.shape)
-    print("GROUND TRUTH")
-    print(y.shape)
+    # print("GROUND TRUTH")
+    # print(y.shape)
     print("FILENAMES")
     print(filenames.shape)
 
-    if problem == "detection":
-        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
-    else:
-        SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
+    print("unlabeled")
+    print(unlabeled)
+    if unlabeled == "":
+        if problem == "detection":
+            SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC)
+        else:
+            SkillScores.print_skill_scores(ACC, TPR, TNR, ROC_AUC, dice)
+
+    if unlabeled == "":
+        if problem == "detection":
+            with open(
+                "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
+                writer.writerow([ACC, TPR, TNR, ROC_AUC])
+        else:
+            with open(
+                "skill_scores_localization_" + model_file + str(loadfile) + ".csv",
+                mode="w",
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice", "fpr", "tpr"])
+                writer.writerow([ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr])
 
     if problem == "detection":
-        with open(
-            "skill_scores" + model_file + str(loadfile) + ".csv", mode="w"
-        ) as predict_file:
-            writer = csv.writer(predict_file, delimiter=",")
-            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC"])
-            writer.writerow([ACC, TPR, TNR, ROC_AUC])
-    else:
-        with open(
-            "skill_scores_localization_" + model_file + str(loadfile) + ".csv", mode="w"
-        ) as predict_file:
-            writer = csv.writer(predict_file, delimiter=",")
-            writer.writerow(["ACC", "TPR", "TNR", "ROC_AUC", "Dice", "fpr", "tpr"])
-            writer.writerow([ACC, TPR, TNR, ROC_AUC, dice, fpr, tpr])
-
-    if problem == "detection":
-        with open(
-            "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
-        ) as predict_file:
-            writer = csv.writer(predict_file, delimiter=",")
-            # filenames = [[a] * 25 for a in filenames]
-            print(np.array(filenames).shape)
-            print(np.array(y).shape)
-            print(np.array(predictions).shape)
-            for i in range(len(predictions)):
-                writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+        if unlabeled == "":
+            with open(
+                "true_predictions_" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                print(np.array(filenames).shape)
+                print(np.array(y).shape)
+                print(np.array(predictions).shape)
+                for i in range(len(predictions)):
+                    writer.writerow([filenames[i][0], y[i][0], predictions[i][0]])
+        else:
+            with open(
+                "true_predictions_2019_" + model_file + str(loadfile) + ".csv", mode="w"
+            ) as predict_file:
+                writer = csv.writer(predict_file, delimiter=",")
+                print(np.array(filenames).shape)
+                print(np.array(predictions).shape)
+                for i in range(len(predictions)):
+                    writer.writerow([filenames[i][0], predictions[i][0]])
     else:
         print(filenames.shape)
-        print(y.shape)
+        # print(y.shape)
         print(predictions.shape)
         if model_name == utils.ML_Model.Shallow_CNN_All:
             predictions = np.reshape(
                 predictions,
                 (
                     predictions.shape[0],
-                    predictions.shape[1],
                     predictions.shape[2],
                     predictions.shape[3],
                     1,
                 ),
             )
-            y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], y.shape[3], 1))
+            if unlabeled == "":
+                y = np.reshape(y, (4, y.shape[0], y.shape[2], y.shape[3]))[0]
+                
 
         for i in range(len(filenames)):
-            cv2.imwrite(
-                settings.WORKING_DIRECTORY
-                + "localization_preds_"
-                + model_file
-                + "/"
-                + filenames[i]
-                + ".png",
-                predictions[i],
-            )
-            cv2.imwrite(
-                settings.WORKING_DIRECTORY
-                + "localization_truth_"
-                + model_file
-                + "/"
-                + filenames[i]
-                + ".png",
-                y[i],
-            )
-            # matplotlib.image.imsave(
-            #     settings.WORKING_DIRECTORY
-            #     + "localization_preds_"
-            #     + model_file
-            #     + "/"
-            #     + filenames[i]
-            #     + ".png",
-            #     predictions[i],
-            # )
-            # matplotlib.image.imsave(
-            #     settings.WORKING_DIRECTORY
-            #     + "localization_truth_"
-            #     + model_file
-            #     + "/"
-            #     + filenames[i]
-            #     + ".png",
-            #     y[i],
-            # )
+            if unlabeled == "":
+                cv2.imwrite(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png",
+                    predictions[i],
+                )
+            else:
+                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[i][0]+ ".png")
+                cv2.imwrite(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_2019_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png",
+                    predictions[i],
+                )
+                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[    i][0]+ ".png")
 
-    if model_name == utils.ML_Model.Shallow_CNN:
+            if unlabeled == "":
+                cv2.imwrite(
+                    settings.WORKING_DIRECTORY
+                    + "localization_truth_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png",
+                    y[i],
+                )
+
+    if model_name == utils.ML_Model.Shallow_CNN and unlabeled == "":
         if problem == "detection":
             loss, acc = model.evaluate(x, y)
             print("LOSS, ACC: ")

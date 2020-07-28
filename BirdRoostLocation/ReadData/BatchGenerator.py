@@ -661,8 +661,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                 )
             else:
                 predictions = np.reshape(
-                    predictions, (np.array(truth_list).shape[1], 240, 240)
+                    predictions, (-1, 240, 240)
                 )
+                print(np.array(truth_list).shape)
+                # truth_list = [ex[0] for ex in truth_list]
             # except Exception as e:
             #     print(e)
             #     return None, None, None, None
