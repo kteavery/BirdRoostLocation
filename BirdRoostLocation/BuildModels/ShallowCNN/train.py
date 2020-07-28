@@ -46,6 +46,18 @@ import numpy as np
 
 warnings.simplefilter("ignore")
 
+def dice_coef(y_true, y_pred, smooth=1):
+    y_true_f = keras.backend.flatten(y_true)
+    y_pred_f = keras.backend.flatten(y_pred)
+    intersection = keras.backend.sum(y_true_f * y_pred_f)
+    return (2.0 * intersection + smooth) / (
+        keras.backend.sum(y_true_f) + keras.backend.sum(y_pred_f) + smooth
+    )
+
+
+def dice_coef_loss(y_true, y_pred):
+    return 1 - dice_coef(y_true, y_pred)
+
 
 def train(
     log_path,
@@ -176,9 +188,8 @@ def train(
             model.add(Dense(256, input_shape=(4, 2), activation="relu"))
             model.add(Dense(2, activation="softmax"))
             model.compile(
-                loss=keras.losses.categorical_crossentropy,
-                optimizer=keras.optimizers.adam(lr),
-                metrics=["accuracy"],
+                optimizer=keras.optimizers.Adam(lr),
+                loss=keras.losses.categorical_crossentropy, metrics=["accuracy"],
             )
 
     print("checkpoint path: ")
@@ -207,7 +218,7 @@ def train(
         x = None
         y = None
         while type(x) == type(None) and type(y) == type(None):
-            print(model_name)
+            #print(model_name)
             if model_name == utils.ML_Model.Shallow_CNN:
                 x, y, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
@@ -217,6 +228,7 @@ def train(
                     model_type=model_type,
                     problem=problem,
                 )
+                print(x.shape)
                 if type(x) != type(None) and type(y) != type(None):
                     print("X and Y shapes")
                     print(x.shape)
@@ -251,6 +263,7 @@ def train(
                     print(x.shape)
         train_logs = model.train_on_batch(np.array(x), np.array(y))
         # print(problem)
+        print(train_logs)
 
         train_history.on_batch_end(batch=(x, y), logs=train_logs)
 
@@ -270,7 +283,7 @@ def train(
                 )
             )
         else:
-            print(train_logs)
+            #print(train_logs)
             print(type(train_logs))
             # print(train_logs[0])
             # print(train_logs[1])
@@ -394,12 +407,12 @@ def train(
                         )
                     )
                 else:  # localization
-
+ 
                     # print(np.array(x).shape)
                     # print(np.array(y).shape)
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
-                    print(val_logs)
+                    #print(val_logs)
                     print(len(val_logs))
                     if len(val_logs) == 4:
                         with open(checkpoint_path + "val_log.csv", "a") as csvfile:
@@ -447,7 +460,7 @@ def train(
                 print("completed validation")
 
             except Exception as e:
-                print(e)
+                 print(e)
 
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
             # currentDT = datetime.datetime.now()
@@ -458,16 +471,17 @@ def train(
                 json_file.write(model_json)
 
             model.save_weights(os.path.join(checkpoint_path, save_file.format("")))
-            try:
-                ml_utils.create_plots(
-                    train=train_history,
-                    val=val_history,
-                    save_path=os.path.join(
-                        checkpoint_path, "mse_plot_" + str(batch_no) + ".png"
-                    ),
-                )
-            except Exception as e:
-                print(e)
+            if unlabeled == "":
+                try:
+                    ml_utils.create_plots(
+                        train=train_history,
+                        val=val_history,
+                        save_path=os.path.join(
+                            checkpoint_path, "mse_plot_" + str(batch_no) + ".png"
+                        ),
+                    )
+                except Exception as e:
+                    print(e)
 
     print("SAVE FILE")
     print(save_file)

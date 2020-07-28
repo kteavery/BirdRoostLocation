@@ -26,7 +26,7 @@ UPDATE_LABEL_CSV: str = str(data["update_label_csv"])
 SUBSET_CSV: str = str(data["subset_files_csv"])
 ML_SPLITS_DATA: str = str(data["ml_splits_csv"])
 NEXRAD_CSV: str = str(data["nexrad_csv"])
-DEFAULT_BATCH_SIZE: int = 4
+DEFAULT_BATCH_SIZE: int = 1
 
 if bool(data["schooner"]):
     print("schooner")
