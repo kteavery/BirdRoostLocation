@@ -35,7 +35,8 @@ from BirdRoostLocation.ReadData import BatchGenerator
 from BirdRoostLocation.Analysis import SkillScores
 from keras.models import model_from_json
 from keras.models import Sequential
-from keras.layers import Dense, Conv2D
+from keras.layers import Input, Dense, Conv2D
+from keras import Model
 import keras
 from PIL import Image
 import matplotlib
@@ -231,32 +232,32 @@ def eval(
                         y = np.reshape(field_ys, (-1, 4, 2))
 
                 else:
-                    model = Sequential()
-                    model.add(
-                        Conv2D(
-                            1056,
-                            1,
-                            activation="relu",
-                            padding="same",
-                            kernel_initializer="he_normal",
-                            input_shape=(4, 240, 240),
-                        )
-                    )
-                    model.add(Conv2D(240, 1, activation="sigmoid"))
+                    inputs = Input((4, 240, 240))
+                    conv1 = Conv2D(
+                        1056,
+                        3,
+                        data_format="channels_first",
+                        activation="relu",
+                        padding="same",
+                        kernel_initializer="he_normal",
+                    )(inputs)
+                    conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(conv1)
+                    model = Model(inputs, conv2)
                     model.compile(
+                        optimizer=keras.optimizers.adam(lr),
                         loss=unet.dice_coef_loss,
                         metrics=[unet.dice_coef],
-                        optimizer=keras.optimizers.adam(lr),
                     )
+                    
                     print(log_path)
 
                     model.load_weights(log_path)
                     print(field_preds.shape)
                     # print(field_ys.shape)
-                    predictions = model.predict(np.reshape(field_preds, (-1, 240, 240)))
+                    predictions = model.predict(np.reshape(field_preds, (-1,4,240, 240)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     if unlabeled == "":
-                        y = np.reshape(field_ys, (-1, 240, 240))
+                        y = np.reshape(field_ys, (-1,4,240, 240))
 
         except AttributeError as e:
             print(e)
@@ -338,14 +339,14 @@ def eval(
                 predictions,
                 (
                     predictions.shape[0],
-                    predictions.shape[1],
                     predictions.shape[2],
                     predictions.shape[3],
                     1,
                 ),
             )
             if unlabeled == "":
-                y = np.reshape(y, (y.shape[0], y.shape[1], y.shape[2], y.shape[3], 1))
+                y = np.reshape(y, (4, y.shape[0], y.shape[2], y.shape[3]))[0]
+                
 
         for i in range(len(filenames)):
             if unlabeled == "":
@@ -359,6 +360,7 @@ def eval(
                     predictions[i],
                 )
             else:
+                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[i][0]+ ".png")
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
                     + "localization_preds_2019_"
@@ -368,6 +370,7 @@ def eval(
                     + ".png",
                     predictions[i],
                 )
+                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[    i][0]+ ".png")
 
             if unlabeled == "":
                 cv2.imwrite(
