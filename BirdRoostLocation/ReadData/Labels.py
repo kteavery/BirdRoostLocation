@@ -104,24 +104,15 @@ class ML_Label:
         )
 
     def get_image(self, radar_product):
-        # print(self.high_memory_mode)
         if self.high_memory_mode:
             return self.images[radar_product]
         if isinstance(self.images[radar_product], (list,)):
             images = []
-            # print(self.images[radar_product])
             for image in self.images[radar_product]:
-                # print(image)
-                # print(self.load_image(image))
                 if self.load_image(image) is not None:
-                    # print("self.images[radar_product], (list,)")
-                    # print(self.load_image(image))
-                    # print(image)
                     images.append(self.load_image(image))
             return images
         else:
-            # print("else")
-            # print(self.images[radar_product])
             return self.load_image(self.images[radar_product])
 
     def __get_radar_product_path(self, root_dir, radar_product, is_roost):
@@ -211,7 +202,6 @@ class ML_Label:
         """
         dim = 120
         if not os.path.exists(filename):
-            # print(filename)
             return None
         img = Image.open(filename)
         img_rgb = np.array(img.convert("RGB"))

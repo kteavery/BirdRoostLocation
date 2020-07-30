@@ -46,6 +46,7 @@ import numpy as np
 
 warnings.simplefilter("ignore")
 
+
 def dice_coef(y_true, y_pred, smooth=1):
     y_true_f = keras.backend.flatten(y_true)
     y_pred_f = keras.backend.flatten(y_pred)
@@ -174,7 +175,9 @@ def train(
                 padding="same",
                 kernel_initializer="he_normal",
             )(inputs)
-            conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(conv1)
+            conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(
+                conv1
+            )
             model = Model(inputs, conv2)
             model.compile(
                 optimizer=keras.optimizers.adam(lr),
@@ -189,12 +192,12 @@ def train(
             model.add(Dense(2, activation="softmax"))
             model.compile(
                 optimizer=keras.optimizers.Adam(lr),
-                loss=keras.losses.categorical_crossentropy, metrics=["accuracy"],
+                loss=keras.losses.categorical_crossentropy,
+                metrics=["accuracy"],
             )
 
     print("checkpoint path: ")
     print(checkpoint_path)
-    # model.load_weights(checkpoint_path + "Zdr.h5")
 
     # Set up callback
     train_history = ml_utils.LossHistory()
@@ -218,7 +221,7 @@ def train(
         x = None
         y = None
         while type(x) == type(None) and type(y) == type(None):
-            #print(model_name)
+            # print(model_name)
             if model_name == utils.ML_Model.Shallow_CNN:
                 x, y, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
@@ -256,13 +259,12 @@ def train(
                             x, (x.shape[1], x.shape[0], x.shape[2], x.shape[3])
                         )
                         y = y[0]
-                        #y = np.reshape(
+                        # y = np.reshape(
                         #    y, (y.shape[1], y.shape[0], y.shape[2], y.shape[3])
-                        #)
+                        # )
                     print("train.py - x and y shapes")
                     print(x.shape)
         train_logs = model.train_on_batch(np.array(x), np.array(y))
-        # print(problem)
         print(train_logs)
 
         train_history.on_batch_end(batch=(x, y), logs=train_logs)
@@ -283,10 +285,7 @@ def train(
                 )
             )
         else:
-            #print(train_logs)
             print(type(train_logs))
-            # print(train_logs[0])
-            # print(train_logs[1])
 
             if len(train_logs) == 4:
                 with open(checkpoint_path + "train_log.csv", "a") as csvfile:
@@ -325,7 +324,6 @@ def train(
                     )
                 )
 
-
         # only print validation every once in a while
         if batch_no % eval_increment == 0:
             try:
@@ -358,9 +356,9 @@ def train(
                             x_, (x_.shape[1], x_.shape[0], x_.shape[2], x_.shape[3])
                         )
                         y_ = y_[0]
-                        #y_ = np.reshape(
+                        # y_ = np.reshape(
                         #    y_, (y_.shape[1], y_.shape[0], y_.shape[2], y_.shape[3])
-                        #)
+                        # )
                         print("train.py - x and y shapes")
                         print(x_.shape)
                         print(y_.shape)
@@ -384,8 +382,6 @@ def train(
                 val_logs = model.test_on_batch(x_, y_)
                 print("AFTER model.test_on_batch")
 
-                # ml_utils.write_log(callback, val_names, val_logs, batch_no)
-
                 print("problem == detection")
                 print(problem)
                 if problem == "detection":
@@ -407,12 +403,8 @@ def train(
                         )
                     )
                 else:  # localization
- 
-                    # print(np.array(x).shape)
-                    # print(np.array(y).shape)
                     val_history.on_batch_end(batch=(x, y), logs=val_logs)
 
-                    #print(val_logs)
                     print(len(val_logs))
                     if len(val_logs) == 4:
                         with open(checkpoint_path + "val_log.csv", "a") as csvfile:
@@ -460,7 +452,7 @@ def train(
                 print("completed validation")
 
             except Exception as e:
-                 print(e)
+                print(e)
 
         if batch_no % checkpoint_frequency == 0 or batch_no == num_iterations - 1:
             # currentDT = datetime.datetime.now()

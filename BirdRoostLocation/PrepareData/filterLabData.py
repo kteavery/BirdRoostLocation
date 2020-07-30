@@ -23,11 +23,9 @@ def filter_data():
     print(len(data.filename.tolist()))
     for filename in filenames:
         for field in fields:
-            # print(str(filename)[0:10])
             for file in glob(
                 original_data + str(field) + "/??" + str(filename)[0:10] + "*"
             ):
-                # print(str(filename)[0:10])
                 if field == "Roost_Reflectivity":
                     counter += 1
                     print(counter)

@@ -107,7 +107,6 @@ def roc_curve_from_csv(curves):
                 names=["filenames", "truth", "predictions"],
             )
 
-            # print(df.head())
             truth = df["truth"]
             prediction = df["predictions"]
 
@@ -137,7 +136,6 @@ def roc_curve_from_csv(curves):
     print("shapes")
     print(y_predicted_values.shape)
     print(ground_truths.shape)
-    # print(ground_truths)
 
     create_roc_curve(
         ground_truths,
@@ -150,7 +148,6 @@ def roc_curve_from_csv(curves):
 
 def main():
     curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr", "agg"]
-    # curves = ["Reflectivity", "Velocity", "Rho_HV", "Zdr"]
     roc_curve_from_csv(curves)
 
 

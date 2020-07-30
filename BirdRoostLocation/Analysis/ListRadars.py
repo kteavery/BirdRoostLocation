@@ -1,8 +1,8 @@
 import pyart.io.nexrad_common as nexrad
 
 
-# given bounding latitude and longitude, this method returs all radars in the
-#  area
+# given bounding latitude and longitude, this method returns all
+# radars in the area
 def getRadarNames(minLat, maxLat, minLon, maxLon):
     Radars = []
     for key in nexrad.NEXRAD_LOCATIONS.keys():

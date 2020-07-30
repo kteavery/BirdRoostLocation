@@ -5,6 +5,7 @@ from mpl_toolkits.basemap import Basemap
 import pandas
 
 import BirdRoostLocation.Analysis.ListRadars as ListRadars
+from BirdRoostLocation import LoadSettings as settings
 
 
 def addRadarsToPlot(title, radLocation, roostLocations, radars):
@@ -68,9 +69,7 @@ def addRadarsToPlot(title, radLocation, roostLocations, radars):
 
 
 def DrawMapShowingRadars():
-    labels = pandas.read_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar.csv"
-    )
+    labels = pandas.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
     birdRadars = list(set(labels["radar"]))[1:]
 
     # this is a list of the radars that the OU Radar Aeroecology has found
@@ -91,9 +90,7 @@ def DrawMapShowingRadars():
             [nexrad.NEXRAD_LOCATIONS[key]["lat"], nexrad.NEXRAD_LOCATIONS[key]["lon"]]
         )
 
-    x = pandas.read_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar.csv"
-    )
+    x = pandas.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
 
     roostLocationV06 = []
     roostLocationV03 = []
