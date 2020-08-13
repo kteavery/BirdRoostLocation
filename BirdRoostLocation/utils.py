@@ -15,7 +15,6 @@ class ML_Set(Enum):
     testing: Tuple[int, str] = (2, "Testing")
 
     def __new__(cls, value: int, name: str):
-        # enum_names = {0: "Validation", 1: "Training", 2: "Testing"}
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
         member.fullname: str = name  # enum_names[value]
@@ -31,7 +30,6 @@ class ML_Model(Enum):
     Shallow_CNN_Time: Tuple[int, str] = (2, "Shallow_CNN_Time")
 
     def __new__(cls, value: int, name: str):
-        # enum_names = {0: "Shallow_CNN", 1: "Shallow_CNN_All", 2: "Shallow_CNN_Time"}
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
         member.fullname: str = name  # enum_names[value]
@@ -50,7 +48,6 @@ class Radar_Products(Enum):
     diff_reflectivity: Tuple[int, str] = (3, "Zdr")
 
     def __new__(cls, value: int, name: str) -> Tuple[int, str]:
-        # enum_names = {0: "Reflectivity", 1: "Velocity", 2: "Rho_HV", 3: "Zdr"}
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
         member.fullname: str = name  # enum_names[value]

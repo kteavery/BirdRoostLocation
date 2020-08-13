@@ -60,8 +60,6 @@ def get_skill_scores_localization(predictions, truths):
     tpr = []
     fpr = []
 
-    # predictions = predictions[~np.isnan(predictions)]
-    # truths = truths[~np.isnan(truths)]
     predictions = np.round(predictions)
     truths = np.round(truths)
 
@@ -76,8 +74,6 @@ def get_skill_scores_localization(predictions, truths):
         print(dice)
 
         true_pos = np.logical_and(prediction, overlap)
-        # print(prediction[0])
-        # print(overlap[0])
         true_neg = np.logical_xor(overlap, true_pos)
 
         false_pos = np.logical_and(prediction, disjoint)
@@ -107,7 +103,6 @@ def get_skill_scores_localization(predictions, truths):
         TNR = (TN) / (TN + FP)
     else:
         TNR = 0
-    # fpr, tpr, _ = roc_curve(truths, predictions)
     try:
         ROC_AUC = auc(np.sort(np.array(fpr)[::-1]), np.sort(np.array(tpr)[::-1]))
     except Exception as e:

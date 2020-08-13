@@ -24,9 +24,6 @@ def create_roc_curve(y_test, y_pred, y_label, title=None, save_file=None):
         print(i, y_test[i].shape)
         print(i, y_pred[i].shape)
         fpr[i], tpr[i], _ = roc_curve(y_test[i], y_pred[i])
-        # if np.isnan(np.array(fpr[i])).any():
-        #     fpr[i] = [1.0] * len(fpr[i])
-        #     fpr[i] = np.array(fpr[i])
         roc_auc[i] = auc(fpr[i], tpr[i])
         print("AUC: ")
         print(roc_auc[i])
@@ -45,7 +42,6 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     # Plot all ROC curves
 
     markers = ["P", "<", "8", "d", "."]
-    # markers = ["P", "<", "8", "d"]
     plt.figure(figsize=(5, 5))
     print(tpr[2])
     print(fpr[2])
@@ -87,8 +83,6 @@ def roc_plot(fpr, tpr, roc_auc, y_label, title=None, save_file=None):
     else:
         plt.title("Detection - ROC curve", fontsize=14.5)
     plt.legend(loc="lower right", fontsize=11)
-    # if save_file is not None:
-    #     plt.savefig(save_file)
     plt.show()
 
 
@@ -127,12 +121,14 @@ def roc_curve_from_csv(curves):
 
             y_predicted_values.append(prediction)
             ground_truths.append(truth)
+
             print("APPENDED")
             print(np.array(y_predicted_values).shape)
             print(np.array(ground_truths).shape)
 
     y_predicted_values = np.array(y_predicted_values)
     ground_truths = np.array(ground_truths)
+
     print("shapes")
     print(y_predicted_values.shape)
     print(ground_truths.shape)

@@ -1,3 +1,7 @@
+"""
+changes means and errors and then run to create interval plots
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.pyplot as plt

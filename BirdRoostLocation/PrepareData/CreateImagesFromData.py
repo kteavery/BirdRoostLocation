@@ -41,8 +41,6 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
             root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
             name = f.replace(".gz", "")
 
-            # print("SAVEDIR: ")
-            # print(saveDir)
             imgDir = os.path.join(saveDir, NexradUtils.getBasePath(f)) + "/"
             imgPath = os.path.join(
                 imgDir.replace(saveDir, os.path.join(saveDir, "All_Color")),
@@ -69,8 +67,6 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
             for i in range(len(label_row)):
                 lat = float(label_row["lat"].iloc[[i]])
                 lon = float(label_row["lon"].iloc[[i]])
-                # print(float(label_row["nexrad_lat"].iloc[[i]]))
-                # print(float(label_row["nexrad_lon"].iloc[[i]]))
                 VisualizeNexradData.visualizeRadarData(
                     rad,
                     imgPath[:-4] + ".png",
@@ -90,7 +86,6 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
 
 def createWithoutCSV(fileNames, saveDir, radarFilePath):
     for k, f in enumerate(fileNames):
-        # root = os.path.join(radarFilePath, NexradUtils.getBasePath(f))
         name = f.replace(".gz", "")
 
         print("SAVEDIR: ")
@@ -144,30 +139,22 @@ def saveAndSplitImages(imgDir, saveDir, dualPol, imgPath, name):
     save_extension = ".png"
     if not dualPol:
         img1 = img.crop((115, 100, 365, 350))
-        # print("DIR NAMES: ")
-        # print(d1 + name + "_Reflectivity" + save_extension)
         img1.save(d1 + name + "_Reflectivity" + save_extension)
 
         img2 = img.crop((495, 100, 740, 350))
-        # print(d2 + name + "_Velocity" + save_extension)
         img2.save(d2 + name + "_Velocity" + save_extension)
 
     if dualPol:
         img1 = img.crop((115, 140, 365, 390))
-        # print("DIR NAMES: ")
-        # print(d1 + name + "_Reflectivity" + save_extension)
         img1.save(d1 + name + "_Reflectivity" + save_extension)
 
         img2 = img.crop((495, 140, 740, 390))
-        # print(d2 + name + "_Velocity" + save_extension)
         img2.save(d2 + name + "_Velocity" + save_extension)
 
         img3 = img.crop((115, 520, 365, 770))
-        # print(d3 + name + "_Zdr" + save_extension)
         img3.save(d3 + name + "_Zdr" + save_extension)
 
         img4 = img.crop((495, 520, 740, 770))
-        # print(d4 + name + "_Rho_HV" + save_extension)
         img4.save(d4 + name + "_Rho_HV" + save_extension)
 
 
@@ -190,16 +177,9 @@ def main(results):
             utils.RADAR_IMAGE_DIR + "/KGRKimages/" + file[-26:-3] + ".png"
         ):
             aws_files.append(os.path.basename(file)[0:23])
-        # else:
-        #     print(file)
-    # print(aws_files)
+
     print(len(aws_files))
 
-    # createWithoutCSV(
-    #     fileNames=aws_files,
-    #     saveDir=utils.RADAR_IMAGE_DIR,
-    #     radarFilePath="2019radarfiles/",
-    # )
     try:
         createWithoutCSV(
             fileNames=aws_files,

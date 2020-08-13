@@ -6,67 +6,13 @@ import copy
 from BirdRoostLocation import LoadSettings as settings
 
 X = 230  # pixel location of center
-# X = 231
 Y = 230
 KMLAT = 110.574  # km = 1 degree latitude
 MULTLONG = 111.320  # multiplier
 
 
-# def convertLatLong(labels):
-#     latLongLabels = copy.deepcopy(labels)
-#     nexrads = pd.read_csv(
-#         settings.WORKING_DIRECTORY + "/nexrad.csv",
-#         names=["radar", "latitude", "longitude"],
-#         header=None,
-#     )
-#     for radar in nexrads["radar"]:
-#         latPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"]
-#         latKm = (latPx - X) * (300 / (X * 2))
-#         # latKm = latPx * (300 / (X * 2))
-#         longPx = latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"]
-#         longKm = (longPx - Y) * (300 / (Y * 2))
-#         # longKm = longPx * (300 / (Y * 2))
-
-#         newLat = latKm * (1 / KMLAT)
-#         newLong = longKm * (1 / (MULTLONG * (newLat * (math.pi / 180)).apply(math.cos)))
-
-#         if radar == "KFSD":
-#             print("latPx")
-#             print(latPx)
-#             print(300 / (Y * 2))
-#             # print("latKm")
-#             # print(latKm)
-#             print("longPx")
-#             print(longPx)
-#             print(300 / (Y * 2))
-#             # print("longKm")
-#             # print(longKm)
-#             print("newLat")
-#             print(newLat)
-#             print("newLong")
-#             print(newLong)
-#             print("newLat + nexrads.loc[nexrads['radar'] == radar]['latitude'].item()")
-#             print(newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item())
-#             print(
-#                 "newLong + nexrads.loc[nexrads['radar'] == radar]['longitude'].item()"
-#             )
-#             print(newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item())
-
-#         latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "latitude"] = (
-#             newLat + nexrads.loc[nexrads["radar"] == radar]["latitude"].item()
-#         )
-#         latLongLabels.loc[latLongLabels.AWS_file.str.match(radar), "longitude"] = (
-#             newLong + nexrads.loc[nexrads["radar"] == radar]["longitude"].item()
-#         )
-
-# # print(latLongLabels)
-
-# return latLongLabels
-
-
 def combineN(inputDF):
     df = copy.deepcopy(inputDF)
-    # df = df.reset_index(drop=True)
     N = 20
     for i, row1 in df.iterrows():
         for j, row2 in df.iterrows():
@@ -87,8 +33,6 @@ def combineN(inputDF):
                     df = df.drop(j)
                 except KeyError as e:
                     print(e)
-    # print(inputDF.head())
-    # print(df.head())
 
     return df
 
@@ -102,12 +46,7 @@ def processLabels(labels):
     """
 
     print(labels.head())
-    # falses = labels.groupby(["Roost"]).get_group(False)
     trues = labels.groupby(["Roost"]).get_group(True)
-
-    # print(falses.head())
-
-    # newLabels = trues.groupby(trues["AWS_file"].str[:12]).apply(combineN)
     newLabels = combineN(trues)
     print(newLabels.head())
 
@@ -141,8 +80,6 @@ def copySameLabels(labels):
         sharedStamps["roost_time"] = label["roost_time"]
         sharedStamps["sunrise_time"] = label["sunrise_time"]
 
-        # print(type(sharedStamps))
-        # labelDF.append(sharedStamps, ignore_index=True)
         labelDF = pd.concat([labelDF, sharedStamps], axis=0, sort=True)
 
     print(len(labelDF))
@@ -152,9 +89,6 @@ def copySameLabels(labels):
 def main():
     labels = pd.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_polar.csv")
     lables = labels.sort_values(by=["AWS_file"])
-    # newLabels = processLabels(labels)
-    # latLongLabels = convertLatLong(newLabels)
-    # extendedLabels = copySameLabels(labels)
     extendedLabels = copy.deepcopy(labels)
     extendedLabels.to_csv(
         settings.WORKING_DIRECTORY + "/true_ml_relabels_polar_short.csv", index=False
