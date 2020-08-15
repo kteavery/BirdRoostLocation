@@ -25,14 +25,13 @@ class ML_Set(Enum):
 
 
 class ML_Model(Enum):
-    Shallow_CNN: Tuple[int, str] = (0, "Shallow_CNN")
-    Shallow_CNN_All: Tuple[int, str] = (1, "Shallow_CNN_All")
-    Shallow_CNN_Time: Tuple[int, str] = (2, "Shallow_CNN_Time")
+    CNN: Tuple[int, str] = (0, "CNN")
+    CNN_All: Tuple[int, str] = (1, "CNN_All")
 
     def __new__(cls, value: int, name: str):
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
-        member.fullname: str = name  # enum_names[value]
+        member.fullname: str = name
         return member
 
     def __int__(self) -> int:
@@ -50,7 +49,7 @@ class Radar_Products(Enum):
     def __new__(cls, value: int, name: str) -> Tuple[int, str]:
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
-        member.fullname: str = name  # enum_names[value]
+        member.fullname: str = name
         return member
 
     def __int__(self) -> int:

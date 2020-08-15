@@ -106,32 +106,17 @@ def roc_curve_from_csv(curves):
 
             # ACC, TPR, TNR, ROC_AUC = get_skill_scores(prediction, truth)
 
-            print(curve)
             prediction = np.array(prediction).astype(np.float)
             truth = np.array(truth).astype(np.float)
-            print(prediction.shape)
-            print(truth.shape)
-            print(prediction)
 
             prediction = prediction[~np.isnan(prediction)]
-
             truth = truth[~np.isnan(truth)]
-            print(prediction.shape)
-            print(truth.shape)
 
             y_predicted_values.append(prediction)
             ground_truths.append(truth)
 
-            print("APPENDED")
-            print(np.array(y_predicted_values).shape)
-            print(np.array(ground_truths).shape)
-
     y_predicted_values = np.array(y_predicted_values)
     ground_truths = np.array(ground_truths)
-
-    print("shapes")
-    print(y_predicted_values.shape)
-    print(ground_truths.shape)
 
     create_roc_curve(
         ground_truths,

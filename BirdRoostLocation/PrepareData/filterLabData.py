@@ -2,15 +2,16 @@ import pandas
 import os
 from glob import glob
 import shutil
+import BirdRoostLocation.LoadSettings as settings
 
 
 def filter_data():
-    lab_output_csv = "/Users/Kate/workspace/BirdRoostLocation/MLData/new_data_filtered/no_preds/output.csv"
-    original_data = (
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/new_data_filtered/no_preds/"
+    lab_output_csv = (
+        settings.WORKING_DIRECTORY + "new_data_filtered/no_preds/output.csv"
     )
+    original_data = settings.WORKING_DIRECTORY + "new_data_filtered/no_preds/"
     fields = ["Roost_Reflectivity", "Roost_Velocity", "Roost_Rho_HV", "Roost_Zdr"]
-    filtered_data = "/Users/Kate/workspace/BirdRoostLocation/MLData/no_rings_filtered/"
+    filtered_data = settings.WORKING_DIRECTORY + "no_rings_filtered/"
 
     colnames = ["filename", "latitude", "longitude", "flag"]
     data = pandas.read_csv(lab_output_csv, names=colnames)

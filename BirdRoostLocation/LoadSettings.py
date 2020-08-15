@@ -1,7 +1,7 @@
 """Load in variables that are user specific and consistently references.
 
 This repository's scrips will read and save files to a given directory. Set a
-working directory where all these files will be saved. BirdRoostDetection/MLData
+working directory where all these files will be saved. BirdRoostLocation/MLData
 is the default however any location can be chosen. All radar files, image files,
 model files, and data csv files will be saved in this directory. Mose of the
 scrips in this repository will will assume this folder is the working directory

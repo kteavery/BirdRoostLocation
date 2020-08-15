@@ -54,8 +54,8 @@ def train(
     num_iterations=2500,
     checkpoint_frequency=100,
     lr=0.00001,
-    model_name=utils.ML_Model.Shallow_CNN,
-    model_type="shallow_cnn",
+    model_name=utils.ML_Model.CNN,
+    model_type="cnn",
     dual_pol=True,
     high_memory_mode=False,
     num_temporal_data=0,
@@ -107,8 +107,8 @@ def train(
     print(model_name)
     print(settings.ML_SPLITS_DATA)
 
-    if model_name == utils.ML_Model.Shallow_CNN:
-        print("utils.ML_Model.Shallow_CNN")
+    if model_name == utils.ML_Model.CNN:
+        print("utils.ML_Model.CNN")
         print(settings.ML_SPLITS_DATA)
 
         batch_generator = BatchGenerator.Single_Product_Batch_Generator(
@@ -131,7 +131,7 @@ def train(
                 problem=problem,
             )
 
-    elif model_name == utils.ML_Model.Shallow_CNN_All:
+    elif model_name == utils.ML_Model.CNN_All:
         tf.compat.v1.disable_eager_execution()
         config = tf.compat.v1.ConfigProto(
             intra_op_parallelism_threads=1, allow_soft_placement=True
@@ -209,7 +209,7 @@ def train(
         y = None
         while type(x) == type(None) and type(y) == type(None):
             # print(model_name)
-            if model_name == utils.ML_Model.Shallow_CNN:
+            if model_name == utils.ML_Model.CNN:
                 x, y, _ = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
@@ -226,7 +226,7 @@ def train(
                 if problem == "localization" and type(y) != type(None):
                     y = np.reshape(y, (x.shape[0], x.shape[1], x.shape[2], 1))
 
-            if model_name == utils.ML_Model.Shallow_CNN_All:
+            if model_name == utils.ML_Model.CNN_All:
                 img_list, y, x, file_list = batch_generator.get_batch(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
@@ -314,7 +314,7 @@ def train(
         # only print validation every once in a while
         if batch_no % eval_increment == 0:
             try:
-                if model_name == utils.ML_Model.Shallow_CNN_All:
+                if model_name == utils.ML_Model.CNN_All:
                     print("before batch gen")
                     _, y_, x_, _ = batch_generator.get_batch(
                         ml_set=utils.ML_Set.validation,
@@ -336,7 +336,7 @@ def train(
                     )
 
                 if problem == "localization":
-                    if model_name == utils.ML_Model.Shallow_CNN_All:
+                    if model_name == utils.ML_Model.CNN_All:
                         print(x_.shape)
                         print(y_.shape)
                         x_ = np.reshape(
@@ -352,7 +352,7 @@ def train(
                     else:
                         y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
                 else:  # detection
-                    if model_name == utils.ML_Model.Shallow_CNN_All:
+                    if model_name == utils.ML_Model.CNN_All:
                         print(x_.shape)
                         print(y_.shape)
                         x_ = np.reshape(x_, (x_.shape[1], x_.shape[0], x_.shape[2]))

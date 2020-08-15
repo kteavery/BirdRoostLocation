@@ -50,11 +50,7 @@ def createLabelForFiles(fileNames, saveDir, radarFilePath):
             print(imgPath)
 
             file = open(
-                os.path.join(
-                    "/Users/Kate/workspace/BirdRoostLocation/MLData/KGRKradarfiles",
-                    name,
-                ),
-                "r",
+                os.path.join(settings.WORKING_DIRECTORY + "KGRKradarfiles", name), "r"
             )
             if not os.path.exists(os.path.dirname(imgPath)):
                 os.makedirs(os.path.dirname(imgPath))

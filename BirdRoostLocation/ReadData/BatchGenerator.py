@@ -413,7 +413,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         dualPol,
         radar_product=None,
         num_temporal_data=0,
-        model_type="shallow_cnn",
+        model_type="cnn",
         problem="detection",
         filenames=[],
         is_eval=False,
@@ -486,7 +486,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         print(ml_label_pd.shape)
         for _, row in ml_label_pd.iterrows():
             if row["AWS_file"] not in self.label_dict:
-                # print("new")
                 self.label_dict[row["AWS_file"]] = [
                     Labels.ML_Label(
                         row["AWS_file"], row, self.root_dir, high_memory_mode
@@ -507,7 +506,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         batch_size=settings.DEFAULT_BATCH_SIZE,
         loaded_models=None,
         num_temporal_data=0,
-        model_type="shallow_cnn",
+        model_type="cnn",
         problem="detection",
     ):
         """Get a batch of data for machine learning. This batch contains data
@@ -611,9 +610,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             else:
                 predictions = np.reshape(predictions, (-1, 240, 240))
                 print(np.array(truth_list).shape)
-            # except Exception as e:
-            #     print(e)
-            #     return None, None, None, None
 
             pred_list.append(predictions)
 

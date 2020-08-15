@@ -60,9 +60,8 @@ def field_predict(x, log_path, coord_conv, problem):
             predictions = np.append(
                 predictions, model.predict(np.reshape(example, (1, 240, 240, 3)))
             )
-            print("predictions.shape")
-            print(predictions.shape)
             predictions = np.reshape(predictions, (-1, 240, 240))
+            print("predictions.shape")
             print(predictions.shape)
 
     return predictions, model
@@ -102,7 +101,7 @@ def eval(
     print("batch generator created")
     while type(x) == type(None) and type(y) == type(None):
         try:
-            if model_name == utils.ML_Model.Shallow_CNN:
+            if model_name == utils.ML_Model.CNN:
                 print("unlabeled")
                 print(unlabeled)
                 if unlabeled == "":
@@ -124,7 +123,7 @@ def eval(
                             for fname in filelist
                         ]
                     )
-                    # x = np.array([Image.fromarray(img).convert('RGB') for img in x])
+
                     x = x[:, 5:245, 5:245]
                     filenames = np.array(
                         [
@@ -210,8 +209,6 @@ def eval(
                     else:
                         field_preds = np.concatenate((field_preds, preds), axis=0)
                         field_ys = np.concatenate((field_ys, y), axis=0)
-                    print(field_preds.shape)
-                    print(field_ys.shape)
 
                 if problem == "detection":
                     model = Sequential()
@@ -224,8 +221,6 @@ def eval(
                     )
 
                     model.load_weights(log_path)
-                    print(field_preds.shape)
-                    print(field_ys.shape)
                     predictions = model.predict(np.reshape(field_preds, (-1, 4, 2)))
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     if unlabeled == "":
@@ -241,23 +236,27 @@ def eval(
                         padding="same",
                         kernel_initializer="he_normal",
                     )(inputs)
-                    conv2 = Conv2D(1, 1, data_format="channels_first", activation="sigmoid")(conv1)
+                    conv2 = Conv2D(
+                        1, 1, data_format="channels_first", activation="sigmoid"
+                    )(conv1)
                     model = Model(inputs, conv2)
                     model.compile(
                         optimizer=keras.optimizers.adam(lr),
                         loss=unet.dice_coef_loss,
                         metrics=[unet.dice_coef],
                     )
-                    
+
                     print(log_path)
 
                     model.load_weights(log_path)
                     print(field_preds.shape)
                     # print(field_ys.shape)
-                    predictions = model.predict(np.reshape(field_preds, (-1,4,240, 240)))
+                    predictions = model.predict(
+                        np.reshape(field_preds, (-1, 4, 240, 240))
+                    )
                     # predictions = np.reshape(field_preds, (preds.shape[0], 4, 4))
                     if unlabeled == "":
-                        y = np.reshape(field_ys, (-1,4,240, 240))
+                        y = np.reshape(field_ys, (-1, 4, 240, 240))
 
         except AttributeError as e:
             print(e)
@@ -334,19 +333,13 @@ def eval(
         print(filenames.shape)
         # print(y.shape)
         print(predictions.shape)
-        if model_name == utils.ML_Model.Shallow_CNN_All:
+        if model_name == utils.ML_Model.CNN_All:
             predictions = np.reshape(
                 predictions,
-                (
-                    predictions.shape[0],
-                    predictions.shape[2],
-                    predictions.shape[3],
-                    1,
-                ),
+                (predictions.shape[0], predictions.shape[2], predictions.shape[3], 1),
             )
             if unlabeled == "":
                 y = np.reshape(y, (4, y.shape[0], y.shape[2], y.shape[3]))[0]
-                
 
         for i in range(len(filenames)):
             if unlabeled == "":
@@ -360,7 +353,14 @@ def eval(
                     predictions[i],
                 )
             else:
-                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[i][0]+ ".png")
+                print(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_2019_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png"
+                )
                 cv2.imwrite(
                     settings.WORKING_DIRECTORY
                     + "localization_preds_2019_"
@@ -370,7 +370,14 @@ def eval(
                     + ".png",
                     predictions[i],
                 )
-                print(settings.WORKING_DIRECTORY+ "localization_preds_2019_"+ model_file+ "/"+ filenames[    i][0]+ ".png")
+                print(
+                    settings.WORKING_DIRECTORY
+                    + "localization_preds_2019_"
+                    + model_file
+                    + "/"
+                    + filenames[i][0]
+                    + ".png"
+                )
 
             if unlabeled == "":
                 cv2.imwrite(
@@ -383,7 +390,7 @@ def eval(
                     y[i],
                 )
 
-    if model_name == utils.ML_Model.Shallow_CNN and unlabeled == "":
+    if model_name == utils.ML_Model.CNN and unlabeled == "":
         if problem == "detection":
             loss, acc = model.evaluate(x, y)
             print("LOSS, ACC: ")

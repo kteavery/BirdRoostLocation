@@ -42,9 +42,7 @@ def create_nexrad_dict():
 
 
 def add_cols():
-    df = pandas.read_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_edited.csv"
-    )
+    df = pandas.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_edited.csv")
     nexrads = create_nexrad_dict()
 
     nexrad_lats = []
@@ -62,13 +60,6 @@ def add_cols():
             float(row["longitude"]),
         )
 
-        if row["AWS_file"][0:19] == "KFSD20110820_113252":
-            print(row["AWS_file"])
-            print(float(row["latitude"]))
-            print(float(row["longitude"]))
-            print(rad)
-            print(theta)
-
         polar_radii.append(rad)
         polar_theta.append(theta)
         nexrad_lats.append(nexrad_lat)
@@ -85,8 +76,7 @@ def add_cols():
 def main():
     updated_df = add_cols()
     updated_df.to_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar_edited.csv",
-        index=False,
+        settings.WORKING_DIRECTORY + "true_ml_relabels_polar_edited.csv", index=False
     )
 
 

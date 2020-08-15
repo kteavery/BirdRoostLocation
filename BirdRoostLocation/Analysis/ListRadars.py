@@ -4,14 +4,14 @@ import pyart.io.nexrad_common as nexrad
 # given bounding latitude and longitude, this method returns all
 # radars in the area
 def getRadarNames(minLat, maxLat, minLon, maxLon):
-    Radars = []
+    radars = []
     for key in nexrad.NEXRAD_LOCATIONS.keys():
         if key[0] == "K":
             lat = float(nexrad.NEXRAD_LOCATIONS[key]["lat"])
             lon = float(nexrad.NEXRAD_LOCATIONS[key]["lon"])
             if lat >= minLat and lat <= maxLat and lon >= minLon and lon <= maxLon:
-                Radars.append(key)
-    return Radars
+                radars.append(key)
+    return radars
 
 
 # set latitude and longitude bounding box for the data being used
