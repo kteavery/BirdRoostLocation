@@ -7,7 +7,7 @@ import numpy as np
 from BirdRoostLocation import utils
 from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
+from BirdRoostLocation.BuildModels.CNN import model as shallow_model
 import tensorflow as tf
 from keras.models import model_from_json
 import keras

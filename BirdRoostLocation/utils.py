@@ -17,7 +17,7 @@ class ML_Set(Enum):
     def __new__(cls, value: int, name: str):
         member: Tuple[int, str] = object.__new__(cls)
         member._value_: int = value
-        member.fullname: str = name  # enum_names[value]
+        member.fullname: str = name
         return member
 
     def __int__(self) -> int:
