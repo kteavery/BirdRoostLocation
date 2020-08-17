@@ -7,8 +7,6 @@ def replaceRoosts(newcsv, oldcsv):
     joined = newcsv.join(oldcsv.set_index("AWS_file"), on="AWS_file").drop(
         ["lat", "lon"], axis=1
     )
-    # toDelete = oldcsv[oldcsv.AWS_file.isin(joined["AWS_file"].tolist())]
-    # oldLabels = oldcsv.drop(oldcsv.loc[toDelete.index])
     oldcsv[~oldcsv.AWS_file.isin(joined.AWS_file)]
     oldcsv = oldcsv.rename(columns={"lat": "latitude", "lon": "longitude"})
     combined = pd.concat([joined, oldcsv])

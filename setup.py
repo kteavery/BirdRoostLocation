@@ -6,7 +6,7 @@ if __name__ == "__main__":
     setup(
         name="BirdRoostLocation",
         version="1.0",
-        description="Machine Learning to locate pre migratory  bird roosts in "
+        description="Machine Learning to locate pre migratory bird roosts in "
         "NEXRAD radar data",
         author="Kate Avery",
         author_email="katherine.avery@ou.edu",
@@ -16,8 +16,6 @@ if __name__ == "__main__":
             "BirdRoostLocation",
             "BirdRoostLocation.BuildModels",
             "BirdRoostLocation.BuildModels.ShallowCNN",
-            "BirdRoostLocation.BuildModels.Inception",
-            "BirdRoostLocation.BuildModels.Part_Of_Image",
             "BirdRoostLocation.PrepareData",
             "BirdRoostLocation.ReadData",
             "BirdRoostLocation.Analysis",
@@ -28,7 +26,6 @@ if __name__ == "__main__":
             "Biology",
             "Tensorflow",
             "keras",
-            "GANS",
             "ConvNet",
             "CNN",
             "Convolutional Neural Network",

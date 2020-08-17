@@ -61,7 +61,6 @@ def visualizeResults(image, truth, prediction, path):
     # to see through
     ax = fig.add_subplot(111, polar=True, label="polar", zorder=1)
     ax.set_facecolor("None")
-    # ax.scatter(truth[0], truth[1], c="black", marker="*", s=70.0)
 
     circle = plt.Circle(
         (truth[1] * math.cos(truth[0]), truth[1] * math.sin(truth[0])),
@@ -84,16 +83,14 @@ def visualizeResults(image, truth, prediction, path):
         (0, 0), 300, transform=ax.transData._b, color="black", fill=False, linewidth=1.0
     )
     ax.add_artist(circle300)
-    # ax.scatter(prediction[0], prediction[1], c="black", marker="o")
     ax.axis("off")
     ax.set_rmax(300)
 
     # create axes in the background to show cartesian image
     ax0 = fig.add_subplot(111, zorder=0)
-    ax0.imshow(data)  # , extent=[0, 1, 0, 1])
+    ax0.imshow(data)
 
     plt.show()
-    # plt.savefig(path)
 
     plt.close()
 
@@ -132,69 +129,5 @@ if __name__ == "__main__":
         "_flip_315",
     ]
 
-    # KEVXtheta = [
-    #     219.04207776024253,
-    #     320.95792223975747,
-    #     320.95792223975747,
-    #     219.04207776024253,
-    #     264.04207776024253,
-    #     264.04207776024253,
-    #     365.95792223975747,
-    #     309.04207776024253,
-    #     309.04207776024253,
-    #     410.95792223975747,
-    #     354.04207776024253,
-    #     354.04207776024253,
-    #     455.95792223975747,
-    #     399.04207776024253,
-    #     399.04207776024253,
-    #     500.95792223975747,
-    #     444.04207776024253,
-    #     444.04207776024253,
-    #     545.9579222397574,
-    #     489.04207776024253,
-    #     489.04207776024253,
-    #     590.9579222397574,
-    #     534.0420777602426,
-    #     534.0420777602426,
-    #     635.9579222397574,
-    # ]
-
-    # KEVXradius = [0.10477419878244053] * len(KEVXradius)
-
-    # labels = pandas.read_csv(
-    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar_short.csv"
-    # )
-    # KEVXrows = labels.loc[labels["AWS_file"] == "KEVX20130724_110326_V06"]
-    # points = [
-    #     (math.radians(float(row["polar_theta"])), float(row["polar_radius"]))
-    #     for index, row in KEVXrows.iterrows()
-    # ]
-
-    # for i, suffix in enumerate(suffixes):
-    # visualizeMask(
-    #     [
-    #         (math.radians(-170.64540477317283), 117.24481269235102),
-    #         (math.radians(22.59922891088621), 45.08385832876151),
-    #         (math.radians(-117.54880097214688), 209.08349349634045),
-    #         (math.radians(27.962537078732918), 77.59194126687083),
-    #         (math.radians(69.36764465370331), 44.429575689160735),
-    #         (math.radians(24.688976464036585), 62.21669720022375),
-    #         (math.radians(-167.3837851418881), 111.04753441365965),
-    #         (math.radians(-131.0324743950738), 135.50595496468856),
-    #         (math.radians(-146.13241503834084), 84.09156632237392),
-    #     ]
-    # )
-
     visualizeMask([(math.radians(-2.0), 172.0)])
 
-    # visualizeResults(
-    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
-    #     + suffix
-    #     + ".png",
-    #     (math.radians(points[i]), points[i]),
-    #     (0, 0),
-    #     "/Users/Kate/workspace/BirdRoostLocation/MLData/KEVX20130724_110326_V06/24KEVX20130724_110326_V06_Reflectivity"
-    #     + suffix
-    #     + ".png",
-    # )

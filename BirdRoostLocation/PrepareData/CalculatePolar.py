@@ -12,34 +12,18 @@ def calculate_polar(nexrad_lat, nexrad_long, roost_lat, roost_long):
     roost_lat_km, roost_long_km = convert_km(roost_lat, roost_long)
     nexrad_lat_km, nexrad_long_km = convert_km(nexrad_lat, nexrad_long)
 
-    # print(roost_lat_km)
-    # print(nexrad_lat_km)
-    # print(roost_long_km)
-    # print(nexrad_long_km)
     lat_diff = roost_lat_km - nexrad_lat_km  # y
     long_diff = roost_long_km - nexrad_long_km  # x
-    # print(lat_diff)
-    # print(long_diff)
 
     theta = math.degrees(math.atan(abs(lat_diff / long_diff)))
     if long_diff < 0 and lat_diff < 0:  # quadrant 3
         theta = theta - 180.0
-        # print("quadrant 3")
     if long_diff < 0 and lat_diff >= 0:  # quadrant 2
         theta = theta + 180.0
-        # print("quadrant 2")
     if lat_diff < 0 and long_diff >= 0:  # quadrant 4
         theta = -1 * theta
-        # print("quadrant 4")
-    # if long_diff >= 0 and lat_diff >= 0:
-    #     print("quadrant 1")
-
-    # print(theta)
 
     rad = math.sqrt(lat_diff * lat_diff + long_diff * long_diff)
-
-    # print(rad)
-    # print()
 
     return rad, theta  # lat/long degrees, degrees
 
@@ -58,19 +42,14 @@ def create_nexrad_dict():
 
 
 def add_cols():
-    df = pandas.read_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_edited.csv"
-    )
+    df = pandas.read_csv(settings.WORKING_DIRECTORY + "true_ml_relabels_edited.csv")
     nexrads = create_nexrad_dict()
-    # print(nexrads)
-    # print(df.head())
 
     nexrad_lats = []
     nexrad_longs = []
     polar_radii = []
     polar_theta = []
     for _, row in df.iterrows():
-        # print(row["radar"])
         nexrad_lat = nexrads[row["radar"]][0]
         nexrad_long = nexrads[row["radar"]][1]
 
@@ -80,13 +59,6 @@ def add_cols():
             float(row["latitude"]),
             float(row["longitude"]),
         )
-
-        if row["AWS_file"][0:19] == "KFSD20110820_113252":
-            print(row["AWS_file"])
-            print(float(row["latitude"]))
-            print(float(row["longitude"]))
-            print(rad)
-            print(theta)
 
         polar_radii.append(rad)
         polar_theta.append(theta)
@@ -102,15 +74,9 @@ def add_cols():
 
 
 def main():
-    # print(calculate_polar(37.0242098, -80.2736664, 36.113, -80.61))
-    # print()
-    # print(calculate_polar(33.9487579, -81.1184281, 33.37, -80.0))
-    # print()
-    # print(calculate_polar(38.9753957, -77.4778444, 38.3667, -76.9177))
     updated_df = add_cols()
     updated_df.to_csv(
-        "/Users/Kate/workspace/BirdRoostLocation/MLData/true_ml_relabels_polar_edited.csv",
-        index=False,
+        settings.WORKING_DIRECTORY + "true_ml_relabels_polar_edited.csv", index=False
     )
 
 

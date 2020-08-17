@@ -151,9 +151,6 @@ if __name__ == "__main__":
     }
     savepath = "2019radarfiles/"
 
-    # downloadSpecificData(
-    #     results=results, locations=locations, savepath=savepath, year=2019
-    # )
     downloadSpecificData(
         results, {"KGRK": [30.721_763_7, -97.382_962_7]}, "KGRKradarfiles/", 2014
     )

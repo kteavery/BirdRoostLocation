@@ -7,7 +7,7 @@ import numpy as np
 from BirdRoostLocation import utils
 from BirdRoostLocation.PrepareData import NexradUtils
 from BirdRoostLocation import LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
+from BirdRoostLocation.BuildModels.CNN import model as shallow_model
 import tensorflow as tf
 from keras.models import model_from_json
 import keras
@@ -165,13 +165,7 @@ class Batch_Generator:
             for i in range(len(self.label_dict[filename]))
         ]
 
-        # print("np.array(images).shape")
-        # print(np.array(images).shape)
-
         if images != []:
-            #     print(filename)
-            #     print(len(self.label_dict[filename]))
-
             if problem == "detection":
                 if np.array(train_data).size == 0:
                     train_data = images
@@ -219,8 +213,6 @@ class Batch_Generator:
                         all_radii = np.append(all_radii, np.array(mask_radii))
                         all_thetas = np.append(all_thetas, np.array(thetas))
 
-                # print(len(self.label_dict[filename]))
-                # print(str(len(all_radii) / len(self.label_dict[filename])))
                 all_radii = np.reshape(
                     all_radii,
                     (
@@ -235,9 +227,7 @@ class Batch_Generator:
                         int(len(all_thetas) / len(self.label_dict[filename])),
                     ),
                 )
-                # print("ALL RADII, ALL THETAS")
-                # print(all_radii.shape)
-                # print(all_thetas.shape)
+
                 masks = np.zeros((len(all_radii[0]), 240, 240))
                 if type(roost_size) != float or math.isnan(roost_size):
                     roost_size = 28.0
@@ -299,21 +289,16 @@ class Batch_Generator:
         is_eval=False,
     ):
         extended_filenames = np.array([])
-        #print(roost_sets)
-        #print(no_roost_sets)
         print("FILENAMES")
         print(filenames)
         if filenames == []:
             for ml_sets in [roost_sets, no_roost_sets]:
                 if ml_sets[ml_set]:  # in case you only train on true or false labels
                     indices = Batch_Generator.get_batch_indices(self, ml_sets, ml_set)
-                    print(indices)
                     for i, index in enumerate(indices):
                         filename = ml_sets[ml_set][index]
                         print(filename)
                         if filename not in extended_filenames:
-                            print(len(indices))
-                            print(i)
                             images = self.label_dict[filename][0].get_image(
                                 radar_product
                             )
@@ -336,20 +321,11 @@ class Batch_Generator:
                                     extended_filenames, filename
                                 )
                             else:
-                                # elif is_eval == True:
                                 extended_filenames = np.append(
                                     extended_filenames,
                                     [filename]
                                     * (len(train_data) - len(extended_filenames)),
                                 )
-                            # else:  # unet
-                            #     extended_filenames = np.append(
-                            #         extended_filenames,
-                            #         [filename]
-                            #         * (len(train_data) - len(extended_filenames)),
-                            #     )
-                            # print(len(images))
-                            # print([filename])
         else:
             for filename in filenames:
                 images = self.label_dict[filename][0].get_image(radar_product)
@@ -370,16 +346,10 @@ class Batch_Generator:
                 if is_eval == False:
                     extended_filenames = np.append(extended_filenames, filename)
                 else:
-                    # elif is_eval == True:
                     extended_filenames = np.append(
                         extended_filenames,
                         [filename] * (len(train_data) - len(extended_filenames)),
                     )
-                # else:  # unet
-                #     extended_filenames = np.append(
-                #         extended_filenames,
-                #         [filename] * (len(train_data) - len(extended_filenames)),
-                #     )
 
         truth_shape = np.array(ground_truths).shape
         print("truth shape: ")
@@ -428,21 +398,14 @@ class Single_Product_Batch_Generator(Batch_Generator):
             root_dir,
         )
         ml_label_pd = pandas.read_csv(ml_label_csv)
-        # print("ml_label_pd")
-        # print(ml_label_pd.head())
         for _, row in ml_label_pd.iterrows():
-            # print(row["AWS_file"])
 
             if row["AWS_file"] not in self.label_dict:
-                # print("new")
                 self.label_dict[row["AWS_file"]] = []
 
             self.label_dict[row["AWS_file"]].append(
                 Labels.ML_Label(row["AWS_file"], row, self.root_dir, high_memory_mode)
             )
-
-            # print('self.label_dict[row["AWS_file"]]')
-            # print(self.label_dict[row["AWS_file"]])
 
     def get_batch(
         self,
@@ -450,7 +413,7 @@ class Single_Product_Batch_Generator(Batch_Generator):
         dualPol,
         radar_product=None,
         num_temporal_data=0,
-        model_type="shallow_cnn",
+        model_type="cnn",
         problem="detection",
         filenames=[],
         is_eval=False,
@@ -523,15 +486,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         print(ml_label_pd.shape)
         for _, row in ml_label_pd.iterrows():
             if row["AWS_file"] not in self.label_dict:
-                # print("new")
                 self.label_dict[row["AWS_file"]] = [
                     Labels.ML_Label(
                         row["AWS_file"], row, self.root_dir, high_memory_mode
                     )
                 ]
             else:
-                # print("duplicate")
-                # print(row["AWS_file"])
                 self.label_dict[row["AWS_file"]].append(
                     Labels.ML_Label(
                         row["AWS_file"], row, self.root_dir, high_memory_mode
@@ -546,7 +506,7 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         batch_size=settings.DEFAULT_BATCH_SIZE,
         loaded_models=None,
         num_temporal_data=0,
-        model_type="shallow_cnn",
+        model_type="cnn",
         problem="detection",
     ):
         """Get a batch of data for machine learning. This batch contains data
@@ -610,8 +570,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
             print(np.array(filenames).shape)
 
             predictions = np.array([])
-            # print("batch size")
-            # print(batch_size)
             for i in range(0, len(train), batch_size):
                 train_batch = []
                 for j in range(0, batch_size):
@@ -620,22 +578,12 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
 
                 train_batch = np.array(train_batch)
 
-                # print("train_batch.shape")
-                # print(train_batch.shape)
                 if len(train_batch) > 0:
                     if problem == "detection":
                         pred = loaded_models[k].predict_proba(train_batch)
                     else:
                         pred = loaded_models[k].predict(train_batch)
-                    # if len(predictions) == 0:
-                    #     predictions = np.array([pred, 1 - pred])
-                    #     print(predictions.shape)
-                    # else:
-                    # print(np.array([pred, 1 - pred]).shape)
-                    # print(np.array(pred).shape)
-                    # pred_shape = pred.shape
-                    # predictions = np.append(predictions, np.array([pred, 1 - pred]))
-                    # predictions = np.reshape(predictions, (pred_shape[0], 2))
+
                     predictions = np.append(predictions, np.array(pred))
                     predictions = np.reshape(predictions, (-1, 240, 240))
                     print("predictions.shape")
@@ -660,27 +608,10 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
                     predictions, (np.array(truth_list).shape[1], 2)
                 )
             else:
-                predictions = np.reshape(
-                    predictions, (-1, 240, 240)
-                )
+                predictions = np.reshape(predictions, (-1, 240, 240))
                 print(np.array(truth_list).shape)
-                # truth_list = [ex[0] for ex in truth_list]
-            # except Exception as e:
-            #     print(e)
-            #     return None, None, None, None
-
-            # print(predictions)
-            # print(type(predictions))
-            # print(type(predictions[0]))
-            # predictions = np.array(predictions)
-            # print(predictions.shape)
 
             pred_list.append(predictions)
-
-            # print(np.array(train_list).shape)
-            # print(np.array(truth_list).shape)
-            # print(np.array(pred_list).shape)
-            # print(np.array(file_list).shape)
 
         print("train_list, truth_list, pred_list, file_list")
         print(np.array(train_list).shape)

@@ -8,7 +8,7 @@
 *.gz
 *.netcdf
 *.pyc
-BirdRoostDetection.egg-info/*
+BirdRoostLocation.egg-info/*
 venv/
 .mypy_cache/
 build/*

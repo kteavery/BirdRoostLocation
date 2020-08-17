@@ -133,17 +133,10 @@ def visualizeRadarData(
                 (x0 + x * 1000.0), (y0 + y * 1000.0), inverse=True
             )
 
-            # m.scatter(lon0,lat0,marker='o',s=20,color='k',ax=ax,latlon=True)
             display.plot_point(points[0][0], points[0][1], symbol="ro")
             display.plot_point(points[1][0], points[1][1], symbol="bo")
-    # print("SAVE")
-    # print(save)
-    # if save:
-    # print("SAVE")
-    # print(save)
+
     plt.savefig(save)
-    # else:
-    # plt.show()
     plt.close()
 
 
@@ -160,10 +153,6 @@ def __plot_ppi(radar, field, ax, sweep=0):
     x = x[:, 0:cutoff]
     y = y[:, 0:cutoff]
     data = data[:, 0:cutoff]
-    # print("X, Y, DATA")
-    # print(x)
-    # print(y)
-    # print(data)
 
     ax.pcolormesh(
         x, y, data, vmin=plot_dict[field][0], vmax=plot_dict[field][1], cmap="binary"

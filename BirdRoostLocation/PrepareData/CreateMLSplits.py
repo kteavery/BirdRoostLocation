@@ -33,7 +33,6 @@ def ml_splits_by_date(csv_input_path, csv_output_path, k=5):
 
     index = 0
     for i, file_name in enumerate(file_list):
-        # base_radar = file_name[4:8]
         base_radar = file_name[0:4]
         print(base_radar)
         if base_radar not in basenames:
