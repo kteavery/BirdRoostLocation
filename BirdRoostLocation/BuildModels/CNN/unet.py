@@ -26,7 +26,7 @@ def dice_coef_loss(y_true, y_pred):
     return 1 - dice_coef(y_true, y_pred)
 
 
-def build_model(inputDimensions, lr=0.00001, coord_conv=False, problem="detection"):
+def build_model(inputDimensions, lr=0.00001, coord_conv=False):
     inputs = Input(inputDimensions)
     conv1 = Conv2D(
         64, 3, activation="relu", padding="same", kernel_initializer="he_normal"

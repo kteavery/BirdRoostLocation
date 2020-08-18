@@ -2,12 +2,12 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.layers import Activation, Flatten, Dense
 import BirdRoostLocation.LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN.coord import CoordinateChannel2D
+from BirdRoostLocation.BuildModels.CNN.coord import CoordinateChannel2D
 import keras
 
 
-def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection"):
-    """Build the shallow CNN model.
+def build_model(inputDimensions, lr=0.0001, coord_conv=False):
+    """Build the CNN model.
 
     Args:
         inputDimensions: The image dimention input must be in the following
@@ -16,7 +16,7 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
         coord_conv: Adds CoordConv layers
 
     Returns:
-        The shallow CNN model.
+        The CNN model.
     """
     print("Input dimensions:")
     print(inputDimensions)
@@ -67,20 +67,12 @@ def build_model(inputDimensions, lr=0.0001, coord_conv=False, problem="detection
     model.add(Activation("relu"))
     num_classes = 2
 
-    if problem == "detection":
-        model.add(Dense(num_classes, activation="softmax"))
-        model.compile(
-            loss=keras.losses.categorical_crossentropy,
-            optimizer=keras.optimizers.adam(lr),
-            metrics=["accuracy"],
-        )
-    else:  # localization
-        model.add(Dense(num_classes, activation="sigmoid"))
-        model.compile(
-            loss=keras.losses.mean_squared_error,
-            optimizer=keras.optimizers.adam(lr),
-            metrics=["mae", "mape", "cosine"],
-        )
+    model.add(Dense(num_classes, activation="softmax"))
+    model.compile(
+        loss=keras.losses.categorical_crossentropy,
+        optimizer=keras.optimizers.adam(lr),
+        metrics=["accuracy"],
+    )
 
     model.summary()
 

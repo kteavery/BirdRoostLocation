@@ -15,7 +15,7 @@ if __name__ == "__main__":
         packages=[
             "BirdRoostLocation",
             "BirdRoostLocation.BuildModels",
-            "BirdRoostLocation.BuildModels.ShallowCNN",
+            "BirdRoostLocation.BuildModels.CNN",
             "BirdRoostLocation.PrepareData",
             "BirdRoostLocation.ReadData",
             "BirdRoostLocation.Analysis",

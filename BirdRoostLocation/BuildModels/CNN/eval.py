@@ -1,4 +1,4 @@
-"""Evaluate the shallow CNN model trained on a single radar product.
+"""Evaluate the CNN model trained on a single radar product.
 
 Use command line arguments to select which radar product model to evaluate.
 Optionally input the location of the save file where the default is
@@ -26,8 +26,8 @@ from ast import literal_eval
 import glob
 from PIL import Image
 
-import BirdRoostLocation.BuildModels.ShallowCNN.model as ml_model
-import BirdRoostLocation.BuildModels.ShallowCNN.unet as unet
+import BirdRoostLocation.BuildModels.CNN.model as ml_model
+import BirdRoostLocation.BuildModels.CNN.unet as unet
 import BirdRoostLocation.LoadSettings as settings
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
@@ -72,14 +72,13 @@ def eval(
     radar_product,
     coord_conv,
     dual_pol,
-    num_temporal_data,
     problem,
     model_name,
     loadfile=None,
     lr=0.00001,
     unlabeled="",
 ):
-    """Evaluate the shallow CNN model trained on a single radar product.
+    """Evaluate the CNN model trained on a single radar product.
 
         Args:
             log_path: The location of the save directory. This method will
@@ -109,7 +108,6 @@ def eval(
                         utils.ML_Set.testing,
                         dualPol=dual_pol,
                         radar_product=radar_product,
-                        num_temporal_data=num_temporal_data,
                         problem=problem,
                         is_eval=True,
                     )
@@ -160,7 +158,6 @@ def eval(
                         utils.ML_Set.testing,
                         dualPol=dual_pol,
                         radar_product=radar_product,
-                        num_temporal_data=num_temporal_data,
                         problem=problem,
                         filenames=list(set(filenames)),
                         is_eval=True,
@@ -428,7 +425,6 @@ def main(results):
         coord_conv=results.coord_conv,
         problem=results.problem,
         dual_pol=results.dual_pol,
-        num_temporal_data=results.num_temporal_data,
         model_name=model,
         loadfile=results.loadfile,
         unlabeled=results.unlabeled,
@@ -479,17 +475,6 @@ if __name__ == "__main__":
             """,
     )
     parser.add_argument(
-        "-td",
-        "--num_temporal_data",
-        type=int,
-        default=1,
-        help="""
-                Only applied to temporal model. This indicates how many time
-                frames in either direction used for training. 0 will give array
-                size of 1, 1 -> 3, 2 -> 5, and 3 -> 7.
-                """,
-    )
-    parser.add_argument(
         "-d",
         "--dual_pol",
         type=bool,
@@ -507,8 +492,8 @@ if __name__ == "__main__":
         default=0,
         help="""
             Use an integer to select a model from the following list:
-                0 : Shallow CNN
-                1 : Shallow CNN, all radar products
+                0 : CNN
+                1 : CNN, all radar products
             """,
     )
     parser.add_argument(

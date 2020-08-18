@@ -122,7 +122,7 @@ class Batch_Generator:
             np.random.shuffle(ml_sets[key])
             np.random.shuffle(ml_sets_V06[key])
 
-    def get_batch_indices(self, ml_sets, ml_set, num_temporal_data=0):
+    def get_batch_indices(self, ml_sets, ml_set):
         indices = np.random.randint(
             low=0, high=len(ml_sets[ml_set]), size=int(self.batch_size / 2)
         )
@@ -412,7 +412,6 @@ class Single_Product_Batch_Generator(Batch_Generator):
         ml_set,
         dualPol,
         radar_product=None,
-        num_temporal_data=0,
         model_type="cnn",
         problem="detection",
         filenames=[],
@@ -505,7 +504,6 @@ class Multiple_Product_Batch_Generator(Batch_Generator):
         dualPol,
         batch_size=settings.DEFAULT_BATCH_SIZE,
         loaded_models=None,
-        num_temporal_data=0,
         model_type="cnn",
         problem="detection",
     ):

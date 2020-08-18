@@ -1,4 +1,4 @@
-"""Train the shallow CNN model on a single radar product.
+"""Train the CNN model on a single radar product.
 
 Use command line arguments to select which radar product to train the model on.
 Optionally input the location of the save file where the default is
@@ -24,8 +24,8 @@ python train.py \
 import argparse
 import os, csv
 import BirdRoostLocation.LoadSettings as settings
-from BirdRoostLocation.BuildModels.ShallowCNN import unet as unet
-from BirdRoostLocation.BuildModels.ShallowCNN import model as shallow_model
+from BirdRoostLocation.BuildModels.CNN import unet as unet
+from BirdRoostLocation.BuildModels.CNN import model as shallow_model
 from keras.callbacks import History
 from BirdRoostLocation import utils
 from BirdRoostLocation.BuildModels import ml_utils
@@ -58,12 +58,11 @@ def train(
     model_type="cnn",
     dual_pol=True,
     high_memory_mode=False,
-    num_temporal_data=0,
     coord_conv=True,
     problem="detection",
     loadfile=0,
 ):
-    """Train the shallow CNN model on a single radar product.
+    """Train the CNN model on a single radar product.
 
     Args:
         log_path: The location of the save directory. The model checkpoints,
@@ -114,24 +113,18 @@ def train(
         batch_generator = BatchGenerator.Single_Product_Batch_Generator(
             ml_label_csv=settings.LABEL_CSV,
             ml_split_csv=settings.ML_SPLITS_DATA,
-            high_memory_mode=high_memory_mode,
+            high_memory_mode=high_memory_mode,  # katie - ignore high_memory_mode
         )
         if model_type == "unet":
             model = unet.build_model(
-                inputDimensions=(240, 240, 3),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
+                inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv
             )
         else:  # shallow CNN
             model = shallow_model.build_model(
-                inputDimensions=(240, 240, 3),
-                lr=lr,
-                coord_conv=coord_conv,
-                problem=problem,
+                inputDimensions=(240, 240, 3), lr=lr, coord_conv=coord_conv
             )
 
-    elif model_name == utils.ML_Model.CNN_All:
+    elif model_name == utils.ML_Model.CNN_All:  # aggregate
         tf.compat.v1.disable_eager_execution()
         config = tf.compat.v1.ConfigProto(
             intra_op_parallelism_threads=1, allow_soft_placement=True
@@ -214,7 +207,6 @@ def train(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
                     radar_product=radar_product,
-                    num_temporal_data=num_temporal_data,
                     model_type=model_type,
                     problem=problem,
                 )
@@ -231,7 +223,6 @@ def train(
                     ml_set=utils.ML_Set.training,
                     dualPol=dual_pol,
                     loaded_models=loaded_models,
-                    num_temporal_data=num_temporal_data,
                     model_type=model_type,
                     problem=problem,
                 )
@@ -320,7 +311,6 @@ def train(
                         ml_set=utils.ML_Set.validation,
                         dualPol=dual_pol,
                         loaded_models=loaded_models,
-                        num_temporal_data=num_temporal_data,
                         model_type=model_type,
                         problem=problem,
                     )
@@ -330,7 +320,6 @@ def train(
                         ml_set=utils.ML_Set.validation,
                         dualPol=dual_pol,
                         radar_product=radar_product,
-                        num_temporal_data=num_temporal_data,
                         model_type=model_type,
                         problem=problem,
                     )
@@ -351,6 +340,7 @@ def train(
                         print(y_.shape)
                     else:
                         y_ = np.reshape(y_, (x_.shape[0], x_.shape[1], x_.shape[2], 1))
+
                 else:  # detection
                     if model_name == utils.ML_Model.CNN_All:
                         print(x_.shape)
@@ -476,14 +466,9 @@ def main(results):
     if results.log_path is None:
         if results.model == 1:
             log_path = ml_utils.LOG_PATH.format(model.fullname, str(results.dual_pol))
-        elif results.model == 0:
-            log_path = ml_utils.LOG_PATH.format(model.fullname, radar_product.fullname)
         else:
-            log_path = ml_utils.LOG_PATH_TIME.format(
-                model.fullname,
-                results.num_temporal_data * 2 + 1,
-                radar_product.fullname,
-            )
+            log_path = ml_utils.LOG_PATH.format(model.fullname, radar_product.fullname)
+
     else:
         log_path = results.log_path
 
@@ -500,7 +485,6 @@ def main(results):
         model_type=results.model_type,
         dual_pol=results.dual_pol,
         high_memory_mode=results.high_memory_mode,
-        num_temporal_data=results.num_temporal_data,
         coord_conv=results.coord_conv,
         problem=results.problem,
         loadfile=results.loadfile,
@@ -574,9 +558,8 @@ if __name__ == "__main__":
         default=0,
         help="""
             Use an integer to select a model from the following list:
-                0 : Shallow CNN
-                1 : Shallow CNN, all radar products
-                2 : Shallow CNN, temporal model
+                0 : CNN
+                1 : CNN, all radar products
             """,
     )
     parser.add_argument(
@@ -611,17 +594,6 @@ if __name__ == "__main__":
             memory at a time. high_memory_mode is good for machines with slow 
             IO and at least 8 GB of memory available.
             """,
-    )
-    parser.add_argument(
-        "-td",
-        "--num_temporal_data",
-        type=int,
-        default=1,
-        help="""
-                Only applied to temporal model. This indicates how many time
-                frames in either direction used for training. 0 will give array
-                size of 1, 1 -> 3, 2 -> 5, and 3 -> 7.
-                """,
     )
     parser.add_argument(
         "-cc",
